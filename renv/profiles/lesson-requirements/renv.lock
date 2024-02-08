@@ -584,33 +584,6 @@
       ],
       "Hash": "7ede2ee9ea8d3edbf1ca84c1e333ad1a"
     },
-    "distcrete": {
-      "Package": "distcrete",
-      "Version": "1.0.3",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "5ad4e98af2a8e4c63b9b394ec05c91e1"
-    },
-    "distributional": {
-      "Package": "distributional",
-      "Version": "0.3.2",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Requirements": [
-        "digest",
-        "farver",
-        "generics",
-        "ggplot2",
-        "lifecycle",
-        "numDeriv",
-        "rlang",
-        "scales",
-        "stats",
-        "utils",
-        "vctrs"
-      ],
-      "Hash": "0a94c3c917918a1c90f4609171ff41b6"
-    },
     "dotCall64": {
       "Package": "dotCall64",
       "Version": "1.1-1",
@@ -697,26 +670,6 @@
         "utils"
       ],
       "Hash": "3799aa7424ed199ea2f83a439655f1b1"
-    },
-    "epiparameter": {
-      "Package": "epiparameter",
-      "Version": "0.0.0.9000",
-      "Source": "GitHub",
-      "RemoteType": "github",
-      "RemoteUsername": "epiverse-trace",
-      "RemoteRepo": "epiparameter",
-      "RemoteRef": "HEAD",
-      "RemoteSha": "7c5a0fb9c732fbfe45177ef055f66e75063e460a",
-      "RemoteHost": "api.github.com",
-      "Requirements": [
-        "R",
-        "checkmate",
-        "distcrete",
-        "distributional",
-        "stats",
-        "utils"
-      ],
-      "Hash": "024a8c8a100fcd73dcf92522d7ef2e35"
     },
     "evaluate": {
       "Package": "evaluate",
@@ -1003,13 +956,6 @@
       ],
       "Hash": "d6db1667059d027da730decdc214b959"
     },
-    "grates": {
-      "Package": "grates",
-      "Version": "1.1.0",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "c937fa4cc110a4aabae986a6393dfb15"
-    },
     "gridExtra": {
       "Package": "gridExtra",
       "Version": "2.3",
@@ -1164,21 +1110,6 @@
         "utils"
       ],
       "Hash": "fb2999614d40fe7fd61cf569b66a2dbc"
-    },
-    "incidence2": {
-      "Package": "incidence2",
-      "Version": "2.2.3",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Requirements": [
-        "R",
-        "data.table",
-        "grDevices",
-        "grates",
-        "pillar",
-        "utils"
-      ],
-      "Hash": "0e1c66f6d72eacacbd8fe6ba1ed85cc9"
     },
     "inline": {
       "Package": "inline",
@@ -1437,16 +1368,6 @@
       ],
       "Hash": "a623a2239e642806158bc4dc3f51565d"
     },
-    "numDeriv": {
-      "Package": "numDeriv",
-      "Version": "2016.8-1.1",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Requirements": [
-        "R"
-      ],
-      "Hash": "df58958f293b166e4ab885ebcad90e02"
-    },
     "oai": {
       "Package": "oai",
       "Version": "0.4.0",
@@ -1633,7 +1554,7 @@
       "Package": "ragg",
       "Version": "1.2.7",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "https://carpentries.r-universe.dev",
       "Requirements": [
         "systemfonts",
         "textshaping"
@@ -1925,7 +1846,7 @@
       "Package": "stringi",
       "Version": "1.8.3",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "https://carpentries.r-universe.dev",
       "Requirements": [
         "R",
         "stats",

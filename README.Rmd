@@ -18,13 +18,13 @@ knitr::opts_chunk$set(
 [![Project Status: WIP - Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 <!-- badges: end -->
 
-The goal of `tutorials` is to host tutorials for Outbreak analytics with R.
+The goal of this repository is to host tutorials for Scenario modelling for outbreak analytics with R.
 
 ## Usage
 
 > NOTE: The expected date for the deployment of the first set of tutorials is mid-November 2023.
 
-Visualize this content as a webpage at <https://epiverse-trace.github.io/tutorials/>
+Visualize this content as a webpage at <https://epiverse-trace.github.io/tutorials-late/>
 
 To build the website locally, please refer to [the contributing guidelines](CONTRIBUTING.md).
 
@@ -48,7 +48,3 @@ Read the [License](LICENSE.md) of this tutorial.
 
 - [@amanda-minter](https://github.com/amanda-minter/)
 - [@avallecam](https://github.com/avallecam/)
-
-```{r,eval=FALSE,echo=FALSE}
-readCitationFile(file = "inst/CITATION")
-```
