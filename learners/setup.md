@@ -52,8 +52,6 @@ To try to install these packages, open RStudio and copy and paste the following 
 if(!require("pak")) install.packages("pak")
 
 new_packages <- c(
-  "EpiNow2",
-  "epiverse-trace/epiparameter",
   "socialmixr",
   "epiverse-trace/epidemics",
   "tidyverse"
@@ -67,24 +65,12 @@ You should update **all of the packages** required for the tutorial, even if you
 When the installation has finished, you can try to load the packages by pasting the following code into the console:
 
 ```r
-library(EpiNow2)
-library(epiparameter)
 library(socialmixr)
 library(epidemics)
 library(tidyverse)
 ```
 
 If you do NOT see an error like `there is no package called ‘...’` you are good to go! If you do, [contact us](#your-questions)!
-
-## Data sets
-
-### Download the data
-
-We will download the data directly from R during the tutorial. However, if you are expecting problems with the network, it may be better to download the data beforehand and store it on your machine.
-
-The data files for the tutorial can be downloaded manually here: 
-
-- <https://epiverse-trace.github.io/tutorials/data/ebola_cases.csv>
 
 ## Your Questions
 
