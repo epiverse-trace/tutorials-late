@@ -48,7 +48,7 @@ In this tutorial we introduce the concept of the counter factual and how to comp
 
 ## Vacamole model
 
-The Vacamole model is a deterministic model based on a system of ODEs in [Ainslie et al. 2022]( https://doi.org/10.2807/1560-7917.ES.2022.27.44.2101090) to describe the effect of vaccination on COVID-19 dynamics. The model consists of 11 compartments, individuals are classed as one of the following:
+The Vacamole model is a deterministic model based on a system of ODEs in [Ainslie et al. 2022](https://doi.org/10.2807/1560-7917.ES.2022.27.44.2101090) to describe the effect of vaccination on COVID-19 dynamics. The model consists of 11 compartments, individuals are classed as one of the following:
 
 + susceptible, $S$,
 + partial vaccination ($V_1$), fully vaccination ($V_2$),
@@ -137,6 +137,10 @@ DiagrammeR::grViz("digraph{
 
 To run the model with no vaccination in place we can *either* create two vaccination objects (one for each dose) using `vaccination()` with the time start, time end and vaccination rate all set to 0, or we can use the `no_vaccination()` function to create a vaccination object for two doses with all values set to 0.
 
+```{r}
+library(epidemics)
+```
+
 ```{r, eval = FALSE}
 no_vaccination <- no_vaccination(population = uk_population, doses = 2)
 ```
@@ -221,6 +225,8 @@ output <- model_vacamole_cpp(
 2. Plot the number of deaths through time
 
 ```{r}
+library(ggplot2)
+
 ggplot(output[output$compartment == "dead", ]) +
   geom_line(
     aes(time, value, colour = demography_group),
