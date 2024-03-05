@@ -134,12 +134,6 @@ epinow_estimates <- epinow(
 )
 ```
 
-```{.output}
-WARN [2024-02-08 10:07:22] epinow: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.
-Running the chains for more iterations may help. See
-https://mc-stan.org/misc/warnings.html#bulk-ess - 
-```
-
 As an output, we get the time-varying (or [effective](../learners/reference.md#effectiverepro)) reproduction number, as well as the cases by date of report and date of infection:
 
 
