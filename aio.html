@@ -300,7 +300,7 @@
         
 <section id="aio-introduction"><p>Content from <a href="introduction.html">Outbreak analytics pipelines</a></p>
 <hr>
-<p>Last updated on 2024-03-05 |
+<p>Last updated on 2024-03-11 |
         
         <a href="https://github.com/epiverse-trace/tutorials-late/edit/main/episodes/introduction.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -493,9 +493,19 @@ calculation:</li>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre>
 </div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>WARN [2024-03-11 13:13:27] epinow: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.
+Running the chains for more iterations may help. See
+https://mc-stan.org/misc/warnings.html#bulk-ess - 
+WARN [2024-03-11 13:13:28] epinow: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.
+Running the chains for more iterations may help. See
+https://mc-stan.org/misc/warnings.html#tail-ess - </code></pre>
+</div>
 <p>As an output, we get the time-varying (or <a href="reference.html#effectiverepro">effective</a>) reproduction number,
 as well as the cases by date of report and date of infection:</p>
-<div class="codewrapper sourceCode" id="cb6">
+<div class="codewrapper sourceCode" id="cb7">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -604,7 +614,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-simulating-transmission"><p>Content from <a href="simulating-transmission.html">Simulating transmission</a></p>
 <hr>
-<p>Last updated on 2024-03-05 |
+<p>Last updated on 2024-03-11 |
         
         <a href="https://github.com/epiverse-trace/tutorials-late/edit/main/episodes/simulating-transmission.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -1254,7 +1264,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-model-choices"><p>Content from <a href="model-choices.html">Choosing an appropriate model</a></p>
 <hr>
-<p>Last updated on 2024-03-05 |
+<p>Last updated on 2024-03-11 |
         
         <a href="https://github.com/epiverse-trace/tutorials-late/edit/main/episodes/model-choices.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -1778,7 +1788,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-modelling-interventions"><p>Content from <a href="modelling-interventions.html">Modelling interventions</a></p>
 <hr>
-<p>Last updated on 2024-03-05 |
+<p>Last updated on 2024-03-11 |
         
         <a href="https://github.com/epiverse-trace/tutorials-late/edit/main/episodes/modelling-interventions.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -2277,7 +2287,7 @@ reduces the peak number of infectious individuals the most?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1">Output</h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb14">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -2352,7 +2362,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-compare-interventions"><p>Content from <a href="compare-interventions.html">Comparing public health outcomes of interventions</a></p>
 <hr>
-<p>Last updated on 2024-03-05 |
+<p>Last updated on 2024-03-11 |
         
         <a href="https://github.com/epiverse-trace/tutorials-late/edit/main/episodes/compare-interventions.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -2493,6 +2503,12 @@ set to 0.</p>
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">epidemics</span><span class="op">)</span></span></code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb2">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">no_vaccination</span> <span class="op">&lt;-</span> <span class="fu">no_vaccination</span><span class="op">(</span>population <span class="op">=</span> <span class="va">uk_population</span>, doses <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre>
 </div>
 </div>
@@ -2509,7 +2525,7 @@ set to 0.</p>
 <p>We can run the Vacamole model with <a href="https://epiverse-trace.github.io/epidemics/articles/vacamole.html#model-epidemic-using-vacamole" class="external-link">default
 parameter values</a> by just specifying the population object and number
 of time steps to run the model for:</p>
-<div class="codewrapper sourceCode" id="cb2">
+<div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -2533,7 +2549,7 @@ of time steps to run the model for:</p>
 <ol style="list-style-type: decimal">
 <li>Run the model</li>
 </ol>
-<div class="codewrapper sourceCode" id="cb3">
+<div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -2555,7 +2571,7 @@ of time steps to run the model for:</p>
 </h3>
 <pre class="output" tabindex="0"><code>Removing participants that have contacts without age information. To change this behaviour, set the 'missing.contact.age' option</code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb6">
+<div class="codewrapper sourceCode" id="cb7">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -2590,48 +2606,27 @@ of time steps to run the model for:</p>
 <span>  contact_matrix <span class="op">=</span> <span class="va">contact_matrix</span>,</span>
 <span>  demography_vector <span class="op">=</span> <span class="va">demography_vector</span>,</span>
 <span>  initial_conditions <span class="op">=</span> <span class="va">initial_conditions</span></span>
-<span><span class="op">)</span></span></code></pre>
-</div>
-<div class="codewrapper">
-<h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="error" tabindex="0"><code>Error in population(name = "UK", contact_matrix = contact_matrix, demography_vector = demography_vector, : could not find function "population"</code></pre>
-</div>
-<div class="codewrapper sourceCode" id="cb8">
-<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">no_vaccination</span> <span class="op">&lt;-</span> <span class="fu">no_vaccination</span><span class="op">(</span>population <span class="op">=</span> <span class="va">uk_population</span>, doses <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre>
-</div>
-<div class="codewrapper">
-<h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="error" tabindex="0"><code>Error in no_vaccination(population = uk_population, doses = 2): could not find function "no_vaccination"</code></pre>
-</div>
-<div class="codewrapper sourceCode" id="cb10">
-<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># run model</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">no_vaccination</span> <span class="op">&lt;-</span> <span class="fu">no_vaccination</span><span class="op">(</span>population <span class="op">=</span> <span class="va">uk_population</span>, doses <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># run model</span></span>
 <span><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu">model_vacamole_cpp</span><span class="op">(</span></span>
 <span>  population <span class="op">=</span> <span class="va">uk_population</span>,</span>
 <span>  vaccination <span class="op">=</span> <span class="va">no_vaccination</span>,</span>
 <span>  time_end <span class="op">=</span> <span class="fl">300</span></span>
 <span><span class="op">)</span></span></code></pre>
 </div>
-<div class="codewrapper">
-<h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="error" tabindex="0"><code>Error in model_vacamole_cpp(population = uk_population, vaccination = no_vaccination, : could not find function "model_vacamole_cpp"</code></pre>
-</div>
 <ol start="2" style="list-style-type: decimal">
 <li>Plot the number of deaths through time</li>
 </ol>
-<div class="codewrapper sourceCode" id="cb12">
+<div class="codewrapper sourceCode" id="cb8">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span><span class="va">output</span><span class="op">[</span><span class="va">output</span><span class="op">$</span><span class="va">compartment</span> <span class="op">==</span> <span class="st">"dead"</span>, <span class="op">]</span><span class="op">)</span> <span class="op">+</span></span>
+<code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">ggplot2</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">ggplot</span><span class="op">(</span><span class="va">output</span><span class="op">[</span><span class="va">output</span><span class="op">$</span><span class="va">compartment</span> <span class="op">==</span> <span class="st">"dead"</span>, <span class="op">]</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_line</span><span class="op">(</span></span>
 <span>    <span class="fu">aes</span><span class="op">(</span><span class="va">time</span>, <span class="va">value</span>, colour <span class="op">=</span> <span class="va">demography_group</span><span class="op">)</span>,</span>
 <span>    linewidth <span class="op">=</span> <span class="fl">1</span></span>
@@ -2655,11 +2650,7 @@ of time steps to run the model for:</p>
 <span>    base_size <span class="op">=</span> <span class="fl">15</span></span>
 <span>  <span class="op">)</span></span></code></pre>
 </div>
-<div class="codewrapper">
-<h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="error" tabindex="0"><code>Error in ggplot(output[output$compartment == "dead", ]): could not find function "ggplot"</code></pre>
-</div>
+<figure><img src="fig/compare-interventions-rendered-unnamed-chunk-6-1.png" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure>
 </div>
 </div>
 </div>
@@ -2716,7 +2707,7 @@ any links that you are not going to use.
         <p>Materials licensed under <a href="LICENSE.html">CC-BY 4.0</a> by the authors</p>
         
         <p>Template licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">CC-BY 4.0</a> by <a href="https://carpentries.org/" class="external-link">The Carpentries</a></p>
-        <p>Built with <a href="https://github.com/epiverse-trace/sandpaper/tree/patch-renv-github-bug" class="external-link">sandpaper (0.16.2)</a>, <a href="https://github.com/carpentries/pegboard/tree/1bc5753e917d515c3d888ce6cc013c0a680eacfc" class="external-link">pegboard (0.7.3)</a>, and <a href="https://github.com/epiverse-trace/varnish/tree/epiversetheme" class="external-link">varnish (1.0.1.9000)</a></p>
+        <p>Built with <a href="https://github.com/epiverse-trace/sandpaper/tree/patch-renv-github-bug" class="external-link">sandpaper (0.16.2)</a>, <a href="https://github.com/carpentries/pegboard/tree/e9ca729c7db3ca97f016480679f9f58d115d2721" class="external-link">pegboard (0.7.4)</a>, and <a href="https://github.com/epiverse-trace/varnish/tree/epiversetheme" class="external-link">varnish (1.0.1.9000)</a></p>
 			</div>
 		</footer>
 </div> <!-- / div.container -->
@@ -2738,9 +2729,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://epiverse-trace.github.io/tutorials-late/aio.html",
   "identifier": "https://epiverse-trace.github.io/tutorials-late/aio.html",
-  "dateCreated": "2024-02-08",
-  "dateModified": "2024-03-05",
-  "datePublished": "2024-03-05"
+  "dateCreated": "2024-03-11",
+  "dateModified": "2024-03-11",
+  "datePublished": "2024-03-11"
 }
 
   </script><script>
