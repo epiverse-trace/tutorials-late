@@ -5,6 +5,11 @@ exercises: 30 # exercise time in minutes
 
 ---
 
+```{r setup, echo= FALSE, message = FALSE, warning = FALSE}
+webshot::install_phantomjs(force = TRUE)
+```
+
+
 :::::::::::::::::::::::::::::::::::::: questions 
 
 - How can I quantify the effect of an intervention?
