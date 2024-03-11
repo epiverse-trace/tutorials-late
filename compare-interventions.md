@@ -5,6 +5,9 @@ exercises: 30 # exercise time in minutes
 
 ---
 
+
+
+
 :::::::::::::::::::::::::::::::::::::: questions 
 
 - How can I quantify the effect of an intervention?
@@ -48,7 +51,7 @@ In this tutorial we introduce the concept of the counter factual and how to comp
 
 ## Vacamole model
 
-The Vacamole model is a deterministic model based on a system of ODEs in [Ainslie et al. 2022]( https://doi.org/10.2807/1560-7917.ES.2022.27.44.2101090) to describe the effect of vaccination on COVID-19 dynamics. The model consists of 11 compartments, individuals are classed as one of the following:
+The Vacamole model is a deterministic model based on a system of ODEs in [Ainslie et al. 2022](https://doi.org/10.2807/1560-7917.ES.2022.27.44.2101090) to describe the effect of vaccination on COVID-19 dynamics. The model consists of 11 compartments, individuals are classed as one of the following:
 
 + susceptible, $S$,
 + partial vaccination ($V_1$), fully vaccination ($V_2$),
@@ -84,6 +87,11 @@ The diagram below describes the flow of individuals through the different compar
 ### Vaccination code 
 
 To run the model with no vaccination in place we can *either* create two vaccination objects (one for each dose) using `vaccination()` with the time start, time end and vaccination rate all set to 0, or we can use the `no_vaccination()` function to create a vaccination object for two doses with all values set to 0.
+
+
+```r
+library(epidemics)
+```
 
 
 ```r
@@ -169,21 +177,9 @@ uk_population <- population(
   demography_vector = demography_vector,
   initial_conditions = initial_conditions
 )
-```
 
-```{.error}
-Error in population(name = "UK", contact_matrix = contact_matrix, demography_vector = demography_vector, : could not find function "population"
-```
-
-```r
 no_vaccination <- no_vaccination(population = uk_population, doses = 2)
-```
 
-```{.error}
-Error in no_vaccination(population = uk_population, doses = 2): could not find function "no_vaccination"
-```
-
-```r
 # run model
 output <- model_vacamole_cpp(
   population = uk_population,
@@ -192,14 +188,12 @@ output <- model_vacamole_cpp(
 )
 ```
 
-```{.error}
-Error in model_vacamole_cpp(population = uk_population, vaccination = no_vaccination, : could not find function "model_vacamole_cpp"
-```
-
 2. Plot the number of deaths through time
 
 
 ```r
+library(ggplot2)
+
 ggplot(output[output$compartment == "dead", ]) +
   geom_line(
     aes(time, value, colour = demography_group),
@@ -225,9 +219,7 @@ ggplot(output[output$compartment == "dead", ]) +
   )
 ```
 
-```{.error}
-Error in ggplot(output[output$compartment == "dead", ]): could not find function "ggplot"
-```
+<img src="fig/compare-interventions-rendered-unnamed-chunk-6-1.png" style="display: block; margin: auto;" />
 
 
 
