@@ -229,7 +229,7 @@ mask_mandate <- intervention(
 )
 ```
 
-To implement this intervention on the parameter $\beta$, we specify `intervention = list(beta = mask_mandate)`.
+To implement this intervention on the transmission rate $\beta$, we specify `intervention = list(transmission_rate = mask_mandate)`.
 
 ```{r output_masks}
 output_masks <- model_default(
