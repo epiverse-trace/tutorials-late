@@ -101,9 +101,9 @@ Finally, interventions such as vaccination may be of interest. A model may or ma
 
 
 
-## Available  models in `epidemics`
+## Available  models in `{epidemics}`
  
-The R package `epidemics` contains functions to run existing models.
+The R package `{epidemics}` contains functions to run existing models.
 For details on the models that are available, see the package [Reference Guide of "Model functions"](https://epiverse-trace.github.io/epidemics/reference/index.html#model-functions). All model function names start with `model_*()`. To learn how to run the models in R, read the [Vignettes on "Guides to library models"](https://epiverse-trace.github.io/epidemics/articles/#guides-to-library-models). 
 
 
