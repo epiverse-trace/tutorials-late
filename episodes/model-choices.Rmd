@@ -61,7 +61,7 @@ A model may already exist for your study disease, or there may be a model for an
 
 ### Do we need a [deterministic](../learners/reference.md#deterministic) or [stochastic](../learners/reference.md#stochastic) model? 
 
-Model structures differ for whether the disease has pandemic potential or not. When predicted numbers of infection are small, stochastic variation in output can have an effect on whether an outbreak takes off or not. Outbreaks are usually smaller in magnitude than epidemics, so its often appropriate to use a stochastic model to characterise the uncertainty in the early stages of the outbreak. Epidemics are larger in magnitude than outbreaks and so a deterministic model is suitable as we have less interest in the stochastic variation in output. 
+Model structures differ for whether the disease has pandemic potential or not. When simulated numbers of infection are small, stochastic variation in output can have an effect on whether an outbreak takes off or not. Outbreaks are usually smaller in magnitude than epidemics, so its often appropriate to use a stochastic model to characterise the uncertainty in the early stages of the outbreak. Epidemics are larger in magnitude than outbreaks and so a deterministic model is suitable as we have less interest in the stochastic variation in output. 
 
 :::::::::::::::::::::::::
 
@@ -69,7 +69,7 @@ Model structures differ for whether the disease has pandemic potential or not. W
 
 ## What is the outcome of interest?
 
-The outcome of interest can be a feature of a mathematical model. It may be that you are interested in the predicted numbers of infection through time, or in a specific outcome such as hospitalisations or cases of severe disease.
+The outcome of interest can be a feature of a mathematical model. It may be that you are interested in simulating the numbers of infection through time, or in a specific outcome such as hospitalisations or cases of severe disease.
 
 :::::::::::::::::::::::::
 
@@ -183,7 +183,7 @@ DiagrammeR::grViz("digraph {
 ```
 
 
-The model is capable of predicting an Ebola type outbreak, but as the model is deterministic, we are not able to explore stochastic variation in the early stages of the outbreak.
+The model is capable of simulating an Ebola type outbreak, but as the model is deterministic, we are not able to explore stochastic variation in the early stages of the outbreak.
 
 
 #### `model_ebola()`
