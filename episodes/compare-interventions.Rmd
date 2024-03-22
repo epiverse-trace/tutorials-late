@@ -178,6 +178,10 @@ output <- model_vacamole(
 1.  Run the model
 
 ```{r}
+library(epidemics)
+```
+
+```{r}
 polymod <- socialmixr::polymod
 contact_data <- socialmixr::contact_matrix(
   survey = polymod,
