@@ -135,21 +135,23 @@ DiagrammeR::grViz("digraph{
 
 2. Using the output, plot the number of deaths through time
 
-
+<!--
 ::::::::::::::::: hint
 
 ### Vaccination code 
 
-To run the model with no vaccination in place we can *either* create two vaccination objects (one for each dose) using `vaccination()` with the time start, time end and vaccination rate all set to 0, or we can use the `no_vaccination()` function to create a vaccination object for two doses with all values set to 0.
+To run the model with no vaccination in place we can *either* create two vaccination objects (one for each dose) using `vaccination()` with the time start, time end and vaccination rate all set to 0.
 
 ```{r}
 library(epidemics)
 ```
 
 ```{r, eval = FALSE}
-no_vaccination <- no_vaccination(population = uk_population, doses = 2)
+?vaccination
 ```
+
 ::::::::::::::::::::::
+-->
 
 ::::::::::::::::: hint
 
@@ -159,9 +161,8 @@ We can run the Vacamole model with [default parameter values](https://epiverse-t
 
 
 ```{r, eval = FALSE}
-output <- model_vacamole_cpp(
+output <- model_vacamole(
   population = uk_population,
-  vaccination = no_vaccination,
   time_end = 300
 )
 ```
@@ -217,12 +218,9 @@ uk_population <- population(
   initial_conditions = initial_conditions
 )
 
-no_vaccination <- no_vaccination(population = uk_population, doses = 2)
-
 # run model
-output <- model_vacamole_cpp(
+output <- model_vacamole(
   population = uk_population,
-  vaccination = no_vaccination,
   time_end = 300
 )
 ```
