@@ -135,23 +135,23 @@ DiagrammeR::grViz("digraph{
 
 2. Using the output, plot the number of deaths through time
 
-<!--
-::::::::::::::::: hint
 
-### Vaccination code 
+<!-- ::::::::::::::::: hint -->
 
-To run the model with no vaccination in place we can *either* create two vaccination objects (one for each dose) using `vaccination()` with the time start, time end and vaccination rate all set to 0.
+<!-- ### Vaccination code  -->
 
-```{r}
-library(epidemics)
-```
+<!-- To run the model with no vaccination in place we can *either* create two vaccination objects (one for each dose) using `vaccination()` with the time start, time end and vaccination rate all set to 0. -->
 
-```{r, eval = FALSE}
-?vaccination
-```
+<!-- ```{r} -->
+<!-- library(epidemics) -->
+<!-- ``` -->
 
-::::::::::::::::::::::
--->
+<!-- ```{r, eval = FALSE} -->
+<!-- ?vaccination -->
+<!-- ``` -->
+
+<!-- :::::::::::::::::::::: -->
+
 
 ::::::::::::::::: hint
 
