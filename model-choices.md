@@ -57,7 +57,7 @@ A model may already exist for your study disease, or there may be a model for an
 
 ### Do we need a [deterministic](../learners/reference.md#deterministic) or [stochastic](../learners/reference.md#stochastic) model? 
 
-Model structures differ for whether the disease has pandemic potential or not. When predicted numbers of infection are small, stochastic variation in output can have an effect on whether an outbreak takes off or not. Outbreaks are usually smaller in magnitude than epidemics, so its often appropriate to use a stochastic model to characterise the uncertainty in the early stages of the outbreak. Epidemics are larger in magnitude than outbreaks and so a deterministic model is suitable as we have less interest in the stochastic variation in output. 
+Model structures differ for whether the disease has pandemic potential or not. When simulated numbers of infection are small, stochastic variation in output can have an effect on whether an outbreak takes off or not. Outbreaks are usually smaller in magnitude than epidemics, so its often appropriate to use a stochastic model to characterise the uncertainty in the early stages of the outbreak. Epidemics are larger in magnitude than outbreaks and so a deterministic model is suitable as we have less interest in the stochastic variation in output. 
 
 :::::::::::::::::::::::::
 
@@ -65,7 +65,7 @@ Model structures differ for whether the disease has pandemic potential or not. W
 
 ## What is the outcome of interest?
 
-The outcome of interest can be a feature of a mathematical model. It may be that you are interested in the predicted numbers of infection through time, or in a specific outcome such as hospitalisations or cases of severe disease.
+The outcome of interest can be a feature of a mathematical model. It may be that you are interested in simulating the numbers of infection through time, or in a specific outcome such as hospitalisations or cases of severe disease.
 
 :::::::::::::::::::::::::
 
@@ -97,10 +97,10 @@ Finally, interventions such as vaccination may be of interest. A model may or ma
 
 
 
-## Available  models in `epidemics`
+## Available  models in `{epidemics}`
  
-The R package `epidemics` contains functions to run existing models.
-For details on the models that are available, see the package [vignettes](https://epiverse-trace.github.io/epidemics/articles). To learn how to run the models in R, read the documentation using `?epidemics::model_ebola_r`. 
+The R package `{epidemics}` contains functions to run existing models.
+For details on the models that are available, see the package [Reference Guide of "Model functions"](https://epiverse-trace.github.io/epidemics/reference/index.html#model-functions). All model function names start with `model_*()`. To learn how to run the models in R, read the [Vignettes on "Guides to library models"](https://epiverse-trace.github.io/epidemics/articles/#guides-to-library-models). 
 
 
 ::::::::::::::::::::::::::::::::::::: challenge
@@ -111,9 +111,9 @@ You have been asked to explore the variation in numbers of infectious individual
 
 Which of the following models would be an appropriate choice for this task:
 
-+  `model_default_cpp()`
++  `model_default()`
 
-+ `model_ebola_r()`
++ `model_ebola()`
 
 ::::::::::::::::: hint
 
@@ -144,17 +144,17 @@ Consider the following questions:
 + What is the outcome of interest? **Number of infections**
 + Will any interventions be modelled? **No**
 
-#### `model_default_cpp()`
+#### `model_default()`
 
 A deterministic SEIR model with age specific direct transmission. 
 
 <img src="fig/model-choices-rendered-diagram-1.png" style="display: block; margin: auto;" />
 
 
-The model is capable of predicting an Ebola type outbreak, but as the model is deterministic, we are not able to explore stochastic variation in the early stages of the outbreak.
+The model is capable of simulating an Ebola type outbreak, but as the model is deterministic, we are not able to explore stochastic variation in the early stages of the outbreak.
 
 
-#### `model_ebola_r()`
+#### `model_ebola()`
 
 A stochastic SEIHFR (Susceptible, Exposed, Infectious, Hospitalised, Funeral, Removed) model that was developed specifically for infection with Ebola. The model has stochasticity in the passage times between states, which are modelled as Erlang distributions.
 
@@ -191,7 +191,7 @@ As this model is stochastic, it is the most appropriate choice to explore how va
 
 ## Running the model
 
-You have been tasked to generate initial trajectories of an Ebola outbreak in Guinea. Using `model_ebola_r()` and the the information detailed below, complete the following tasks:
+You have been tasked to generate initial trajectories of an Ebola outbreak in Guinea. Using `model_ebola()` and the the information detailed below, complete the following tasks:
 
 1. Run the model once and plot the number of infectious individuals  through time
 2. Run model 100 times and plot the mean, upper and lower 95% quantiles of the number of infectious individuals through time
@@ -257,9 +257,9 @@ Adapt the code from the [accounting for uncertainty](../episodes/simulating-tran
 
 
 ```r
-output <- model_ebola_r(
+output <- model_ebola(
   population = guinea_population,
-  transmissibility = 1.1 / 12,
+  transmission_rate = 1.1 / 12,
   infectiousness_rate = 2.0 / 5,
   removal_rate = 2.0 / 12,
   prop_community = 0.9,
@@ -296,9 +296,9 @@ We run the model 100 times with the *same* parameter values.
 output_samples <- Map(
   x = seq(100),
   f = function(x) {
-    output <- model_ebola_r(
+    output <- model_ebola(
       population = guinea_population,
-      transmissibility = 1.1 / 12,
+      transmission_rate = 1.1 / 12,
       infectiousness_rate = 2.0 / 5,
       removal_rate = 2.0 / 12,
       prop_community = 0.9,

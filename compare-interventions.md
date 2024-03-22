@@ -82,22 +82,22 @@ The diagram below describes the flow of individuals through the different compar
 2. Using the output, plot the number of deaths through time
 
 
-::::::::::::::::: hint
+<!-- ::::::::::::::::: hint -->
 
-### Vaccination code 
+<!-- ### Vaccination code  -->
 
-To run the model with no vaccination in place we can *either* create two vaccination objects (one for each dose) using `vaccination()` with the time start, time end and vaccination rate all set to 0, or we can use the `no_vaccination()` function to create a vaccination object for two doses with all values set to 0.
+<!-- To run the model with no vaccination in place we can *either* create two vaccination objects (one for each dose) using `vaccination()` with the time start, time end and vaccination rate all set to 0. -->
 
+<!-- ```{r} -->
+<!-- library(epidemics) -->
+<!-- ``` -->
 
-```r
-library(epidemics)
-```
+<!-- ```{r, eval = FALSE} -->
+<!-- ?vaccination -->
+<!-- ``` -->
 
+<!-- :::::::::::::::::::::: -->
 
-```r
-no_vaccination <- no_vaccination(population = uk_population, doses = 2)
-```
-::::::::::::::::::::::
 
 ::::::::::::::::: hint
 
@@ -108,9 +108,8 @@ We can run the Vacamole model with [default parameter values](https://epiverse-t
 
 
 ```r
-output <- model_vacamole_cpp(
+output <- model_vacamole(
   population = uk_population,
-  vaccination = no_vaccination,
   time_end = 300
 )
 ```
@@ -124,6 +123,11 @@ output <- model_vacamole_cpp(
 ### SOLUTION
 
 1.  Run the model
+
+
+```r
+library(epidemics)
+```
 
 
 ```r
@@ -178,12 +182,9 @@ uk_population <- population(
   initial_conditions = initial_conditions
 )
 
-no_vaccination <- no_vaccination(population = uk_population, doses = 2)
-
 # run model
-output <- model_vacamole_cpp(
+output <- model_vacamole(
   population = uk_population,
-  vaccination = no_vaccination,
   time_end = 300
 )
 ```
@@ -219,7 +220,7 @@ ggplot(output[output$compartment == "dead", ]) +
   )
 ```
 
-<img src="fig/compare-interventions-rendered-unnamed-chunk-6-1.png" style="display: block; margin: auto;" />
+<img src="fig/compare-interventions-rendered-unnamed-chunk-5-1.png" style="display: block; margin: auto;" />
 
 
 
