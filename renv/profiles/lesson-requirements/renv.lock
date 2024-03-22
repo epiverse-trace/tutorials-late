@@ -649,13 +649,13 @@
     },
     "epidemics": {
       "Package": "epidemics",
-      "Version": "0.0.0.9000",
+      "Version": "0.2.0",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteUsername": "epiverse-trace",
       "RemoteRepo": "epidemics",
       "RemoteRef": "main",
-      "RemoteSha": "f7e33b594768fb1fdac3fb97f9c075c7f9e9ce76",
+      "RemoteSha": "d3c8194446c86890746ed532bffec81e463c746b",
       "RemoteHost": "api.github.com",
       "Requirements": [
         "BH",
@@ -664,12 +664,11 @@
         "checkmate",
         "cli",
         "data.table",
-        "deSolve",
         "glue",
         "stats",
         "utils"
       ],
-      "Hash": "3799aa7424ed199ea2f83a439655f1b1"
+      "Hash": "d93e7f5469559b13d3f02e06ad7e5f11"
     },
     "evaluate": {
       "Package": "evaluate",
