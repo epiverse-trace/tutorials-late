@@ -19,7 +19,7 @@ library(epidemics)
 
 ::::::::::::::::::::::::::::::::::::: objectives
 
-- Add pharmaceutical and non-pharmaceutical interventions to an {epidemics} model
+- Add pharmaceutical and non-pharmaceutical interventions to an `{epidemics}` model
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -115,7 +115,7 @@ close_schools <- intervention(
 ::::::::::::::::::::::::::::::::::::: callout
 ### Effect of interventions on contacts
 
-In `epidemics`, the contact matrix is scaled down by proportions for the period in which the intervention is in place. To understand how the reduction is calculated within the model functions, consider a contact matrix for two age groups with equal number of contacts:
+In `{epidemics}`, the contact matrix is scaled down by proportions for the period in which the intervention is in place. To understand how the reduction is calculated within the model functions, consider a contact matrix for two age groups with equal number of contacts:
 
 ```{r echo = FALSE}
 reduction <- matrix(c(0.5, 0.1))
