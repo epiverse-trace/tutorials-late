@@ -92,11 +92,11 @@
   Scenario modelling for outbreak analytics with R
 </div>
 
-<aside class="col-md-12 lesson-progress"><div style="width: 72%" class="percentage">
-    72%
+<aside class="col-md-12 lesson-progress"><div style="width: 71%" class="percentage">
+    71%
   </div>
   <div class="progress incubator">
-    <div class="progress-bar incubator" role="progressbar" style="width: 72%" aria-valuenow="72" aria-label="Lesson Progress" aria-valuemin="0" aria-valuemax="100">
+    <div class="progress-bar incubator" role="progressbar" style="width: 71%" aria-valuenow="71" aria-label="Lesson Progress" aria-valuemin="0" aria-valuemax="100">
     </div>
   </div>
 </aside><div class="container">
@@ -153,7 +153,7 @@
 <div class="accordion accordion-flush" id="accordionFlush2">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading2">
-        <a href="introduction.html">1. Outbreak analytics pipelines</a>
+        <a href="simulating-transmission.html">1. Simulating transmission</a>
     </div><!--/div.accordion-header-->
         
   </div><!--/div.accordion-item-->
@@ -162,7 +162,7 @@
 <div class="accordion accordion-flush" id="accordionFlush3">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading3">
-        <a href="simulating-transmission.html">2. Simulating transmission</a>
+        <a href="model-choices.html">2. Choosing an appropriate model</a>
     </div><!--/div.accordion-header-->
         
   </div><!--/div.accordion-item-->
@@ -171,16 +171,7 @@
 <div class="accordion accordion-flush" id="accordionFlush4">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading4">
-        <a href="model-choices.html">3. Choosing an appropriate model</a>
-    </div><!--/div.accordion-header-->
-        
-  </div><!--/div.accordion-item-->
-</div><!--/div.accordion-flush-->
-
-<div class="accordion accordion-flush" id="accordionFlush5">
-  <div class="accordion-item">
-    <div class="accordion-header" id="flush-heading5">
-        <a href="modelling-interventions.html">4. Modelling interventions</a>
+        <a href="modelling-interventions.html">3. Modelling interventions</a>
     </div><!--/div.accordion-header-->
         
   </div><!--/div.accordion-item-->
@@ -192,7 +183,7 @@
       <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapsecurrent" aria-expanded="true" aria-controls="flush-collapsecurrent">
         <span class="visually-hidden">Current Chapter</span>
         <span class="current-chapter">
-        5. Comparing public health outcomes of interventions
+        4. Comparing public health outcomes of interventions
         </span>
       </button>
     </div><!--/div.accordion-header-->
@@ -267,7 +258,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Comparing public health outcomes of interventions</h1>
-        <p>Last updated on 2024-03-11 |
+        <p>Last updated on 2024-03-22 |
         
         <a href="https://github.com/epiverse-trace/tutorials-late/edit/main/episodes/compare-interventions.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
         
@@ -375,55 +366,25 @@ start of the simulation</li>
 </ul></li>
 <li>There is no vaccination scheme in place</li>
 </ul><ol start="2" style="list-style-type: decimal"><li>Using the output, plot the number of deaths through time</li>
-</ol></div>
+</ol><!-- ::::::::::::::::: hint --><!-- ### Vaccination code  --><!-- To run the model with no vaccination in place we can *either* create two vaccination objects (one for each dose) using `vaccination()` with the time start, time end and vaccination rate all set to 0. --><!-- ```{r} --><!-- library(epidemics) --><!-- ``` --><!-- ```{r, eval = FALSE} --><!-- ?vaccination --><!-- ``` --><!-- :::::::::::::::::::::: --></div>
 </div>
 </div>
 <div id="accordionHint1" class="accordion challenge-accordion accordion-flush">
 <div class="accordion-item">
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint1" aria-expanded="false" aria-controls="collapseHint1">
-  <h4 class="accordion-header" id="headingHint1">Vaccination code</h4>
+  <h4 class="accordion-header" id="headingHint1">HINT : Running the model with default parameter values</h4>
 </button>
-<div id="collapseHint1" class="accordion-collapse collapse" data-bs-parent="#accordionHint1" aria-labelledby="headingHint1">
-<div class="accordion-body">
-<p>To run the model with no vaccination in place we can <em>either</em>
-create two vaccination objects (one for each dose) using
-<code>vaccination()</code> with the time start, time end and vaccination
-rate all set to 0, or we can use the <code>no_vaccination()</code>
-function to create a vaccination object for two doses with all values
-set to 0.</p>
-<div class="codewrapper sourceCode" id="cb1">
-<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">epidemics</span><span class="op">)</span></span></code></pre>
-</div>
-<div class="codewrapper sourceCode" id="cb2">
-<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">no_vaccination</span> <span class="op">&lt;-</span> <span class="fu">no_vaccination</span><span class="op">(</span>population <span class="op">=</span> <span class="va">uk_population</span>, doses <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div id="accordionHint2" class="accordion challenge-accordion accordion-flush">
-<div class="accordion-item">
-<button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint2" aria-expanded="false" aria-controls="collapseHint2">
-  <h4 class="accordion-header" id="headingHint2">HINT : Running the model with default parameter values</h4>
-</button>
-<div id="collapseHint2" class="accordion-collapse collapse" data-bs-parent="#accordionHint2" aria-labelledby="headingHint2">
+<div id="collapseHint1" class="accordion-collapse collapse" aria-labelledby="headingHint1" data-bs-parent="#accordionHint1">
 <div class="accordion-body">
 <p>We can run the Vacamole model with <a href="https://epiverse-trace.github.io/epidemics/articles/vacamole.html#model-epidemic-using-vacamole" class="external-link">default
 parameter values</a> by just specifying the population object and number
 of time steps to run the model for:</p>
-<div class="codewrapper sourceCode" id="cb3">
+<div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu">model_vacamole_cpp</span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu">model_vacamole</span><span class="op">(</span></span>
 <span>  population <span class="op">=</span> <span class="va">uk_population</span>,</span>
-<span>  vaccination <span class="op">=</span> <span class="va">no_vaccination</span>,</span>
 <span>  time_end <span class="op">=</span> <span class="fl">300</span></span>
 <span><span class="op">)</span></span></code></pre>
 </div>
@@ -436,10 +397,16 @@ of time steps to run the model for:</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1">SOLUTION</h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <ol style="list-style-type: decimal"><li>Run the model</li>
-</ol><div class="codewrapper sourceCode" id="cb4">
+</ol><div class="codewrapper sourceCode" id="cb2">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">epidemics</span><span class="op">)</span></span></code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -461,7 +428,7 @@ of time steps to run the model for:</p>
 </h3>
 <pre class="output" tabindex="0"><code>Removing participants that have contacts without age information. To change this behaviour, set the 'missing.contact.age' option</code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb7">
+<div class="codewrapper sourceCode" id="cb6">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -498,17 +465,14 @@ of time steps to run the model for:</p>
 <span>  initial_conditions <span class="op">=</span> <span class="va">initial_conditions</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">no_vaccination</span> <span class="op">&lt;-</span> <span class="fu">no_vaccination</span><span class="op">(</span>population <span class="op">=</span> <span class="va">uk_population</span>, doses <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
-<span></span>
 <span><span class="co"># run model</span></span>
-<span><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu">model_vacamole_cpp</span><span class="op">(</span></span>
+<span><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu">model_vacamole</span><span class="op">(</span></span>
 <span>  population <span class="op">=</span> <span class="va">uk_population</span>,</span>
-<span>  vaccination <span class="op">=</span> <span class="va">no_vaccination</span>,</span>
 <span>  time_end <span class="op">=</span> <span class="fl">300</span></span>
 <span><span class="op">)</span></span></code></pre>
 </div>
 <ol start="2" style="list-style-type: decimal"><li>Plot the number of deaths through time</li>
-</ol><div class="codewrapper sourceCode" id="cb8">
+</ol><div class="codewrapper sourceCode" id="cb7">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -538,7 +502,7 @@ of time steps to run the model for:</p>
 <span>    base_size <span class="op">=</span> <span class="fl">15</span></span>
 <span>  <span class="op">)</span></span></code></pre>
 </div>
-<figure><img src="fig/compare-interventions-rendered-unnamed-chunk-6-1.png" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure></div>
+<figure><img src="fig/compare-interventions-rendered-unnamed-chunk-5-1.png" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure></div>
 </div>
 </div>
 </div>
@@ -594,14 +558,14 @@ any links that you are not going to use.
 	
         | <a href="https://github.com/epiverse-trace/tutorials-late/blob/main/CONTRIBUTING.md" class="external-link">Contributing</a>
         | <a href="https://github.com/epiverse-trace/tutorials-late/" class="external-link">Source</a></p>
-				<p><a href="https://github.com/epiverse-trace/tutorials-late/blob/main/CITATION" class="external-link">Cite</a> | <a href="mailto:andree.valle-campos@lshtm.ac.uk">Contact</a> | <a href="https://carpentries.org/about/" class="external-link">About</a></p>
+				<p><a href="https://github.com/epiverse-trace/tutorials-late/blob/main/" class="external-link">Cite</a> | <a href="mailto:andree.valle-campos@lshtm.ac.uk">Contact</a> | <a href="https://carpentries.org/about/" class="external-link">About</a></p>
 			</div>
 			<div class="col-md-6">
         
         <p>Materials licensed under <a href="LICENSE.html">CC-BY 4.0</a> by the authors</p>
         
         <p>Template licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">CC-BY 4.0</a> by <a href="https://carpentries.org/" class="external-link">The Carpentries</a></p>
-        <p>Built with <a href="https://github.com/epiverse-trace/sandpaper/tree/patch-renv-github-bug" class="external-link">sandpaper (0.16.2)</a>, <a href="https://github.com/carpentries/pegboard/tree/e9ca729c7db3ca97f016480679f9f58d115d2721" class="external-link">pegboard (0.7.4)</a>, and <a href="https://github.com/epiverse-trace/varnish/tree/epiversetheme" class="external-link">varnish (1.0.1.9000)</a></p>
+        <p>Built with <a href="https://github.com/epiverse-trace/sandpaper/tree/patch-renv-github-bug" class="external-link">sandpaper (0.16.3)</a>, <a href="https://github.com/carpentries/pegboard/tree/e9ca729c7db3ca97f016480679f9f58d115d2721" class="external-link">pegboard (0.7.4)</a>, and <a href="https://github.com/epiverse-trace/varnish/tree/epiversetheme" class="external-link">varnish (1.0.2.9000)</a></p>
 			</div>
 		</footer></div> <!-- / div.container -->
 	<div id="to-top">
@@ -622,9 +586,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://epiverse-trace.github.io/tutorials-late/compare-interventions.html",
   "identifier": "https://epiverse-trace.github.io/tutorials-late/compare-interventions.html",
-  "dateCreated": "2024-03-11",
-  "dateModified": "2024-03-11",
-  "datePublished": "2024-03-19"
+  "dateCreated": "2024-03-22",
+  "dateModified": "2024-03-22",
+  "datePublished": "2024-03-22"
 }
 
   </script><script>
