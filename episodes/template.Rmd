@@ -19,8 +19,6 @@ exercises: 5 # exercise time in minutes
 
 ::::::::::::::::::::::::::::::::::::: prereq
 
-## Prerequisites
-
 List (and hyperlink) the lessons/packages which need to be covered before this lesson
 
 :::::::::::::::::::::::::::::::::

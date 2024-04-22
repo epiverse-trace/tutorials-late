@@ -26,7 +26,6 @@ library(ggplot2)
 
 ::::::::::::::::::::::::::::::::::::: prereq
 
-## Prerequisites
 + Complete tutorial [Simulating transmission](../episodes/simulating-transmission.md)
 :::::::::::::::::::::::::::::::::
 
@@ -121,8 +120,6 @@ Which of the following models would be an appropriate choice for this task:
 
 ::::::::::::::::: hint
 
-### HINT
-
 Consider the following questions:
 
 ::::::::::::::::::::::::::::::::::::: checklist
@@ -139,9 +136,6 @@ Consider the following questions:
 
 
 ::::::::::::::::: solution
-
-### SOLUTION
-
 
 + What is the infection/disease of interest? **Ebola**
 + Do we need a deterministic or stochastic model?  **A stochastic model would allow us to explore variation in the early stages of the outbreak**
@@ -312,15 +306,13 @@ guinea_population <- population(
 
 ::::::::::::::::: hint
 
-### HINT : Multiple model simulations
+### Multiple model simulations
 
 Adapt the code from the [accounting for uncertainty](../episodes/simulating-transmission.md#accounting-for-uncertainty) section
 
 ::::::::::::::::::::::
 
 ::::::::::::::::: solution
-
-### SOLUTION
 
 1. Run the model once and plot the number of infectious individuals  through time
 

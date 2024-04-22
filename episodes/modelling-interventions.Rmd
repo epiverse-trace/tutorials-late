@@ -14,7 +14,6 @@ library(epidemics)
 
 - How do I investigate the effect of interventions on disease trajectories? 
 
-
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: objectives
@@ -25,7 +24,6 @@ library(epidemics)
 
 ::::::::::::::::::::::::::::::::::::: prereq
 
-## Prerequisites
 + Complete tutorial [Simulating transmission](../episodes/simulating-transmission.md)
 
 Learners should familiarise themselves with following concept dependencies before working through this tutorial: 
@@ -388,8 +386,6 @@ Plot the three interventions vaccination, school closure and mask mandate and th
 
 
 :::::::::::::::::::::::: solution 
-
-## Output
 
 ```{r plot_vaccinate, echo = TRUE, message = FALSE, fig.width = 10}
 # create intervention_type column for plotting
