@@ -139,13 +139,30 @@ The contacts within group 1 are reduced by 50% twice to accommodate for a 50% re
 
 Using transmission rate $= 2.7/5.5$ (remember that [transmission rate = $R_0$/ infectious period](../episodes/simulating-transmission.md#the-basic-reproduction-number-r_0)), infectiousness rate $1/= 4$ and the recovery rate $= 1/5.5$ we run the model with ` intervention = list(contacts = close_schools)` as follows:
 
+```{r}
+# time periods
+preinfectious_period <- 4.0
+infectious_period <- 5.5
+basic_reproduction <- 2.7
+
+# rates
+infectiousness_rate <- 1.0/preinfectious_period
+recovery_rate <- 1.0/infectious_period
+transmission_rate <- basic_reproduction/infectious_period
+```
+
+
 ```{r school}
 output_school <- model_default(
+  # population
   population = uk_population,
-  transmission_rate = 2.7 / 5.5,
-  infectiousness_rate = 1.0 / 4.0,
-  recovery_rate = 1.0 / 5.5,
+  # rate
+  transmission_rate = transmission_rate,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
+  # intervention
   intervention = list(contacts = close_schools),
+  # time
   time_end = 300, increment = 1.0
 )
 ```
@@ -157,9 +174,9 @@ To be able to see the effect of our intervention, we also run a baseline variant
 # run baseline simulation with no intervention
 output_baseline <- model_default(
   population = uk_population,
-  transmission_rate = 2.7 / 5.5,
-  infectiousness_rate = 1.0 / 4.0,
-  recovery_rate = 1.0 / 5.5,
+  transmission_rate = transmission_rate,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
   time_end = 300, increment = 1.0
 )
 
@@ -168,7 +185,11 @@ output_school$intervention_type <- "school closure"
 output_baseline$intervention_type <- "baseline"
 output <- rbind(output_school, output_baseline)
 
-ggplot(data = output[output$compartment == "infectious", ]) +
+library(tidyverse)
+
+output %>% 
+  filter(compartment == "infectious") %>% 
+  ggplot() +
   aes(
     x = time,
     y = value,
@@ -183,28 +204,17 @@ ggplot(data = output[output$compartment == "infectious", ]) +
   scale_y_continuous(
     labels = scales::comma
   ) +
+  geom_vline(
+    xintercept = c(
+      close_schools$time_begin, 
+      close_schools$time_end
+    ),
+    linetype = 2
+  ) +
+  theme_bw() +
   labs(
     x = "Simulation time (days)",
     y = "Individuals"
-  ) +
-  theme_bw(
-    base_size = 15
-  ) +
-  geom_vline(
-    xintercept = c(close_schools$time_begin, close_schools$time_end),
-    colour = "black",
-    linetype = "dashed",
-    linewidth = 0.2
-  ) +
-  annotate(
-    geom = "text",
-    label = "Schools closed",
-    colour = "black",
-    x = (close_schools$time_end - close_schools$time_begin) / 2 +
-      close_schools$time_begin,
-    y = 10,
-    angle = 0,
-    vjust = "outward"
   )
 ```
 We can see that with the intervention in place, the infection still spreads through the population, though the peak number of infectious individuals is smaller (green dashed line) than the baseline with no intervention in place (red solid line).
@@ -233,11 +243,15 @@ To implement this intervention on the transmission rate $\beta$, we specify `int
 
 ```{r output_masks}
 output_masks <- model_default(
+  # population
   population = uk_population,
-  transmission_rate = 2.7 / 5.5,
-  infectiousness_rate = 1.0 / 4.0,
-  recovery_rate = 1.0 / 5.5,
+  # rate
+  transmission_rate = transmission_rate,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
+  # intervention
   intervention = list(transmission_rate = mask_mandate),
+  # time
   time_end = 300, increment = 1.0
 )
 ```
@@ -249,7 +263,9 @@ output_masks$intervention_type <- "mask mandate"
 output_baseline$intervention_type <- "baseline"
 output <- rbind(output_masks, output_baseline)
 
-ggplot(data = output[output$compartment == "infectious", ]) +
+output %>% 
+  filter(compartment == "infectious") %>% 
+  ggplot() +
   aes(
     x = time,
     y = value,
@@ -264,28 +280,17 @@ ggplot(data = output[output$compartment == "infectious", ]) +
   scale_y_continuous(
     labels = scales::comma
   ) +
+  geom_vline(
+    xintercept = c(
+      mask_mandate$time_begin, 
+      mask_mandate$time_end
+    ),
+    linetype = 2
+  ) +
+  theme_bw() +
   labs(
     x = "Simulation time (days)",
     y = "Individuals"
-  ) +
-  theme_bw(
-    base_size = 15
-  ) +
-  geom_vline(
-    xintercept = c(mask_mandate$time_begin, mask_mandate$time_end),
-    colour = "black",
-    linetype = "dashed",
-    linewidth = 0.2
-  ) +
-  annotate(
-    geom = "text",
-    label = "Mask mandate",
-    colour = "black",
-    x = (mask_mandate$time_end - mask_mandate$time_begin) / 2 +
-      mask_mandate$time_begin,
-    y = 10,
-    angle = 0,
-    vjust = "outward"
   )
 ```
 
@@ -370,11 +375,15 @@ We pass our vaccination object into the model using argument `vaccination = vacc
 
 ```{r output_vaccinate}
 output_vaccinate <- model_default(
+  # population
   population = uk_population,
+  # rate
   transmission_rate = 2.7 / 5.5,
   infectiousness_rate = 1.0 / 4.0,
   recovery_rate = 1.0 / 5.5,
+  # intervention
   vaccination = vaccinate,
+  # time
   time_end = 300, increment = 1.0
 )
 ```
@@ -396,7 +405,9 @@ Plot the three interventions vaccination, school closure and mask mandate and th
 output_vaccinate$intervention_type <- "vaccination"
 output <- rbind(output_school, output_masks, output_vaccinate, output_baseline)
 
-ggplot(data = output[output$compartment == "infectious", ]) +
+output %>% 
+  filter(compartment == "infectious") %>% 
+  ggplot() +
   aes(
     x = time,
     y = value,
@@ -411,12 +422,10 @@ ggplot(data = output[output$compartment == "infectious", ]) +
   scale_y_continuous(
     labels = scales::comma
   ) +
+  theme_bw() +
   labs(
     x = "Simulation time (days)",
     y = "Individuals"
-  ) +
-  theme_bw(
-    base_size = 15
   )
 ```
 
