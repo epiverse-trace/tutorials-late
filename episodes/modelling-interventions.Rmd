@@ -294,7 +294,7 @@ ggplot(data = output[output$compartment == "infectious", ]) +
 
 There are two intervention types for `model_default()`. Rate interventions on model parameters (`transmission_rate` $\beta$, `infectiousness_rate` $\sigma$ and `recovery_rate` $\gamma$) and contact matrix reductions (`contacts`).
 
-To implement both contact and rate interventions in the same simulation they must be passed as a list, e.g., `intervention = list(transmission_rate = mask_mandate, contacts = close_schools)`. But if there are multiple interventions that target contact rates, these must be passed as one `contacts` input. See the [vignette on modelling overlapping interventions](https://epiverse-trace.github.io/epidemics/articles/multiple_interventions.html) for more detail. 
+To implement both contact and rate interventions in the same simulation they must be passed as a list, e.g., `intervention = list(transmission_rate = mask_mandate, contacts = close_schools)`. But if there are multiple interventions that target contact rates, these must be passed as one `contacts` input. See the [vignette on modelling overlapping interventions](https://epiverse-trace.github.io/epidemics/articles/modelling_multiple_interventions.html) for more detail. 
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
