@@ -41,6 +41,16 @@ Learners should familiarise themselves with following concept dependencies befor
 
 Mathematical models are useful tools for generating future trajectories of disease spread. In this tutorial, we will use the R package `{epidemics}` to generate disease trajectories of an influenza strain with pandemic potential. By the end of this tutorial, you will be able to generate the trajectory below showing the number of infectious individuals in different age categories over time.
 
+In this tutorial we are going to learn how to use the `{epidemics}` package to simulate disease trajectories and access to social contact data with `{socialmixr}`. We'll use `{dplyr}`, `{ggplot2}` and the pipe `%>%` to connect some of their functions, so let's also call to the `{tidyverse}` package:
+
+
+```r
+library(epidemics)
+library(socialmixr)
+library(tidyverse)
+```
+
+
 <img src="fig/simulating-transmission-rendered-traj-1.png" style="display: block; margin: auto;" />
 
 
@@ -56,17 +66,17 @@ By the end of this tutorial, learners should be able to replicate the above imag
 To simulate infectious disease trajectories, we must first select a mathematical model to use.
 There is a library of models to choose from in `epidemics`. Models in `epidemics` are prefixed with `model` and suffixed by the name of infection (e.g. Ebola) or a different identifier (e.g. default), and whether the model has a R or [C++](../learners/reference.md#cplusplus) code base.  
 
-In this tutorial, we will use the default model in `{epidemics}`, `model_default()` which is an age-structured SEIR model described by a system of [ordinary differential equations](../learners/reference.md#ordinary). For each age group $i$, individuals are classed as either susceptible $S$, infected but not yet infectious $E$, infectious $I$ or recovered $R$. The schematic below shows the processes which describe the flow of individuals between the disease states $S$, $E$, $I$ and $R$ and the key parameters for each process.
+In this tutorial, we will use the default model in `{epidemics}`, `model_default()` which is an age-structured SEIR model described by a system of [ordinary differential equations](../learners/reference.md#ordinary). For each age group $i$, individuals are categorized as either susceptible $S$, infected but not yet infectious $E$, infectious $I$ or recovered $R$. The schematic below shows the processes which describe the flow of individuals between the disease states $S$, $E$, $I$ and $R$ and the key parameters for each process.
 
 <img src="fig/simulating-transmission-rendered-diagram-1.png" style="display: block; margin: auto;" />
 
 
 ::::::::::::::::::::::::::::::::::::: callout
-### Model parameters : rates
+### Model parameters: rates
 
 In ODE models, model parameters are often (but not always) specified as rates. The rate at which an event occurs is the inverse of the average time until that event. For example, in the SEIR model, the recovery rate $\gamma$ is the inverse of the average infectious period. 
 
-We can use knowledge of the natural history of the disease to inform our values of rates. If the average infectious period of an infection is 8 days, then the daily recovery rate is $\gamma = 1/8 = 0.125$.
+Values of these rates can be determined from the natural history of the disease. For example,  if the average infectious period of an infection is 8 days, then the daily recovery rate is $\gamma = 1/8 = 0.125$.
 
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
@@ -82,13 +92,13 @@ $$
 \frac{dR_i}{dt} &=\gamma I_i \\
 \end{aligned}
 $$
-Individuals in age group ($i$) move from the susceptible state ($S_i$) to the exposed state ($E_i$) via age group specific contact with the infectious individuals in their own and other age groups $\beta S_i \sum_j C_{i,j} I_j$. The contact matrix $C$ allows for heterogeneity in contacts between age groups. They then move to the infectious state at a rate $\alpha$ and recover at a rate $\gamma$. There is no loss of immunity (there are no flows out of the recovered state).
+Individuals in age group ($i$) move from the susceptible state ($S_i$) to the exposed state ($E_i$) via age-specific contacts with infectious individuals in all groups $\beta S_i \sum_j C_{i,j} I_j$. The contact matrix $C$ allows for heterogeneity in contacts between age groups. They then move to the infectious state at a rate $\alpha$ and recover at a rate $\gamma$. There is no loss of immunity (there are no flows out of the recovered state).
 
-The model parameters definitions are :
+The model parameters are:
 
 - transmission rate $\beta$,
 - [contact matrix](../learners/reference.md#contact) $C$ containing the frequency of contacts between age groups (a square $i \times j$ matrix),
-- infectiousness rate  $\alpha$ (preinfectious period ([latent period](../learners/reference.md#latent)) =$1/\alpha$),
+- infectiousness rate  $\alpha$ (pre-infectious period, or [latent period](../learners/reference.md#latent) =$1/\alpha$), and
 - recovery rate $\gamma$ (infectious period = $1/\gamma$).
 
 
@@ -104,7 +114,7 @@ We will use the following definitions for our state variables:
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 
-To generate trajectories using our model, we must prepare the following inputs :  
+To generate trajectories using our model, we must prepare the following inputs:  
 
 1.  Contact matrix 
 2.  Initial conditions 
@@ -113,7 +123,7 @@ To generate trajectories using our model, we must prepare the following inputs :
 
 ### 1. Contact matrix
 
-Contact matrices can be estimated from surveys or contact data, or synthetic ones can be used. We will use the R package `{socialmixr}` to load in a contact matrix estimated from POLYMOD survey data [(Mossong et al. 2008)](https://doi.org/10.1371/journal.pmed.0050074).
+Contact matrices can be estimated from surveys or contact data, or synthetic ones can be used. We will use the R package `{socialmixr}` to load a contact matrix estimated from POLYMOD survey data [(Mossong et al. 2008)](https://doi.org/10.1371/journal.pmed.0050074).
 
 
 ::::::::::::::::::::::::::::::::::::: challenge 
@@ -229,10 +239,12 @@ demography_vector
 14799290 16526302 28961159 
 ```
 
-To create our population object, we call the function `population()` specifying a name, the contact matrix, the demography vector and the initial conditions.
+To create our population object, from the `{epidemics}` package we call the function `population()` specifying a name, the contact matrix, the demography vector and the initial conditions.
 
 
 ```r
+library(epidemics)
+
 uk_population <- population(
   name = "UK",
   contact_matrix = contact_matrix,
@@ -252,15 +264,27 @@ To run our model we need to specify the model parameters:
 
 In `epidemics`, we specify the model inputs as :
 
-- `transmission_rate` = $R_0 \gamma$,
+- `transmission_rate` $\beta = R_0 \gamma$,
 - `infectiousness_rate` = $\alpha$,
 - `recovery_rate` = $\gamma$, 
   
-We will simulate a strain of influenza with pandemic potential with $R_0=1.46$, a preinfectious period of 3 days and infectious period of 7 days. Therefore our inputs will be:
+We will simulate a strain of influenza with pandemic potential with $R_0=1.46$, with a pre-infectious period of 3 days and infectious period of 7 days. Therefore our inputs will be:
 
-- `transmission_rate = 1.46 / 7.0`,
-- `infectiousness_rate = 1.0 / 3.0`,
-- `recovery_rate = 1.0 / 7.0`.
+
+```r
+# time periods
+preinfectious_period <- 3.0
+infectious_period <- 7.0
+basic_reproduction <- 1.46
+```
+
+
+```r
+# rates
+infectiousness_rate <- 1.0 / preinfectious_period
+recovery_rate <- 1.0 / infectious_period
+transmission_rate <- basic_reproduction / infectious_period
+```
 
 ::::::::::::::::::::::::::::::::::::: callout
 ### The basic reproduction number $R_0$
@@ -268,7 +292,7 @@ The basic reproduction number, $R_0$, for the SEIR model is:
 
 $$ R_0 = \frac{\beta}{\gamma}.$$ 
 
-Therefore, we can rewrite transmission rate $\beta$, as:
+Therefore, we can rewrite transmission rate $\beta$ as:
 
 $$ \beta = R_0 \gamma.$$
 
@@ -289,21 +313,19 @@ For models that are described by ODEs, running the model actually means to solve
 In `epidemics`, the [ODE solver](https://www.boost.org/doc/libs/1_82_0/libs/numeric/odeint/doc/html/index.htm) uses the [Runge-Kutta method](https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods). 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
-Now we are ready to run our model. Let's load the `epidemics` package : 
+Now we are ready to run our model using `model_default()` from the `{epidemics}` package. 
 
-
-```r
-library(epidemics)
-```
-
-Then we specify `time_end=600` to run the model for 600 days.
+Let's specify `time_end=600` to run the model for 600 days.
 
 ```r
 output <- model_default(
+  # population
   population = uk_population,
-  transmission_rate = 1.46 / 7.0,
-  infectiousness_rate = 1.0 / 3.0,
-  recovery_rate = 1.0 / 7.0,
+  # rates
+  transmission_rate = transmission_rate,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
+  # time
   time_end = 600, increment = 1.0
 )
 head(output)
@@ -320,43 +342,28 @@ head(output)
 6:     0              40+     exposed        0
 ```
 
-*Note : This model also has the functionality to include vaccination and tracks the number of vaccinated individuals through time. Even though we have not specified any vaccination, there is still a vaccinated compartment in the output (containing no individuals). We will cover the use of vaccination in future tutorials.*
+*Note: This model also has the functionality to include vaccination and tracks the number of vaccinated individuals through time. Even though we have not specified any vaccination, there is still a vaccinated compartment in the output (containing no individuals). We will cover the use of vaccination in future tutorials.*
 
 Our model output consists of the number of individuals in each compartment in each age group through time. We can visualise the infectious individuals only (those in the $I$ class) through time.
 
 
 ```r
-filter(output_plot, compartment %in% c("exposed", "infectious")) %>%
-  ggplot(
+library(tidyverse)
+
+output %>%
+  filter(compartment == "infectious") %>%
+  ggplot() +
+  geom_line(
     aes(
       x = time,
       y = value,
-      col = demography_group,
-      linetype = compartment
+      colour = demography_group
     )
-  ) +
-  geom_line(
-    linewidth = 1.2
   ) +
   scale_y_continuous(
     labels = scales::comma
   ) +
-  scale_colour_brewer(
-    palette = "Dark2",
-    name = "Age group"
-  ) +
-  expand_limits(
-    y = c(0, 500e3)
-  ) +
-  coord_cartesian(
-    expand = FALSE
-  ) +
-  theme_bw(
-    base_size = 15
-  ) +
-  theme(
-    legend.position = "top"
-  ) +
+  theme_bw() +
   labs(
     x = "Simulation time (days)",
     linetype = "Compartment",
@@ -386,65 +393,62 @@ We ran our model with $R_0= 1.5$. However, we believe that $R_0$ follows a norma
 
 
 ```r
-R0_vec <- rnorm(100, 1.5, 0.05)
+# get mean mean and sd over time
+r_estimate_mean <- 1.5
+r_estimate_sd <- 0.05
+
+# Generate 100 R samples
+r_samples <- withr::with_seed(
+  seed = 1,
+  rnorm(
+    n = 100, mean = r_estimate_mean, sd = r_estimate_sd
+  )
+)
+
+infectious_period <- 7
+beta <- r_samples / infectious_period
 ```
 
 2. Run the model 100 times with $R_0$ equal to a different sample each time
 
 
 ```r
-output_samples <- Map(
-  R0_vec,
-  seq_along(R0_vec),
-  f = function(x, i) {
-    # run an epidemic model using `epidemic()`
-    output <- model_default(
-      population = uk_population,
-      transmission_rate = x / 7.0,
-      infectiousness_rate = 1.0 / 3.0,
-      recovery_rate = 1.0 / 7.0,
-      time_end = 600, increment = 1.0
-    )
-
-    # add replicate number and return data
-    output$replicate <- x
-    output
-  }
+output_samples <- model_default(
+  population = uk_population,
+  transmission_rate = beta,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
+  time_end = 600, increment = 1
 )
-
-# combine to prepare for plotting
-output_samples <- bind_rows(output_samples)
 ```
-
 
 3. Calculate the mean and 95% quantiles of number of infectious individuals across each model simulation and visualise output
 
 
 ```r
-ggplot(
-  output_samples[output_samples$compartment == "infectious", ],
-  aes(time, value)
-) +
-  stat_summary(geom = "line", fun = mean) +
-  stat_summary(
-    geom = "ribbon",
-    fun.min = function(z) {
-      quantile(z, 0.025)
-    },
-    fun.max = function(z) {
-      quantile(z, 0.975)
-    },
-    alpha = 0.3
+output_samples %>%
+  mutate(r_value = r_samples) %>%
+  unnest(data) %>%
+  filter(compartment == "infectious") %>%
+  ggplot() +
+  geom_line(
+    aes(time, value, color = r_value, group = param_set),
+    alpha = 3
+  ) +
+  scale_color_fermenter(
+    palette = "RdBu",
+    name = "R"
+  ) +
+  scale_y_continuous(
+    labels = scales::comma
   ) +
   facet_grid(
     cols = vars(demography_group)
   ) +
+  theme_bw() +
   labs(
     x = "Simulation time (days)",
     y = "Individuals"
-  ) +
-  theme_bw(
-    base_size = 15
   )
 ```
 

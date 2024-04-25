@@ -103,7 +103,7 @@ The diagram below describes the flow of individuals through the different compar
 
 ### HINT : Running the model with default parameter values
 
-We can run the Vacamole model with [default parameter values](https://epiverse-trace.github.io/epidemics/articles/vacamole.html#model-epidemic-using-vacamole) by just specifying the population object and number of time steps to run the model for: 
+We can run the Vacamole model with [default parameter values](https://epiverse-trace.github.io/epidemics/articles/model_vacamole.html#model-epidemic-using-vacamole) by just specifying the population object and number of time steps to run the model for: 
 
 
 
@@ -229,17 +229,23 @@ ggplot(output[output$compartment == "dead", ]) +
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
+::::::::::::::::::::::::::: testimonial
+
+### Package vignettes
+
+We recommend to read the vignette on [Modelling responses to a stochastic Ebola virus epidemic](https://epiverse-trace.github.io/epidemics/articles/model_ebola.html) to use a discrete time, stochastic compartmental model of Ebola used during the 2014 West African EVD outbreak.
+
+:::::::::::::::::::::::::::
+
+<!-- ## Comparing scenarios -->
+
+<!-- *Coming soon* -->
 
 
-## Comparing scenarios
 
-*Coming soon*
+<!-- ## Challenge : Ebola outbreak analysis  -->
 
-
-
-## Challenge : Ebola outbreak analysis 
-
-*Coming soon*
+<!-- *Coming soon* -->
 
 
 
