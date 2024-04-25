@@ -155,9 +155,9 @@ infectious_period <- 5.5
 basic_reproduction <- 2.7
 
 # rates
-infectiousness_rate <- 1.0/preinfectious_period
-recovery_rate <- 1.0/infectious_period
-transmission_rate <- basic_reproduction/infectious_period
+infectiousness_rate <- 1.0 / preinfectious_period
+recovery_rate <- 1.0 / infectious_period
+transmission_rate <- basic_reproduction / infectious_period
 ```
 
 
@@ -196,8 +196,8 @@ output <- rbind(output_school, output_baseline)
 
 library(tidyverse)
 
-output %>% 
-  filter(compartment == "infectious") %>% 
+output %>%
+  filter(compartment == "infectious") %>%
   ggplot() +
   aes(
     x = time,
@@ -215,7 +215,7 @@ output %>%
   ) +
   geom_vline(
     xintercept = c(
-      close_schools$time_begin, 
+      close_schools$time_begin,
       close_schools$time_end
     ),
     linetype = 2
@@ -272,8 +272,8 @@ output_masks$intervention_type <- "mask mandate"
 output_baseline$intervention_type <- "baseline"
 output <- rbind(output_masks, output_baseline)
 
-output %>% 
-  filter(compartment == "infectious") %>% 
+output %>%
+  filter(compartment == "infectious") %>%
   ggplot() +
   aes(
     x = time,
@@ -291,7 +291,7 @@ output %>%
   ) +
   geom_vline(
     xintercept = c(
-      mask_mandate$time_begin, 
+      mask_mandate$time_begin,
       mask_mandate$time_end
     ),
     linetype = 2
@@ -414,8 +414,8 @@ Plot the three interventions vaccination, school closure and mask mandate and th
 output_vaccinate$intervention_type <- "vaccination"
 output <- rbind(output_school, output_masks, output_vaccinate, output_baseline)
 
-output %>% 
-  filter(compartment == "infectious") %>% 
+output %>%
+  filter(compartment == "infectious") %>%
   ggplot() +
   aes(
     x = time,
