@@ -387,9 +387,9 @@ output_vaccinate <- model_default(
   # population
   population = uk_population,
   # rate
-  transmission_rate = 2.7 / 5.5,
-  infectiousness_rate = 1.0 / 4.0,
-  recovery_rate = 1.0 / 5.5,
+  transmission_rate = transmission_rate,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
   # intervention
   vaccination = vaccinate,
   # time
