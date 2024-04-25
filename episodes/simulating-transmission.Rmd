@@ -49,6 +49,15 @@ Learners should familiarise themselves with following concept dependencies befor
 
 Mathematical models are useful tools for generating future trajectories of disease spread. In this tutorial, we will use the R package `{epidemics}` to generate disease trajectories of an influenza strain with pandemic potential. By the end of this tutorial, you will be able to generate the trajectory below showing the number of infectious individuals in different age categories over time.
 
+In this tutorial we are going to learn how to use the `{epidemics}` package to simulate disease trajectories and access to social contact data with `{socialmixr}`. We'll use `{dplyr}`, `{ggplot2}` and the pipe `%>%` to connect some of their functions, so let's also call to the `{tidyverse}` package:
+
+```{r,message=FALSE,warning=FALSE}
+library(epidemics)
+library(socialmixr)
+library(tidyverse)
+```
+
+
 ```{r traj, echo = FALSE, message = FALSE, fig.width = 10, eval = TRUE}
 # load contact and population data from socialmixr::polymod
 polymod <- socialmixr::polymod
