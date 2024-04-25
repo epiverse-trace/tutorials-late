@@ -107,9 +107,9 @@ infectious_period <- 7.0
 basic_reproduction <- 1.46
 
 # rates
-infectiousness_rate <- 1.0/preinfectious_period
-recovery_rate <- 1.0/infectious_period
-transmission_rate <- basic_reproduction/infectious_period
+infectiousness_rate <- 1.0 / preinfectious_period
+recovery_rate <- 1.0 / infectious_period
+transmission_rate <- basic_reproduction / infectious_period
 
 # run an epidemic model using `epidemic()`
 output_plot <- epidemics::model_default(
@@ -120,7 +120,7 @@ output_plot <- epidemics::model_default(
   time_end = 600, increment = 1.0
 )
 
-output %>% 
+output %>%
   filter(compartment %in% c("exposed", "infectious")) %>%
   ggplot() +
   geom_line(
@@ -388,9 +388,9 @@ basic_reproduction <- 1.46
 
 ```{r}
 # rates
-infectiousness_rate <- 1.0/preinfectious_period
-recovery_rate <- 1.0/infectious_period
-transmission_rate <- basic_reproduction/infectious_period
+infectiousness_rate <- 1.0 / preinfectious_period
+recovery_rate <- 1.0 / infectious_period
+transmission_rate <- basic_reproduction / infectious_period
 ```
 
 ::::::::::::::::::::::::::::::::::::: callout
@@ -444,7 +444,7 @@ Our model output consists of the number of individuals in each compartment in ea
 ```{r visualise, fig.width = 10}
 library(tidyverse)
 
-output %>% 
+output %>%
   filter(compartment == "infectious") %>%
   ggplot() +
   geom_line(
@@ -515,9 +515,9 @@ output_samples <- model_default(
 3. Calculate the mean and 95% quantiles of number of infectious individuals across each model simulation and visualise output
 
 ```{r  plot, fig.width = 10}
-output_samples %>% 
-  mutate(r_value = r_samples) %>% 
-  unnest(data) %>% 
+output_samples %>%
+  mutate(r_value = r_samples) %>%
+  unnest(data) %>%
   filter(compartment == "infectious") %>%
   ggplot() +
   geom_line(
