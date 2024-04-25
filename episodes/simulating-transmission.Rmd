@@ -120,7 +120,7 @@ output_plot <- epidemics::model_default(
   time_end = 600, increment = 1.0
 )
 
-output %>%
+output_plot %>%
   filter(compartment %in% c("exposed", "infectious")) %>%
   ggplot() +
   geom_line(
