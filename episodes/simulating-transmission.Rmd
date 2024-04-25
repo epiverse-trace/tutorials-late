@@ -120,16 +120,16 @@ output_plot <- epidemics::model_default(
   time_end = 600, increment = 1.0
 )
 
-filter(output_plot, compartment %in% c("exposed", "infectious")) %>%
-  ggplot2::ggplot(
+output %>% 
+  filter(compartment %in% c("exposed", "infectious")) %>%
+  ggplot() +
+  geom_line(
     aes(
       x = time,
       y = value,
-      col = demography_group,
+      colour = demography_group,
       linetype = compartment
-    )
-  ) +
-  geom_line(
+    ),
     linewidth = 1.2
   ) +
   scale_y_continuous(
@@ -139,18 +139,7 @@ filter(output_plot, compartment %in% c("exposed", "infectious")) %>%
     palette = "Dark2",
     name = "Age group"
   ) +
-  expand_limits(
-    y = c(0, 500e3)
-  ) +
-  coord_cartesian(
-    expand = FALSE
-  ) +
-  theme_bw(
-    base_size = 15
-  ) +
-  theme(
-    legend.position = "top"
-  ) +
+  theme_bw() +
   labs(
     x = "Simulation time (days)",
     linetype = "Compartment",
@@ -538,6 +527,9 @@ output_samples %>%
   scale_color_fermenter(
     palette = "RdBu",
     name = "R"
+  ) +
+  scale_y_continuous(
+    labels = scales::comma
   ) +
   facet_grid(
     cols = vars(demography_group)
