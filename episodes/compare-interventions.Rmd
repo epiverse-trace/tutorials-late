@@ -157,7 +157,7 @@ DiagrammeR::grViz("digraph{
 
 ### HINT : Running the model with default parameter values
 
-We can run the Vacamole model with [default parameter values](https://epiverse-trace.github.io/epidemics/articles/vacamole.html#model-epidemic-using-vacamole) by just specifying the population object and number of time steps to run the model for: 
+We can run the Vacamole model with [default parameter values](https://epiverse-trace.github.io/epidemics/articles/model_vacamole.html#model-epidemic-using-vacamole) by just specifying the population object and number of time steps to run the model for: 
 
 
 ```{r, eval = FALSE}
