@@ -201,7 +201,7 @@ DiagrammeR::grViz("digraph {
 
 In population-level models defined by differential equations, model parameters are often (but not always) specified as rates. The rate at which an event occurs is the inverse of the average time until that event. For example, in the SEIR model, the recovery rate $\gamma$ is the inverse of the average infectious period.
 
-Values of these rates can be determined from the natural history of the disease. For example,  if the average infectious period of an infection is 8 days, then the daily recovery rate is $\gamma = 1/8 = 0.125$.
+Values of these rates can be determined from the natural history of the disease. For example,  if people are on average infectious for 8 days, then in the model, 1/8 of currently infectious people would recover each day (i.e. the rate of recovery, $\gamma=1/8=0.125$).
 
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
