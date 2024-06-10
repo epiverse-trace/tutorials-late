@@ -160,7 +160,10 @@ By the end of this tutorial, learners should be able to replicate the above imag
 To simulate infectious disease trajectories, we must first select a mathematical model to use.
 There is a library of models to choose from in `epidemics`. Models in `epidemics` are prefixed with `model` and suffixed by the name of infection (e.g. Ebola) or a different identifier (e.g. default), and whether the model has a R or [C++](../learners/reference.md#cplusplus) code base.  
 
-In this tutorial, we will use the default model in `{epidemics}`, `model_default()` which is an age-structured SEIR model described by a system of [ordinary differential equations](../learners/reference.md#ordinary). For each age group $i$, individuals are categorized as either susceptible $S$, infected but not yet infectious $E$, infectious $I$ or recovered $R$. The schematic below shows the processes which describe the flow of individuals between the disease states $S$, $E$, $I$ and $R$ and the key parameters for each process.
+In this tutorial, we will use the default model in `{epidemics}`, `model_default()` which is an age-structured model that categorises individuals based on their infection status. For each age group $i$, individuals are categorized as either susceptible $S$, infected but not yet infectious $E$, infectious $I$ or recovered $R$. Next, we need to define the process by which individuals flow from one compartment to another. This can be done by defining a set of [differential equations](../learners/reference.md#ordinary) that specify how the number of individuals in each compartment changes over time.
+
+The schematic below shows the processes which describe the flow of individuals between the disease states $S$, $E$, $I$ and $R$ and the key parameters for each process.
+
 
 ```{r diagram, echo = FALSE, message = FALSE}
 DiagrammeR::grViz("digraph {
