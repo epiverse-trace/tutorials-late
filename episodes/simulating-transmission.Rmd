@@ -38,7 +38,7 @@ webshot::install_phantomjs(force = TRUE)
 
 Learners should familiarise themselves with following concept dependencies before working through this tutorial: 
 
-**Mathematical Modelling** : [Introduction to infectious disease models](https://doi.org/10.1038/s41592-020-0856-2), [state variables](../learners/reference.md#state), [model parameters](../learners/reference.md#parsode), [initial conditions](../learners/reference.md#initial), [ordinary differential equations](../learners/reference.md#ordinary).
+**Mathematical Modelling** : [Introduction to infectious disease models](https://doi.org/10.1038/s41592-020-0856-2), [state variables](../learners/reference.md#state), [model parameters](../learners/reference.md#parsode), [initial conditions](../learners/reference.md#initial), [differential equations](../learners/reference.md#ordinary).
 
 **Epidemic theory** : [Transmission](https://doi.org/10.1155/2011/267049), [Reproduction number](https://doi.org/10.3201/eid2501.171901).
 :::::::::::::::::::::::::::::::::
@@ -418,9 +418,9 @@ $$ \beta = R_0 \gamma.$$
 ::::::::::::::::::::::::::::::::::::: callout
 ### Running (solving) the model
 
-For models that are described by ODEs, 'running' the model actually means to take the system of differential equations and 'solve' them to find out how the number of people in the underlying compartments change over time. Because differential equations describe the rate of change in the disease states with respect to time, rather than the number of individuals in each of these states, we typically need to use numerical methods to solve the equations.
+For models that are described by [differential equations](../learners/reference.md#ordinary), 'running' the model actually means to take the system of differential equations and 'solve' them to find out how the number of people in the underlying compartments change over time. Because differential equations describe the rate of change in the disease states with respect to time, rather than the number of individuals in each of these states, we typically need to use numerical methods to solve the equations.
 
-In `epidemics`, the [ODE solver](https://www.boost.org/doc/libs/1_82_0/libs/numeric/odeint/doc/html/index.htm) uses the [Runge-Kutta method](https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods). 
+An _ODE solver_ is the software used to find numerical solutions to differential equations. If interested on how a system of differential equations is solved in `{epidemics}`, we suggest you to read the section on [ODE systems and models](https://epiverse-trace.github.io/epidemics/articles/design-principles.html#ode-systems-and-models) at the "Design principles" vignette. 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 Now we are ready to run our model using `model_default()` from the `{epidemics}` package. 
