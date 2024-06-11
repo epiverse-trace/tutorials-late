@@ -480,7 +480,7 @@ The choice of increment will depend on the time scale of the parameters, and the
 
 ## Accounting for uncertainty
 
-As the epidemic model is [deterministic](../learners/reference.md#deterministic), we have one trajectory for our given parameter values. In practice, we have uncertainty in the value of our parameters. To account for this, we must run our model for different parameter combinations. 
+The epidemic model is [deterministic](../learners/reference.md#deterministic), which means it runs like clockwork: the same parameters will always lead to the same trajectory. However, reality is not so predictable. There are two main reasons for this: the transmission process can involve randomness, and we may not know the exact epidemiological characteristics of the pathogen we're interested in. In the next episode, we will consider 'stochastic' models (i.e. models where we can define the process that creates randomness in transmission). In the meantime, we can include uncertainty in the value of the parameters that go into the deterministic model. To account for this, we must run our model for different parameter combinations. 
 
 We ran our model with $R_0= 1.5$. However, we believe that $R_0$ follows a normal distribution with mean 1.5 and standard deviation 0.05. To account for uncertainty we will run the model for different values of $R_0$. The steps we will follow to do this are:
 
