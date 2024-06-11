@@ -1426,10 +1426,13 @@ through time</li>
 <span>  prop_community <span class="op">=</span> <span class="fl">0.9</span>,</span>
 <span>  etu_risk <span class="op">=</span> <span class="fl">0.7</span>,</span>
 <span>  funeral_risk <span class="op">=</span> <span class="fl">0.5</span>,</span>
-<span>  time_end <span class="op">=</span> <span class="fl">100</span></span>
+<span>  time_end <span class="op">=</span> <span class="fl">100</span>,</span>
+<span>  replicates <span class="op">=</span> <span class="fl">1</span> <span class="co"># replicates argument</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">ggplot</span><span class="op">(</span><span class="va">output</span><span class="op">[</span><span class="va">output</span><span class="op">$</span><span class="va">compartment</span> <span class="op">==</span> <span class="st">"infectious"</span>, <span class="op">]</span><span class="op">)</span> <span class="op">+</span></span>
+<span><span class="va">output</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">filter</span><span class="op">(</span><span class="va">compartment</span> <span class="op">==</span> <span class="st">"infectious"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_line</span><span class="op">(</span></span>
 <span>    <span class="fu">aes</span><span class="op">(</span><span class="va">time</span>, <span class="va">value</span><span class="op">)</span>,</span>
 <span>    linewidth <span class="op">=</span> <span class="fl">1.2</span></span>
@@ -1455,31 +1458,23 @@ values.</p>
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">output_samples</span> <span class="op">&lt;-</span> <span class="fu">Map</span><span class="op">(</span></span>
-<span>  x <span class="op">=</span> <span class="fu">seq</span><span class="op">(</span><span class="fl">100</span><span class="op">)</span>,</span>
-<span>  f <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="va">output</span> <span class="op">&lt;-</span> <span class="fu">model_ebola</span><span class="op">(</span></span>
-<span>      population <span class="op">=</span> <span class="va">guinea_population</span>,</span>
-<span>      transmission_rate <span class="op">=</span> <span class="fl">1.1</span> <span class="op">/</span> <span class="fl">12</span>,</span>
-<span>      infectiousness_rate <span class="op">=</span> <span class="fl">2.0</span> <span class="op">/</span> <span class="fl">5</span>,</span>
-<span>      removal_rate <span class="op">=</span> <span class="fl">2.0</span> <span class="op">/</span> <span class="fl">12</span>,</span>
-<span>      prop_community <span class="op">=</span> <span class="fl">0.9</span>,</span>
-<span>      etu_risk <span class="op">=</span> <span class="fl">0.7</span>,</span>
-<span>      funeral_risk <span class="op">=</span> <span class="fl">0.5</span>,</span>
-<span>      time_end <span class="op">=</span> <span class="fl">100</span></span>
-<span>    <span class="op">)</span></span>
-<span>    <span class="co"># add replicate number and return data</span></span>
-<span>    <span class="va">output</span><span class="op">$</span><span class="va">replicate</span> <span class="op">&lt;-</span> <span class="va">x</span></span>
-<span>    <span class="va">output</span></span>
-<span>  <span class="op">}</span></span>
+<code class="sourceCode R"><span><span class="va">output_replicates</span> <span class="op">&lt;-</span> <span class="fu">model_ebola</span><span class="op">(</span></span>
+<span>  population <span class="op">=</span> <span class="va">guinea_population</span>,</span>
+<span>  transmission_rate <span class="op">=</span> <span class="fl">1.1</span> <span class="op">/</span> <span class="fl">12</span>,</span>
+<span>  infectiousness_rate <span class="op">=</span> <span class="fl">2.0</span> <span class="op">/</span> <span class="fl">5</span>,</span>
+<span>  removal_rate <span class="op">=</span> <span class="fl">2.0</span> <span class="op">/</span> <span class="fl">12</span>,</span>
+<span>  prop_community <span class="op">=</span> <span class="fl">0.9</span>,</span>
+<span>  etu_risk <span class="op">=</span> <span class="fl">0.7</span>,</span>
+<span>  funeral_risk <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  time_end <span class="op">=</span> <span class="fl">100</span>,</span>
+<span>  replicates <span class="op">=</span> <span class="fl">100</span> <span class="co"># replicates argument</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">output_samples</span> <span class="op">&lt;-</span> <span class="fu">bind_rows</span><span class="op">(</span><span class="va">output_samples</span><span class="op">)</span> <span class="co"># requires the dplyr package</span></span>
-<span></span>
-<span><span class="fu">ggplot</span><span class="op">(</span></span>
-<span>  <span class="va">output_samples</span><span class="op">[</span><span class="va">output_samples</span><span class="op">$</span><span class="va">compartment</span> <span class="op">==</span> <span class="st">"infectious"</span>, <span class="op">]</span>,</span>
-<span>  <span class="fu">aes</span><span class="op">(</span><span class="va">time</span>, <span class="va">value</span><span class="op">)</span></span>
-<span><span class="op">)</span> <span class="op">+</span></span>
+<span><span class="va">output_replicates</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">filter</span><span class="op">(</span><span class="va">compartment</span> <span class="op">==</span> <span class="st">"infectious"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">ggplot</span><span class="op">(</span></span>
+<span>    <span class="fu">aes</span><span class="op">(</span><span class="va">time</span>, <span class="va">value</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">stat_summary</span><span class="op">(</span>geom <span class="op">=</span> <span class="st">"line"</span>, fun <span class="op">=</span> <span class="va">mean</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">stat_summary</span><span class="op">(</span></span>
 <span>    geom <span class="op">=</span> <span class="st">"ribbon"</span>,</span>
@@ -1612,7 +1607,7 @@ call to the <a href="https://tidyverse.tidyverse.org" class="external-link">tidy
   <h3 class="accordion-header" id="headingInstructor1">
 <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div>Instructor Note</h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
 <div class="accordion-body">
 <p>In this tutorial different types of intervention and how they can be
 modelled are introduced. Learners should be able to understand the
@@ -2065,7 +2060,7 @@ reduces the peak number of infectious individuals the most?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1">Output</h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb16">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -2140,7 +2135,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-compare-interventions"><p>Content from <a href="compare-interventions.html">Comparing public health outcomes of interventions</a></p>
 <hr>
-<p>Last updated on 2024-05-21 |
+<p>Last updated on 2024-06-11 |
         
         <a href="https://github.com/epiverse-trace/tutorials-late/edit/main/episodes/compare-interventions.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 75 minutes</p>
@@ -2336,14 +2331,9 @@ of time steps to run the model for:</p>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>Using POLYMOD social contact data. To cite this in a publication, use the 'get_citation()' function</code></pre>
-</div>
-<div class="codewrapper">
-<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
 <pre class="output" tabindex="0"><code>Removing participants that have contacts without age information. To change this behaviour, set the 'missing.contact.age' option</code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb6">
+<div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -2389,7 +2379,7 @@ of time steps to run the model for:</p>
 <ol start="2" style="list-style-type: decimal">
 <li>Plot the number of deaths through time</li>
 </ol>
-<div class="codewrapper sourceCode" id="cb7">
+<div class="codewrapper sourceCode" id="cb6">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
