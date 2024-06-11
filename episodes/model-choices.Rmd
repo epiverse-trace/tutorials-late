@@ -338,8 +338,8 @@ output <- model_ebola(
   replicates = 1 # replicates argument
 )
 
-output %>% 
-  filter(compartment == "infectious") %>% 
+output %>%
+  filter(compartment == "infectious") %>%
   ggplot() +
   geom_line(
     aes(time, value),
@@ -374,7 +374,7 @@ output_replicates <- model_ebola(
   replicates = 100 # replicates argument
 )
 
-output_replicates %>% 
+output_replicates %>%
   filter(compartment == "infectious") %>%
   ggplot(
     aes(time, value)
