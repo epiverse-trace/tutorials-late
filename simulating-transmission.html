@@ -265,7 +265,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Simulating transmission</h1>
-        <p>Last updated on 2024-05-21 |
+        <p>Last updated on 2024-06-11 |
         
         <a href="https://github.com/epiverse-trace/tutorials-late/edit/main/episodes/simulating-transmission.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
         
@@ -320,7 +320,7 @@ package</li>
 dependencies before working through this tutorial:</p>
 <p><strong>Mathematical Modelling</strong> : <a href="https://doi.org/10.1038/s41592-020-0856-2" class="external-link">Introduction to
 infectious disease models</a>, <a href="reference.html#state">state
-variables</a>, <a href="reference.html#parsode">model parameters</a>, <a href="reference.html#initial">initial conditions</a>, <a href="reference.html#ordinary">ordinary differential equations</a>.</p>
+variables</a>, <a href="reference.html#parsode">model parameters</a>, <a href="reference.html#initial">initial conditions</a>, <a href="reference.html#ordinary">differential equations</a>.</p>
 <p><strong>Epidemic theory</strong> : <a href="https://doi.org/10.1155/2011/267049" class="external-link">Transmission</a>, <a href="https://doi.org/10.3201/eid2501.171901" class="external-link">Reproduction
 number</a>.</p>
 </div>
@@ -352,18 +352,22 @@ call to the <a href="https://tidyverse.tidyverse.org" class="external-link">tidy
 </h2>
 <hr class="half-width"><p>To simulate infectious disease trajectories, we must first select a
 mathematical model to use. There is a library of models to choose from
-in <code>epidemics</code>. Models in <code>epidemics</code> are prefixed
-with <code>model</code> and suffixed by the name of infection
-(e.g. Ebola) or a different identifier (e.g. default), and whether the
-model has a R or <a href="reference.html#cplusplus">C++</a> code
-base.</p>
+in <code>{epidemics}</code>. These are prefixed with
+<code>model_*</code> and suffixed by the name of infection
+(e.g. <code>model_ebola</code> for Ebola) or a different identifier
+(e.g. <code>model_default</code>).</p>
 <p>In this tutorial, we will use the default model in
 <code>{epidemics}</code>, <code>model_default()</code> which is an
-age-structured SEIR model described by a system of <a href="reference.html#ordinary">ordinary differential equations</a>. For
-each age group <span class="math inline">\(i\)</span>, individuals are
-categorized as either susceptible <span class="math inline">\(S\)</span>, infected but not yet infectious <span class="math inline">\(E\)</span>, infectious <span class="math inline">\(I\)</span> or recovered <span class="math inline">\(R\)</span>. The schematic below shows the
-processes which describe the flow of individuals between the disease
-states <span class="math inline">\(S\)</span>, <span class="math inline">\(E\)</span>, <span class="math inline">\(I\)</span>
+age-structured model that categorises individuals based on their
+infection status. For each age group <span class="math inline">\(i\)</span>, individuals are categorized as either
+susceptible <span class="math inline">\(S\)</span>, infected but not yet
+infectious <span class="math inline">\(E\)</span>, infectious <span class="math inline">\(I\)</span> or recovered <span class="math inline">\(R\)</span>. Next, we need to define the process by
+which individuals flow from one compartment to another. This can be done
+by defining a set of <a href="reference.html#ordinary">differential
+equations</a> that specify how the number of individuals in each
+compartment changes over time.</p>
+<p>The schematic below shows the processes which describe the flow of
+individuals between the disease states <span class="math inline">\(S\)</span>, <span class="math inline">\(E\)</span>, <span class="math inline">\(I\)</span>
 and <span class="math inline">\(R\)</span> and the key parameters for
 each process.</p>
 <figure><img src="fig/simulating-transmission-rendered-diagram-1.png" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure><div id="model-parameters-rates" class="callout">
@@ -374,20 +378,21 @@ each process.</p>
 <h3 class="callout-title">Model parameters: rates<a class="anchor" aria-label="anchor" href="#model-parameters-rates"></a>
 </h3>
 <div class="callout-content">
-<p>In ODE models, model parameters are often (but not always) specified
-as rates. The rate at which an event occurs is the inverse of the
-average time until that event. For example, in the SEIR model, the
-recovery rate <span class="math inline">\(\gamma\)</span> is the inverse
-of the average infectious period.</p>
+<p>In population-level models defined by differential equations, model
+parameters are often (but not always) specified as rates. The rate at
+which an event occurs is the inverse of the average time until that
+event. For example, in the SEIR model, the recovery rate <span class="math inline">\(\gamma\)</span> is the inverse of the average
+infectious period.</p>
 <p>Values of these rates can be determined from the natural history of
-the disease. For example, if the average infectious period of an
-infection is 8 days, then the daily recovery rate is <span class="math inline">\(\gamma = 1/8 = 0.125\)</span>.</p>
+the disease. For example, if people are on average infectious for 8
+days, then in the model, 1/8 of currently infectious people would
+recover each day (i.e. the rate of recovery, <span class="math inline">\(\gamma=1/8=0.125\)</span>).</p>
 </div>
 </div>
 </div>
 <p>For each disease state (<span class="math inline">\(S\)</span>, <span class="math inline">\(E\)</span>, <span class="math inline">\(I\)</span>
-and <span class="math inline">\(R\)</span>) and age group (<span class="math inline">\(i\)</span>), we have an ordinary differential
-equation describing the rate of change with respect to time.</p>
+and <span class="math inline">\(R\)</span>) and age group (<span class="math inline">\(i\)</span>), we have a differential equation
+describing the rate of change with respect to time.</p>
 <p><span class="math display">\[
 \begin{aligned}
 \frac{dS_i}{dt} &amp; = - \beta S_i \sum_j C_{i,j} I_j \\
@@ -484,7 +489,7 @@ year age bins:</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1">Output</h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -684,14 +689,18 @@ will be:</p>
 <h3 class="callout-title">Running (solving) the model<a class="anchor" aria-label="anchor" href="#running-solving-the-model"></a>
 </h3>
 <div class="callout-content">
-<p>For models that are described by ODEs, running the model actually
-means to solve the system of ODEs. ODEs describe the rate of change in
-the disease states with respect to time, to find the number of
-individuals in each of these states, we use numerical integration
-methods to solve the equations.</p>
-<p>In <code>epidemics</code>, the <a href="https://www.boost.org/doc/libs/1_82_0/libs/numeric/odeint/doc/html/index.htm" class="external-link">ODE
-solver</a> uses the <a href="https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods" class="external-link">Runge-Kutta
-method</a>.</p>
+<p>For models that are described by <a href="reference.html#ordinary">differential equations</a>, ‘running’ the
+model actually means to take the system of differential equations and
+‘solve’ them to find out how the number of people in the underlying
+compartments change over time. Because differential equations describe
+the rate of change in the disease states with respect to time, rather
+than the number of individuals in each of these states, we typically
+need to use numerical methods to solve the equations.</p>
+<p>An <em>ODE solver</em> is the software used to find numerical
+solutions to differential equations. If interested on how a system of
+differential equations is solved in <code>{epidemics}</code>, we suggest
+you to read the section on <a href="https://epiverse-trace.github.io/epidemics/articles/design-principles.html#ode-systems-and-models" class="external-link">ODE
+systems and models</a> at the “Design principles” vignette.</p>
 </div>
 </div>
 </div>
@@ -776,18 +785,28 @@ specified on a daily time-scale and maximum number of time steps
 one day.</p>
 <p>The choice of increment will depend on the time scale of the
 parameters, and the rate at which events can occur. In general, the
-increment should smaller than the fastest event. For example, if
-parameters are on a monthly time scale, but some events will occur
-within a month, then the increment should be less than one month.</p>
-</div>
+increment should be smaller than the fastest event. For example:</p>
+<ul><li>if parameters are on a daily time scale, and all events are reported
+on a daily basis, then the increment should be equal to one day;</li>
+<li>if parameters are on a monthly time scale, but some events will
+occur within a month, then the increment should be less than one
+month.</li>
+</ul></div>
 </div>
 </div>
 </section><section id="accounting-for-uncertainty"><h2 class="section-heading">Accounting for uncertainty<a class="anchor" aria-label="anchor" href="#accounting-for-uncertainty"></a>
 </h2>
-<hr class="half-width"><p>As the epidemic model is <a href="reference.html#deterministic">deterministic</a>, we have one
-trajectory for our given parameter values. In practice, we have
-uncertainty in the value of our parameters. To account for this, we must
-run our model for different parameter combinations.</p>
+<hr class="half-width"><p>The epidemic model is <a href="reference.html#deterministic">deterministic</a>, which means it
+runs like clockwork: the same parameters will always lead to the same
+trajectory. However, reality is not so predictable. There are two main
+reasons for this: the transmission process can involve randomness, and
+we may not know the exact epidemiological characteristics of the
+pathogen we’re interested in. In the next episode, we will consider
+‘stochastic’ models (i.e. models where we can define the process that
+creates randomness in transmission). In the meantime, we can include
+uncertainty in the value of the parameters that go into the
+deterministic model. To account for this, we must run our model for
+different parameter combinations.</p>
 <p>We ran our model with <span class="math inline">\(R_0= 1.5\)</span>.
 However, we believe that <span class="math inline">\(R_0\)</span>
 follows a normal distribution with mean 1.5 and standard deviation 0.05.
@@ -949,8 +968,8 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://epiverse-trace.github.io/tutorials-late/simulating-transmission.html",
   "identifier": "https://epiverse-trace.github.io/tutorials-late/simulating-transmission.html",
-  "dateCreated": "2024-04-25",
-  "dateModified": "2024-05-21",
+  "dateCreated": "2024-06-11",
+  "dateModified": "2024-06-11",
   "datePublished": "2024-06-11"
 }
 
