@@ -236,7 +236,7 @@ output %>%
 ```
 
 <img src="fig/modelling-interventions-rendered-baseline-1.png" style="display: block; margin: auto;" />
-We can see that with the intervention in place, the infection still spreads through the population, though the peak number of infectious individuals is smaller (green dashed line) than the baseline with no intervention in place (red solid line).
+We can see that with the intervention in place, the infection still spreads through the population and hence accumulation of immunity contributes to the eventual peak-and-decline. However, the peak number of infectious individuals is smaller (green dashed line) than the baseline with no intervention in place (red solid line).
 
 
 

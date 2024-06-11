@@ -165,7 +165,7 @@ The key parameters affecting the transition between states are:
 + $\rho^E$, the mean preinfectious period,
 + $p_{hosp}$ the probability of being transferred to the hospitalised compartment. 
 
-**Note: the functional relationship between the preinfectious  period ($\rho^E$) and the transition rate between exposed and infectious ($\gamma^E$) is $\rho^E = k^E/\gamma^E$ where $k^E$ is the shape of the Erlang distribution. Similarly for the infectious period $\rho^I = k^I/\gamma^I$. See [here](https://epiverse-trace.github.io/epidemics/articles/ebola_model.html#details-discrete-time-ebola-virus-disease-model) for more detail on the stochastic model formulation. ** 
+**Note: the functional relationship between the preinfectious  period ($\rho^E$) and the transition rate between exposed and infectious ($\gamma^E$) is $\rho^E = k^E/\gamma^E$ where $k^E$ is the shape of the Erlang distribution. Similarly for the infectious period $\rho^I = k^I/\gamma^I$. For more detail on the stochastic model formulation refer to the section on [Discrete-time Ebola virus disease model](https://epiverse-trace.github.io/epidemics/articles/model_ebola.html#details-discrete-time-ebola-virus-disease-model) in the "Modelling responses to a stochastic Ebola virus epidemic" vignette. ** 
 
 <img src="fig/model-choices-rendered-unnamed-chunk-1-1.png" style="display: block; margin: auto;" />
 

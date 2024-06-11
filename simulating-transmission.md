@@ -30,7 +30,7 @@ exercises: 30 # exercise time in minutes
 
 Learners should familiarise themselves with following concept dependencies before working through this tutorial: 
 
-**Mathematical Modelling** : [Introduction to infectious disease models](https://doi.org/10.1038/s41592-020-0856-2), [state variables](../learners/reference.md#state), [model parameters](../learners/reference.md#parsode), [initial conditions](../learners/reference.md#initial), [ordinary differential equations](../learners/reference.md#ordinary).
+**Mathematical Modelling** : [Introduction to infectious disease models](https://doi.org/10.1038/s41592-020-0856-2), [state variables](../learners/reference.md#state), [model parameters](../learners/reference.md#parsode), [initial conditions](../learners/reference.md#initial), [differential equations](../learners/reference.md#ordinary).
 
 **Epidemic theory** : [Transmission](https://doi.org/10.1155/2011/267049), [Reproduction number](https://doi.org/10.3201/eid2501.171901).
 :::::::::::::::::::::::::::::::::
@@ -64,9 +64,12 @@ By the end of this tutorial, learners should be able to replicate the above imag
 ## Simulating disease spread
 
 To simulate infectious disease trajectories, we must first select a mathematical model to use.
-There is a library of models to choose from in `epidemics`. Models in `epidemics` are prefixed with `model` and suffixed by the name of infection (e.g. Ebola) or a different identifier (e.g. default), and whether the model has a R or [C++](../learners/reference.md#cplusplus) code base.  
+There is a library of models to choose from in `{epidemics}`. These are prefixed with `model_*` and suffixed by the name of infection (e.g. `model_ebola` for Ebola) or a different identifier (e.g. `model_default`).
 
-In this tutorial, we will use the default model in `{epidemics}`, `model_default()` which is an age-structured SEIR model described by a system of [ordinary differential equations](../learners/reference.md#ordinary). For each age group $i$, individuals are categorized as either susceptible $S$, infected but not yet infectious $E$, infectious $I$ or recovered $R$. The schematic below shows the processes which describe the flow of individuals between the disease states $S$, $E$, $I$ and $R$ and the key parameters for each process.
+In this tutorial, we will use the default model in `{epidemics}`, `model_default()` which is an age-structured model that categorises individuals based on their infection status. For each age group $i$, individuals are categorized as either susceptible $S$, infected but not yet infectious $E$, infectious $I$ or recovered $R$. Next, we need to define the process by which individuals flow from one compartment to another. This can be done by defining a set of [differential equations](../learners/reference.md#ordinary) that specify how the number of individuals in each compartment changes over time.
+
+The schematic below shows the processes which describe the flow of individuals between the disease states $S$, $E$, $I$ and $R$ and the key parameters for each process.
+
 
 <img src="fig/simulating-transmission-rendered-diagram-1.png" style="display: block; margin: auto;" />
 
@@ -74,15 +77,15 @@ In this tutorial, we will use the default model in `{epidemics}`, `model_default
 ::::::::::::::::::::::::::::::::::::: callout
 ### Model parameters: rates
 
-In ODE models, model parameters are often (but not always) specified as rates. The rate at which an event occurs is the inverse of the average time until that event. For example, in the SEIR model, the recovery rate $\gamma$ is the inverse of the average infectious period. 
+In population-level models defined by differential equations, model parameters are often (but not always) specified as rates. The rate at which an event occurs is the inverse of the average time until that event. For example, in the SEIR model, the recovery rate $\gamma$ is the inverse of the average infectious period.
 
-Values of these rates can be determined from the natural history of the disease. For example,  if the average infectious period of an infection is 8 days, then the daily recovery rate is $\gamma = 1/8 = 0.125$.
+Values of these rates can be determined from the natural history of the disease. For example,  if people are on average infectious for 8 days, then in the model, 1/8 of currently infectious people would recover each day (i.e. the rate of recovery, $\gamma=1/8=0.125$).
 
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 
-For each disease state ($S$, $E$, $I$ and $R$) and age group ($i$), we have an ordinary differential equation describing the rate of change with respect to time.  
+For each disease state ($S$, $E$, $I$ and $R$) and age group ($i$), we have a differential equation describing the rate of change with respect to time.  
 
 $$
 \begin{aligned}
@@ -308,9 +311,9 @@ $$ \beta = R_0 \gamma.$$
 ::::::::::::::::::::::::::::::::::::: callout
 ### Running (solving) the model
 
-For models that are described by ODEs, running the model actually means to solve the system of ODEs. ODEs describe the rate of change in the disease states with respect to time, to find the number of individuals in each of these states, we use numerical integration methods to solve the equations.
+For models that are described by [differential equations](../learners/reference.md#ordinary), 'running' the model actually means to take the system of differential equations and 'solve' them to find out how the number of people in the underlying compartments change over time. Because differential equations describe the rate of change in the disease states with respect to time, rather than the number of individuals in each of these states, we typically need to use numerical methods to solve the equations.
 
-In `epidemics`, the [ODE solver](https://www.boost.org/doc/libs/1_82_0/libs/numeric/odeint/doc/html/index.htm) uses the [Runge-Kutta method](https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods). 
+An _ODE solver_ is the software used to find numerical solutions to differential equations. If interested on how a system of differential equations is solved in `{epidemics}`, we suggest you to read the section on [ODE systems and models](https://epiverse-trace.github.io/epidemics/articles/design-principles.html#ode-systems-and-models) at the "Design principles" vignette. 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 Now we are ready to run our model using `model_default()` from the `{epidemics}` package. 
@@ -379,13 +382,16 @@ output %>%
 
 Note that there is a default argument of `increment = 1`. This relates to the time step of the ODE solver. When the parameters are specified on a daily time-scale and maximum number of time steps (`time_end`) is days, the default time step of the ODE solver one day. 
 
-The choice of increment will depend on the time scale of the parameters, and the rate at which events can occur. In general, the increment should smaller than the fastest event. For example, if parameters are on a monthly time scale, but some events will occur within a month, then the increment should be less than one month.
+The choice of increment will depend on the time scale of the parameters, and the rate at which events can occur. In general, the increment should be smaller than the fastest event. For example: 
+
+- if parameters are on a daily time scale, and all events are reported on a daily basis, then the increment should be equal to one day;
+- if parameters are on a monthly time scale, but some events will occur within a month, then the increment should be less than one month.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ## Accounting for uncertainty
 
-As the epidemic model is [deterministic](../learners/reference.md#deterministic), we have one trajectory for our given parameter values. In practice, we have uncertainty in the value of our parameters. To account for this, we must run our model for different parameter combinations. 
+The epidemic model is [deterministic](../learners/reference.md#deterministic), which means it runs like clockwork: the same parameters will always lead to the same trajectory. However, reality is not so predictable. There are two main reasons for this: the transmission process can involve randomness, and we may not know the exact epidemiological characteristics of the pathogen we're interested in. In the next episode, we will consider 'stochastic' models (i.e. models where we can define the process that creates randomness in transmission). In the meantime, we can include uncertainty in the value of the parameters that go into the deterministic model. To account for this, we must run our model for different parameter combinations. 
 
 We ran our model with $R_0= 1.5$. However, we believe that $R_0$ follows a normal distribution with mean 1.5 and standard deviation 0.05. To account for uncertainty we will run the model for different values of $R_0$. The steps we will follow to do this are:
 
