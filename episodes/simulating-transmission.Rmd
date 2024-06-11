@@ -207,7 +207,7 @@ Values of these rates can be determined from the natural history of the disease.
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 
-For each disease state ($S$, $E$, $I$ and $R$) and age group ($i$), we have an ordinary differential equation describing the rate of change with respect to time.  
+For each disease state ($S$, $E$, $I$ and $R$) and age group ($i$), we have a differential equation describing the rate of change with respect to time.  
 
 $$
 \begin{aligned}
