@@ -158,7 +158,7 @@ By the end of this tutorial, learners should be able to replicate the above imag
 ## Simulating disease spread
 
 To simulate infectious disease trajectories, we must first select a mathematical model to use.
-There is a library of models to choose from in `epidemics`. Models in `epidemics` are prefixed with `model` and suffixed by the name of infection (e.g. Ebola) or a different identifier (e.g. default), and whether the model has a R or [C++](../learners/reference.md#cplusplus) code base.  
+There is a library of models to choose from in `{epidemics}`. These are prefixed with `model_*` and suffixed by the name of infection (e.g. `model_ebola` for Ebola) or a different identifier (e.g. `model_default`).
 
 In this tutorial, we will use the default model in `{epidemics}`, `model_default()` which is an age-structured model that categorises individuals based on their infection status. For each age group $i$, individuals are categorized as either susceptible $S$, infected but not yet infectious $E$, infectious $I$ or recovered $R$. Next, we need to define the process by which individuals flow from one compartment to another. This can be done by defining a set of [differential equations](../learners/reference.md#ordinary) that specify how the number of individuals in each compartment changes over time.
 
