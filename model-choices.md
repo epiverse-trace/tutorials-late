@@ -214,7 +214,7 @@ You have been tasked to generate initial trajectories of an Ebola outbreak in Gu
 ### Code for initial conditions 
 
 
-```r
+``` r
 # set population size
 population_size <- 14e6
 
@@ -256,7 +256,7 @@ Adapt the code from the [accounting for uncertainty](../episodes/simulating-tran
 
 
 
-```r
+``` r
 output <- model_ebola(
   population = guinea_population,
   transmission_rate = 1.1 / 12,
@@ -265,10 +265,13 @@ output <- model_ebola(
   prop_community = 0.9,
   etu_risk = 0.7,
   funeral_risk = 0.5,
-  time_end = 100
+  time_end = 100,
+  replicates = 1 # replicates argument
 )
 
-ggplot(output[output$compartment == "infectious", ]) +
+output %>%
+  filter(compartment == "infectious") %>%
+  ggplot() +
   geom_line(
     aes(time, value),
     linewidth = 1.2
@@ -292,32 +295,24 @@ ggplot(output[output$compartment == "infectious", ]) +
 We run the model 100 times with the *same* parameter values. 
 
 
-```r
-output_samples <- Map(
-  x = seq(100),
-  f = function(x) {
-    output <- model_ebola(
-      population = guinea_population,
-      transmission_rate = 1.1 / 12,
-      infectiousness_rate = 2.0 / 5,
-      removal_rate = 2.0 / 12,
-      prop_community = 0.9,
-      etu_risk = 0.7,
-      funeral_risk = 0.5,
-      time_end = 100
-    )
-    # add replicate number and return data
-    output$replicate <- x
-    output
-  }
+``` r
+output_replicates <- model_ebola(
+  population = guinea_population,
+  transmission_rate = 1.1 / 12,
+  infectiousness_rate = 2.0 / 5,
+  removal_rate = 2.0 / 12,
+  prop_community = 0.9,
+  etu_risk = 0.7,
+  funeral_risk = 0.5,
+  time_end = 100,
+  replicates = 100 # replicates argument
 )
 
-output_samples <- bind_rows(output_samples) # requires the dplyr package
-
-ggplot(
-  output_samples[output_samples$compartment == "infectious", ],
-  aes(time, value)
-) +
+output_replicates %>%
+  filter(compartment == "infectious") %>%
+  ggplot(
+    aes(time, value)
+  ) +
   stat_summary(geom = "line", fun = mean) +
   stat_summary(
     geom = "ribbon",

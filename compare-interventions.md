@@ -107,7 +107,7 @@ We can run the Vacamole model with [default parameter values](https://epiverse-t
 
 
 
-```r
+``` r
 output <- model_vacamole(
   population = uk_population,
   time_end = 300
@@ -125,12 +125,12 @@ output <- model_vacamole(
 1.  Run the model
 
 
-```r
+``` r
 library(epidemics)
 ```
 
 
-```r
+``` r
 polymod <- socialmixr::polymod
 contact_data <- socialmixr::contact_matrix(
   survey = polymod,
@@ -140,15 +140,11 @@ contact_data <- socialmixr::contact_matrix(
 )
 ```
 
-```{.output}
-Using POLYMOD social contact data. To cite this in a publication, use the 'get_citation()' function
-```
-
-```{.output}
+``` output
 Removing participants that have contacts without age information. To change this behaviour, set the 'missing.contact.age' option
 ```
 
-```r
+``` r
 # prepare contact matrix
 contact_matrix <- t(contact_data$matrix)
 
@@ -192,7 +188,7 @@ output <- model_vacamole(
 2. Plot the number of deaths through time
 
 
-```r
+``` r
 library(ggplot2)
 
 ggplot(output[output$compartment == "dead", ]) +

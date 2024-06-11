@@ -44,7 +44,7 @@ Mathematical models are useful tools for generating future trajectories of disea
 In this tutorial we are going to learn how to use the `{epidemics}` package to simulate disease trajectories and access to social contact data with `{socialmixr}`. We'll use `{dplyr}`, `{ggplot2}` and the pipe `%>%` to connect some of their functions, so let's also call to the `{tidyverse}` package:
 
 
-```r
+``` r
 library(epidemics)
 library(socialmixr)
 library(tidyverse)
@@ -157,7 +157,7 @@ contact_matrix
 ## Output
  
 
-```{.output}
+``` output
                  
 contact.age.group     [,1]     [,2]     [,3]
           [0,20)  7.883663 2.794154 1.565665
@@ -185,7 +185,7 @@ The initial conditions are the proportion of individuals in each disease state $
 The initial conditions in the first age category are $S(0)=1-\frac{1}{1,000,000}$, $E(0) =0$, $I(0)=\frac{1}{1,000,000}$, $R(0)=0$. This is specified as a vector as follows:
 
 
-```r
+``` r
 initial_i <- 1e-6
 initial_conditions_inf <- c(
   S = 1 - initial_i, E = 0, I = initial_i, R = 0, V = 0
@@ -195,7 +195,7 @@ initial_conditions_inf <- c(
 For the age categories that are free from infection, the initial conditions are $S(0)=1$, $E(0) =0$, $I(0)=0$, $R(0)=0$. We specify this as follows,
 
 
-```r
+``` r
 initial_conditions_free <- c(
   S = 1, E = 0, I = 0, R = 0, V = 0
 )
@@ -204,7 +204,7 @@ initial_conditions_free <- c(
 We combine the three initial conditions vectors into one matrix, 
 
 
-```r
+``` r
 # combine the initial conditions
 initial_conditions <- rbind(
   initial_conditions_inf, # age group 1
@@ -217,7 +217,7 @@ rownames(initial_conditions) <- rownames(contact_matrix)
 initial_conditions
 ```
 
-```{.output}
+``` output
                S E     I R V
 [0,20)  0.999999 0 1e-06 0 0
 [20,40) 1.000000 0 0e+00 0 0
@@ -231,13 +231,13 @@ initial_conditions
 The population object requires a vector containing the demographic structure of the population. The demographic vector must be a named vector containing the number of individuals in each age group of our given population. In this example, we can extract the demographic information from the `contact_data` object that we obtained using the `socialmixr` package.
 
 
-```r
+``` r
 demography_vector <- contact_data$demography$population
 names(demography_vector) <- rownames(contact_matrix)
 demography_vector
 ```
 
-```{.output}
+``` output
   [0,20)  [20,40)      40+ 
 14799290 16526302 28961159 
 ```
@@ -245,7 +245,7 @@ demography_vector
 To create our population object, from the `{epidemics}` package we call the function `population()` specifying a name, the contact matrix, the demography vector and the initial conditions.
 
 
-```r
+``` r
 library(epidemics)
 
 uk_population <- population(
@@ -274,7 +274,7 @@ In `epidemics`, we specify the model inputs as :
 We will simulate a strain of influenza with pandemic potential with $R_0=1.46$, with a pre-infectious period of 3 days and infectious period of 7 days. Therefore our inputs will be:
 
 
-```r
+``` r
 # time periods
 preinfectious_period <- 3.0
 infectious_period <- 7.0
@@ -282,7 +282,7 @@ basic_reproduction <- 1.46
 ```
 
 
-```r
+``` r
 # rates
 infectiousness_rate <- 1.0 / preinfectious_period
 recovery_rate <- 1.0 / infectious_period
@@ -320,7 +320,7 @@ Now we are ready to run our model using `model_default()` from the `{epidemics}`
 
 Let's specify `time_end=600` to run the model for 600 days.
 
-```r
+``` r
 output <- model_default(
   # population
   population = uk_population,
@@ -334,7 +334,7 @@ output <- model_default(
 head(output)
 ```
 
-```{.output}
+``` output
     time demography_group compartment    value
    <num>           <char>      <char>    <num>
 1:     0           [0,20) susceptible 14799275
@@ -350,7 +350,7 @@ head(output)
 Our model output consists of the number of individuals in each compartment in each age group through time. We can visualise the infectious individuals only (those in the $I$ class) through time.
 
 
-```r
+``` r
 library(tidyverse)
 
 output %>%
@@ -398,7 +398,7 @@ We ran our model with $R_0= 1.5$. However, we believe that $R_0$ follows a norma
 1. Obtain 100 samples from the from a normal distribution
 
 
-```r
+``` r
 # get mean mean and sd over time
 r_estimate_mean <- 1.5
 r_estimate_sd <- 0.05
@@ -418,7 +418,7 @@ beta <- r_samples / infectious_period
 2. Run the model 100 times with $R_0$ equal to a different sample each time
 
 
-```r
+``` r
 output_samples <- model_default(
   population = uk_population,
   transmission_rate = beta,
@@ -431,7 +431,7 @@ output_samples <- model_default(
 3. Calculate the mean and 95% quantiles of number of infectious individuals across each model simulation and visualise output
 
 
-```r
+``` r
 output_samples %>%
   mutate(r_value = r_samples) %>%
   unnest(data) %>%

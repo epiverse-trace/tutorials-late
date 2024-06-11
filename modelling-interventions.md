@@ -40,7 +40,7 @@ Interventions are usually incorporated into mathematical models via manipulating
 In this tutorial we are going to learn how to use the `{epidemics}` package to model interventions and access to social contact data with `{socialmixr}`. We'll use `{dplyr}`, `{ggplot2}` and the pipe `%>%` to connect some of their functions, so let's also call to the `{tidyverse}` package:
 
 
-```r
+``` r
 library(epidemics)
 library(socialmixr)
 library(tidyverse)
@@ -60,7 +60,7 @@ In this tutorial different types of intervention and how they can be modelled ar
 We will investigate the effect of interventions on a COVID-19 outbreak using an SEIR model (`model_default()` in the R package `{epidemics}`). We will set $R_0 = 2.7$, latent period or pre-infectious period $= 4$ and the infectious period $= 5.5$ (parameters adapted from [Davies et al. (2020)](https://doi.org/10.1016/S2468-2667(20)30133-X)). We adopt a contact matrix with age bins 0-18, 18-65, 65 years and older using `{socialmixr}`, and assume that one in every 1 million in each age group is infectious at the start of the epidemic.
 
 
-```r
+``` r
 polymod <- socialmixr::polymod
 contact_data <- socialmixr::contact_matrix(
   polymod,
@@ -105,18 +105,18 @@ The first NPI we will consider is the effect of school closures on reducing the 
 To include an intervention in our model we must create an `intervention` object. The inputs are the name of the intervention (`name`), the type of intervention (`contacts` or `rate`), the start time (`time_begin`), the end time (`time_end`) and the reduction (`reduction`). The values of the reduction matrix are specified in the same order as the age groups in the contact matrix. 
 
 
-```r
+``` r
 rownames(contact_matrix)
 ```
 
-```{.output}
+``` output
 [1] "[0,15)"  "[15,65)" "65+"    
 ```
 
 Therefore, we specify ` reduction = matrix(c(0.5, 0.01, 0.01))`. We assume that the school closures start on day 50 and continue to be in place for a further 100 days. Therefore our intervention object is: 
 
 
-```r
+``` r
 close_schools <- intervention(
   name = "School closure",
   type = "contacts",
@@ -132,7 +132,7 @@ close_schools <- intervention(
 In `{epidemics}`, the contact matrix is scaled down by proportions for the period in which the intervention is in place. To understand how the reduction is calculated within the model functions, consider a contact matrix for two age groups with equal number of contacts:
 
 
-```{.output}
+``` output
      [,1] [,2]
 [1,]    1    1
 [2,]    1    1
@@ -141,7 +141,7 @@ In `{epidemics}`, the contact matrix is scaled down by proportions for the perio
 If the reduction is 50% in group 1 and 10% in group 2, the contact matrix during the intervention will be:
 
 
-```{.output}
+``` output
      [,1] [,2]
 [1,] 0.25 0.45
 [2,] 0.45 0.81
@@ -154,7 +154,7 @@ The contacts within group 1 are reduced by 50% twice to accommodate for a 50% re
 Using transmission rate $= 2.7/5.5$ (remember that [transmission rate = $R_0$/ infectious period](../episodes/simulating-transmission.md#the-basic-reproduction-number-r_0)), infectiousness rate $1/= 4$ and the recovery rate $= 1/5.5$ we run the model with ` intervention = list(contacts = close_schools)` as follows:
 
 
-```r
+``` r
 # time periods
 preinfectious_period <- 4.0
 infectious_period <- 5.5
@@ -168,7 +168,7 @@ transmission_rate <- basic_reproduction / infectious_period
 
 
 
-```r
+``` r
 output_school <- model_default(
   # population
   population = uk_population,
@@ -187,7 +187,7 @@ output_school <- model_default(
 To be able to see the effect of our intervention, we also run a baseline variant of the model, i.e,  without intervention, combine the two outputs into one data frame, and then plot the output. Here we plot the total number of infectious individuals in all age groups using `ggplot2::stat_summary()` function:
 
 
-```r
+``` r
 # run baseline simulation with no intervention
 output_baseline <- model_default(
   population = uk_population,
@@ -249,7 +249,7 @@ We expect that mask wearing will reduce an individual's infectiousness. As we ar
 We create an intervention object with `type = rate` and `reduction = 0.161`. Using parameters adapted from [Li et al. 2020](https://doi.org/10.1371/journal.pone.0237691) we have proportion wearing masks = coverage $\times$ availability = $0.54 \times 0.525 = 0.2835$ and proportion reduction in transmission rate = $0.575$. Therefore, $\theta = 0.2835 \times 0.575 = 0.163$. We assume that the mask wearing mandate starts at day 40 and continue to be in place for 200 days.
 
 
-```r
+``` r
 mask_mandate <- intervention(
   name = "mask mandate",
   type = "rate",
@@ -262,7 +262,7 @@ mask_mandate <- intervention(
 To implement this intervention on the transmission rate $\beta$, we specify `intervention = list(transmission_rate = mask_mandate)`.
 
 
-```r
+``` r
 output_masks <- model_default(
   # population
   population = uk_population,
@@ -279,7 +279,7 @@ output_masks <- model_default(
 
 
 
-```r
+``` r
 # create intervention_type column for plotting
 output_masks$intervention_type <- "mask mandate"
 output_baseline$intervention_type <- "baseline"
@@ -356,7 +356,7 @@ To explore the effect of vaccination we need to create a vaccination object to p
 Here we will assume all age groups are vaccinated at the same rate 0.01 and that the vaccination program starts on day 40 and continue to be in place for 150 days.
 
 
-```r
+``` r
 # prepare a vaccination object
 vaccinate <- vaccination(
   name = "vaccinate all",
@@ -369,7 +369,7 @@ vaccinate <- vaccination(
 We pass our vaccination object into the model using argument `vaccination = vaccinate`:
 
 
-```r
+``` r
 output_vaccinate <- model_default(
   # population
   population = uk_population,
@@ -397,7 +397,7 @@ Plot the three interventions vaccination, school closure and mask mandate and th
 ## Output
 
 
-```r
+``` r
 # create intervention_type column for plotting
 output_vaccinate$intervention_type <- "vaccination"
 output <- rbind(output_school, output_masks, output_vaccinate, output_baseline)
