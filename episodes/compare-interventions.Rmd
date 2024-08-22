@@ -7,6 +7,86 @@ exercises: 30 # exercise time in minutes
 
 ```{r setup, echo= FALSE, message = FALSE, warning = FALSE}
 webshot::install_phantomjs(force = TRUE)
+library(epidemics)
+library(tidyverse)
+
+polymod <- socialmixr::polymod
+contact_data <- socialmixr::contact_matrix(
+  polymod,
+  countries = "United Kingdom",
+  age.limits = c(0, 15, 65),
+  symmetric = TRUE
+)
+
+# prepare contact matrix
+contact_matrix <- t(contact_data$matrix)
+
+# prepare the demography vector
+demography_vector <- contact_data$demography$population
+names(demography_vector) <- rownames(contact_matrix)
+
+# initial conditions: one in every 1 million is infected
+initial_i <- 1e-6
+initial_conditions <- c(
+  S = 1 - initial_i, E = 0, I = initial_i, R = 0, V = 0
+)
+
+# build for all age groups
+initial_conditions <- matrix(
+  rep(initial_conditions, dim(contact_matrix)[1]),
+  ncol = 5, byrow = TRUE
+)
+rownames(initial_conditions) <- rownames(contact_matrix)
+
+# prepare the population to model as affected by the epidemic
+uk_population <- epidemics::population(
+  name = "UK",
+  contact_matrix = contact_matrix,
+  demography_vector = demography_vector,
+  initial_conditions = initial_conditions
+)
+
+close_schools <- intervention(
+  name = "School closure",
+  type = "contacts",
+  time_begin = 50,
+  time_end = 50 + 100,
+  reduction = matrix(c(0.5, 0.01, 0.01))
+)
+
+mask_mandate <- intervention(
+  name = "mask mandate",
+  type = "rate",
+  time_begin = 40,
+  time_end = 40 + 200,
+  reduction = 0.163
+)
+
+vaccinate <- vaccination(
+  name = "vaccinate all",
+  time_begin = matrix(40, nrow(contact_matrix)),
+  time_end = matrix(40 + 150, nrow(contact_matrix)),
+  nu = matrix(c(0.01, 0.01, 0.01))
+)
+
+# time periods
+preinfectious_period <- 4.0
+infectious_period <- 5.5
+basic_reproduction <- 2.7
+
+# rates
+infectiousness_rate <- 1.0 / preinfectious_period
+recovery_rate <- 1.0 / infectious_period
+transmission_rate <- basic_reproduction / infectious_period
+
+output_baseline <- model_default(
+  population = uk_population,
+  transmission_rate = transmission_rate,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
+  time_end = 300, increment = 1.0
+)
+
 ```
 
 
@@ -36,7 +116,7 @@ Learners should familiarise themselves with following concept dependencies befor
 
 ## Introduction
 
-In this tutorial we will compare intervention scenarios against each other. To quantify the effect of the intervention we need to compare our intervention scenario to a counter factual scenario. The *counter factual* is the scenario in which nothing changes, often referred to as the 'do nothing' scenario. The counter factual scenario may include no interventions, or if we are investigating the potential impact of an additional intervention in the later stages of an outbreak there may be existing interventions in place. 
+In this tutorial we will compare intervention scenarios against each other. To quantify the effect of the intervention we need to compare our intervention scenario to a counter factual (baseline) scenario. The *counter factual* is the scenario in which nothing changes, often referred to as the 'do nothing' scenario. The counter factual scenario may include no interventions, or if we are investigating the potential impact of an additional intervention in the later stages of an outbreak there may be existing interventions in place. 
 
 We must also decide what our *outcome of interest* is to make comparisons between intervention and counter factual scenarios. The outcome of interest can be:
 
@@ -50,6 +130,110 @@ We must also decide what our *outcome of interest* is to make comparisons betwee
 In this tutorial we introduce the concept of the counter factual and how to compare scenarios (counter factual versus intervention) against each other. 
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+## Comparing model outputs with uncertainty
+
+To quantify the effect of interventions we can compare model outputs of the counter factual scenario to intervention scenarios. The counter factual (or baseline) scenario in this example is where no interventions take place. We want to account for some uncertainty in the parameter values, specifically in the basic reproduction $R_0$. We do this
+
+
+```{r}
+# time periods
+preinfectious_period <- 4.0
+infectious_period <- 5.5
+
+# specify the mean and standard deviation of R0 
+r_estimate_mean <- 2.7
+r_estimate_sd <- 0.05
+
+# Generate 100 R samples
+r_samples <- withr::with_seed(
+  seed = 1,
+  rnorm(
+    n = 100, mean = r_estimate_mean, sd = r_estimate_sd
+  )
+)
+
+beta <- r_samples / infectious_period
+
+# rates
+infectiousness_rate <- 1.0 / preinfectious_period
+recovery_rate <- 1.0 / infectious_period
+```
+
+
+We use these parameter values to run the model for the baseline scenario:
+
+```{r}
+output_baseline <- model_default(
+  population = uk_population,
+  transmission_rate = beta,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
+  time_end = 300, increment = 1.0
+)
+```
+
+
+Then, we create a list of all the interventions we want to include in our comparison. We define our scenarios as follows:
+
++ scenario 1 : close schools
++ scenario 2 : mask mandate
++ scenario 3 : close schools and mask mandate.
+
+In R we specify this as: 
+```{r}
+intervention_scenarios <- list(
+  scenario_1 = list(
+    contacts = close_schools
+  ),
+  scenario_2 = list(
+    transmission_rate = mask_mandate
+  ),
+  scenario_3 = list(
+    contacts = close_schools,
+    transmission_rate = mask_mandate
+  )
+)
+```
+
+We use this list as our input to `intervention` in `model_default`
+
+```{r}
+output <- model_default(
+  uk_population,
+  transmission_rate = beta,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
+  time_end = 300, increment = 1.0,
+  intervention = intervention_scenarios
+  )
+head(output)
+```
+
+Now that we have our model output for all of our scenarios, we want to compare the outputs of the interventions to our baseline. 
+
+We do this using `outcomes_averted()`. We specify the :
+  
++ output of the baseline scenario
++ outputs of the intervention scenario(s).
+
+```{r}
+intervention_effect <- outcomes_averted(
+  baseline = output_baseline, scenarios = output
+)
+intervention_effect
+```
+
+The output gives us the infections averted in each scenario compared to the baseline. To obtain the infections averted overall we specify `by_group = FALSE`:
+
+```{r}
+intervention_effect <- outcomes_averted(
+  baseline = output_baseline, scenarios = output,
+  by_group = FALSE
+)
+intervention_effect
+```
+
 
 ## Vacamole model
 
