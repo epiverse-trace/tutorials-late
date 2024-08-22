@@ -8,7 +8,6 @@ exercises: 30 # exercise time in minutes
 ```{r setup, echo= FALSE, message = FALSE, warning = FALSE}
 webshot::install_phantomjs(force = TRUE)
 library(epidemics)
-library(tidyverse)
 
 polymod <- socialmixr::polymod
 contact_data <- socialmixr::contact_matrix(
@@ -60,13 +59,6 @@ mask_mandate <- intervention(
   time_begin = 40,
   time_end = 40 + 200,
   reduction = 0.163
-)
-
-vaccinate <- vaccination(
-  name = "vaccinate all",
-  time_begin = matrix(40, nrow(contact_matrix)),
-  time_end = matrix(40 + 150, nrow(contact_matrix)),
-  nu = matrix(c(0.01, 0.01, 0.01))
 )
 
 # time periods
@@ -124,6 +116,13 @@ We must also decide what our *outcome of interest* is to make comparisons betwee
 + a metric such as the epidemic peak time or size,
 + a measure that uses the model outcomes such as QALY/DALYs.
 
+In this tutorial we are going to learn how to use the `{epidemics}` package to compare the effect of different interventions on simulated disease trajectories. We will access to social contact data with `{socialmixr}`.
+
+```{r,message=FALSE,warning=FALSE}
+library(epidemics)
+library(socialmixr)
+```
+
 
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: instructor
 
@@ -133,7 +132,7 @@ In this tutorial we introduce the concept of the counter factual and how to comp
 
 ## Comparing model outputs with uncertainty
 
-To quantify the effect of interventions we can compare model outputs of the counter factual scenario to intervention scenarios. The counter factual (or baseline) scenario in this example is where no interventions take place. We want to account for some uncertainty in the parameter values, specifically in the basic reproduction $R_0$. We do this
+To quantify the effect of interventions we can compare model outputs of the counter factual scenario to intervention scenarios. The counter factual (or baseline) scenario in this example is where no interventions take place. We will extend the COVID-19 example in [Modelling interventions](../episodes/modelling-interventions.md) to account for some uncertainty in the parameter values, specifically in the basic reproduction $R_0$. We do this as follows: 
 
 
 ```{r}
@@ -160,8 +159,7 @@ infectiousness_rate <- 1.0 / preinfectious_period
 recovery_rate <- 1.0 / infectious_period
 ```
 
-
-We use these parameter values to run the model for the baseline scenario:
+We use these parameter values alongside the population structure and contact matrix used in [Modelling interventions](../episodes/modelling-interventions.md) to run the model for the baseline scenario:
 
 ```{r}
 output_baseline <- model_default(
