@@ -121,6 +121,7 @@ In this tutorial we are going to learn how to use the `{epidemics}` package to c
 ```{r,message=FALSE,warning=FALSE}
 library(epidemics)
 library(socialmixr)
+library(tidyverse)
 ```
 
 
@@ -129,6 +130,73 @@ library(socialmixr)
 In this tutorial we introduce the concept of the counter factual and how to compare scenarios (counter factual versus intervention) against each other. 
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+## Visualising the effect of interventions 
+
+```{r}
+output_baseline <- model_default(
+  population = uk_population,
+  transmission_rate = transmission_rate,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
+  time_end = 300, increment = 1.0
+)
+
+
+output_school <- model_default(
+  # population
+  population = uk_population,
+  # rate
+  transmission_rate = transmission_rate,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
+  # intervention
+  intervention = list(contacts = close_schools),
+  # time
+  time_end = 300, increment = 1.0
+)
+
+# create intervention_type column for plotting
+output_school$intervention_type <- "school closure"
+output_baseline$intervention_type <- "baseline"
+output <- rbind(output_school, output_baseline)
+
+output %>%
+  filter(compartment == "infectious") %>% 
+  group_by(time, intervention_type) %>%     
+  summarise(value_total = sum(value)) %>%   
+  group_by(intervention_type) %>%
+  mutate(cum_value = cumsum(value_total)) %>%
+  ggplot() +
+  geom_line(
+  aes(
+    x = time,
+    y = cum_value,
+    color = intervention_type,
+    linetype = intervention_type
+  ),
+  linewidth = 1.2
+  )+
+  scale_y_continuous(
+    labels = scales::comma
+  ) +
+  geom_vline(
+    xintercept = c(
+      close_schools$time_begin,
+      close_schools$time_end
+    ),
+    linetype = 2
+  ) +
+  theme_bw() +
+  labs(
+    x = "Simulation time (days)",
+    y = "Cumulative number of infectious individuals"
+  )
+
+
+```
+
+
 
 ## Comparing model outputs with uncertainty
 
