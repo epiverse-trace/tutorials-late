@@ -133,6 +133,7 @@ In this tutorial we introduce the concept of the counter factual and how to comp
 
 ## Visualising the effect of interventions 
 
+To compare the baseline scenario against the intervention scenarios, we can make visualisations of the model output or some aggregate measure of the model output. If we wanted to investigate the change in epidemic peak with an intervention applied we could plot the model trajectories through time:
 ```{r}
 output_baseline <- model_default(
   population = uk_population,
@@ -141,7 +142,6 @@ output_baseline <- model_default(
   recovery_rate = recovery_rate,
   time_end = 300, increment = 1.0
 )
-
 
 output_school <- model_default(
   # population
@@ -161,6 +161,39 @@ output_school$intervention_type <- "school closure"
 output_baseline$intervention_type <- "baseline"
 output <- rbind(output_school, output_baseline)
 
+output %>%
+  filter(compartment == "infectious") %>%
+  ggplot() +
+  aes(
+    x = time,
+    y = value,
+    color = intervention_type,
+    linetype = intervention_type
+  ) +
+  stat_summary(
+    fun = "sum",
+    geom = "line",
+    linewidth = 1
+  ) +
+  scale_y_continuous(
+    labels = scales::comma
+  ) +
+  geom_vline(
+    xintercept = c(
+      close_schools$time_begin,
+      close_schools$time_end
+    ),
+    linetype = 2
+  ) +
+  theme_bw() +
+  labs(
+    x = "Simulation time (days)",
+    y = "Individuals"
+  )
+```
+To quantify the impact of the intervention over the model output through time time, we could consider the cumulative number in the different scenarios. For example, the cumulative number of infectious people in the baseline scenario compared to the intervention scenario: 
+
+```{r}
 output %>%
   filter(compartment == "infectious") %>% 
   group_by(time, intervention_type) %>%     
@@ -192,16 +225,11 @@ output %>%
     x = "Simulation time (days)",
     y = "Cumulative number of infectious individuals"
   )
-
-
 ```
 
+## Accounting for uncertainty
 
-
-## Comparing model outputs with uncertainty
-
-To quantify the effect of interventions we can compare model outputs of the counter factual scenario to intervention scenarios. The counter factual (or baseline) scenario in this example is where no interventions take place. We will extend the COVID-19 example in [Modelling interventions](../episodes/modelling-interventions.md) to account for some uncertainty in the parameter values, specifically in the basic reproduction $R_0$. We do this as follows: 
-
+We will extend the COVID-19 example in [Modelling interventions](../episodes/modelling-interventions.md) to account for some uncertainty in the parameter values, specifically in the basic reproduction $R_0$. We do this as follows: 
 
 ```{r}
 # time periods
@@ -278,7 +306,7 @@ head(output)
 
 Now that we have our model output for all of our scenarios, we want to compare the outputs of the interventions to our baseline. 
 
-We do this using `outcomes_averted()`. We specify the :
+We can do this using `outcomes_averted()` in  `{epidemics}`. This function calculates the final epidemic size for each scenario, and then calculates the number of infections averted in each scenario compared to the baseline. To use this function we specify the :
   
 + output of the baseline scenario
 + outputs of the intervention scenario(s).
@@ -383,7 +411,7 @@ DiagrammeR::grViz("digraph{
   + 40 years and over.
 + There is no vaccination scheme in place
 
-2. Using the output, plot the number of deaths through time
+2. Using the output, plot the cumulative number of deaths through time
 
 
 <!-- ::::::::::::::::: hint -->
