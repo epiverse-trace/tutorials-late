@@ -399,8 +399,7 @@ package</li>
 <i class="callout-icon" data-feather="check"></i>
 </div>
 <div id="prerequisites" class="callout-inner">
-<h3 class="callout-title">Prerequisites<a class="anchor" aria-label="anchor" href="#prerequisites"></a>
-</h3>
+<h3 class="callout-title">Prerequisites</h3>
 <div class="callout-content">
 <p>Learners should familiarise themselves with following concept
 dependencies before working through this tutorial:</p>
@@ -413,7 +412,6 @@ number</a>.</p>
 </div>
 </div>
 <section><h2 class="section-heading" id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
-<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
 <hr class="half-width">
 <p>Mathematical models are useful tools for generating future
@@ -450,7 +448,6 @@ above image on their own computers.</p>
 </div>
 </div>
 </section><section><h2 class="section-heading" id="simulating-disease-spread">Simulating disease spread<a class="anchor" aria-label="anchor" href="#simulating-disease-spread"></a>
-<a class="anchor" aria-label="anchor" href="#simulating-disease-spread"></a>
 </h2>
 <hr class="half-width">
 <p>To simulate infectious disease trajectories, we must first select a
@@ -478,8 +475,7 @@ each process.</p>
 <i class="callout-icon" data-feather="bell"></i>
 </div>
 <div id="model-parameters-rates" class="callout-inner">
-<h3 class="callout-title">Model parameters: rates<a class="anchor" aria-label="anchor" href="#model-parameters-rates"></a>
-</h3>
+<h3 class="callout-title">Model parameters: rates</h3>
 <div class="callout-content">
 <p>In population-level models defined by differential equations, model
 parameters are often (but not always) specified as rates. The rate at
@@ -527,8 +523,7 @@ period</a> =<span class="math inline">\(1/\alpha\)</span>), and</li>
 <i class="callout-icon" data-feather="bell"></i>
 </div>
 <div id="exposed-infected-infectious" class="callout-inner">
-<h3 class="callout-title">Exposed, infected, infectious<a class="anchor" aria-label="anchor" href="#exposed-infected-infectious"></a>
-</h3>
+<h3 class="callout-title">Exposed, infected, infectious</h3>
 <div class="callout-content">
 <p>Confusion sometimes arises when referring to the terms ‘exposed’,
 ‘infected’ and ‘infectious’ in mathematical modelling. Infection occurs
@@ -567,8 +562,7 @@ al. 2008)</a>.</p>
 <i class="callout-icon" data-feather="zap"></i>
 </div>
 <div id="load-contact-and-population-data" class="callout-inner">
-<h3 class="callout-title">Load contact and population data<a class="anchor" aria-label="anchor" href="#load-contact-and-population-data"></a>
-</h3>
+<h3 class="callout-title">Load contact and population data</h3>
 <div class="callout-content">
 <p>Using the R package <code>socialmixr</code>, run the following lines
 of R code to obtain the contact matrix for the United Kingdom for the
@@ -624,8 +618,7 @@ be formatted as a matrix to be used in <code>epidemics</code>.</p>
 <i class="callout-icon" data-feather="bell"></i>
 </div>
 <div id="why-would-a-contact-matrix-be-non-symmetric" class="callout-inner">
-<h3 class="callout-title">Why would a contact matrix be non-symmetric?<a class="anchor" aria-label="anchor" href="#why-would-a-contact-matrix-be-non-symmetric"></a>
-</h3>
+<h3 class="callout-title">Why would a contact matrix be non-symmetric?</h3>
 <div class="callout-content">
 <p>One of the arguments of the function <code>contact_matrix()</code> is
 <code>symmetric=TRUE</code>. This means that the total number of
@@ -785,7 +778,7 @@ will be:</p>
 <i class="callout-icon" data-feather="bell"></i>
 </div>
 <div id="the-basic-reproduction-number-r_0" class="callout-inner">
-<h3 class="callout-title">The basic reproduction number <span class="math inline">\(R_0\)</span><a class="anchor" aria-label="anchor" href="#the-basic-reproduction-number-r_0"></a>
+<h3 class="callout-title">The basic reproduction number <span class="math inline">\(R_0\)</span>
 </h3>
 <div class="callout-content">
 <p>The basic reproduction number, <span class="math inline">\(R_0\)</span>, for the SEIR model is:</p>
@@ -798,7 +791,6 @@ will be:</p>
 </div>
 </div>
 </section><section><h2 class="section-heading" id="running-the-model">Running the model<a class="anchor" aria-label="anchor" href="#running-the-model"></a>
-<a class="anchor" aria-label="anchor" href="#running-the-model"></a>
 </h2>
 <hr class="half-width">
 <div id="running-solving-the-model" class="callout">
@@ -806,8 +798,7 @@ will be:</p>
 <i class="callout-icon" data-feather="bell"></i>
 </div>
 <div id="running-solving-the-model" class="callout-inner">
-<h3 class="callout-title">Running (solving) the model<a class="anchor" aria-label="anchor" href="#running-solving-the-model"></a>
-</h3>
+<h3 class="callout-title">Running (solving) the model</h3>
 <div class="callout-content">
 <p>For models that are described by <a href="reference.html#ordinary">differential equations</a>, ‘running’ the
 model actually means to take the system of differential equations and
@@ -895,8 +886,7 @@ infectious individuals only (those in the <span class="math inline">\(I\)</span>
 <i class="callout-icon" data-feather="bell"></i>
 </div>
 <div id="time-increments" class="callout-inner">
-<h3 class="callout-title">Time increments<a class="anchor" aria-label="anchor" href="#time-increments"></a>
-</h3>
+<h3 class="callout-title">Time increments</h3>
 <div class="callout-content">
 <p>Note that there is a default argument of <code>increment = 1</code>.
 This relates to the time step of the ODE solver. When the parameters are
@@ -917,7 +907,6 @@ month.</li>
 </div>
 </div>
 </section><section><h2 class="section-heading" id="accounting-for-uncertainty">Accounting for uncertainty<a class="anchor" aria-label="anchor" href="#accounting-for-uncertainty"></a>
-<a class="anchor" aria-label="anchor" href="#accounting-for-uncertainty"></a>
 </h2>
 <hr class="half-width">
 <p>The epidemic model is <a href="reference.html#deterministic">deterministic</a>, which means it
@@ -1015,7 +1004,6 @@ parameter value changes; and the purpose of the modelling task. See <a href="htt
 al. 2021</a> to learn about different types of uncertainty in infectious
 disease modelling.</p>
 </section><section><h2 class="section-heading" id="summary">Summary<a class="anchor" aria-label="anchor" href="#summary"></a>
-<a class="anchor" aria-label="anchor" href="#summary"></a>
 </h2>
 <hr class="half-width">
 <p>In this tutorial, we have learnt how to simulate disease spread using
@@ -1028,8 +1016,7 @@ right model for different tasks.</p>
 <i class="callout-icon" data-feather="key"></i>
 </div>
 <div class="callout-inner">
-<h3 class="callout-title">Key Points<a class="anchor" aria-label="anchor" href="#keypoints1"></a>
-</h3>
+<h3 class="callout-title">Key Points</h3>
 <div class="callout-content">
 <ul>
 <li>Disease trajectories can be generated using the R package
@@ -1086,8 +1073,7 @@ question</li>
 <i class="callout-icon" data-feather="check"></i>
 </div>
 <div id="prerequisites" class="callout-inner">
-<h3 class="callout-title">Prerequisites<a class="anchor" aria-label="anchor" href="#prerequisites"></a>
-</h3>
+<h3 class="callout-title">Prerequisites</h3>
 <div class="callout-content">
 <ul>
 <li>Complete tutorial <a href="simulating-transmission.html">Simulating
@@ -1098,7 +1084,6 @@ transmission</a>
 </div>
 </div>
 <section><h2 class="section-heading" id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
-<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
 <hr class="half-width">
 <p>There are existing mathematical models for different infections,
@@ -1123,8 +1108,7 @@ if they are appropriate for a defined question.</p>
 <i class="callout-icon" data-feather="message-circle"></i>
 </div>
 <div id="choosing-a-model" class="callout-inner">
-<h3 class="callout-title">Choosing a model<a class="anchor" aria-label="anchor" href="#choosing-a-model"></a>
-</h3>
+<h3 class="callout-title">Choosing a model</h3>
 <div class="callout-content">
 <p>When deciding which mathematical model to use, there are a number of
 questions we must consider :</p>
@@ -1226,7 +1210,7 @@ interventions</a>.</p>
 </div>
 </div>
 </div>
-</section><section><h2 class="section-heading" id="available-models-in-epidemics">Available models in <code>{epidemics}</code><a class="anchor" aria-label="anchor" href="#available-models-in-epidemics"></a>
+</section><section><h2 class="section-heading" id="available-models-in-epidemics">Available models in <code>{epidemics}</code>
 <a class="anchor" aria-label="anchor" href="#available-models-in-epidemics"></a>
 </h2>
 <hr class="half-width">
@@ -1241,8 +1225,7 @@ on “Guides to library models”</a>.</p>
 <i class="callout-icon" data-feather="zap"></i>
 </div>
 <div id="what-model" class="callout-inner">
-<h3 class="callout-title">What model?<a class="anchor" aria-label="anchor" href="#what-model"></a>
-</h3>
+<h3 class="callout-title">What model?</h3>
 <div class="callout-content">
 <p>You have been asked to explore the variation in numbers of infectious
 individuals in the early stages of an Ebola outbreak.</p>
@@ -1268,8 +1251,7 @@ task:</p>
 <i class="callout-icon" data-feather="check-square"></i>
 </div>
 <div class="callout-inner">
-<h3 class="callout-title">Checklist<a class="anchor" aria-label="anchor" href="#checklist1"></a>
-</h3>
+<h3 class="callout-title">Checklist</h3>
 <div class="callout-content">
 <ul>
 <li>What is the infection/disease of interest?</li>
@@ -1365,7 +1347,6 @@ stages of an Ebola outbreak.</p>
 </div>
 </div>
 </section><section><h2 class="section-heading" id="challenge-ebola-outbreak-analysis">Challenge : Ebola outbreak analysis<a class="anchor" aria-label="anchor" href="#challenge-ebola-outbreak-analysis"></a>
-<a class="anchor" aria-label="anchor" href="#challenge-ebola-outbreak-analysis"></a>
 </h2>
 <hr class="half-width">
 <div id="running-the-model" class="callout challenge">
@@ -1373,8 +1354,7 @@ stages of an Ebola outbreak.</p>
 <i class="callout-icon" data-feather="zap"></i>
 </div>
 <div id="running-the-model" class="callout-inner">
-<h3 class="callout-title">Running the model<a class="anchor" aria-label="anchor" href="#running-the-model"></a>
-</h3>
+<h3 class="callout-title">Running the model</h3>
 <div class="callout-content">
 <p>You have been tasked to generate initial trajectories of an Ebola
 outbreak in Guinea. Using <code>model_ebola()</code> and the the
@@ -1567,8 +1547,7 @@ values.</p>
 <i class="callout-icon" data-feather="key"></i>
 </div>
 <div class="callout-inner">
-<h3 class="callout-title">Key Points<a class="anchor" aria-label="anchor" href="#keypoints1"></a>
-</h3>
+<h3 class="callout-title">Key Points</h3>
 <div class="callout-content">
 <ul>
 <li>Existing mathematical models should be selected according to the
@@ -1624,8 +1603,7 @@ trajectories?</li>
 <i class="callout-icon" data-feather="check"></i>
 </div>
 <div id="prerequisites" class="callout-inner">
-<h3 class="callout-title">Prerequisites<a class="anchor" aria-label="anchor" href="#prerequisites"></a>
-</h3>
+<h3 class="callout-title">Prerequisites</h3>
 <div class="callout-content">
 <ul>
 <li>Complete tutorial on <a href="simulating-transmission.html">Simulating transmission</a>.</li>
@@ -1638,7 +1616,6 @@ types</a>.</p>
 </div>
 </div>
 <section><h2 class="section-heading" id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
-<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
 <hr class="half-width">
 <p>Mathematical models can be used to generate trajectories of disease
@@ -1670,7 +1647,7 @@ call to the <a href="https://tidyverse.tidyverse.org" class="external-link">tidy
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
   <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
 <div class="accordion-body">
 <p>In this tutorial different types of intervention and how they can be
 modelled are introduced. Learners should be able to understand the
@@ -1681,7 +1658,6 @@ as well as how to implement the code to include such interventions.</p>
 </div>
 </div>
 </section><section><h2 class="section-heading" id="non-pharmaceutical-interventions">Non-pharmaceutical interventions<a class="anchor" aria-label="anchor" href="#non-pharmaceutical-interventions"></a>
-<a class="anchor" aria-label="anchor" href="#non-pharmaceutical-interventions"></a>
 </h2>
 <hr class="half-width">
 <p><a href="reference.html#NPIs">Non-pharmaceutical interventions</a>
@@ -1790,8 +1766,7 @@ further 100 days. Therefore our intervention object is:</p>
 <i class="callout-icon" data-feather="bell"></i>
 </div>
 <div id="effect-of-interventions-on-contacts" class="callout-inner">
-<h3 class="callout-title">Effect of interventions on contacts<a class="anchor" aria-label="anchor" href="#effect-of-interventions-on-contacts"></a>
-</h3>
+<h3 class="callout-title">Effect of interventions on contacts</h3>
 <div class="callout-content">
 <p>In <code>{epidemics}</code>, the contact matrix is scaled down by
 proportions for the period in which the intervention is in place. To
@@ -2019,8 +1994,7 @@ in place for 200 days.</p>
 <i class="callout-icon" data-feather="bell"></i>
 </div>
 <div id="intervention-types" class="callout-inner">
-<h3 class="callout-title">Intervention types<a class="anchor" aria-label="anchor" href="#intervention-types"></a>
-</h3>
+<h3 class="callout-title">Intervention types</h3>
 <div class="callout-content">
 <p>There are two intervention types for <code>model_default()</code>.
 Rate interventions on model parameters (<code>transmission_rate</code>
@@ -2039,7 +2013,6 @@ on modelling overlapping interventions</a> for more detail.</p>
 </div>
 </div>
 </section><section><h2 class="section-heading" id="pharmaceutical-interventions">Pharmaceutical interventions<a class="anchor" aria-label="anchor" href="#pharmaceutical-interventions"></a>
-<a class="anchor" aria-label="anchor" href="#pharmaceutical-interventions"></a>
 </h2>
 <hr class="half-width">
 <p>Pharmaceutical interventions (PIs) are measures such as vaccination
@@ -2111,8 +2084,7 @@ be in place for 150 days.</p>
 <i class="callout-icon" data-feather="zap"></i>
 </div>
 <div id="compare-interventions" class="callout-inner">
-<h3 class="callout-title">Compare interventions<a class="anchor" aria-label="anchor" href="#compare-interventions"></a>
-</h3>
+<h3 class="callout-title">Compare interventions</h3>
 <div class="callout-content">
 <p>Plot the three interventions vaccination, school closure and mask
 mandate and the baseline simulation on one plot. Which intervention
@@ -2125,7 +2097,7 @@ reduces the peak number of infectious individuals the most?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Output </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb16">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -2166,7 +2138,6 @@ compared to school closures and mask wearing interventions.</p>
 </div>
 </div>
 </section><section><h2 class="section-heading" id="summary">Summary<a class="anchor" aria-label="anchor" href="#summary"></a>
-<a class="anchor" aria-label="anchor" href="#summary"></a>
 </h2>
 <hr class="half-width">
 <p>Different types of intervention can be implemented using mathematical
@@ -2182,8 +2153,7 @@ health outcomes of interventions</a>.</p>
 <i class="callout-icon" data-feather="key"></i>
 </div>
 <div class="callout-inner">
-<h3 class="callout-title">Key Points<a class="anchor" aria-label="anchor" href="#keypoints1"></a>
-</h3>
+<h3 class="callout-title">Key Points</h3>
 <div class="callout-content">
 <ul>
 <li>The effect of NPIs can be modelled as reducing contact rates between
@@ -2238,8 +2208,7 @@ any links that you are not going to use.
 <i class="callout-icon" data-feather="check"></i>
 </div>
 <div id="prerequisites" class="callout-inner">
-<h3 class="callout-title">Prerequisites<a class="anchor" aria-label="anchor" href="#prerequisites"></a>
-</h3>
+<h3 class="callout-title">Prerequisites</h3>
 <div class="callout-content">
 <ul>
 <li>Complete tutorials <a href="simulating-transmission.html">Simulating
@@ -2255,7 +2224,6 @@ types</a>.</p>
 </div>
 </div>
 <section><h2 class="section-heading" id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
-<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
 <hr class="half-width">
 <p>In this tutorial we will compare intervention scenarios against each
@@ -2279,7 +2247,7 @@ outcome of interest can be:</p>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
   <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
 <div class="accordion-body">
 <p>In this tutorial we introduce the concept of the counter factual and
 how to compare scenarios (counter factual versus intervention) against
@@ -2289,7 +2257,6 @@ each other.</p>
 </div>
 </div>
 </section><section><h2 class="section-heading" id="vacamole-model">Vacamole model<a class="anchor" aria-label="anchor" href="#vacamole-model"></a>
-<a class="anchor" aria-label="anchor" href="#vacamole-model"></a>
 </h2>
 <hr class="half-width">
 <p>The Vacamole model is a deterministic model based on a system of ODEs
@@ -2317,8 +2284,7 @@ different compartments.</p>
 <i class="callout-icon" data-feather="zap"></i>
 </div>
 <div id="running-a-counterfactual-scenario-using-the-vacamole-model" class="callout-inner">
-<h3 class="callout-title">Running a counterfactual scenario using the Vacamole model<a class="anchor" aria-label="anchor" href="#running-a-counterfactual-scenario-using-the-vacamole-model"></a>
-</h3>
+<h3 class="callout-title">Running a counterfactual scenario using the Vacamole model</h3>
 <div class="callout-content">
 <ol style="list-style-type: decimal">
 <li>Run the model with the default parameter values for the UK
@@ -2348,7 +2314,7 @@ start of the simulation</li>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint1" aria-expanded="false" aria-controls="collapseHint1">
   <h4 class="accordion-header" id="headingHint1"> HINT : Running the model with default parameter values </h4>
 </button>
-<div id="collapseHint1" class="accordion-collapse collapse" aria-labelledby="headingHint1" data-bs-parent="#accordionHint1">
+<div id="collapseHint1" class="accordion-collapse collapse" data-bs-parent="#accordionHint1" aria-labelledby="headingHint1">
 <div class="accordion-body">
 <p>We can run the Vacamole model with <a href="https://epiverse-trace.github.io/epidemics/articles/model_vacamole.html#model-epidemic-using-vacamole" class="external-link">default
 parameter values</a> by just specifying the population object and number
@@ -2371,7 +2337,7 @@ of time steps to run the model for:</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> SOLUTION </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <ol style="list-style-type: decimal">
 <li>Run the model</li>
@@ -2485,8 +2451,7 @@ of time steps to run the model for:</p>
 <i class="callout-icon" data-feather="heart"></i>
 </div>
 <div id="package-vignettes" class="callout-inner">
-<h3 class="callout-title">Package vignettes<a class="anchor" aria-label="anchor" href="#package-vignettes"></a>
-</h3>
+<h3 class="callout-title">Package vignettes</h3>
 <div class="callout-content">
 <p>We recommend to read the vignette on <a href="https://epiverse-trace.github.io/epidemics/articles/model_ebola.html" class="external-link">Modelling
 responses to a stochastic Ebola virus epidemic</a> to use a discrete
@@ -2504,8 +2469,7 @@ African EVD outbreak.</p>
 <i class="callout-icon" data-feather="key"></i>
 </div>
 <div class="callout-inner">
-<h3 class="callout-title">Key Points<a class="anchor" aria-label="anchor" href="#keypoints1"></a>
-</h3>
+<h3 class="callout-title">Key Points</h3>
 <div class="callout-content">
 <ul>
 <li>The counter factual scenario must be defined to make
@@ -2543,7 +2507,7 @@ any links that you are not going to use.
         <p>Materials licensed under <a href="LICENSE.html">CC-BY 4.0</a> by the authors</p>
 
         <p>Template licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">CC-BY 4.0</a> by <a href="https://carpentries.org/" class="external-link">The Carpentries</a></p>
-        <p>Built with <a href="https://github.com/epiverse-trace/sandpaper/tree/patch-renv-github-bug" class="external-link">sandpaper (0.16.5)</a>, <a href="https://github.com/carpentries/pegboard/tree/ad2542f7f7b9c3f90cc871b355ff81ec14a09ca9" class="external-link">pegboard (0.7.6)</a>, and <a href="https://github.com/epiverse-trace/varnish/tree/epiversetheme" class="external-link">varnish (1.0.3)</a></p>
+        <p>Built with <a href="https://github.com/epiverse-trace/sandpaper/tree/patch-renv-github-bug" class="external-link">sandpaper (0.16.6)</a>, <a href="https://github.com/carpentries/pegboard/tree/ad2542f7f7b9c3f90cc871b355ff81ec14a09ca9" class="external-link">pegboard (0.7.6)</a>, and <a href="https://github.com/epiverse-trace/varnish/tree/epiversetheme" class="external-link">varnish (1.0.3)</a></p>
 			</div>
 		</footer>
 </div> <!-- / div.container -->
@@ -2566,8 +2530,8 @@ any links that you are not going to use.
   "url": "https://epiverse-trace.github.io/tutorials-late/instructor/aio.html",
   "identifier": "https://epiverse-trace.github.io/tutorials-late/instructor/aio.html",
   "dateCreated": "2024-06-11",
-  "dateModified": "2024-08-27",
-  "datePublished": "2024-08-27"
+  "dateModified": "2024-09-03",
+  "datePublished": "2024-09-03"
 }
 
   </script><script>
