@@ -78,7 +78,6 @@ output_baseline <- model_default(
   recovery_rate = recovery_rate,
   time_end = 300, increment = 1.0
 )
-
 ```
 
 
@@ -195,21 +194,21 @@ To quantify the impact of the intervention over the model output through time ti
 
 ```{r}
 output %>%
-  filter(compartment == "infectious") %>% 
-  group_by(time, intervention_type) %>%     
-  summarise(value_total = sum(value)) %>%   
+  filter(compartment == "infectious") %>%
+  group_by(time, intervention_type) %>%
+  summarise(value_total = sum(value)) %>%
   group_by(intervention_type) %>%
   mutate(cum_value = cumsum(value_total)) %>%
   ggplot() +
   geom_line(
-  aes(
-    x = time,
-    y = cum_value,
-    color = intervention_type,
-    linetype = intervention_type
-  ),
-  linewidth = 1.2
-  )+
+    aes(
+      x = time,
+      y = cum_value,
+      color = intervention_type,
+      linetype = intervention_type
+    ),
+    linewidth = 1.2
+  ) +
   scale_y_continuous(
     labels = scales::comma
   ) +
@@ -227,6 +226,256 @@ output %>%
   )
 ```
 
+
+## Vacamole model
+
+The Vacamole model is a deterministic model based on a system of ODEs in [Ainslie et al. 2022](https://doi.org/10.2807/1560-7917.ES.2022.27.44.2101090) to describe the effect of vaccination on COVID-19 dynamics. The model consists of 11 compartments, individuals are classed as one of the following:
+
++ susceptible, $S$,
++ partial vaccination ($V_1$), fully vaccination ($V_2$),
++ exposed, $E$ and exposed while vaccinated, $E_V$,
++ infectious, $I$ and infectious while vaccinated, $I_V$,
++ hospitalised, $H$ and hospitalised while vaccinated, $H_V$,
++ dead, $D$,
++ recovered, $R$.
+
+The diagram below describes the flow of individuals through the different compartments.
+
+```{r, echo = FALSE, message = FALSE}
+DiagrammeR::grViz("digraph{
+  # graph statement
+  #################
+  graph [layout = dot,
+         rankdir = LR,
+         overlap = true,
+         fontsize = 10]
+
+  # nodes
+  #######
+  node [shape = square,
+       fixedsize = true
+       width = 1.3]
+
+       S
+       E
+       Ev [label = 'E@_{V}', style = filled, fillcolour = 'gray']
+       I
+       Iv [label = 'I@_{V}', style = filled, fillcolour = 'gray']
+       H
+       Hv [label = 'H@_{V}', style = filled, fillcolour = 'gray']
+       D
+       R
+       V1 [label = 'V@_{1}', style = filled, fillcolour = 'gray']
+       V2 [label = 'V@_{2}', style = filled, fillcolour = 'gray']
+
+
+  # edges
+  #######
+  S -> E [label = ' infection (&beta;) ']
+  S -> V1 [label = ' vaccination (&nu;1)']
+  V1 -> E [label = ' infection (&beta;)']
+  V1 -> V2 [label = ' vaccination\n(second dose) (&nu;2)']
+  V2 -> Ev [label = ' infection (&beta;)']
+  Ev -> Iv [label = ' onset of \ninfectiousness (&alpha;) ']
+  E -> I [label = ' onset of \ninfectiousness (&alpha;) ']
+  I -> H [label = ' hospitalisation (&eta;)']
+  Iv -> Hv [label = ' hospitalisation (&eta;@_{V})']
+  I -> D [label = ' death (&omega;)']
+  I -> R [label = ' recovery (&gamma;)']
+  Iv -> D [label = ' death (&omega;@_{V})']
+  Iv -> R [label = ' recovery (&gamma;)']
+  Hv -> D [label = ' death (&omega;@_{V})']
+  Hv -> R [label = ' recovery (&gamma;)']
+  H -> D [label = ' death (&omega;)']
+  H -> R [label = ' recovery (&gamma;)']
+
+  subgraph {
+  rank = same; S; V1;V2;
+  }
+}")
+```
+
+
+::::::::::::::::::::::::::::::::::::: challenge
+
+## Running a counterfactual scenario using the Vacamole model
+
+1. Run the model with the default parameter values for the UK population assuming that :
+
++ 1 in a million individual are infectious (and not vaccinated) at the start of the simulation
++ The contact matrix for the United Kingdom has age bins:
+  + age between 0 and 20 years,
+  + age between 20 and 40,
+  + 40 years and over.
+
+For scenarios :
++ baseline : two dose vaccination program. Dose 1 (vaccination rate 0.01) starts from day 30, dose 2 (vaccination rate 0.01) starts from day 60. Both programs run fro 300 days. 
++ intervention :a mask mandate starting from time 60 for 100 days, assuming a reduction in the transmission rate of 0.163
+
+There is no vaccination scheme in place
+
+2. Using the output, plot the cumulative number of deaths through time
+
+::::::::::::::::: hint
+
+### HINT : Running the model with default parameter values
+
+We can run the Vacamole model with [default parameter values](https://epiverse-trace.github.io/epidemics/articles/model_vacamole.html#model-epidemic-using-vacamole) by just specifying the population object and number of time steps to run the model for:
+
+
+```{r, eval = FALSE}
+output <- model_vacamole(
+  population = uk_population,
+  time_end = 300
+)
+```
+
+::::::::::::::::::::::
+
+
+
+::::::::::::::::: solution
+
+### SOLUTION
+
+1.  Run the model
+
+```{r}
+library(epidemics)
+```
+
+```{r}
+polymod <- socialmixr::polymod
+contact_data <- socialmixr::contact_matrix(
+  survey = polymod,
+  countries = "United Kingdom",
+  age.limits = c(0, 20, 40),
+  symmetric = TRUE
+)
+# prepare contact matrix
+contact_matrix <- t(contact_data$matrix)
+
+# extract demography vector
+demography_vector <- contact_data$demography$population
+names(demography_vector) <- rownames(contact_matrix)
+
+# prepare initial conditions
+initial_i <- 1e-6
+
+initial_conditions_vacamole <- c(
+  S = 1 - initial_i,
+  V1 = 0, V2 = 0,
+  E = 0, EV = 0,
+  I = initial_i, IV = 0,
+  H = 0, HV = 0, D = 0, R = 0
+)
+
+initial_conditions_vacamole <- rbind(
+  initial_conditions_vacamole,
+  initial_conditions_vacamole,
+  initial_conditions_vacamole
+)
+rownames(initial_conditions_vacamole) <- rownames(contact_matrix)
+
+# prepare population object
+uk_population_vacamole <- population(
+  name = "UK",
+  contact_matrix = contact_matrix,
+  demography_vector = demography_vector,
+  initial_conditions = initial_conditions_vacamole
+)
+
+# prepare two vaccination objects
+# dose 1 vaccination
+dose_1 <- vaccination(
+  name = "two-dose vaccination", # name given to first dose
+  nu = matrix(0.01, nrow = 3),
+  time_begin = matrix(30, nrow = 3),
+  time_end = matrix(300, nrow = 3)
+)
+
+# prepare the second dose with a 30 day interval in start date
+dose_2 <- vaccination(
+  name = "two-dose vaccination", # name given to first dose
+  nu = matrix(0.01, nrow = 3),
+  time_begin = matrix(30 + 30, nrow = 3),
+  time_end = matrix(300, nrow = 3)
+)
+
+# use `c()` to combine the two doses
+double_vaccination <- c(dose_1, dose_2)
+
+# run baseline model
+output_baseline_vacamole <- model_vacamole(
+  population = uk_population_vacamole,
+  vaccination = double_vaccination,
+  time_end = 300
+)
+
+# create mask intervention
+mask_mandate <- intervention(
+  name = "mask mandate",
+  type = "rate",
+  time_begin = 60,
+  time_end = 60 + 100,
+  reduction = 0.163
+)
+
+# run intervention model
+output_intervention_vacamole <- model_vacamole(
+  # population
+  population = uk_population_vacamole,
+  vaccination = double_vaccination,
+  # intervention
+  intervention = list(transmission_rate = mask_mandate),
+  # time
+  time_end = 300)
+
+```
+
+2. Plot the cumulative number of deaths through time
+
+```{r}
+# create intervention_type column for plotting
+output_intervention_vacamole$intervention_type <- "mask mandate"
+output_baseline_vacamole$intervention_type <- "baseline"
+output_vacamole <- rbind(output_intervention_vacamole, output_baseline_vacamole)
+
+output_vacamole %>%
+  filter(compartment == "dead") %>%
+  group_by(time, intervention_type) %>%
+  summarise(value_total = sum(value)) %>%
+  group_by(intervention_type) %>%
+  mutate(cum_value = cumsum(value_total)) %>%
+  ggplot() +
+  geom_line(
+    aes(
+      x = time,
+      y = cum_value,
+      color = intervention_type,
+      linetype = intervention_type
+    ),
+    linewidth = 1.2
+  ) +
+  scale_y_continuous(
+    labels = scales::comma
+  ) +
+  theme_bw() +
+  labs(
+    x = "Simulation time (days)",
+    y = "Cumulative number of deaths"
+  )
+
+```
+
+
+
+:::::::::::::::::::::::::::
+
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+
 ## Accounting for uncertainty
 
 We will extend the COVID-19 example in [Modelling interventions](../episodes/modelling-interventions.md) to account for some uncertainty in the parameter values, specifically in the basic reproduction $R_0$. We do this as follows: 
@@ -236,11 +485,11 @@ We will extend the COVID-19 example in [Modelling interventions](../episodes/mod
 preinfectious_period <- 4.0
 infectious_period <- 5.5
 
-# specify the mean and standard deviation of R0 
+# specify the mean and standard deviation of R0
 r_estimate_mean <- 2.7
 r_estimate_sd <- 0.05
 
-# Generate 100 R samples
+# generate 100 R samples
 r_samples <- withr::with_seed(
   seed = 1,
   rnorm(
@@ -300,7 +549,7 @@ output <- model_default(
   recovery_rate = recovery_rate,
   time_end = 300, increment = 1.0,
   intervention = intervention_scenarios
-  )
+)
 head(output)
 ```
 
@@ -329,220 +578,6 @@ intervention_effect
 ```
 
 
-## Vacamole model
-
-The Vacamole model is a deterministic model based on a system of ODEs in [Ainslie et al. 2022](https://doi.org/10.2807/1560-7917.ES.2022.27.44.2101090) to describe the effect of vaccination on COVID-19 dynamics. The model consists of 11 compartments, individuals are classed as one of the following:
-
-+ susceptible, $S$,
-+ partial vaccination ($V_1$), fully vaccination ($V_2$),
-+ exposed, $E$ and exposed while vaccinated, $E_V$,
-+ infectious, $I$ and infectious while vaccinated, $I_V$,
-+ hospitalised, $H$ and hospitalised while vaccinated, $H_V$,
-+ dead, $D$,
-+ recovered, $R$.
-
-The diagram below describes the flow of individuals through the different compartments. 
-
-```{r, echo = FALSE, message = FALSE}
-DiagrammeR::grViz("digraph{
-  # graph statement
-  #################
-  graph [layout = dot,
-         rankdir = LR,
-         overlap = true,
-         fontsize = 10]
-
-  # nodes
-  #######
-  node [shape = square,
-       fixedsize = true
-       width = 1.3]
-
-       S
-       E
-       Ev [label = 'E@_{V}', style = filled, fillcolour = 'gray']
-       I
-       Iv [label = 'I@_{V}', style = filled, fillcolour = 'gray']
-       H
-       Hv [label = 'H@_{V}', style = filled, fillcolour = 'gray']
-       D
-       R
-       V1 [label = 'V@_{1}', style = filled, fillcolour = 'gray']
-       V2 [label = 'V@_{2}', style = filled, fillcolour = 'gray']
-
-
-  # edges
-  #######
-  S -> E [label = ' infection (&beta;) ']
-  S -> V1 [label = ' vaccination (&nu;1)']
-  V1 -> E [label = ' infection (&beta;)']
-  V1 -> V2 [label = ' vaccination\n(second dose) (&nu;2)']
-  V2 -> Ev [label = ' infection (&beta;)']
-  Ev -> Iv [label = ' onset of \ninfectiousness (&alpha;) ']
-  E -> I [label = ' onset of \ninfectiousness (&alpha;) ']
-  I -> H [label = ' hospitalisation (&eta;)']
-  Iv -> Hv [label = ' hospitalisation (&eta;@_{V})']
-  I -> D [label = ' death (&omega;)']
-  I -> R [label = ' recovery (&gamma;)']
-  Iv -> D [label = ' death (&omega;@_{V})']
-  Iv -> R [label = ' recovery (&gamma;)']
-  Hv -> D [label = ' death (&omega;@_{V})']
-  Hv -> R [label = ' recovery (&gamma;)']
-  H -> D [label = ' death (&omega;)']
-  H -> R [label = ' recovery (&gamma;)']
-
-  subgraph {
-  rank = same; S; V1;V2;
-  }
-}")
-```
-
-
-::::::::::::::::::::::::::::::::::::: challenge
-
-## Running a counterfactual scenario using the Vacamole model 
-
-1. Run the model with the default parameter values for the UK population assuming that :
-
-+ 1 in a million individual are infectious (and not vaccinated) at the start of the simulation
-+ The contact matrix for the United Kingdom has age bins:
-  + age between 0 and 20 years,
-  + age between 20 and 40,
-  + 40 years and over.
-+ There is no vaccination scheme in place
-
-2. Using the output, plot the cumulative number of deaths through time
-
-
-<!-- ::::::::::::::::: hint -->
-
-<!-- ### Vaccination code  -->
-
-<!-- To run the model with no vaccination in place we can *either* create two vaccination objects (one for each dose) using `vaccination()` with the time start, time end and vaccination rate all set to 0. -->
-
-<!-- ```{r} -->
-<!-- library(epidemics) -->
-<!-- ``` -->
-
-<!-- ```{r, eval = FALSE} -->
-<!-- ?vaccination -->
-<!-- ``` -->
-
-<!-- :::::::::::::::::::::: -->
-
-
-::::::::::::::::: hint
-
-### HINT : Running the model with default parameter values
-
-We can run the Vacamole model with [default parameter values](https://epiverse-trace.github.io/epidemics/articles/model_vacamole.html#model-epidemic-using-vacamole) by just specifying the population object and number of time steps to run the model for: 
-
-
-```{r, eval = FALSE}
-output <- model_vacamole(
-  population = uk_population,
-  time_end = 300
-)
-```
-
-::::::::::::::::::::::
-
-
-
-::::::::::::::::: solution
-
-### SOLUTION
-
-1.  Run the model
-
-```{r}
-library(epidemics)
-```
-
-```{r}
-polymod <- socialmixr::polymod
-contact_data <- socialmixr::contact_matrix(
-  survey = polymod,
-  countries = "United Kingdom",
-  age.limits = c(0, 20, 40),
-  symmetric = TRUE
-)
-# prepare contact matrix
-contact_matrix <- t(contact_data$matrix)
-
-# extract demography vector
-demography_vector <- contact_data$demography$population
-names(demography_vector) <- rownames(contact_matrix)
-
-# prepare initial conditions
-initial_i <- 1e-6
-
-initial_conditions <- c(
-  S = 1 - initial_i,
-  V1 = 0, V2 = 0,
-  E = 0, EV = 0,
-  I = initial_i, IV = 0,
-  H = 0, HV = 0, D = 0, R = 0
-)
-
-initial_conditions <- rbind(
-  initial_conditions,
-  initial_conditions,
-  initial_conditions
-)
-rownames(initial_conditions) <- rownames(contact_matrix)
-
-# prepare population object
-uk_population <- population(
-  name = "UK",
-  contact_matrix = contact_matrix,
-  demography_vector = demography_vector,
-  initial_conditions = initial_conditions
-)
-
-# run model
-output <- model_vacamole(
-  population = uk_population,
-  time_end = 300
-)
-```
-
-2. Plot the number of deaths through time
-
-```{r}
-library(ggplot2)
-
-ggplot(output[output$compartment == "dead", ]) +
-  geom_line(
-    aes(time, value, colour = demography_group),
-    linewidth = 1
-  ) +
-  scale_colour_brewer(
-    palette = "Dark2",
-    labels = rownames(contact_matrix),
-    name = "Age group"
-  ) +
-  scale_y_continuous(
-    labels = scales::comma
-  ) +
-  labs(
-    x = "Simulation time (days)",
-    y = "Individuals"
-  ) +
-  theme(
-    legend.position = "top"
-  ) +
-  theme_bw(
-    base_size = 15
-  )
-```
-
-
-
-:::::::::::::::::::::::::::
-
-
-::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::: testimonial
 
@@ -552,15 +587,132 @@ We recommend to read the vignette on [Modelling responses to a stochastic Ebola 
 
 :::::::::::::::::::::::::::
 
-<!-- ## Comparing scenarios -->
-
-<!-- *Coming soon* -->
 
 
 
-<!-- ## Challenge : Ebola outbreak analysis  -->
 
-<!-- *Coming soon* -->
+::::::::::::::::::::::::::::::::::::: challenge 
+
+## Challenge : Ebola outbreak analysis
+
+You have been tasked to investigate the potential impact of an intervention on an Ebola outbreak in Guinea. Using `model_ebola()` and the the information detailed below, find the number of infections averted when :
+
++ an intervention is applied to reduce transmission rate by 0.5 from day 60 and,
++ an intervention is applied to reduce transmission by 0.1 from day 30.
+
+For both interventions assume the transmission rate follows a normal distribution with mean = 1.1 / 12 and  standard deviation = 0.01.
+
+*Note: Depending on the number of replicates used, this simulation may take several minutes to run.*
+
++ Population size : 14 million
++ Initial number of exposed individuals : 10
++ Initial number of infectious individuals : 5
++ Time of simulation : 120 days
++ Parameter values : 
+  + $R_0$ (`r0`) = 1.1,
+  + $p^I$ (`infectious_period`) = 12,
+  + $p^E$ (`preinfectious_period`) = 5,
+  + $k^E=k^I = 2$, 
+  + $1-p_{hosp}$ (`prop_community`) = 0.9,
+  + $p_{ETU}$ (`etu_risk`) = 0.7,
+  + $p_{funeral}$ (`funeral_risk`) = 0.5
+
+:::::::::::::::::::::::: solution 
+
+```{r}
+library(epidemics)
+
+population_size <- 14e6
+
+E0 <- 10
+I0 <- 5
+# prepare initial conditions as proportions
+initial_conditions <- c(
+  S = population_size - (E0 + I0), E = E0, I = I0, H = 0, F = 0, R = 0
+) / population_size
+
+# set up population object
+guinea_population <- population(
+  name = "Guinea",
+  contact_matrix = matrix(1), # note dummy value
+  demography_vector = population_size, # 14 million, no age groups
+  initial_conditions = matrix(
+    initial_conditions,
+    nrow = 1
+  )
+)
+
+# generate 100 beta samples
+beta <- withr::with_seed(
+  seed = 1,
+  rnorm(
+    n = 100, mean = 1.1 / 12, sd = 0.01
+  )
+)
+
+# run the baseline
+output_baseline <- model_ebola(
+  population = guinea_population,
+  transmission_rate = beta,
+  infectiousness_rate = 2.0 / 5,
+  removal_rate = 2.0 / 12,
+  prop_community = 0.9,
+  etu_risk = 0.7,
+  funeral_risk = 0.5,
+  time_end = 100,
+  replicates = 100 # replicates argument
+)
+
+# create intervention objects
+reduce_transmission_1 <- intervention(
+  type = "rate",
+  time_begin = 60, time_end = 100, reduction = 0.5
+)
+
+reduce_transmission_2 <- intervention(
+  type = "rate",
+  time_begin = 30, time_end = 100, reduction = 0.1
+)
+
+# create intervention list
+intervention_scenarios <- list(
+  scenario_1 = list(
+    transmission_rate = reduce_transmission_1
+  ),
+  scenario_2 = list(
+    transmission_rate = reduce_transmission_2
+  )
+)
+
+# run model
+output_intervention <- model_ebola(
+  population = guinea_population,
+  transmission_rate = beta,
+  infectiousness_rate = 2.0 / 5,
+  removal_rate = 2.0 / 12,
+  prop_community = 0.9,
+  etu_risk = 0.7,
+  funeral_risk = 0.5,
+  time_end = 100,
+  replicates = 100, # replicates argument,
+  intervention = intervention_scenarios
+)
+
+# calculate outcomes averted
+intervention_effect <- outcomes_averted(
+  baseline = output_baseline, scenarios = output_intervention,
+  by_group = FALSE
+)
+intervention_effect
+```
+
+
+**Note: The number of infections averted can be negative. This is due to the stochastic variation in the disease trajectories for a given transmission rate can result in a different size outbreak.**
+
+
+:::::::::::::::::::::::::::::::::
+::::::::::::::::::::::::::::::::::::::::::::::::
+
 
 
 
