@@ -107,7 +107,7 @@ Learners should familiarise themselves with following concept dependencies befor
 
 ## Introduction
 
-In this tutorial we will compare intervention scenarios against each other. To quantify the effect of the intervention we need to compare our intervention scenario to a counter factual (baseline) scenario. The *counter factual* is the scenario in which nothing changes, often referred to as the 'do nothing' scenario. The counter factual scenario may include no interventions, or if we are investigating the potential impact of an additional intervention in the later stages of an outbreak there may be existing interventions in place. 
+In this tutorial we will compare intervention scenarios against each other. To quantify the effect of the intervention we need to compare our intervention scenario to a counter factual (baseline) scenario. The *counter factual* is the scenario in which nothing changes, often referred to as the 'do nothing' scenario. The counter factual scenario may include no interventions, or if we are investigating the potential impact of an additional intervention in the later stages of an outbreak, there may be existing interventions in place. 
 
 We must also decide what our *outcome of interest* is to make comparisons between intervention and counter factual scenarios. The outcome of interest can be:
 
@@ -115,7 +115,7 @@ We must also decide what our *outcome of interest* is to make comparisons betwee
 + a metric such as the epidemic peak time or size,
 + a measure that uses the model outcomes such as QALY/DALYs.
 
-In this tutorial we are going to learn how to use the `{epidemics}` package to compare the effect of different interventions on simulated disease trajectories. We will access to social contact data with `{socialmixr}`.
+In this tutorial we are going to learn how to use the `{epidemics}` package to compare the effect of different interventions on simulated disease trajectories. We will access to social contact data with `{socialmixr}`. We'll use `{dplyr}`, `{ggplot2}` and the pipe `%>%` to connect some of their functions, so let's also call to the `{tidyverse}` package:
 
 ```{r,message=FALSE,warning=FALSE}
 library(epidemics)
@@ -132,7 +132,9 @@ In this tutorial we introduce the concept of the counter factual and how to comp
 
 ## Visualising the effect of interventions 
 
-To compare the baseline scenario against the intervention scenarios, we can make visualisations of the model output or some aggregate measure of the model output. If we wanted to investigate the change in epidemic peak with an intervention applied we could plot the model trajectories through time:
+To compare the baseline scenario against the intervention scenarios, we can make visualisations of our outcome of interest. The outcome of interest may simply be the model output, or it could be an aggregate measure of the model output.
+
+If we wanted to investigate the change in epidemic peak with an intervention applied we could plot the model trajectories through time:
 ```{r}
 output_baseline <- model_default(
   population = uk_population,
@@ -190,7 +192,8 @@ output %>%
     y = "Individuals"
   )
 ```
-To quantify the impact of the intervention over the model output through time time, we could consider the cumulative number in the different scenarios. For example, the cumulative number of infectious people in the baseline scenario compared to the intervention scenario: 
+
+If we wanted to quantify the impact of the intervention over the model output through time, we could consider the cumulative number of infectious people in the baseline scenario compared to the intervention scenario: 
 
 ```{r}
 output %>%
@@ -227,7 +230,7 @@ output %>%
 ```
 
 
-## Vacamole model
+### Vacamole model
 
 The Vacamole model is a deterministic model based on a system of ODEs in [Ainslie et al. 2022](https://doi.org/10.2807/1560-7917.ES.2022.27.44.2101090) to describe the effect of vaccination on COVID-19 dynamics. The model consists of 11 compartments, individuals are classed as one of the following:
 
@@ -339,10 +342,6 @@ output <- model_vacamole(
 ### SOLUTION
 
 1.  Run the model
-
-```{r}
-library(epidemics)
-```
 
 ```{r}
 polymod <- socialmixr::polymod
@@ -476,9 +475,11 @@ output_vacamole %>%
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 
-## Accounting for uncertainty
+## Calculating outcomes averted
 
-We will extend the COVID-19 example in [Modelling interventions](../episodes/modelling-interventions.md) to account for some uncertainty in the parameter values, specifically in the basic reproduction $R_0$. We do this as follows: 
+Visualisations are a useful tool to compare intervention scenario model predictions through time. In addition to visualisations, we also want to quantify the impact of interventions. An outcome of interest we can use is the number of infections averted. This measure allows us to quantify the difference between different intervention scenarios.
+
+In `{epidemics}`, we can use the function `outcomes_averted()` to calculate the number of infections averted while accounting for uncertainty in key parameter values. We will extend the COVID-19 example in [Modelling interventions](../episodes/modelling-interventions.md) to account for some uncertainty in the parameter values, specifically in the basic reproduction $R_0$. We do this as follows: 
 
 ```{r}
 # time periods
@@ -555,7 +556,7 @@ head(output)
 
 Now that we have our model output for all of our scenarios, we want to compare the outputs of the interventions to our baseline. 
 
-We can do this using `outcomes_averted()` in  `{epidemics}`. This function calculates the final epidemic size for each scenario, and then calculates the number of infections averted in each scenario compared to the baseline. To use this function we specify the :
+We can do this using `outcomes_averted()` in `{epidemics}`. This function calculates the final epidemic size for each scenario, and then calculates the number of infections averted in each scenario compared to the baseline. To use this function we specify the :
   
 + output of the baseline scenario
 + outputs of the intervention scenario(s).
@@ -620,8 +621,6 @@ For both interventions assume the transmission rate follows a normal distributio
 :::::::::::::::::::::::: solution 
 
 ```{r}
-library(epidemics)
-
 population_size <- 14e6
 
 E0 <- 10
@@ -720,5 +719,6 @@ intervention_effect
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
 - The counter factual scenario must be defined to make comparisons
+- Scenarios can be compared using visualisations and by calculating outcomes averted
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
