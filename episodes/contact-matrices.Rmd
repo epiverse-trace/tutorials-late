@@ -50,6 +50,22 @@ Contact matrices can be estimated from surveys or contact data, or synthetic one
 
 ### Measles example
 
+
+```{r}
+polymod <- socialmixr::polymod
+contact_data <- socialmixr::contact_matrix(
+  survey = polymod,
+  countries = "United Kingdom",
+  age.limits = c(0, 20, 40),
+  symmetric = TRUE
+)
+# prepare contact matrix
+contact_matrix <- t(contact_data$matrix)
+contact_matrix
+```
+
+
+
 ### In mathematical models
 
 Consider the SIR model where individuals are categorized as either susceptible $S$, infected but not yet infectious $E$, infectious $I$ or recovered $R$. The schematic below shows the processes which describe the flow of individuals between the disease states $S$, $I$ and $R$ and the key parameters for each process.
@@ -124,7 +140,15 @@ For example, we might have a meta population model with two geographic areas. Th
 
 ::::::::::::::::::::::::::::::::::::: callout
 ## Normalising matrices
-Add additional maths (or epi) content for novice learners
+To normalise a matrix we scale the matrix so that the largest eigenvalue is 1. This transformation scales the entries between 0 and 1 but preserves the relative differences between the entries. 
+
+To perform this normalisation we divide all entries of the matrix by the largest eigenvalue of the matrix.
+
+```{r}
+contact_matrix <- contact_matrix / max(eigen(contact_matrix)$values) 
+contact_matrix
+```
+
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
