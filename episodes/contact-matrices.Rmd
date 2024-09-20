@@ -6,7 +6,9 @@ exercises: 2
 
 :::::::::::::::::::::::::::::::::::::: questions 
 
-- What questions will this lesson cover?
+- What is a contact matrix?
+- How are contact matrices estimated?
+- How are contract matrices used?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -21,7 +23,7 @@ exercises: 2
 
 ## Prerequisites
 
-List (and hyperlink) the lessons/packages which need to be covered before this lesson
+
 
 :::::::::::::::::::::::::::::::::
 
@@ -32,31 +34,39 @@ Introductory text
 
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: instructor
 
-Inline instructor notes can help inform instructors of timing challenges
-associated with the lessons. They appear in the "Instructor View".
 
-READ THESE LINES AND ERASE:
-
-The Workbench-related sections that the developer must keep are:
-
-- YAML on top
-- Questions
-- Objectives
-- Keypoints
-
-The Epiverse-TRACE sections that we encourage to keep are:
-
-- Prerequisites
-- Introduction
-
-Take a look to the Contributing.md file for more writing guidelines.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
+## The contact matrix
 
-## Section header
+Contact matrices can be estimated from surveys or contact data, or synthetic ones can be used.
 
-Lesson content
+
+
+## Estimating contact matrices
+
+## Using contact matrices
+
+### Measles example
+
+### In mathematical models
+
+::::::::::::::::::::::::::::::::::::: callout
+### Why would a contact matrix be non-symmetric?
+
+One of the arguments of the function `contact_matrix()` is `symmetric=TRUE`. This means that the total number of contacts of age group 1 with age group 2, should be the same as the total number of contacts of age group 2 and age group 1 (see the `socialmixr` [vignette](https://cran.r-project.org/web/packages/socialmixr/vignettes/socialmixr.html) for more detail). However, when contact matrices are estimated from surveys or other sources, the *reported* number of contacts may differ by age group resulting in a non-symmetric contact matrix [(Prem et al 2021)](https://doi.org/10.1371/journal.pcbi.1009098).
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+
+::::::::::::::::::::::::::::::::::::: callout
+## Normalising matrices
+Add additional maths (or epi) content for novice learners
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+
 
 ::::::::::::::::::::::::::::::::::::: challenge 
 
@@ -99,11 +109,6 @@ contact_data
 
 Lesson content
 
-::::::::::::::::::::::::::::::::::::: callout
-## Explainer
-Add additional maths (or epi) content for novice learners
-
-::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: challenge 
 
