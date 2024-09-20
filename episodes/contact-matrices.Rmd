@@ -52,6 +52,82 @@ Contact matrices can be estimated from surveys or contact data, or synthetic one
 
 ### In mathematical models
 
+Consider the SIR model where individuals are categorized as either susceptible $S$, infected but not yet infectious $E$, infectious $I$ or recovered $R$. The schematic below shows the processes which describe the flow of individuals between the disease states $S$, $I$ and $R$ and the key parameters for each process.
+
+```{r diagram, echo = FALSE, message = FALSE}
+DiagrammeR::grViz("digraph {
+
+  # graph statement
+  #################
+  graph [layout = dot,
+         rankdir = LR,
+         overlap = true,
+         fontsize = 10]
+
+  # nodes
+  #######
+  node [shape = square,
+       fixedsize = true
+       width = 1.3]
+
+       S
+       I
+       R
+
+  # edges
+  #######
+  S -> I [label = ' infection \n(transmission rate &beta;)']
+  I -> R [label = ' recovery \n(recovery rate &gamma;)']
+
+}")
+```
+
+The [differential equations](../learners/reference.md#ordinary) below describe how individuals move from one state to another [(Bjørnstad et al. 2020)](https://doi.org/10.1038/s41592-020-0822-z).
+
+
+$$
+\begin{aligned}
+\frac{dS}{dt} & = - \beta S I \\
+\frac{dI}{dt} &= \beta S I - \gamma I \\
+\frac{dR}{dt} &=\gamma I \\
+\end{aligned}
+$$
+To add age structure to our model, we need to add additional equations for the infection states $S$, $I$ and $R$ for each age group $i$. If we want to assume that there is heterogeneity in contacts between age groups then we must adapt the transmission term $\beta SI$ to include the contact matrix $C$ as follows :
+
+$$ \beta S_i \sum_j C_{i,j} I_j. $$ 
+Susceptible individuals in age group $i$ become infected dependent on their rate of contact with individuals in each age group. For each disease state ($S$, $E$, $I$ and $R$) and age group ($i$), we have a differential equation describing the rate of change with respect to time.  
+
+$$
+\begin{aligned}
+\frac{dS_i}{dt} & = - \beta S_i \sum_j C_{i,j} I_j \\
+\frac{dI_i}{dt} &= \beta S_i\sum_j C_{i,j} I_j - \gamma I_i \\
+\frac{dR_i}{dt} &=\gamma I_i \\
+\end{aligned}
+$$
+
+::::::::::::::::::::::::::::::::::::: callout
+### Check the dimension of $\beta$
+
+In the SIR model without age structure the rate of contact is part of the transmission rate $\beta$, where as in the age-structured model we have separated out the rate of contact, hence the transmission rate $\beta$ in the age structured model will have a different value.
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+### Contact groups
+
+In the example above the dimension of the contact matrix will be the same as the number of age groups i.e. if there are 3 age groups then the contact matrix will have 3 rows and 3 columns. Contact matrices can be used for other groups as long as the dimension of the matrix matches the number of groups.
+
+For example, we might have a meta population model with two geographic areas. Then our contact matrix would be a 2 x 2 matrix with entries representing the contact between and within the geographic areas.
+
+
+## Normalisation
+
+::::::::::::::::::::::::::::::::::::: callout
+## Normalising matrices
+Add additional maths (or epi) content for novice learners
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
 ::::::::::::::::::::::::::::::::::::: callout
 ### Why would a contact matrix be non-symmetric?
 
@@ -60,11 +136,7 @@ One of the arguments of the function `contact_matrix()` is `symmetric=TRUE`. Thi
 
 
 
-::::::::::::::::::::::::::::::::::::: callout
-## Normalising matrices
-Add additional maths (or epi) content for novice learners
 
-::::::::::::::::::::::::::::::::::::::::::::::::
 
 
 
