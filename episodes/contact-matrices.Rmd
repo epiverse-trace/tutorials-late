@@ -40,29 +40,42 @@ Introductory text
 
 ## The contact matrix
 
-Contact matrices can be estimated from surveys or contact data, or synthetic ones can be used.
+A contact matrix represents the amount of contact or mixing within and between subgroups. The subgroups are often age categories but can also be geographic areas or high/low risk groups. For example, a contact matrix representing the number of contacts per day in children and adults could be :
+
+$$
+\begin{bmatrix}
+8 & 2\\
+2 & 7 
+\end{bmatrix}
+$$
+Children contact 8 other children each day, adults contact 7 other adults and children contact 2 adults (and vice versa). We can use this kind of information to account for the role heterogeneity in contact plays in infectious disease transmission. 
+
+Contact matrices can be estimated from surveys or contact data, or synthetic ones can be used. The POLYMOD survey measured contact patterns in 8 European countries using data on the location and duration of contacts reported by the study participants [(Mossong et al. 2008)](https://doi.org/10.1371/journal.pmed.0050074). [(Prem et al. 2021)](https://doi.org/10.1371/journal.pcbi.1009098) used the POLYMOD data within a Bayesian hierarchical model to project contact matrices for 177 other countries. 
+
+The R package `{socialmixr}` contains functions which can estimate contact matrices from the POLYMOD and other surveys. We can load the POLYMOD survey data :
 
 
-
-## Estimating contact matrices
-
-## Using contact matrices
-
-### Measles example
-
-
-```{r}
+```{r polymod_, echo = TRUE}
 polymod <- socialmixr::polymod
+```
+
+Then we can obtain the contact matrix for the age categories we want by specifying `age.limits`. 
+
+```{r polymod_uk, echo = TRUE}
 contact_data <- socialmixr::contact_matrix(
   survey = polymod,
   countries = "United Kingdom",
   age.limits = c(0, 20, 40),
   symmetric = TRUE
 )
-# prepare contact matrix
-contact_matrix <- t(contact_data$matrix)
-contact_matrix
+contact_data
 ```
+
+
+## Using contact matrices
+
+
+### Measles example
 
 
 
@@ -163,42 +176,6 @@ One of the arguments of the function `contact_matrix()` is `symmetric=TRUE`. Thi
 
 
 
-
-::::::::::::::::::::::::::::::::::::: challenge 
-
-## Challenge 1 : can the learner run existing code
-
-Load contact and population data from socialmixr::polymod
-
-```r
-polymod <- socialmixr::polymod
-contact_data <- socialmixr::contact_matrix(
-  polymod,
-  countries = "United Kingdom",
-  age.limits = c(0, 20, 40),
-  symmetric = TRUE
-)
-contact_data
-```
-
-:::::::::::::::::::::::: solution 
-
-## Output
- 
-```{r polymod_uk, echo = FALSE}
-polymod <- socialmixr::polymod
-contact_data <- socialmixr::contact_matrix(
-  polymod,
-  countries = "United Kingdom",
-  age.limits = c(0, 20, 40),
-  symmetric = TRUE
-)
-contact_data
-```
-
-
-:::::::::::::::::::::::::::::::::
-::::::::::::::::::::::::::::::::::::::::::::::::
 
 
 ## Section header
