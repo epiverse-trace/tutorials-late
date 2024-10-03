@@ -14,9 +14,8 @@ exercises: 2
 
 ::::::::::::::::::::::::::::::::::::: objectives
 
-- Objective 1
-- Objective 2
-
+- Use the R package `socialmixr` to estimate a contact matrix
+- Understand the different types of analysis contact matrices can be used for 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: prereq
@@ -30,7 +29,14 @@ exercises: 2
 
 ## Introduction
 
-Introductory text
+
+
+In this tutorial we are going to learn how to use the `{socialmixr}` access to social contact data and create contact matrices.
+
+```{r,message=FALSE,warning=FALSE}
+library(socialmixr)
+```
+
 
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: instructor
 
@@ -50,7 +56,12 @@ $$
 $$
 Children contact 8 other children each day, adults contact 7 other adults and children contact 2 adults (and vice versa). We can use this kind of information to account for the role heterogeneity in contact plays in infectious disease transmission. 
 
-Contact matrices can be estimated from surveys or contact data, or synthetic ones can be used. The POLYMOD survey measured contact patterns in 8 European countries using data on the location and duration of contacts reported by the study participants [(Mossong et al. 2008)](https://doi.org/10.1371/journal.pmed.0050074). [(Prem et al. 2021)](https://doi.org/10.1371/journal.pcbi.1009098) used the POLYMOD data within a Bayesian hierarchical model to project contact matrices for 177 other countries. 
+Contact matrices can be estimated from surveys or contact data, or synthetic ones can be used. The POLYMOD survey measured contact patterns in 8 European countries using data on the location and duration of contacts reported by the study participants [(Mossong et al. 2008)](https://doi.org/10.1371/journal.pmed.0050074). [Prem et al. 2021](https://doi.org/10.1371/journal.pcbi.1009098) used the POLYMOD data within a Bayesian hierarchical model to project contact matrices for 177 other countries. 
+
+## Estimating and using contact matrices
+
+
+### `socialmixr`
 
 The R package `{socialmixr}` contains functions which can estimate contact matrices from the POLYMOD and other surveys. We can load the POLYMOD survey data :
 
@@ -62,7 +73,7 @@ polymod <- socialmixr::polymod
 Then we can obtain the contact matrix for the age categories we want by specifying `age.limits`. 
 
 ```{r polymod_uk, echo = TRUE}
-contact_data <- socialmixr::contact_matrix(
+contact_data <- contact_matrix(
   survey = polymod,
   countries = "United Kingdom",
   age.limits = c(0, 20, 40),
@@ -71,8 +82,44 @@ contact_data <- socialmixr::contact_matrix(
 contact_data
 ```
 
+**Note: although the contact matrix is not mathematically symmetric, it satisfies the condition that the total number of contacts of one group with another is the same as the reverse. For the mathematical explanation see [here](https://epiforecasts.io/socialmixr/articles/socialmixr.html#symmetric-contact-matrices).**
 
-## Using contact matrices
+
+::::::::::::::::::::::::::::::::::::: callout
+### Why would a contact matrix be non-symmetric?
+
+One of the arguments of the function `contact_matrix()` is `symmetric=TRUE`. This means that the total number of contacts of age group 1 with age group 2, should be the same as the total number of contacts of age group 2 and age group 1 (see the `socialmixr` [vignette](https://cran.r-project.org/web/packages/socialmixr/vignettes/socialmixr.html) for more detail). However, when contact matrices are estimated from surveys or other sources, the *reported* number of contacts may differ by age group resulting in a non-symmetric contact matrix [(Prem et al 2021)](https://doi.org/10.1371/journal.pcbi.1009098).
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+The example above uses the POLYMOD survey. There are a number of surveys available in `socialmixr`, to list the available surveys use `list_surveys()`. To download a survey, we can use `get_survey()`
+
+```{r, message = FALSE, warning = FALSE}
+zambia_sa_survey <- get_survey("https://doi.org/10.5281/zenodo.3874675")
+```
+
+
+
+::::::::::::::::::::::::::::::::::::: challenge 
+
+## Zambia contact matrix
+
+After downloading the survey, load contact and population data for Zambia using the following age bins:
+
++ [0,15)
++ 20 +
+
+:::::::::::::::::::::::: solution 
+
+```{r polymod_poland}
+contact_data_zambia <- contact_matrix(
+  survey = zambia_sa_survey,
+  age.limits = c(0, 20),
+  symmetric = TRUE
+)
+contact_data_zambia
+```
+:::::::::::::::::::::::::::::::::
+::::::::::::::::::::::::::::::::::::::::::::::::
 
 
 ### Measles example
@@ -158,6 +205,7 @@ To normalise a matrix we scale the matrix so that the largest eigenvalue is 1. T
 To perform this normalisation we divide all entries of the matrix by the largest eigenvalue of the matrix.
 
 ```{r}
+contact_matrix <- t(contact_data$matrix)
 contact_matrix <- contact_matrix / max(eigen(contact_matrix)$values) 
 contact_matrix
 ```
@@ -165,48 +213,10 @@ contact_matrix
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
-::::::::::::::::::::::::::::::::::::: callout
-### Why would a contact matrix be non-symmetric?
-
-One of the arguments of the function `contact_matrix()` is `symmetric=TRUE`. This means that the total number of contacts of age group 1 with age group 2, should be the same as the total number of contacts of age group 2 and age group 1 (see the `socialmixr` [vignette](https://cran.r-project.org/web/packages/socialmixr/vignettes/socialmixr.html) for more detail). However, when contact matrices are estimated from surveys or other sources, the *reported* number of contacts may differ by age group resulting in a non-symmetric contact matrix [(Prem et al 2021)](https://doi.org/10.1371/journal.pcbi.1009098).
-::::::::::::::::::::::::::::::::::::::::::::::::
 
 
 
 
-
-
-
-
-## Section header
-
-Lesson content
-
-
-::::::::::::::::::::::::::::::::::::: challenge 
-
-## Challenge 2 : edit code/answer a question
-
-Load contact and population data for Poland from socialmixr::polymod using the following age bins:
-
-+ [0,15)
-+ [15, 50)
-+ 50 +
-
-:::::::::::::::::::::::: solution 
-
-```{r polymod_poland}
-polymod <- socialmixr::polymod
-contact_data <- socialmixr::contact_matrix(
-  polymod,
-  countries = "Poland",
-  age.limits = c(0, 15, 50),
-  symmetric = TRUE
-)
-contact_data
-```
-:::::::::::::::::::::::::::::::::
-::::::::::::::::::::::::::::::::::::::::::::::::
 
 
 
@@ -214,7 +224,7 @@ contact_data
 
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
-- Summarise the key points of the lesson using bullet points
+- `socialmixr` can be used to estimate contact matrices from survey data
 
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
