@@ -488,7 +488,6 @@
       "RemoteRepo": "epidemics",
       "RemoteUsername": "epiverse-trace",
       "RemotePkgRef": "epiverse-trace/epidemics",
-      "RemoteRef": "HEAD",
       "RemoteSha": "3813d22cb94c42b65efe1751912cee75ea08ece0",
       "Requirements": [
         "BH",
