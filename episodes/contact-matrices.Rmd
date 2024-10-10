@@ -122,9 +122,25 @@ contact_data_zambia
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 
-### Measles example
+### Analyses with contact matrices
 
 
+
+::::::::::::::::::::::::::::::::::::: callout
+## Normalisation
+
+There are times when we need to change the scale of our contact matrices e.g. to compare matrices to model projected matrices [Prem et al. 2021](https://doi.org/10.1371/journal.pcbi.1009098) the entries need to be on the same scale.
+
+Normalisation means converting a value to be between 0 and 1.To normalise a matrix we scale the matrix so that the largest eigenvalue is 1. This transformation scales the entries between 0 and 1 but preserves the relative differences between the entries. To perform this normalisation we divide all entries of the matrix by the largest eigenvalue of the matrix.
+
+```{r}
+contact_matrix <- t(contact_data$matrix)
+contact_matrix <- contact_matrix / max(eigen(contact_matrix)$values) 
+contact_matrix
+```
+
+
+::::::::::::::::::::::::::::::::::::::::::::::::
 
 ### In mathematical models
 
@@ -194,30 +210,6 @@ In the SIR model without age structure the rate of contact is part of the transm
 In the example above the dimension of the contact matrix will be the same as the number of age groups i.e. if there are 3 age groups then the contact matrix will have 3 rows and 3 columns. Contact matrices can be used for other groups as long as the dimension of the matrix matches the number of groups.
 
 For example, we might have a meta population model with two geographic areas. Then our contact matrix would be a 2 x 2 matrix with entries representing the contact between and within the geographic areas.
-
-
-## Normalisation
-
-::::::::::::::::::::::::::::::::::::: callout
-## Normalising matrices
-To normalise a matrix we scale the matrix so that the largest eigenvalue is 1. This transformation scales the entries between 0 and 1 but preserves the relative differences between the entries. 
-
-To perform this normalisation we divide all entries of the matrix by the largest eigenvalue of the matrix.
-
-```{r}
-contact_matrix <- t(contact_data$matrix)
-contact_matrix <- contact_matrix / max(eigen(contact_matrix)$values) 
-contact_matrix
-```
-
-
-::::::::::::::::::::::::::::::::::::::::::::::::
-
-
-
-
-
-
 
 
 
