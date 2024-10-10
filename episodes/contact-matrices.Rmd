@@ -204,6 +204,8 @@ In the SIR model without age structure the rate of contact is part of the transm
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
+We can use contact matrices from `socialmixr` with mathematical models in the R package `{epidemics}`. See the tutorial [Simulating transmission](../episodes/simulating-transmission.md) for examples and an introduction to `epidemics`.
+
 
 ### Contact groups
 
