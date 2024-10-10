@@ -18,20 +18,19 @@ exercises: 2
 - Understand the different types of analysis contact matrices can be used for 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
-::::::::::::::::::::::::::::::::::::: prereq
+<!-- ::::::::::::::::::::::::::::::::::::: prereq -->
 
-## Prerequisites
+<!-- ## Prerequisites -->
 
 
 
-:::::::::::::::::::::::::::::::::
+<!-- ::::::::::::::::::::::::::::::::: -->
 
 
 ## Introduction
 
+Heterogeneity of contact patterns between different groups affects disease transmission. The rate of contact within and between groups can be presented in a contact matrix. In this tutorial we are going to learn how contact matrices can be used in different analyses and how the `{socialmixr}` package can be used to estimate contact matrices. 
 
-
-In this tutorial we are going to learn how to use the `{socialmixr}` access to social contact data and create contact matrices.
 
 ```{r,message=FALSE,warning=FALSE}
 library(socialmixr)
@@ -46,7 +45,7 @@ library(socialmixr)
 
 ## The contact matrix
 
-A contact matrix represents the amount of contact or mixing within and between subgroups. The subgroups are often age categories but can also be geographic areas or high/low risk groups. For example, a contact matrix representing the number of contacts per day in children and adults could be :
+A contact matrix represents the amount of contact or mixing within and between subgroups. The subgroups are often age categories but can also be geographic areas or high/low risk groups. For example, a contact matrix representing the number of contacts per day in children and adults could be:
 
 $$
 \begin{bmatrix}
@@ -56,12 +55,10 @@ $$
 $$
 Children contact 8 other children each day, adults contact 7 other adults and children contact 2 adults (and vice versa). We can use this kind of information to account for the role heterogeneity in contact plays in infectious disease transmission. 
 
+
+## Estimating contact matrices
+
 Contact matrices can be estimated from surveys or contact data, or synthetic ones can be used. The POLYMOD survey measured contact patterns in 8 European countries using data on the location and duration of contacts reported by the study participants [(Mossong et al. 2008)](https://doi.org/10.1371/journal.pmed.0050074). [Prem et al. 2021](https://doi.org/10.1371/journal.pcbi.1009098) used the POLYMOD data within a Bayesian hierarchical model to project contact matrices for 177 other countries. 
-
-## Estimating and using contact matrices
-
-
-### `socialmixr`
 
 The R package `{socialmixr}` contains functions which can estimate contact matrices from the POLYMOD and other surveys. We can load the POLYMOD survey data :
 
@@ -122,14 +119,14 @@ contact_data_zambia
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 
-### Analyses with contact matrices
+## Analyses with contact matrices
 
 
 
 ::::::::::::::::::::::::::::::::::::: callout
 ## Normalisation
 
-There are times when we need to change the scale of our contact matrices e.g. to compare matrices to model projected matrices [Prem et al. 2021](https://doi.org/10.1371/journal.pcbi.1009098) the entries need to be on the same scale.
+There are times when we need to change the scale of our contact matrices e.g. to compare matrices to model projected matrices [(Prem et al. 2021)](https://doi.org/10.1371/journal.pcbi.1009098) the entries need to be on the same scale.
 
 Normalisation means converting a value to be between 0 and 1.To normalise a matrix we scale the matrix so that the largest eigenvalue is 1. This transformation scales the entries between 0 and 1 but preserves the relative differences between the entries. To perform this normalisation we divide all entries of the matrix by the largest eigenvalue of the matrix.
 
@@ -214,11 +211,13 @@ In the example above the dimension of the contact matrix will be the same as the
 For example, we might have a meta population model with two geographic areas. Then our contact matrix would be a 2 x 2 matrix with entries representing the contact between and within the geographic areas.
 
 
+## Summary 
 
+In this tutorial, we have learnt the definition of the contact matrix, how they are estimated and how to access social contact data from `socialmixr`. In the next tutorial, we will learn how to use the R package `{epidemics}` to generate disease trajectories from mathematical models with contact matrices from `socialmixr`.
 
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
 - `socialmixr` can be used to estimate contact matrices from survey data
-
+- Contact matrices can be used in different types of analyses
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
