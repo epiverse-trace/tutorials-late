@@ -137,7 +137,7 @@ Normalisation means converting a value to be between 0 and 1.To normalise a matr
 
 ```{r}
 contact_matrix <- t(contact_data$matrix)
-contact_matrix <- contact_matrix / max(eigen(contact_matrix)$values) 
+contact_matrix <- contact_matrix / max(eigen(contact_matrix)$values)
 contact_matrix
 ```
 
