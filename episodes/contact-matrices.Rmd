@@ -121,7 +121,12 @@ contact_data_zambia
 
 ## Analyses with contact matrices
 
+Contact matrices can be used in a wide range of epidemiological analyses, they can be used:
 
++ to calculate the basic reproduction number while accounting for different rates of contacts between age groups [(Funk et al. 2019)](https://doi.org/10.1186/s12916-019-1413-7),
++ to calculate final size of an epidemic, see the R package `{finalsize}`,
++ to assess the impact of interventions finding the relative change between pre and post intervention contact matrices to calculate the relative difference in $R_0$ [(Jarvis et al. 2020)](https://doi.org/10.1186/s12916-020-01597-8),
++ and in mathematical models to account for group specific contact patterns (see next section.)
 
 ::::::::::::::::::::::::::::::::::::: callout
 ## Normalisation
