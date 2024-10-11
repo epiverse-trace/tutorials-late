@@ -248,7 +248,7 @@ To generate trajectories using our model, we must prepare the following inputs:
 
 ### 1. Contact matrix
 
-Contact matrices can be estimated from surveys or contact data, or synthetic ones can be used. We will use the R package `{socialmixr}` to load a contact matrix estimated from POLYMOD survey data [(Mossong et al. 2008)](https://doi.org/10.1371/journal.pmed.0050074).
+We will use the R package `{socialmixr}` to load a contact matrix estimated from POLYMOD survey data [(Mossong et al. 2008)](https://doi.org/10.1371/journal.pmed.0050074).
 
 
 ::::::::::::::::::::::::::::::::::::: challenge 
@@ -296,13 +296,6 @@ contact_matrix
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 The result is a square matrix with rows and columns for each age group. Contact matrices can be loaded from other sources, but they must be formatted as a matrix to be used in `epidemics`.
-
-::::::::::::::::::::::::::::::::::::: callout
-### Why would a contact matrix be non-symmetric?
-
-One of the arguments of the function `contact_matrix()` is `symmetric=TRUE`. This means that the total number of contacts of age group 1 with age group 2, should be the same as the total number of contacts of age group 2 and age group 1 (see the `socialmixr` [vignette](https://cran.r-project.org/web/packages/socialmixr/vignettes/socialmixr.html) for more detail). However, when contact matrices are estimated from surveys or other sources, the *reported* number of contacts may differ by age group resulting in a non-symmetric contact matrix [(Prem et al 2021)](https://doi.org/10.1371/journal.pcbi.1009098).
-::::::::::::::::::::::::::::::::::::::::::::::::
-
 
 ### 2. Initial conditions
 
