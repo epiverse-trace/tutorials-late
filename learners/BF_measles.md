@@ -477,7 +477,7 @@ output %>%
 :::
 ::::
 
-### Effective Reproduction Number $\mathcal{R}_{eff}$
+## Effective Reproduction Number $\mathcal{R}_{eff}$
 
 Age-structured models account for heterogeneous characteristics in the
 population, such as:
@@ -494,7 +494,7 @@ formula:
 
 [$$
 \begin{equation}
-\mathcal{R}_{eff} = \rho(C) \times \lambda \times \gamma 
+\mathcal{R}_{eff} = \rho(C) \cdot \lambda \cdot \gamma 
 \end{equation}
  \qquad(5)$$]{#eq-reff}
 
@@ -554,6 +554,9 @@ print(reff)
 
 How different is the $\mathcal{R}_{eff}$ value from $\mathcal{R}_0$?
 :::
+
+This estimate of $\mathcal{R}_{eff}$ more accurately reflects the transmission potential and can 
+be used to estimate the **HIT** required for achieving sufficient vaccine coverage
 
 # Interventions models
 
@@ -663,7 +666,7 @@ ggplot(data_combined) +
 :::
 ::::
 
-### Vaccination Model
+## Vaccination Model
 
 An effective vaccine for measles exists, known as the measles, mumps,
 and rubella (MMR) vaccine. The efficacy of the measles component of the
@@ -818,7 +821,7 @@ ggplot(data_combined) +
 :::
 ::::
 
-#### Combining interventions
+## Combining interventions
 
 The `{epidemics}` package enables the integration of multiple
 interventions, such as vaccination and contact reduction, within a
