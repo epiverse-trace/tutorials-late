@@ -3,40 +3,40 @@ title: Introduction to Mathematical Modelling of Infectious Diseases
 toc-title: Table of contents
 ---
 
-## Preface
+# Preface
 
-This document is prepared for the participants of the Outbreak Analytics
-in R course, organized by the Epiverse-TRACE team. Its purpose is to
-provide a concise introduction to the mathematical theory behind
-modeling infectious epidemics. We will use the Susceptible, Exposed,
-Infected, and Recovered (**SEIR**) model, applicable to diseases like
-measles, mumps, rubella, as an example.
+This document is prepared for the participants of the Outbreak Analytics in R course, 
+organized by the Epiverse-TRACE team. Its purpose is to provide a concise 
+introduction to the mathematical theory behind modeling infectious epidemics. 
+We will use the Susceptible, Exposed, Infected, and Recovered (**SEIR**) model, 
+applicable to diseases like measles, mumps, rubella, as an example.
 
-## Secanrio
+# Secanrio
 
-Suppose a new infection has been detected in a closed community of
+SSuppose a new infection has been detected in a closed community of
 $\mathbf{N}$ individuals, with the infection diagnosed in a single
 individual. The remaining $\mathbf{N-1}$ individuals are all at risk of
 getting the infection and are considered susceptible ($\mathbf{S}$). An
 infected person interacts, on average per time unit (e.g., a day, week,
 or month), with some $\mathbf{k}$ individuals within the community. In
 particular, the infected person interacts with
-$\frac{\mathbf{KS}}{\mathbf{N}}$ susceptible individuals, among whom
-$\mathbf{k}' \leq \mathbf{k}$ may become infected. If the infection is
-highly contagious, $\mathbf{k}'$ will be closer to $\mathbf{k}$, and
+$\frac{\mathbf{K\cdot S}}{\mathbf{N}}$ susceptible individuals, among
+whom $\mathbf{k}' \leq \mathbf{k}$ may become infected. If the infection
+is highly contagious, $\mathbf{k}'$ will be closer to $\mathbf{k}$, and
 vice versa. The probability of transmission is calculated as
-$\mathcal{P}= \frac{\mathbf{k}'}{\mathbf{k}}.$ Consequently, on
+$\mathbfcal{P}= \frac{\mathbf{k}'}{\mathbf{k}}.$ Consequently, on
 average, the infected individual will infect
-$\beta\frac{\mathbf{S}}{\mathbf{N}}$ susceptible individuals per time
-unit, where $\beta = \mathcal{P}\mathbf{k}$ is called the effective
-transmission rate. This represents the average rate at which an infected
-individual can transmit the infection to a susceptible individual.
+$\beta\cdot \frac{\mathbf{S}}{\mathbf{N}}$ susceptible individuals per
+time unit, where $\beta = \mathbfcal{P} \cdot \mathbf{k}$ is called the
+effective transmission rate. This represents the average rate at which
+an infected individual can transmit the infection to a susceptible
+individual.
 
 Depending on the nature of the disease, a newly infected individual may
 take time to show symptoms. This time period is known as the incubation
 period. Susceptible individuals who come into contact with an infected
 person and acquire the infection first move to an intermediate state
-called exposed ($\mathbf{E}$). There they (he/she) spent, on average,
+called exposed ($\mathbf{E}$). T here they (he/she) spent, on average,
 $\frac{1}{\omega}$ units time (the incubation period) and then move to
 the infected class ($\mathbf{I}$) at a constant rate $\omega$. Infected
 individuals are removed (either by recovery or death) from $I$ at a
@@ -51,8 +51,6 @@ they move to the recovered class ($\mathbf{R}$) (see
 ![](fig/t2.drawio.png){ref-parent="fig-seir"}
 ![](fig/t3.drawio.png){ref-parent="fig-seir"}
 
-Figure 1: SEIR model compartments
-
 The four classes considered define the $\mathbf{SEIR}$ model. The sizes
 of these classes change overtime and thus are functions of time $t$, and
 the total population at any time $t$ is
@@ -62,10 +60,10 @@ as follows:
 
 [$$
 \begin{eqnarray} 
-\frac{dS}{dt} &=& -\beta \frac{SI}{N} & &​ \\
-\frac{dE}{dt} &=&\beta \frac{SI}{N}​ &-& \omega E\\
-\frac{dI}{dt} &=& \omega E &-& \gamma I​ \\
-\frac{dR}{dt} &=& \gamma I​  & &\\ 
+\frac{dS}{dt} &=& -\beta \cdot \frac{S\cdot I}{N} & &​ \\
+\frac{dE}{dt} &=&\beta\cdot  \frac{S\cdot I}{N}​ &-& \omega\cdot  E\\
+\frac{dI}{dt} &=& \omega \cdot E &-& \gamma \cdot I​ \\
+\frac{dR}{dt} &=& \gamma \cdot I​  & &\\ 
 \end{eqnarray}
  \qquad(1)$$]{#eq-s1}
 
@@ -85,14 +83,22 @@ as the positivity of the solution.
 Before, delving into mathematical details of how to solve
 [Equation 1](#eq-s1){.quarto-xref}, a few key observations can be made:
 
-1.  The infection will take off only when $\frac{\mathbf{dE}}{dt} > 0$
+1.  At the onset of an epidemic, the number of susceptible individuals
+    begins to decrease exponentially, while the number of exposed and
+    infectious individuals increases. As the epidemic progresses, the
+    susceptible population becomes depleted, and the exposed and
+    infectious groups reach their peak before starting to decline.
+    Meanwhile, the number of recovered individuals continues to increase
+    without decreasing.
+
+2.  The infection will take off only when $\frac{\mathbf{dE}}{dt} > 0$
     and $\frac{\mathbf{dI}}{dt} > 0$, and taking the values of these two
     terms from [Equation 1](#eq-s1){.quarto-xref} leads to
 
 [$$
 \begin{eqnarray} 
-\beta \frac{SI}{N}​ &-& \omega E > 0\\
- \omega E &-& \gamma I​ > 0.
+\beta \cdot \frac{S\cdot I}{N}​ &-& \omega \cdot E > 0\\
+ \omega\cdot  E &-& \gamma \cdot I​ > 0.
 \end{eqnarray} 
  \qquad(2)$$]{#eq-s2} Adding the two equations in
 [Equation 2](#eq-s2){.quarto-xref}, gives
@@ -102,25 +108,50 @@ infection with take off $\frac{\beta}{\gamma} > 1$. This is a very
 interesting observation --It tells that the disease cases will increase
 if the ratio of new infections to recovered cases is greater than 1.
 
-2.  The ratio $\frac{\beta}{\gamma}$ represents the basic reproduction
-    number, $\mathcal{R}_0$, which is defined as the average number of
+3.  The ratio $\frac{\beta}{\gamma}$ represents the basic reproduction
+    number, $\mathbfcal{R}_0$, which is defined as the average number of
     new infections caused by a single infected individual in a fully
-    susceptible population. $\mathcal{R}_0$ is a crucial metric for
+    susceptible population. $\mathbfcal{R}_0$ is a crucial metric for
     understanding the transmissibility of an infectious disease. A
-    higher value of $\mathcal{R}_0$ indicates a more transmissible
+    higher value of $\mathbfcal{R}_0$ indicates a more transmissible
     disease, leading to a faster spread within the community.
 
-3.  At the onset of an epidemic, the number of susceptible individuals
-    begins to decrease exponentially, while the number of exposed and
-    infectious individuals increases. As the epidemic progresses, the
-    susceptible population becomes depleted, and the exposed and
-    infectious groups reach their peak before starting to decline.
-    Meanwhile, the number of recovered individuals continues to increase
-    without decreasing.
+4.  The $\mathcal{R}_0$ value helps to determine the finalsize- the
+    total number of individuals that that will be infected- of the
+    outbreak via the following equation [$$
+    \begin{equation}
+    z = 1 - e^{-\mathcal{R}_0 \cdot z}
+    \end{equation}
+     \qquad(3)$$]{#eq-fs}
 
-## Measles Outbreak in Burkina Faso
+Where:
 
-### Backaground
+-   $z$ is the final size (the fraction of the population infected),
+
+-   $\mathcal{R}_0$ is the basic reproduction number, and
+
+-   $e$ is the base of the natural logarithm.
+
+5.  Additionally, the basic reproduction number $\mathcal{R}_0$ is
+    crucial for determining the herd immunity threshold (HIT), which
+    represents the minimum proportion of the population that must be
+    immune (either through vaccination or previous infection) in order
+    to contain the epidemic and prevent widespread transmission. The
+    formula for the herd immunity threshold is:
+    [$$ HIT = 1 - \frac{1}{\mathcal{R}_0} \qquad(4)$$]{#eq-hit}
+
+Where:
+
+-   HIT is the proportion of the population that needs to be immune to
+    achieve herd immunity,
+
+As $\mathcal{R}_0$ increases, the herd immunity threshold also
+increases, meaning a larger proportion of the population must be immune
+to prevent the epidemic from spreading.
+
+# Measles Outbreak in Burkina Faso
+
+## Backaground
 
 Measles is a highly contagious viral disease that spreads quickly,
 particularly in environments where people live or gather in close
@@ -139,7 +170,7 @@ typically around 8 days, [while the infectious period averages 5 days][masters20
 dynamics of measles outbreaks and evaluate control measures like
 vaccination
 
-### Burkina Faso Situation in Jan 2024
+## Burkina Faso Situation in Jan 2024
 
 Burkina Faso, like many other countries in Africa, faces recurring
 measles outbreaks. This can be attributed to factors such as limited
@@ -155,7 +186,7 @@ explore the outbreak dynamics with and without vaccination. For this
 purpose, we will use the **R** package `{epidemics}`, which is designed
 for modeling infectious disease spread.
 
-### Baseline Model
+## Baseline Model
 
 **Model Assumptions and Parameters**
 
@@ -199,7 +230,7 @@ for modeling infectious disease spread.
     -   $\mathcal{R}_0 =15$ (for measles this value typically ranges
         from 12 to 18).
     -   This makes the transmission rate
-        $\beta = \frac{\mathcal{R}_0}{\gamma} = 3$
+        $\beta = \mathbfcal{R}_0\cdot\gamma = 3$
     -   This means each infectious individual causes 3 new infections
         per day in a fully susceptible population.
 
@@ -232,7 +263,7 @@ output <- model_default(
   transmission_rate = 15/5,  # R0/infectious period = 15/5 = 3
   infectiousness_rate = 1/8,  # 1/incubation period (pre-infectious phase)
   recovery_rate = 1/5,  # 1/infectious period
-  time_end = 75,  # Simulation over 75 days
+  time_end = 120,  # Simulation over 120 days
   increment = 1  # Daily increments
 )
 
@@ -262,57 +293,80 @@ filter(output,
 :::
 ::::
 
-### Age-Structured Model
+## Expected Epidemic Size & Herd Immunity
+
+Using the `{finalsize}` package implements
+[Equation 3](#eq-fs){.quarto-xref} for calculate the expected proportion
+of the population that will be infected given a specified basic
+reproduction number $(\mathcal{R}_0)$. The calculation can be done as
+follows:
+
+:::: cell
+``` {.r .fold-hide .cell-code}
+# Loading the finalsize library
+library(finalsize)
+finalsize::final_size(10)
+```
+
+::: {.cell-output .cell-output-stdout}
+        demo_grp   susc_grp susceptibility p_infected
+    1 demo_grp_1 susc_grp_1              1  0.9999546
+:::
+::::
+
+For $\mathcal{R}_0 \geq 10$, the results indicate that nearly the entire
+population is expected to be infected by measles. The $HIT$ needed to
+contains the epidemic is about $93\%$, uaing the formula given in
+[Equation 4](#eq-hit){.quarto-xref}.
+
+# Age-Structured Model
 
 The age structure of Burkina Faso is characteristic of a young
 population, with a majority of the population being under 25 years old.
 [According to recent estimates][un_population_prospects, cia_world_factbook_bf, world_bank_population_data], the age structure
 is broken down as follows:
 
--   $0\to 14$ years: \~ 44 (43-45)% of the population
--   $15\to 24$ years: \~19.5 (19-20)%
--   $25\to 54$ years: \~29 (28-30)%
--   $55\to 64$ years: \~3.5 (3-4)%
--   **65 years and over**: \~2.5 (2-3)%
 
-##### **Contact Martix**
+-   $[0\to15)$ years: \~ 44 (43-45)% of the population
+-   $[15\to 25)$ years: \~19.5 (19-20)%
+-   $[25\to 55)$ years: \~29 (28-30)%
+-   $[55\to 65)$ years: \~5 (3-5)%
+-   $65+$ : \~2.5 (2-3)%
+
+
+## **Contact Matrix**
 
 A contact matrix typically consists of rows and columns representing
 different age groups, where each cell indicates the average number of
 contacts between individuals of the age group corresponding to that row
 and column.
 
-Althought we do not have a direct access for contact matrix for Burkina
+Although we do not have a direct access for contact matrix for Burkina
 Faso, we can resort for a hypothetical contact matrix based on general
 assumptions about high contact rates among younger populations and lower
 rates among older age groups:
 
-  -----------------------------------------------------------------------
-              **0-14      **15-24     **25-54     **55-64     **65+
-              years**     years**     years**     years**     years**
-  ----------- ----------- ----------- ----------- ----------- -----------
-  **0-14      20          10          5           2           1
-  years**                                                     
+  -------------------------------------------------------------------------------------
+                 **\[0-15)**   **\[15-25)**   **\[25-54)**   **\[55-65)**   **65+**
+  -------------- ------------- -------------- -------------- -------------- -----------
+  **\[0-15)**    20            10             5              2              1
 
-  **15-24     10          15          10          4           2
-  years**                                                     
+  **\[15-25)**   10            15             10             4              2
 
-  **25-54     5           10          15          6           3
-  years**                                                     
+  **\[25-55)**   5             10             15             6              3
 
-  **55-64     2           4           6           10          5
-  years**                                                     
+  **\[55-65)**   2             4              6              10             5
 
-  **65+       1           2           3           5           10
-  years**                                                     
-  -----------------------------------------------------------------------
+  **$65+$**       1             2              3              5              10
+  -------------------------------------------------------------------------------------
 
-  : Table for a **hyoothetical** contact matrix for Burkina Faso
-  population.
+  : Table for a **hypothetical** mean contacts between different age
+  groups in Burkina Faso population.
 
 :::: cell
 ``` {.r .cell-code}
-# Define the contact matrix
+# Initial conditions: one in every 1 million is infected
+bf_pop <- 22.67e6
 contact_matrix <- matrix(
   c(20, 10, 5, 2, 1,   # Contacts from 0-14 years
     10, 15, 10, 4, 2,   # Contacts from 15-24 years
@@ -322,17 +376,36 @@ contact_matrix <- matrix(
   nrow = 5,              # Number of rows
   byrow = TRUE,          # Fill the matrix by rows
   dimnames = list(
-    c("0-14", "15-24", "25-54", "55-64", "65+"),
-    c("0-14", "15-24", "25-54", "55-64", "65+")
+    c("[0-15)", "[15-25)", "[25-55)", "[55-65)", "65+"),
+    c("[0-15)", "[15-25)", "[25-55)", "[55-65)", "65+")
   )
 )
+# Define the demography vector for Burkina Faso
+demography_vector <- c(0.44, 0.195, 0.29, 0.05, 0.025) * bf_pop
+names(demography_vector) <- rownames(contact_matrix)
+print(demography_vector)
+```
 
+::: {.cell-output .cell-output-stdout}
+     [0-15) [15-25) [25-55) [55-65)     65+ 
+    9974800 4420650 6574300 1133500  566750 
+:::
+
+``` {.r .cell-code}
+# scale the contact matrix so the largest eigenvalue is 1.0
+# this is to ensure that the overall epidemic dynamics correctly reflect
+# the assumed value of R0
+contact_matrix <- contact_matrix / max(Re(eigen(contact_matrix)$values))
+
+# divide each row of the contact matrix by the corresponding demography
+# this reflects the assumption that each individual in group {j} make contacts
+# at random with individuals in group {i}
+contact_matrix <- contact_matrix / demography_vector
 # Print the contact matrix
-# print(contact_matrix)
+#print(contact_matrix)
 
 # Define the population structure for Burkina Faso
-# Initial conditions: one in every 1 million is infected
-bf_pop <- 22.67e6
+
 initial_i <- 1 / bf_pop
 initial_conditions <- c(S = 1 - initial_i, E = 0, I = initial_i, R = 0, V = 0)
 
@@ -346,17 +419,7 @@ initial_conditions_matrix <- rbind(
 )
 rownames(initial_conditions_matrix) <- rownames(contact_matrix)
 #print(initial_conditions_matrix)
-
-# Define the demography vector for Burkina Faso
-demography_vector <- c(0.44, 0.195, 0.29, 0.035, 0.025) * bf_pop
-names(demography_vector) <- rownames(contact_matrix)
-print(demography_vector)
 ```
-
-::: {.cell-output .cell-output-stdout}
-       0-14   15-24   25-54   55-64     65+ 
-    9974800 4420650 6574300  793450  566750 
-:::
 ::::
 
 :::: cell
@@ -375,7 +438,7 @@ output <- model_default(
   transmission_rate = 15 / 5,  # R0/infectious period = 15/5 = 3
   infectiousness_rate = 1 / 8,  # 1/incubation period (pre-infectious phase)
   recovery_rate = 1 / 5,  # 1/infectious period
-  time_end = 75,  # Simulation over 75 days
+  time_end = 122,  # Simulation over 122 days
   increment = 1  # Daily increments
 )
 
@@ -410,11 +473,89 @@ output %>%
 ```
 
 ::: cell-output-display
-![](fig/unnamed-chunk-3-1.png)
+![](fig/unnamed-chunk-4-1.png)
 :::
 ::::
 
-### Interventions Model
+### Effective Reproduction Number $\mathcal{R}_{eff}$
+
+Age-structured models account for heterogeneous characteristics in the
+population, such as:
+
+-   Demographic differences in social contacts,
+-   Variations in demographic distribution, and
+-   Differences in susceptibility to infection.
+
+These factors result in different $\mathcal{R}_0$ values for each age
+group. The **effective reproduction number** $\mathcal{R}_{eff}$
+represents the overall reproduction number across all age groups while
+accounting for these differences. It is calculated using the following
+formula:
+
+[$$
+\begin{equation}
+\mathcal{R}_{eff} = \rho(C) \times \lambda \times \gamma 
+\end{equation}
+ \qquad(5)$$]{#eq-reff}
+
+Where:
+
+-   $\rho(C)$ is the **largest eigenvalue** of the contact matrix $C$,
+    which is derived from the social contact patterns, scaled by the
+    population distribution across different demographic and
+    susceptibility groups.
+
+-   $\lambda$ is the **force of infection**, which measures the rate at
+    which susceptible individuals are infected. This is distinct from
+    the effective transmission rate, often denoted as $\beta$.
+
+-   $\gamma$ represents the **infectious period**, which is the average
+    duration an individual remains infectious.
+
+The `{finalsize}`package implements
+[Equation 5](#eq-reff){.quarto-xref}, and we can use it to calculate the
+$\mathcal{R}_{eff}$ for our age-structured model, as follows:
+
+:::: cell
+``` {.r .cell-code}
+r0 <-  15 #  basic reproduction number 
+# define the number of age and susceptibility groups
+n_demo_grps <- length(demography_vector)
+n_risk_grps <- 5
+# In this example, risk varies across groups
+susceptibility <- matrix(
+  data = c(0.80, 0.5, 0.3, 0.2, 0.1), nrow = n_demo_grps, ncol = n_risk_grps
+)
+# risk does not vary within groups
+p_susceptibility <- matrix(
+  data = 1, nrow = n_demo_grps, ncol = n_risk_grps
+)
+# p_susceptibility rows must sum to 1.0
+p_susceptibility <- p_susceptibility / rowSums(p_susceptibility)
+
+
+reff <- r_eff(
+  r0 = r0,
+  contact_matrix = contact_matrix,
+  demography_vector = demography_vector,
+  susceptibility = susceptibility,
+  p_susceptibility = p_susceptibility
+)
+print(reff)
+```
+
+::: {.cell-output .cell-output-stdout}
+    [1] 8.529089
+:::
+::::
+
+::: callout-question
+### $\mathcal{R}_{eff}$ vs $\mathcal{R}_0$
+
+How different is the $\mathcal{R}_{eff}$ value from $\mathcal{R}_0$?
+:::
+
+# Interventions models
 
 Interventions against measles include prevention, control, and
 treatment. Controlling its spread requires a combination of public
@@ -422,9 +563,9 @@ health measures, such as reducing contact, isolating infectious and
 exposed individuals, and vaccination. In this section, we will simulate
 the SEIR model with interventions using the `{epidemics}` package.
 
-#### Modelling the Effect of Contacts Reduction
+## Contacts Reduction Model
 
-Reducing contact by a certain percentage, say ( 20% ), impacts the
+Reducing contact by a certain percentage, say (20%), impacts the
 transmission rate $( \beta )$. This reduction can be achieved through
 measures such as quarantine, limiting public gatherings, and regular
 screening in healthcare settings. To include such interventions in the
@@ -438,7 +579,7 @@ reduced_contacts <- intervention(
   name = "reduce",
   type = "rate",
   time_begin = 30,
-  time_end = 30 + 30,
+  time_end = 30 + 60,
   reduction = 0.2
 )
 
@@ -449,7 +590,7 @@ output2 <- epidemics::model_default(
   infectiousness_rate = 1 / 8,  # 1/incubation period (pre-infectious phase)
   recovery_rate = 1 / 5,  # 1/infectious period
   intervention = list(transmission_rate = reduced_contacts),
-  time_end = 75,  # Simulation over 75 days
+  time_end = 120,  # Simulation over 75 days
   increment = 1  # Daily increments
 )
 ```
@@ -482,7 +623,7 @@ ggplot(data_combined) +
     geom = "rect",
     xmin = reduced_contacts[["time_begin"]],
     xmax = reduced_contacts[["time_end"]],
-    ymin = 0, ymax = 0.67e6,
+    ymin = 0, ymax = 0.67e3,
     fill = alpha("red", 0.2),
     linetype = "dashed"
   ) +
@@ -499,7 +640,7 @@ ggplot(data_combined) +
     palette = "Dark2",
     name = "Age Group"
   ) +
-  expand_limits(y = c(0, 100e3)) +
+  expand_limits(y = c(0, 1e3)) +
   coord_cartesian(expand = FALSE) +
   theme_bw() +
   theme(
@@ -518,20 +659,20 @@ ggplot(data_combined) +
 ```
 
 ::: cell-output-display
-![](fig/unnamed-chunk-5-1.png)
+![](fig/unnamed-chunk-7-1.png)
 :::
 ::::
 
-#### Modelling the effect of vaccination
+### Vaccination Model
 
 An effective vaccine for measles exists, known as the measles, mumps,
 and rubella (MMR) vaccine. The efficacy of the measles component of the
 MMR vaccine varies slightly depending on the age at which it is
 administered and the number of doses received. For example, the
 vaccine's efficacy is approximately $93\%$, $97\%$, $95\%$, $94\%$, and
-$85\%$ for the age groups $0\to 14$, $15\to 24$, $25\to 54$, $55\to 64$,
-and $65+$, respectively. The `{epidemics}` package enables the
-incorporation of vaccination interventions into modeling, as
+$85\%$ for the age groups $[0\to 15)$, $[15\to 25)$, $[25\to 55)$,
+$[55\to 65)$, and $65+$, respectively. The `{epidemics}` package enables
+the incorporation of vaccination interventions into modeling, as
 demonstrated in the code chunk below.
 
 :::: cell
@@ -539,7 +680,7 @@ demonstrated in the code chunk below.
 vaccinate_elders <- vaccination(
   name = "Vaccination compagain",
   time_begin = matrix(30, nrow(contact_matrix)),
-  time_end = matrix(60, nrow(contact_matrix)),
+  time_end = matrix(90, nrow(contact_matrix)),
   nu = matrix(c(0.93, 0.97, 0.95, 0.90, 0.95 ))
 )
 
@@ -550,7 +691,7 @@ output3 <- epidemics::model_default(
   infectiousness_rate = 1 / 8,  # 1/incubation period (pre-infectious phase)
   recovery_rate = 1 / 5,  # 1/infectious period
   vaccination = vaccinate_elders,
-  time_end = 75,  # Simulation over 75 days
+  time_end = 120,  # Simulation over 120 days
   increment = 1  # Daily increments
 )
 
@@ -566,7 +707,7 @@ output3 %>%
   geom_line(linewidth = 1.2) +
   scale_y_continuous(labels = scales::comma) +
   scale_colour_brewer(palette = "Dark2", name = "Age group") +
-  expand_limits(y = c(0, 500e3)) +
+  expand_limits(y = c(0, 3e3)) +
   coord_cartesian(expand = FALSE) +
   theme_bw() +
   theme(
@@ -585,7 +726,7 @@ output3 %>%
 ```
 
 ::: cell-output-display
-![](fig/unnamed-chunk-6-1.png)
+![](fig/unnamed-chunk-8-1.png)
 :::
 ::::
 
@@ -621,7 +762,7 @@ ggplot(data_combined) +
     geom = "rect",
     xmin = reduced_contacts[["time_begin"]],
     xmax = reduced_contacts[["time_end"]],
-    ymin = 0, ymax = 0.67e6,  # Define the rectangle's limits
+    ymin = 0, ymax = 0.67e3,  # Define the rectangle's limits
     fill = alpha("red", 0.2),  # Semi-transparent red fill
     linetype = "dashed"  # Dashed border for the rectangle
   ) +
@@ -645,7 +786,7 @@ ggplot(data_combined) +
   ) +
   
   # Set axis limits and disable automatic expansion
-  expand_limits(y = c(0, 100e3)) +
+  expand_limits(y = c(0, 1e3)) +
   coord_cartesian(expand = FALSE) +
   
   # Apply a clean white background theme
@@ -673,7 +814,7 @@ ggplot(data_combined) +
 ```
 
 ::: cell-output-display
-![](fig/unnamed-chunk-7-1.png)
+![](fig/unnamed-chunk-9-1.png)
 :::
 ::::
 
@@ -695,7 +836,7 @@ output4 <- epidemics::model_default(
   recovery_rate = 1 / 5,  # 1 / infectious period
   intervention = list(transmission_rate = reduced_contacts),
   vaccination = vaccinate_elders,
-  time_end = 75,  # Simulation over 75 days
+  time_end = 120,  # Simulation over 75 days
   increment = 1  # Daily increments
 )
 
@@ -710,7 +851,7 @@ output4 %>%
   geom_line(linewidth = 1.2) +  # Line width for better visibility
   scale_y_continuous(labels = scales::comma) +  # Format y-axis with commas for thousands
   scale_colour_brewer(palette = "Dark2", name = "Age Group") +  # Color palette for age groups
-  expand_limits(y = c(0, 250e3)) +  # Ensure the y-axis starts from 0 and goes up to 500,000
+  expand_limits(y = c(0, 1.5e3)) +  # Ensure the y-axis starts from 0 and goes up to 500,000
   coord_cartesian(expand = FALSE) +  # Disable axis expansion
   theme_bw() +  # Clean, white background theme
   theme(
@@ -729,16 +870,6 @@ output4 %>%
 ```
 
 ::: cell-output-display
-![](fig/unnamed-chunk-8-1.png)
+![](fig/unnamed-chunk-10-1.png)
 :::
 ::::
-
-
-[masters2023measles]: https://www.thelancet.com/journals/lanpub/article/PIIS2468-2667(23)00255-5/fulltext "Measles virus transmission patterns and public health responses during Operation Allies Welcome: a descriptive epidemiological study"
-[savethechildren]: https://www.savethechildren.net/news/burkina-faso-over-2000-children-diagnosed-suspected-measles-nationwide-outbreak "BURKINA FASO: Over 2,000 children diagnosed with suspected measles in nationwide outbreak"
-[thecable]: https://www.thecable.ng/burkina-faso-records-2000-suspected-cases-as-country-battles-measles-outbreak/ "Burkina Faso records 2,000 suspected cases as country battles measles outbreak"
-[crisis24]: https://crisis24.garda.com/alerts/2024/02/burkina-faso-elevated-measles-activity-reported-in-multiple-areas-in-february "Burkina Faso: Elevated measles activity reported in multiple areas in February"
-[un_population_prospects]: https://population.un.org/wpp/ "World Population Prospects"
-[world_bank_population_data]: https://data.worldbank.org/indicator/SP.POP.TOTL?locations=BF "Population Data - Burkina Faso"
-[cia_world_factbook_bf]: https://www.cia.gov/the-world-factbook/countries/burkina-faso/ "The World Factbook - Burkina Faso"
-
