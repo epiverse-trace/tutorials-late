@@ -472,8 +472,9 @@ z = 1 - e^{-\mathcal{R}_0 \cdot z}
 </div>
 </div>
 </div>
-<section id="effective-reproduction-number-mathcalr_eff" class="level3">
-<h3 class="anchored" data-anchor-id="effective-reproduction-number-mathcalr_eff">Effective Reproduction Number <span class="math inline">\(\mathcal{R}_{eff}\)</span></h3>
+</section>
+<section id="effective-reproduction-number-mathcalr_eff" class="level2">
+<h2 class="anchored" data-anchor-id="effective-reproduction-number-mathcalr_eff">Effective Reproduction Number <span class="math inline">\(\mathcal{R}_{eff}\)</span></h2>
 <p>Age-structured models account for heterogeneous characteristics in the population, such as:</p>
 <ul>
 <li>Demographic differences in social contacts,</li>
@@ -483,7 +484,7 @@ z = 1 - e^{-\mathcal{R}_0 \cdot z}
 <p>These factors result in different <span class="math inline">\(\mathcal{R}_0\)</span> values for each age group. The <strong>effective reproduction number</strong> <span class="math inline">\(\mathcal{R}_{eff}\)</span> represents the overall reproduction number across all age groups while accounting for these differences. It is calculated using the following formula:</p>
 <p><span id="eq-reff"><span class="math display">\[
 \begin{equation}
-\mathcal{R}_{eff} = \rho(C) \times \lambda \times \gamma
+\mathcal{R}_{eff} = \rho(C) \cdot \lambda \cdot \gamma
 \end{equation}
 \qquad(5)\]</span></span></p>
 <p>Where:</p>
@@ -522,11 +523,11 @@ z = 1 - e^{-\mathcal{R}_0 \cdot z}
 <pre><code>[1] 8.529089</code></pre>
 </div>
 </div>
-</section>
 <section id="mathcalr_eff-vs-mathcalr_0" class="level3 callout-question">
 <h3 class="anchored" data-anchor-id="mathcalr_eff-vs-mathcalr_0"><span class="math inline">\(\mathcal{R}_{eff}\)</span> vs <span class="math inline">\(\mathcal{R}_0\)</span></h3>
 <p>How different is the <span class="math inline">\(\mathcal{R}_{eff}\)</span> value from <span class="math inline">\(\mathcal{R}_0\)</span>?</p>
 </section>
+<p>This estimate of <span class="math inline">\(\mathcal{R}_{eff}\)</span> more accurately reflects the transmission potential and can be used to estimate the <strong>HIT</strong> required for achieving sufficient vaccine coverage</p>
 </section>
 </section>
 <section id="interventions-models" class="level1">
@@ -619,8 +620,9 @@ z = 1 - e^{-\mathcal{R}_0 \cdot z}
 </div>
 </div>
 </div>
-<section id="vaccination-model" class="level3">
-<h3 class="anchored" data-anchor-id="vaccination-model">Vaccination Model</h3>
+</section>
+<section id="vaccination-model" class="level2">
+<h2 class="anchored" data-anchor-id="vaccination-model">Vaccination Model</h2>
 <p>An effective vaccine for measles exists, known as the measles, mumps, and rubella (MMR) vaccine. The efficacy of the measles component of the MMR vaccine varies slightly depending on the age at which it is administered and the number of doses received. For example, the vaccine’s efficacy is approximately <span class="math inline">\(93\%\)</span>, <span class="math inline">\(97\%\)</span>, <span class="math inline">\(95\%\)</span>, <span class="math inline">\(94\%\)</span>, and <span class="math inline">\(85\%\)</span> for the age groups <span class="math inline">\([0\to 15)\)</span>, <span class="math inline">\([15\to 25)\)</span>, <span class="math inline">\([25\to 55)\)</span>, <span class="math inline">\([55\to 65)\)</span>, and <span class="math inline">\(65+\)</span>, respectively. The <code>{epidemics}</code> package enables the incorporation of vaccination interventions into modeling, as demonstrated in the code chunk below.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>vaccinate_elders <span class="ot">&lt;-</span> <span class="fu">vaccination</span>(</span>
@@ -757,8 +759,9 @@ z = 1 - e^{-\mathcal{R}_0 \cdot z}
 </div>
 </div>
 </div>
-<section id="combining-interventions" class="level4">
-<h4 class="anchored" data-anchor-id="combining-interventions">Combining interventions</h4>
+</section>
+<section id="combining-interventions" class="level2">
+<h2 class="anchored" data-anchor-id="combining-interventions">Combining interventions</h2>
 <p>The <code>{epidemics}</code> package enables the integration of multiple interventions, such as vaccination and contact reduction, within a single model, allowing for more comprehensive simulations of disease control strategies. The below code chunk shows how to combine interventions together.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Run the epidemic model</span></span>
@@ -808,8 +811,6 @@ z = 1 - e^{-\mathcal{R}_0 \cdot z}
 </div>
 </div>
 </div>
-</section>
-</section>
 </section>
 </section>
 
