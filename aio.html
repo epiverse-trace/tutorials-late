@@ -579,7 +579,7 @@ year age bins:</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Output </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1018,7 +1018,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-model-choices"><p>Content from <a href="model-choices.html">Choosing an appropriate model</a></p>
 <hr>
-<p>Last updated on 2024-10-01 |
+<p>Last updated on 2024-10-23 |
 
         <a href="https://github.com/epiverse-trace/tutorials-late/edit/main/episodes/model-choices.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -1263,7 +1263,11 @@ infections</strong>
 <code>model_default()</code><a class="anchor" aria-label="anchor" href="#model_default"></a>
 </h4>
 <p>A deterministic SEIR model with age specific direct transmission.</p>
-<figure><img src="fig/model-choices-rendered-diagram-1.png" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure><p>The model is capable of simulating an Ebola type outbreak, but as the
+<!--html_preserve-->
+<div id="htmlwidget-de81f282fc7eeda36f0a" class="grViz html-widget html-fill-item" style="width:504px;height:504px;">
+
+</div>
+<script type="application/json" data-for="htmlwidget-de81f282fc7eeda36f0a">{"x":{"diagram":"digraph {\n\n  # graph statement\n  #################\n  graph [layout = dot,\n         rankdir = LR,\n         overlap = true,\n         fontsize = 10]\n\n  # nodes\n  #######\n  node [shape = square,\n       fixedsize = true\n       width = 1.3]\n\n       S\n       E\n       I\n       R\n\n  # edges\n  #######\n  S -> E [label = \" infection \n(transmissibility &beta;)\"]\n  E -> I [label = \" onset of infectiousness \n(infectiousness rate &alpha;)\"]\n  I -> R [label = \" recovery \n(recovery rate &gamma;)\"]\n\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script><!--/html_preserve--><p>The model is capable of simulating an Ebola type outbreak, but as the
 model is deterministic, we are not able to explore stochastic variation
 in the early stages of the outbreak.</p>
 </div>
@@ -1297,7 +1301,11 @@ distribution. Similarly for the infectious period <span class="math inline">\(\r
 the stochastic model formulation refer to the section on <a href="https://epiverse-trace.github.io/epidemics/articles/model_ebola.html#details-discrete-time-ebola-virus-disease-model" class="external-link">Discrete-time
 Ebola virus disease model</a> in the “Modelling responses to a
 stochastic Ebola virus epidemic” vignette. </strong></p>
-<figure><img src="fig/model-choices-rendered-unnamed-chunk-1-1.png" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure><p>The model has additional parameters describing the transmission risk
+<!--html_preserve-->
+<div id="htmlwidget-da752f7cf7bda5d9def9" class="grViz html-widget html-fill-item" style="width:504px;height:504px;">
+
+</div>
+<script type="application/json" data-for="htmlwidget-da752f7cf7bda5d9def9">{"x":{"diagram":"digraph {\n\n  # graph statement\n  #################\n  graph [layout = dot,\n  rankdir = LR,\n  overlap = true,\n  fontsize = 10]\n\n  # nodes\n  #######\n  node [shape = square,\n       fixedsize = true\n       width = 1.3]\n\n       S\n       E\n       I\n       H\n       F\n       R\n\n  # edges\n  #######\n  S -> E [label = \" infection (&beta;)\"]\n  E -> I [label = \" onset of \ninfectiousness (&gamma; E)\"]\n  I -> F [label = \" death (funeral) \n(&gamma; I)\"]\n  F -> R [label = \" safe burial (one timestep) \"]\n  I -> H [label = \" hospitalisation (p hosp)\"]\n  H -> R [label = \" recovery or safe burial \n (&gamma; I)\"]\n\n  subgraph {\n    rank = same; I; F;\n  }\n  subgraph {\n    rank = same; H; R;\n  }\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script><!--/html_preserve--><p>The model has additional parameters describing the transmission risk
 in hospital and funeral settings:</p>
 <ul>
 <li>
@@ -1314,6 +1322,30 @@ explore how variation in numbers of infected individuals in the early
 stages of an Ebola outbreak.</p>
 </div>
 </div>
+</div>
+</div>
+</div>
+<div id="do-i-need-to-use-a-mathematical-model" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<div id="do-i-need-to-use-a-mathematical-model" class="callout-inner">
+<h3 class="callout-title">Do I need to use a mathematical model?</h3>
+<div class="callout-content">
+<p>Mathematical models can be used to generate disease trajectories,
+which can then be used to calculate the final size of the epidemic. If
+you are only interested in the final size, it is possible to use
+mathematical theory to calculate this quantity directly, without having
+to simulate the full model then work out how many individuals were
+infected. These mathematical calculations are performed using R
+functions in the package <a href="https://github.com/epiverse-trace/finalsize" class="external-link">finalsize</a>.</p>
+<p>An advantage of using <code>finalsize</code> is that fewer parameters
+are required. You only need to define transmissibility and the
+susceptibility of the population, and a social contact matrix if
+relevant, rather than parameters like infectious period that are
+required in {epidemics} to simulate dynamics over time. Check out the <a href="https://epiverse-trace.github.io/finalsize/articles/finalsize.html" class="external-link">package
+vignettes</a> for more information on how to use <code>finalsize</code>
+to calculate epidemic size.</p>
 </div>
 </div>
 </div>
@@ -2469,9 +2501,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://epiverse-trace.github.io/tutorials-late/aio.html",
   "identifier": "https://epiverse-trace.github.io/tutorials-late/aio.html",
-  "dateCreated": "2024-06-11",
-  "dateModified": "2024-10-22",
-  "datePublished": "2024-10-22"
+  "dateCreated": "2024-10-23",
+  "dateModified": "2024-10-23",
+  "datePublished": "2024-10-23"
 }
 
   </script><script>
