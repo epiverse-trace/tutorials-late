@@ -107,15 +107,15 @@ Learners should familiarise themselves with following concept dependencies befor
 
 ## Introduction
 
-In this tutorial we will compare intervention scenarios against each other. To quantify the effect of the intervention we need to compare our intervention scenario to a counter factual (baseline) scenario. The *counter factual* is the scenario in which nothing changes, often referred to as the 'do nothing' scenario. The counter factual scenario may include no interventions, or if we are investigating the potential impact of an additional intervention in the later stages of an outbreak, there may be existing interventions in place. 
+In this tutorial we will compare intervention scenarios against each other. To quantify the effect of the intervention we need to compare our intervention scenario to a counter factual (baseline) scenario. The *counter factual* here is the scenario in which nothing changes, often referred to as the 'do nothing' scenario. The counter factual scenario may feature no interventions at all or, if we are investigating the potential impact of an additional intervention in the later stages of an outbreak, there may be existing interventions in place. 
 
 We must also decide what our *outcome of interest* is to make comparisons between intervention and counter factual scenarios. The outcome of interest can be:
 
 + a model outcome, e.g. number of infections or hospitalisations,
 + a metric such as the epidemic peak time or size,
-+ a measure that uses the model outcomes such as QALY/DALYs.
++ a measure that uses the model outcomes, such as QALY/DALYs.
 
-In this tutorial we are going to learn how to use the `{epidemics}` package to compare the effect of different interventions on simulated disease trajectories. We will access to social contact data with `{socialmixr}`. We'll use `{dplyr}`, `{ggplot2}` and the pipe `%>%` to connect some of their functions, so let's also call to the `{tidyverse}` package:
+In this tutorial we are going to learn how to use the `{epidemics}` package to compare the effect of different interventions on simulated disease trajectories. We will access social contact data with `{socialmixr}`. We'll use `{dplyr}`, `{ggplot2}` and the pipe `%>%` to connect some of their functions, so let's also call to the `{tidyverse}` package:
 
 ```{r,message=FALSE,warning=FALSE}
 library(epidemics)
@@ -134,7 +134,7 @@ In this tutorial we introduce the concept of the counter factual and how to comp
 
 To compare the baseline scenario against the intervention scenarios, we can make visualisations of our outcome of interest. The outcome of interest may simply be the model output, or it could be an aggregate measure of the model output.
 
-If we wanted to investigate the change in epidemic peak with an intervention applied we could plot the model trajectories through time:
+If we wanted to investigate the change in epidemic peak with an intervention applied, we could plot the model trajectories through time:
 ```{r}
 output_baseline <- model_default(
   population = uk_population,
@@ -596,10 +596,10 @@ We recommend to read the vignette on [Modelling responses to a stochastic Ebola 
 
 ## Challenge : Ebola outbreak analysis
 
-You have been tasked to investigate the potential impact of an intervention on an Ebola outbreak in Guinea. Using `model_ebola()` and the the information detailed below, find the number of infections averted when :
+You have been tasked to investigate the potential impact of an intervention on an Ebola outbreak in Guinea (e.g. a reduction in risky contacts with cases). Using `model_ebola()` and the the information detailed below, find the number of infections averted when :
 
-+ an intervention is applied to reduce transmission rate by 0.5 from day 60 and,
-+ an intervention is applied to reduce transmission by 0.1 from day 30.
++ an intervention is applied to reduce the transmission rate by 50% from day 60 and,
++ an intervention is applied to reduce transmission by 10% from day 30.
 
 For both interventions assume the transmission rate follows a normal distribution with mean = 1.1 / 12 and  standard deviation = 0.01.
 
