@@ -601,7 +601,7 @@ You have been tasked to investigate the potential impact of an intervention on a
 + an intervention is applied to reduce the transmission rate by 50% from day 60 and,
 + an intervention is applied to reduce transmission by 10% from day 30.
 
-For both interventions assume the transmission rate follows a normal distribution with mean = 1.1 / 12 and  standard deviation = 0.01.
+For both interventions, we assume there is some uncertainty about the baseline transmission rate. We capture this uncertainty by drawing from a normal distribution with mean = 1.1 / 12 (i.e. $R_0=1.1$ and infectious period = 12 days) and  standard deviation = 0.01.
 
 *Note: Depending on the number of replicates used, this simulation may take several minutes to run.*
 
