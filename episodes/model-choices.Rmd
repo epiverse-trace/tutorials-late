@@ -258,9 +258,9 @@ As this model is stochastic, it is the most appropriate choice to explore how va
 ::::::::::::::::::::::::::::::::::::: callout
 ### Do I need to use a mathematical model?
 
-Mathematical models can be used to generate disease trajectories, which can then be used to calculate the final size of the epidemic. If you are only interested in the final size, you can use mathematical equations to calculate this quantity. These mathematical equations are available as R functions in the package `{finalsize}`.
+Mathematical models can be used to generate disease trajectories, which can then be used to calculate the final size of the epidemic. If you are only interested in the final size, it is possible to use mathematical theory to calculate this quantity directly, without having to simulate the full model then work out how many individuals were infected. These mathematical calculations are performed using R functions in the package `{finalsize}`.
 
-An advantage of using `finalsize` is that fewer parameters are required. You only need to define transmissibility and the susceptibility of the population. Check out the [package vignettes](https://epiverse-trace.github.io/finalsize/articles/finalsize.html) for more information on how to use `finalsize` to calculate epidemic size. 
+An advantage of using `finalsize` is that fewer parameters are required. You only need to define transmissibility and the susceptibility of the population, and a social contact matrix if relevant, rather than parameters like infectious period that are required in {epidemics} to simulate dynamics over time. Check out the [package vignettes](https://epiverse-trace.github.io/finalsize/articles/finalsize.html) for more information on how to use `finalsize` to calculate epidemic size. 
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
