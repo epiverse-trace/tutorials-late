@@ -2203,7 +2203,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-compare-interventions"><p>Content from <a href="compare-interventions.html">Comparing public health outcomes of interventions</a></p>
 <hr>
-<p>Last updated on 2024-10-01 |
+<p>Last updated on 2024-10-23 |
 
         <a href="https://github.com/epiverse-trace/tutorials-late/edit/main/episodes/compare-interventions.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 75 minutes</p>
@@ -2260,26 +2260,41 @@ types</a>.</p>
 <hr class="half-width">
 <p>In this tutorial we will compare intervention scenarios against each
 other. To quantify the effect of the intervention we need to compare our
-intervention scenario to a counter factual scenario. The <em>counter
-factual</em> is the scenario in which nothing changes, often referred to
-as the ‘do nothing’ scenario. The counter factual scenario may include
-no interventions, or if we are investigating the potential impact of an
-additional intervention in the later stages of an outbreak there may be
-existing interventions in place.</p>
+intervention scenario to a counter factual (baseline) scenario. The
+<em>counter factual</em> here is the scenario in which nothing changes,
+often referred to as the ‘do nothing’ scenario. The counter factual
+scenario may feature no interventions at all or, if we are investigating
+the potential impact of an additional intervention in the later stages
+of an outbreak, there may be existing interventions in place.</p>
 <p>We must also decide what our <em>outcome of interest</em> is to make
 comparisons between intervention and counter factual scenarios. The
 outcome of interest can be:</p>
 <ul>
 <li>a model outcome, e.g. number of infections or hospitalisations,</li>
 <li>a metric such as the epidemic peak time or size,</li>
-<li>a measure that uses the model outcomes such as QALY/DALYs.</li>
+<li>a measure that uses the model outcomes, such as QALY/DALYs.</li>
 </ul>
+<p>In this tutorial we are going to learn how to use the
+<code>{epidemics}</code> package to compare the effect of different
+interventions on simulated disease trajectories. We will access social
+contact data with <a href="https://github.com/epiforecasts/socialmixr" class="external-link">socialmixr</a>. We’ll use
+<a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a>, <a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a> and the pipe
+<code>%&gt;%</code> to connect some of their functions, so let’s also
+call to the <a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a> package:</p>
+<div class="codewrapper sourceCode" id="cb1">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">epidemics</span><span class="op">)</span></span>
+<span><span class="kw">library</span><span class="op">(</span><span class="va">socialmixr</span><span class="op">)</span></span>
+<span><span class="kw">library</span><span class="op">(</span><span class="va">tidyverse</span><span class="op">)</span></span></code></pre>
+</div>
 <div id="accordionInstructor1" class="accordion instructor-note accordion-flush">
 <div class="accordion-item">
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
   <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
 <div class="accordion-body">
 <p>In this tutorial we introduce the concept of the counter factual and
 how to compare scenarios (counter factual versus intervention) against
@@ -2288,9 +2303,125 @@ each other.</p>
 </div>
 </div>
 </div>
-</section><section><h2 class="section-heading" id="vacamole-model">Vacamole model<a class="anchor" aria-label="anchor" href="#vacamole-model"></a>
+</section><section><h2 class="section-heading" id="visualising-the-effect-of-interventions">Visualising the effect of interventions<a class="anchor" aria-label="anchor" href="#visualising-the-effect-of-interventions"></a>
 </h2>
 <hr class="half-width">
+<p>To compare the baseline scenario against the intervention scenarios,
+we can make visualisations of our outcome of interest. The outcome of
+interest may simply be the model output, or it could be an aggregate
+measure of the model output.</p>
+<p>If we wanted to investigate the change in epidemic peak with an
+intervention applied, we could plot the model trajectories through
+time:</p>
+<div class="codewrapper sourceCode" id="cb2">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">output_baseline</span> <span class="op">&lt;-</span> <span class="fu">model_default</span><span class="op">(</span></span>
+<span>  population <span class="op">=</span> <span class="va">uk_population</span>,</span>
+<span>  transmission_rate <span class="op">=</span> <span class="va">transmission_rate</span>,</span>
+<span>  infectiousness_rate <span class="op">=</span> <span class="va">infectiousness_rate</span>,</span>
+<span>  recovery_rate <span class="op">=</span> <span class="va">recovery_rate</span>,</span>
+<span>  time_end <span class="op">=</span> <span class="fl">300</span>, increment <span class="op">=</span> <span class="fl">1.0</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">output_school</span> <span class="op">&lt;-</span> <span class="fu">model_default</span><span class="op">(</span></span>
+<span>  <span class="co"># population</span></span>
+<span>  population <span class="op">=</span> <span class="va">uk_population</span>,</span>
+<span>  <span class="co"># rate</span></span>
+<span>  transmission_rate <span class="op">=</span> <span class="va">transmission_rate</span>,</span>
+<span>  infectiousness_rate <span class="op">=</span> <span class="va">infectiousness_rate</span>,</span>
+<span>  recovery_rate <span class="op">=</span> <span class="va">recovery_rate</span>,</span>
+<span>  <span class="co"># intervention</span></span>
+<span>  intervention <span class="op">=</span> <span class="fu">list</span><span class="op">(</span>contacts <span class="op">=</span> <span class="va">close_schools</span><span class="op">)</span>,</span>
+<span>  <span class="co"># time</span></span>
+<span>  time_end <span class="op">=</span> <span class="fl">300</span>, increment <span class="op">=</span> <span class="fl">1.0</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># create intervention_type column for plotting</span></span>
+<span><span class="va">output_school</span><span class="op">$</span><span class="va">intervention_type</span> <span class="op">&lt;-</span> <span class="st">"school closure"</span></span>
+<span><span class="va">output_baseline</span><span class="op">$</span><span class="va">intervention_type</span> <span class="op">&lt;-</span> <span class="st">"baseline"</span></span>
+<span><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu">rbind</span><span class="op">(</span><span class="va">output_school</span>, <span class="va">output_baseline</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">output</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">filter</span><span class="op">(</span><span class="va">compartment</span> <span class="op">==</span> <span class="st">"infectious"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">aes</span><span class="op">(</span></span>
+<span>    x <span class="op">=</span> <span class="va">time</span>,</span>
+<span>    y <span class="op">=</span> <span class="va">value</span>,</span>
+<span>    color <span class="op">=</span> <span class="va">intervention_type</span>,</span>
+<span>    linetype <span class="op">=</span> <span class="va">intervention_type</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">stat_summary</span><span class="op">(</span></span>
+<span>    fun <span class="op">=</span> <span class="st">"sum"</span>,</span>
+<span>    geom <span class="op">=</span> <span class="st">"line"</span>,</span>
+<span>    linewidth <span class="op">=</span> <span class="fl">1</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">scale_y_continuous</span><span class="op">(</span></span>
+<span>    labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va">comma</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_vline</span><span class="op">(</span></span>
+<span>    xintercept <span class="op">=</span> <span class="fu">c</span><span class="op">(</span></span>
+<span>      <span class="va">close_schools</span><span class="op">$</span><span class="va">time_begin</span>,</span>
+<span>      <span class="va">close_schools</span><span class="op">$</span><span class="va">time_end</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    linetype <span class="op">=</span> <span class="fl">2</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">theme_bw</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">labs</span><span class="op">(</span></span>
+<span>    x <span class="op">=</span> <span class="st">"Simulation time (days)"</span>,</span>
+<span>    y <span class="op">=</span> <span class="st">"Individuals"</span></span>
+<span>  <span class="op">)</span></span></code></pre>
+</div>
+<figure><img src="../fig/compare-interventions-rendered-unnamed-chunk-2-1.png" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure><p>If we wanted to quantify the impact of the intervention over the
+model output through time, we could consider the cumulative number of
+infectious people in the baseline scenario compared to the intervention
+scenario:</p>
+<div class="codewrapper sourceCode" id="cb3">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">output</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">filter</span><span class="op">(</span><span class="va">compartment</span> <span class="op">==</span> <span class="st">"infectious"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">time</span>, <span class="va">intervention_type</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">summarise</span><span class="op">(</span>value_total <span class="op">=</span> <span class="fu">sum</span><span class="op">(</span><span class="va">value</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">intervention_type</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">mutate</span><span class="op">(</span>cum_value <span class="op">=</span> <span class="fu">cumsum</span><span class="op">(</span><span class="va">value_total</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_line</span><span class="op">(</span></span>
+<span>    <span class="fu">aes</span><span class="op">(</span></span>
+<span>      x <span class="op">=</span> <span class="va">time</span>,</span>
+<span>      y <span class="op">=</span> <span class="va">cum_value</span>,</span>
+<span>      color <span class="op">=</span> <span class="va">intervention_type</span>,</span>
+<span>      linetype <span class="op">=</span> <span class="va">intervention_type</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    linewidth <span class="op">=</span> <span class="fl">1.2</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">scale_y_continuous</span><span class="op">(</span></span>
+<span>    labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va">comma</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_vline</span><span class="op">(</span></span>
+<span>    xintercept <span class="op">=</span> <span class="fu">c</span><span class="op">(</span></span>
+<span>      <span class="va">close_schools</span><span class="op">$</span><span class="va">time_begin</span>,</span>
+<span>      <span class="va">close_schools</span><span class="op">$</span><span class="va">time_end</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    linetype <span class="op">=</span> <span class="fl">2</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">theme_bw</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">labs</span><span class="op">(</span></span>
+<span>    x <span class="op">=</span> <span class="st">"Simulation time (days)"</span>,</span>
+<span>    y <span class="op">=</span> <span class="st">"Cumulative number of infectious individuals"</span></span>
+<span>  <span class="op">)</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>`summarise()` has grouped output by 'time'. You can override using the
+`.groups` argument.</code></pre>
+</div>
+<figure><img src="../fig/compare-interventions-rendered-unnamed-chunk-3-1.png" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure><div class="section level3">
+<h3 id="vacamole-model">Vacamole model<a class="anchor" aria-label="anchor" href="#vacamole-model"></a>
+</h3>
 <p>The Vacamole model is a deterministic model based on a system of ODEs
 in <a href="https://doi.org/10.2807/1560-7917.ES.2022.27.44.2101090" class="external-link">Ainslie
 et al. 2022</a> to describe the effect of vaccination on COVID-19
@@ -2311,7 +2442,7 @@ hospitalised while vaccinated, <span class="math inline">\(H_V\)</span>,</li>
 </ul>
 <p>The diagram below describes the flow of individuals through the
 different compartments.</p>
-<figure><img src="../fig/compare-interventions-rendered-unnamed-chunk-1-1.png" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure><div id="running-a-counterfactual-scenario-using-the-vacamole-model" class="callout challenge">
+<figure><img src="../fig/compare-interventions-rendered-unnamed-chunk-4-1.png" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure><div id="running-a-counterfactual-scenario-using-the-vacamole-model" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
@@ -2332,12 +2463,17 @@ start of the simulation</li>
 <li>40 years and over.</li>
 </ul>
 </li>
-<li>There is no vaccination scheme in place</li>
 </ul>
+<p>For scenarios : + baseline : two dose vaccination program. Dose 1
+(vaccination rate 0.01) starts from day 30, dose 2 (vaccination rate
+0.01) starts from day 60. Both programs run fro 300 days. + intervention
+:a mask mandate starting from time 60 for 100 days, assuming a reduction
+in the transmission rate of 0.163</p>
+<p>There is no vaccination scheme in place</p>
 <ol start="2" style="list-style-type: decimal">
-<li>Using the output, plot the number of deaths through time</li>
+<li>Using the output, plot the cumulative number of deaths through
+time</li>
 </ol>
-<!-- ::::::::::::::::: hint --><!-- ### Vaccination code  --><!-- To run the model with no vaccination in place we can *either* create two vaccination objects (one for each dose) using `vaccination()` with the time start, time end and vaccination rate all set to 0. --><!-- ```{r} --><!-- library(epidemics) --><!-- ``` --><!-- ```{r, eval = FALSE} --><!-- ?vaccination --><!-- ``` --><!-- :::::::::::::::::::::: -->
 </div>
 </div>
 </div>
@@ -2346,12 +2482,12 @@ start of the simulation</li>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint1" aria-expanded="false" aria-controls="collapseHint1">
   <h4 class="accordion-header" id="headingHint1"> HINT : Running the model with default parameter values </h4>
 </button>
-<div id="collapseHint1" class="accordion-collapse collapse" aria-labelledby="headingHint1" data-bs-parent="#accordionHint1">
+<div id="collapseHint1" class="accordion-collapse collapse" data-bs-parent="#accordionHint1" aria-labelledby="headingHint1">
 <div class="accordion-body">
 <p>We can run the Vacamole model with <a href="https://epiverse-trace.github.io/epidemics/articles/model_vacamole.html#model-epidemic-using-vacamole" class="external-link">default
 parameter values</a> by just specifying the population object and number
 of time steps to run the model for:</p>
-<div class="codewrapper sourceCode" id="cb1">
+<div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -2369,18 +2505,12 @@ of time steps to run the model for:</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> SOLUTION </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <ol style="list-style-type: decimal">
 <li>Run the model</li>
 </ol>
-<div class="codewrapper sourceCode" id="cb2">
-<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">epidemics</span><span class="op">)</span></span></code></pre>
-</div>
-<div class="codewrapper sourceCode" id="cb3">
+<div class="codewrapper sourceCode" id="cb6">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -2397,7 +2527,7 @@ of time steps to run the model for:</p>
 </h3>
 <pre class="output" tabindex="0"><code>Removing participants that have contacts without age information. To change this behaviour, set the 'missing.contact.age' option</code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb5">
+<div class="codewrapper sourceCode" id="cb8">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -2411,7 +2541,7 @@ of time steps to run the model for:</p>
 <span><span class="co"># prepare initial conditions</span></span>
 <span><span class="va">initial_i</span> <span class="op">&lt;-</span> <span class="fl">1e-6</span></span>
 <span></span>
-<span><span class="va">initial_conditions</span> <span class="op">&lt;-</span> <span class="fu">c</span><span class="op">(</span></span>
+<span><span class="va">initial_conditions_vacamole</span> <span class="op">&lt;-</span> <span class="fu">c</span><span class="op">(</span></span>
 <span>  S <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">initial_i</span>,</span>
 <span>  V1 <span class="op">=</span> <span class="fl">0</span>, V2 <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  E <span class="op">=</span> <span class="fl">0</span>, EV <span class="op">=</span> <span class="fl">0</span>,</span>
@@ -2419,64 +2549,296 @@ of time steps to run the model for:</p>
 <span>  H <span class="op">=</span> <span class="fl">0</span>, HV <span class="op">=</span> <span class="fl">0</span>, D <span class="op">=</span> <span class="fl">0</span>, R <span class="op">=</span> <span class="fl">0</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">initial_conditions</span> <span class="op">&lt;-</span> <span class="fu">rbind</span><span class="op">(</span></span>
-<span>  <span class="va">initial_conditions</span>,</span>
-<span>  <span class="va">initial_conditions</span>,</span>
-<span>  <span class="va">initial_conditions</span></span>
+<span><span class="va">initial_conditions_vacamole</span> <span class="op">&lt;-</span> <span class="fu">rbind</span><span class="op">(</span></span>
+<span>  <span class="va">initial_conditions_vacamole</span>,</span>
+<span>  <span class="va">initial_conditions_vacamole</span>,</span>
+<span>  <span class="va">initial_conditions_vacamole</span></span>
 <span><span class="op">)</span></span>
-<span><span class="fu">rownames</span><span class="op">(</span><span class="va">initial_conditions</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu">rownames</span><span class="op">(</span><span class="va">contact_matrix</span><span class="op">)</span></span>
+<span><span class="fu">rownames</span><span class="op">(</span><span class="va">initial_conditions_vacamole</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu">rownames</span><span class="op">(</span><span class="va">contact_matrix</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># prepare population object</span></span>
-<span><span class="va">uk_population</span> <span class="op">&lt;-</span> <span class="fu">population</span><span class="op">(</span></span>
+<span><span class="va">uk_population_vacamole</span> <span class="op">&lt;-</span> <span class="fu">population</span><span class="op">(</span></span>
 <span>  name <span class="op">=</span> <span class="st">"UK"</span>,</span>
 <span>  contact_matrix <span class="op">=</span> <span class="va">contact_matrix</span>,</span>
 <span>  demography_vector <span class="op">=</span> <span class="va">demography_vector</span>,</span>
-<span>  initial_conditions <span class="op">=</span> <span class="va">initial_conditions</span></span>
+<span>  initial_conditions <span class="op">=</span> <span class="va">initial_conditions_vacamole</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># run model</span></span>
-<span><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu">model_vacamole</span><span class="op">(</span></span>
-<span>  population <span class="op">=</span> <span class="va">uk_population</span>,</span>
+<span><span class="co"># prepare two vaccination objects</span></span>
+<span><span class="co"># dose 1 vaccination</span></span>
+<span><span class="va">dose_1</span> <span class="op">&lt;-</span> <span class="fu">vaccination</span><span class="op">(</span></span>
+<span>  name <span class="op">=</span> <span class="st">"two-dose vaccination"</span>, <span class="co"># name given to first dose</span></span>
+<span>  nu <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="fl">0.01</span>, nrow <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,</span>
+<span>  time_begin <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="fl">30</span>, nrow <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,</span>
+<span>  time_end <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="fl">300</span>, nrow <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># prepare the second dose with a 30 day interval in start date</span></span>
+<span><span class="va">dose_2</span> <span class="op">&lt;-</span> <span class="fu">vaccination</span><span class="op">(</span></span>
+<span>  name <span class="op">=</span> <span class="st">"two-dose vaccination"</span>, <span class="co"># name given to first dose</span></span>
+<span>  nu <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="fl">0.01</span>, nrow <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,</span>
+<span>  time_begin <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="fl">30</span> <span class="op">+</span> <span class="fl">30</span>, nrow <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,</span>
+<span>  time_end <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="fl">300</span>, nrow <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># use `c()` to combine the two doses</span></span>
+<span><span class="va">double_vaccination</span> <span class="op">&lt;-</span> <span class="fu">c</span><span class="op">(</span><span class="va">dose_1</span>, <span class="va">dose_2</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># run baseline model</span></span>
+<span><span class="va">output_baseline_vc</span> <span class="op">&lt;-</span> <span class="fu">model_vacamole</span><span class="op">(</span></span>
+<span>  population <span class="op">=</span> <span class="va">uk_population_vacamole</span>,</span>
+<span>  vaccination <span class="op">=</span> <span class="va">double_vaccination</span>,</span>
 <span>  time_end <span class="op">=</span> <span class="fl">300</span></span>
-<span><span class="op">)</span></span></code></pre>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># create mask intervention</span></span>
+<span><span class="va">mask_mandate</span> <span class="op">&lt;-</span> <span class="fu">intervention</span><span class="op">(</span></span>
+<span>  name <span class="op">=</span> <span class="st">"mask mandate"</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"rate"</span>,</span>
+<span>  time_begin <span class="op">=</span> <span class="fl">60</span>,</span>
+<span>  time_end <span class="op">=</span> <span class="fl">60</span> <span class="op">+</span> <span class="fl">100</span>,</span>
+<span>  reduction <span class="op">=</span> <span class="fl">0.163</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># run intervention model</span></span>
+<span><span class="va">output_intervention_vc</span> <span class="op">&lt;-</span> <span class="fu">model_vacamole</span><span class="op">(</span></span>
+<span>                                         population <span class="op">=</span> <span class="va">uk_population_vacamole</span>,</span>
+<span>                                         vaccination <span class="op">=</span> <span class="va">double_vaccination</span>,</span>
+<span>                                         intervention <span class="op">=</span> <span class="fu">list</span><span class="op">(</span></span>
+<span>                                                             transmission_rate <span class="op">=</span></span>
+<span>                                                               <span class="va">mask_mandate</span><span class="op">)</span>,</span>
+<span>                                         time_end <span class="op">=</span> <span class="fl">300</span><span class="op">)</span></span></code></pre>
 </div>
 <ol start="2" style="list-style-type: decimal">
-<li>Plot the number of deaths through time</li>
+<li>Plot the cumulative number of deaths through time</li>
 </ol>
-<div class="codewrapper sourceCode" id="cb6">
+<div class="codewrapper sourceCode" id="cb9">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">ggplot2</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="co"># create intervention_type column for plotting</span></span>
+<span><span class="va">output_intervention_vc</span><span class="op">$</span><span class="va">intervention_type</span> <span class="op">&lt;-</span> <span class="st">"mask mandate"</span></span>
+<span><span class="va">output_baseline_vc</span><span class="op">$</span><span class="va">intervention_type</span> <span class="op">&lt;-</span> <span class="st">"baseline"</span></span>
+<span><span class="va">output_vacamole</span> <span class="op">&lt;-</span> <span class="fu">rbind</span><span class="op">(</span><span class="va">output_intervention_vc</span>, <span class="va">output_baseline_vc</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">ggplot</span><span class="op">(</span><span class="va">output</span><span class="op">[</span><span class="va">output</span><span class="op">$</span><span class="va">compartment</span> <span class="op">==</span> <span class="st">"dead"</span>, <span class="op">]</span><span class="op">)</span> <span class="op">+</span></span>
+<span><span class="va">output_vacamole</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">filter</span><span class="op">(</span><span class="va">compartment</span> <span class="op">==</span> <span class="st">"dead"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">time</span>, <span class="va">intervention_type</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">summarise</span><span class="op">(</span>value_total <span class="op">=</span> <span class="fu">sum</span><span class="op">(</span><span class="va">value</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">intervention_type</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">mutate</span><span class="op">(</span>cum_value <span class="op">=</span> <span class="fu">cumsum</span><span class="op">(</span><span class="va">value_total</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_line</span><span class="op">(</span></span>
-<span>    <span class="fu">aes</span><span class="op">(</span><span class="va">time</span>, <span class="va">value</span>, colour <span class="op">=</span> <span class="va">demography_group</span><span class="op">)</span>,</span>
-<span>    linewidth <span class="op">=</span> <span class="fl">1</span></span>
-<span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">scale_colour_brewer</span><span class="op">(</span></span>
-<span>    palette <span class="op">=</span> <span class="st">"Dark2"</span>,</span>
-<span>    labels <span class="op">=</span> <span class="fu">rownames</span><span class="op">(</span><span class="va">contact_matrix</span><span class="op">)</span>,</span>
-<span>    name <span class="op">=</span> <span class="st">"Age group"</span></span>
+<span>    <span class="fu">aes</span><span class="op">(</span></span>
+<span>      x <span class="op">=</span> <span class="va">time</span>,</span>
+<span>      y <span class="op">=</span> <span class="va">cum_value</span>,</span>
+<span>      color <span class="op">=</span> <span class="va">intervention_type</span>,</span>
+<span>      linetype <span class="op">=</span> <span class="va">intervention_type</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    linewidth <span class="op">=</span> <span class="fl">1.2</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">scale_y_continuous</span><span class="op">(</span></span>
 <span>    labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va">comma</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">theme_bw</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">labs</span><span class="op">(</span></span>
 <span>    x <span class="op">=</span> <span class="st">"Simulation time (days)"</span>,</span>
-<span>    y <span class="op">=</span> <span class="st">"Individuals"</span></span>
-<span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">theme</span><span class="op">(</span></span>
-<span>    legend.position <span class="op">=</span> <span class="st">"top"</span></span>
-<span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">theme_bw</span><span class="op">(</span></span>
-<span>    base_size <span class="op">=</span> <span class="fl">15</span></span>
+<span>    y <span class="op">=</span> <span class="st">"Cumulative number of deaths"</span></span>
 <span>  <span class="op">)</span></span></code></pre>
 </div>
-<figure><img src="../fig/compare-interventions-rendered-unnamed-chunk-5-1.png" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>`summarise()` has grouped output by 'time'. You can override using the
+`.groups` argument.</code></pre>
+</div>
+<figure><img src="../fig/compare-interventions-rendered-unnamed-chunk-7-1.png" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure>
 </div>
 </div>
 </div>
+</div>
+</div>
+</section><section><h2 class="section-heading" id="calculating-outcomes-averted">Calculating outcomes averted<a class="anchor" aria-label="anchor" href="#calculating-outcomes-averted"></a>
+</h2>
+<hr class="half-width">
+<p>Visualisations are a useful tool to compare intervention scenario
+model predictions through time. In addition to visualisations, we also
+want to quantify the impact of interventions. An outcome of interest we
+can use is the number of infections averted. This measure allows us to
+quantify the difference between different intervention scenarios.</p>
+<p>In <code>{epidemics}</code>, we can use the function
+<code>outcomes_averted()</code> to calculate the number of infections
+averted while accounting for uncertainty in key parameter values. We
+will extend the COVID-19 example in <a href="modelling-interventions.html">Modelling interventions</a> to
+account for some uncertainty in the parameter values, specifically in
+the basic reproduction <span class="math inline">\(R_0\)</span>. We do
+this as follows:</p>
+<div class="codewrapper sourceCode" id="cb11">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># time periods</span></span>
+<span><span class="va">preinfectious_period</span> <span class="op">&lt;-</span> <span class="fl">4.0</span></span>
+<span><span class="va">infectious_period</span> <span class="op">&lt;-</span> <span class="fl">5.5</span></span>
+<span></span>
+<span><span class="co"># specify the mean and standard deviation of R0</span></span>
+<span><span class="va">r_estimate_mean</span> <span class="op">&lt;-</span> <span class="fl">2.7</span></span>
+<span><span class="va">r_estimate_sd</span> <span class="op">&lt;-</span> <span class="fl">0.05</span></span>
+<span></span>
+<span><span class="co"># generate 100 R samples</span></span>
+<span><span class="va">r_samples</span> <span class="op">&lt;-</span> <span class="fu">withr</span><span class="fu">::</span><span class="fu">with_seed</span><span class="op">(</span></span>
+<span>  seed <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  <span class="fu">rnorm</span><span class="op">(</span></span>
+<span>    n <span class="op">=</span> <span class="fl">100</span>, mean <span class="op">=</span> <span class="va">r_estimate_mean</span>, sd <span class="op">=</span> <span class="va">r_estimate_sd</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">beta</span> <span class="op">&lt;-</span> <span class="va">r_samples</span> <span class="op">/</span> <span class="va">infectious_period</span></span>
+<span></span>
+<span><span class="co"># rates</span></span>
+<span><span class="va">infectiousness_rate</span> <span class="op">&lt;-</span> <span class="fl">1.0</span> <span class="op">/</span> <span class="va">preinfectious_period</span></span>
+<span><span class="va">recovery_rate</span> <span class="op">&lt;-</span> <span class="fl">1.0</span> <span class="op">/</span> <span class="va">infectious_period</span></span></code></pre>
+</div>
+<p>We use these parameter values alongside the population structure and
+contact matrix used in <a href="modelling-interventions.html">Modelling
+interventions</a> to run the model for the baseline scenario:</p>
+<div class="codewrapper sourceCode" id="cb12">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">output_baseline</span> <span class="op">&lt;-</span> <span class="fu">model_default</span><span class="op">(</span></span>
+<span>  population <span class="op">=</span> <span class="va">uk_population</span>,</span>
+<span>  transmission_rate <span class="op">=</span> <span class="va">beta</span>,</span>
+<span>  infectiousness_rate <span class="op">=</span> <span class="va">infectiousness_rate</span>,</span>
+<span>  recovery_rate <span class="op">=</span> <span class="va">recovery_rate</span>,</span>
+<span>  time_end <span class="op">=</span> <span class="fl">300</span>, increment <span class="op">=</span> <span class="fl">1.0</span></span>
+<span><span class="op">)</span></span></code></pre>
+</div>
+<p>Then, we create a list of all the interventions we want to include in
+our comparison. We define our scenarios as follows:</p>
+<ul>
+<li>scenario 1 : close schools</li>
+<li>scenario 2 : mask mandate</li>
+<li>scenario 3 : close schools and mask mandate.</li>
+</ul>
+<p>In R we specify this as:</p>
+<div class="codewrapper sourceCode" id="cb13">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">intervention_scenarios</span> <span class="op">&lt;-</span> <span class="fu">list</span><span class="op">(</span></span>
+<span>  scenario_1 <span class="op">=</span> <span class="fu">list</span><span class="op">(</span></span>
+<span>    contacts <span class="op">=</span> <span class="va">close_schools</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  scenario_2 <span class="op">=</span> <span class="fu">list</span><span class="op">(</span></span>
+<span>    transmission_rate <span class="op">=</span> <span class="va">mask_mandate</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  scenario_3 <span class="op">=</span> <span class="fu">list</span><span class="op">(</span></span>
+<span>    contacts <span class="op">=</span> <span class="va">close_schools</span>,</span>
+<span>    transmission_rate <span class="op">=</span> <span class="va">mask_mandate</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre>
+</div>
+<p>We use this list as our input to <code>intervention</code> in
+<code>model_default</code></p>
+<div class="codewrapper sourceCode" id="cb14">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu">model_default</span><span class="op">(</span></span>
+<span>  <span class="va">uk_population</span>,</span>
+<span>  transmission_rate <span class="op">=</span> <span class="va">beta</span>,</span>
+<span>  infectiousness_rate <span class="op">=</span> <span class="va">infectiousness_rate</span>,</span>
+<span>  recovery_rate <span class="op">=</span> <span class="va">recovery_rate</span>,</span>
+<span>  time_end <span class="op">=</span> <span class="fl">300</span>, increment <span class="op">=</span> <span class="fl">1.0</span>,</span>
+<span>  intervention <span class="op">=</span> <span class="va">intervention_scenarios</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu">head</span><span class="op">(</span><span class="va">output</span><span class="op">)</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>   transmission_rate infectiousness_rate recovery_rate time_end param_set
+               &lt;num&gt;               &lt;num&gt;         &lt;num&gt;    &lt;num&gt;     &lt;int&gt;
+1:         0.4852141                0.25     0.1818182      300         1
+2:         0.4852141                0.25     0.1818182      300         1
+3:         0.4852141                0.25     0.1818182      300         1
+4:         0.4925786                0.25     0.1818182      300         2
+5:         0.4925786                0.25     0.1818182      300         2
+6:         0.4925786                0.25     0.1818182      300         2
+        population intervention vaccination time_dependence increment scenario
+            &lt;list&gt;       &lt;list&gt;      &lt;list&gt;          &lt;list&gt;     &lt;num&gt;    &lt;int&gt;
+1: &lt;population[4]&gt;    &lt;list[1]&gt;                   &lt;list[1]&gt;         1        1
+2: &lt;population[4]&gt;    &lt;list[1]&gt;                   &lt;list[1]&gt;         1        2
+3: &lt;population[4]&gt;    &lt;list[2]&gt;                   &lt;list[1]&gt;         1        3
+4: &lt;population[4]&gt;    &lt;list[1]&gt;                   &lt;list[1]&gt;         1        1
+5: &lt;population[4]&gt;    &lt;list[1]&gt;                   &lt;list[1]&gt;         1        2
+6: &lt;population[4]&gt;    &lt;list[2]&gt;                   &lt;list[1]&gt;         1        3
+                   data
+                 &lt;list&gt;
+1: &lt;data.table[4515x4]&gt;
+2: &lt;data.table[4515x4]&gt;
+3: &lt;data.table[4515x4]&gt;
+4: &lt;data.table[4515x4]&gt;
+5: &lt;data.table[4515x4]&gt;
+6: &lt;data.table[4515x4]&gt;</code></pre>
+</div>
+<p>Now that we have our model output for all of our scenarios, we want
+to compare the outputs of the interventions to our baseline.</p>
+<p>We can do this using <code>outcomes_averted()</code> in
+<code>{epidemics}</code>. This function calculates the final epidemic
+size for each scenario, and then calculates the number of infections
+averted in each scenario compared to the baseline. To use this function
+we specify the :</p>
+<ul>
+<li>output of the baseline scenario</li>
+<li>outputs of the intervention scenario(s).</li>
+</ul>
+<div class="codewrapper sourceCode" id="cb16">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">intervention_effect</span> <span class="op">&lt;-</span> <span class="fu">outcomes_averted</span><span class="op">(</span></span>
+<span>  baseline <span class="op">=</span> <span class="va">output_baseline</span>, scenarios <span class="op">=</span> <span class="va">output</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">intervention_effect</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>   scenario demography_group averted_median averted_lower averted_upper
+      &lt;int&gt;           &lt;char&gt;          &lt;num&gt;         &lt;num&gt;         &lt;num&gt;
+1:        1              65+       406460.4      384173.6      414531.2
+2:        1           [0,15)      2897767.0     2585433.4     3087910.3
+3:        1          [15,65)      1290610.3     1260167.1     1293085.1
+4:        2              65+       901095.6      882456.9      913201.0
+5:        2           [0,15)       517908.2      478559.2      558887.4
+6:        2          [15,65)      2414212.2     2260224.7     2567231.2
+7:        3              65+      1004856.8      865428.3     1100732.4
+8:        3           [0,15)      1977460.8     1496867.6     2418130.3
+9:        3          [15,65)      2910649.5     2548675.5     3131795.3</code></pre>
+</div>
+<p>The output gives us the infections averted in each scenario compared
+to the baseline. To obtain the infections averted overall we specify
+<code>by_group = FALSE</code>:</p>
+<div class="codewrapper sourceCode" id="cb18">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">intervention_effect</span> <span class="op">&lt;-</span> <span class="fu">outcomes_averted</span><span class="op">(</span></span>
+<span>  baseline <span class="op">=</span> <span class="va">output_baseline</span>, scenarios <span class="op">=</span> <span class="va">output</span>,</span>
+<span>  by_group <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">intervention_effect</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>   scenario averted_median averted_lower averted_upper
+      &lt;int&gt;          &lt;num&gt;         &lt;num&gt;         &lt;num&gt;
+1:        1        4597247       4232474       4778382
+2:        2        3833216       3621241       4039320
+3:        3        5892967       4910971       6650658</code></pre>
 </div>
 <div id="package-vignettes" class="callout testimonial">
 <div class="callout-square">
@@ -2492,10 +2854,183 @@ African EVD outbreak.</p>
 </div>
 </div>
 </div>
-<!-- ## Comparing scenarios -->
-<!-- *Coming soon* -->
-<!-- ## Challenge : Ebola outbreak analysis  -->
-<!-- *Coming soon* -->
+<div id="challenge-ebola-outbreak-analysis" class="callout challenge">
+<div class="callout-square">
+<i class="callout-icon" data-feather="zap"></i>
+</div>
+<div id="challenge-ebola-outbreak-analysis" class="callout-inner">
+<h3 class="callout-title">Challenge : Ebola outbreak analysis</h3>
+<div class="callout-content">
+<p>You have been tasked to investigate the potential impact of an
+intervention on an Ebola outbreak in Guinea (e.g. a reduction in risky
+contacts with cases). Using <code>model_ebola()</code> and the the
+information detailed below, find the number of infections averted when
+:</p>
+<ul>
+<li>an intervention is applied to reduce the transmission rate by 50%
+from day 60 and,</li>
+<li>an intervention is applied to reduce transmission by 10% from day
+30.</li>
+</ul>
+<p>For both interventions, we assume there is some uncertainty about the
+baseline transmission rate. We capture this uncertainty by drawing from
+a normal distribution with mean = 1.1 / 12 (i.e. <span class="math inline">\(R_0=1.1\)</span> and infectious period = 12 days)
+and standard deviation = 0.01.</p>
+<p><em>Note: Depending on the number of replicates used, this simulation
+may take several minutes to run.</em></p>
+<ul>
+<li>Population size : 14 million</li>
+<li>Initial number of exposed individuals : 10</li>
+<li>Initial number of infectious individuals : 5</li>
+<li>Time of simulation : 120 days</li>
+<li>Parameter values :
+<ul>
+<li>
+<span class="math inline">\(R_0\)</span> (<code>r0</code>) =
+1.1,</li>
+<li>
+<span class="math inline">\(p^I\)</span>
+(<code>infectious_period</code>) = 12,</li>
+<li>
+<span class="math inline">\(p^E\)</span>
+(<code>preinfectious_period</code>) = 5,</li>
+<li>
+<span class="math inline">\(k^E=k^I = 2\)</span>,</li>
+<li>
+<span class="math inline">\(1-p_{hosp}\)</span>
+(<code>prop_community</code>) = 0.9,</li>
+<li>
+<span class="math inline">\(p_{ETU}\)</span> (<code>etu_risk</code>)
+= 0.7,</li>
+<li>
+<span class="math inline">\(p_{funeral}\)</span>
+(<code>funeral_risk</code>) = 0.5</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="accordionSolution2" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
+  <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
+</button>
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div class="accordion-body">
+<div class="codewrapper sourceCode" id="cb20">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">population_size</span> <span class="op">&lt;-</span> <span class="fl">14e6</span></span>
+<span></span>
+<span><span class="va">E0</span> <span class="op">&lt;-</span> <span class="fl">10</span></span>
+<span><span class="va">I0</span> <span class="op">&lt;-</span> <span class="fl">5</span></span>
+<span><span class="co"># prepare initial conditions as proportions</span></span>
+<span><span class="va">initial_conditions</span> <span class="op">&lt;-</span> <span class="fu">c</span><span class="op">(</span></span>
+<span>  S <span class="op">=</span> <span class="va">population_size</span> <span class="op">-</span> <span class="op">(</span><span class="va">E0</span> <span class="op">+</span> <span class="va">I0</span><span class="op">)</span>, E <span class="op">=</span> <span class="va">E0</span>, I <span class="op">=</span> <span class="va">I0</span>, H <span class="op">=</span> <span class="fl">0</span>, F <span class="op">=</span> <span class="fl">0</span>, R <span class="op">=</span> <span class="fl">0</span></span>
+<span><span class="op">)</span> <span class="op">/</span> <span class="va">population_size</span></span>
+<span></span>
+<span><span class="co"># set up population object</span></span>
+<span><span class="va">guinea_population</span> <span class="op">&lt;-</span> <span class="fu">population</span><span class="op">(</span></span>
+<span>  name <span class="op">=</span> <span class="st">"Guinea"</span>,</span>
+<span>  contact_matrix <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>, <span class="co"># note dummy value</span></span>
+<span>  demography_vector <span class="op">=</span> <span class="va">population_size</span>, <span class="co"># 14 million, no age groups</span></span>
+<span>  initial_conditions <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span></span>
+<span>    <span class="va">initial_conditions</span>,</span>
+<span>    nrow <span class="op">=</span> <span class="fl">1</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># generate 100 beta samples</span></span>
+<span><span class="va">beta</span> <span class="op">&lt;-</span> <span class="fu">withr</span><span class="fu">::</span><span class="fu">with_seed</span><span class="op">(</span></span>
+<span>  seed <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  <span class="fu">rnorm</span><span class="op">(</span></span>
+<span>    n <span class="op">=</span> <span class="fl">100</span>, mean <span class="op">=</span> <span class="fl">1.1</span> <span class="op">/</span> <span class="fl">12</span>, sd <span class="op">=</span> <span class="fl">0.01</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># run the baseline</span></span>
+<span><span class="va">output_baseline</span> <span class="op">&lt;-</span> <span class="fu">model_ebola</span><span class="op">(</span></span>
+<span>  population <span class="op">=</span> <span class="va">guinea_population</span>,</span>
+<span>  transmission_rate <span class="op">=</span> <span class="va">beta</span>,</span>
+<span>  infectiousness_rate <span class="op">=</span> <span class="fl">2.0</span> <span class="op">/</span> <span class="fl">5</span>,</span>
+<span>  removal_rate <span class="op">=</span> <span class="fl">2.0</span> <span class="op">/</span> <span class="fl">12</span>,</span>
+<span>  prop_community <span class="op">=</span> <span class="fl">0.9</span>,</span>
+<span>  etu_risk <span class="op">=</span> <span class="fl">0.7</span>,</span>
+<span>  funeral_risk <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  time_end <span class="op">=</span> <span class="fl">100</span>,</span>
+<span>  replicates <span class="op">=</span> <span class="fl">100</span> <span class="co"># replicates argument</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># create intervention objects</span></span>
+<span><span class="va">reduce_transmission_1</span> <span class="op">&lt;-</span> <span class="fu">intervention</span><span class="op">(</span></span>
+<span>  type <span class="op">=</span> <span class="st">"rate"</span>,</span>
+<span>  time_begin <span class="op">=</span> <span class="fl">60</span>, time_end <span class="op">=</span> <span class="fl">100</span>, reduction <span class="op">=</span> <span class="fl">0.5</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">reduce_transmission_2</span> <span class="op">&lt;-</span> <span class="fu">intervention</span><span class="op">(</span></span>
+<span>  type <span class="op">=</span> <span class="st">"rate"</span>,</span>
+<span>  time_begin <span class="op">=</span> <span class="fl">30</span>, time_end <span class="op">=</span> <span class="fl">100</span>, reduction <span class="op">=</span> <span class="fl">0.1</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># create intervention list</span></span>
+<span><span class="va">intervention_scenarios</span> <span class="op">&lt;-</span> <span class="fu">list</span><span class="op">(</span></span>
+<span>  scenario_1 <span class="op">=</span> <span class="fu">list</span><span class="op">(</span></span>
+<span>    transmission_rate <span class="op">=</span> <span class="va">reduce_transmission_1</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  scenario_2 <span class="op">=</span> <span class="fu">list</span><span class="op">(</span></span>
+<span>    transmission_rate <span class="op">=</span> <span class="va">reduce_transmission_2</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># run model</span></span>
+<span><span class="va">output_intervention</span> <span class="op">&lt;-</span> <span class="fu">model_ebola</span><span class="op">(</span></span>
+<span>  population <span class="op">=</span> <span class="va">guinea_population</span>,</span>
+<span>  transmission_rate <span class="op">=</span> <span class="va">beta</span>,</span>
+<span>  infectiousness_rate <span class="op">=</span> <span class="fl">2.0</span> <span class="op">/</span> <span class="fl">5</span>,</span>
+<span>  removal_rate <span class="op">=</span> <span class="fl">2.0</span> <span class="op">/</span> <span class="fl">12</span>,</span>
+<span>  prop_community <span class="op">=</span> <span class="fl">0.9</span>,</span>
+<span>  etu_risk <span class="op">=</span> <span class="fl">0.7</span>,</span>
+<span>  funeral_risk <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  time_end <span class="op">=</span> <span class="fl">100</span>,</span>
+<span>  replicates <span class="op">=</span> <span class="fl">100</span>, <span class="co"># replicates argument,</span></span>
+<span>  intervention <span class="op">=</span> <span class="va">intervention_scenarios</span></span>
+<span><span class="op">)</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">WARNING<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="warning" tabindex="0"><code>Warning: Running 2 scenarios and 100 parameter sets with 100 replicates each, for a
+total of 20000 model runs.</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb22">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># calculate outcomes averted</span></span>
+<span><span class="va">intervention_effect</span> <span class="op">&lt;-</span> <span class="fu">outcomes_averted</span><span class="op">(</span></span>
+<span>  baseline <span class="op">=</span> <span class="va">output_baseline</span>, scenarios <span class="op">=</span> <span class="va">output_intervention</span>,</span>
+<span>  by_group <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">intervention_effect</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>   scenario averted_median averted_lower averted_upper
+      &lt;int&gt;          &lt;num&gt;         &lt;num&gt;         &lt;num&gt;
+1:        1             31             2           119
+2:        2             20           -16           113</code></pre>
+</div>
+<p><strong>Note: The number of infections averted can be negative. This
+is due to the stochastic variation in the disease trajectories for a
+given transmission rate can result in a different size
+outbreak.</strong></p>
+</div>
+</div>
+</div>
+</div>
 <div id="keypoints1" class="callout keypoints">
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
@@ -2506,6 +3041,8 @@ African EVD outbreak.</p>
 <ul>
 <li>The counter factual scenario must be defined to make
 comparisons</li>
+<li>Scenarios can be compared using visualisations and by calculating
+outcomes averted</li>
 </ul>
 </div>
 </div>
