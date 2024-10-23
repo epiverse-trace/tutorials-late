@@ -405,7 +405,7 @@ dose_2 <- vaccination(
 double_vaccination <- c(dose_1, dose_2)
 
 # run baseline model
-output_baseline_vacamole <- model_vacamole(
+output_baseline_vc <- model_vacamole(
   population = uk_population_vacamole,
   vaccination = double_vaccination,
   time_end = 300
@@ -421,14 +421,13 @@ mask_mandate <- intervention(
 )
 
 # run intervention model
-output_intervention_vacamole <- model_vacamole(
-  # population
-  population = uk_population_vacamole,
-  vaccination = double_vaccination,
-  # intervention
-  intervention = list(transmission_rate = mask_mandate),
-  # time
-  time_end = 300)
+output_intervention_vc <- model_vacamole(
+                                         population = uk_population_vacamole,
+                                         vaccination = double_vaccination,
+                                         intervention = list(
+                                                             transmission_rate =
+                                                               mask_mandate),
+                                         time_end = 300)
 
 ```
 
@@ -436,9 +435,9 @@ output_intervention_vacamole <- model_vacamole(
 
 ```{r}
 # create intervention_type column for plotting
-output_intervention_vacamole$intervention_type <- "mask mandate"
-output_baseline_vacamole$intervention_type <- "baseline"
-output_vacamole <- rbind(output_intervention_vacamole, output_baseline_vacamole)
+output_intervention_vc$intervention_type <- "mask mandate"
+output_baseline_vc$intervention_type <- "baseline"
+output_vacamole <- rbind(output_intervention_vc, output_baseline_vc)
 
 output_vacamole %>%
   filter(compartment == "dead") %>%
