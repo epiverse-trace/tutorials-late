@@ -45,22 +45,22 @@ library(socialmixr)
 
 ## The contact matrix
 
-A contact matrix represents the amount of contact or mixing within and between subgroups. The subgroups are often age categories but can also be geographic areas or high/low risk groups. For example, a contact matrix representing the number of contacts per day in children and adults could be:
+A contact matrix represents the amount of contact or mixing within and between subgroups. The subgroups are often age categories but can also be geographic areas or high/low risk groups. For example, a contact matrix representing the average number of contacts per day between children and adults could be:
 
 $$
 \begin{bmatrix}
-8 & 2\\
-2 & 7 
+2 & 2\\
+1 & 3 
 \end{bmatrix}
 $$
-Children contact 8 other children each day, adults contact 7 other adults and children contact 2 adults (and vice versa). We can use this kind of information to account for the role heterogeneity in contact plays in infectious disease transmission. 
+In this example, we would use this to represent that children meet, on average, 2 other children and 2 adult per day (first row), and adults meet, on average, 1 child and 3 other adults per day (second row). We can use this kind of information to account for the role heterogeneity in contact plays in infectious disease transmission.
 
 
 ## Estimating contact matrices
 
 Contact matrices can be estimated from surveys or contact data, or synthetic ones can be used. The POLYMOD survey measured contact patterns in 8 European countries using data on the location and duration of contacts reported by the study participants [(Mossong et al. 2008)](https://doi.org/10.1371/journal.pmed.0050074). [Prem et al. 2021](https://doi.org/10.1371/journal.pcbi.1009098) used the POLYMOD data within a Bayesian hierarchical model to project contact matrices for 177 other countries. 
 
-The R package `{socialmixr}` contains functions which can estimate contact matrices from the POLYMOD and other surveys. We can load the POLYMOD survey data :
+The R package `{socialmixr}` contains functions which can estimate contact matrices from POLYMOD and other surveys. We can load the POLYMOD survey data :
 
 
 ```{r polymod_, echo = TRUE}
@@ -79,13 +79,13 @@ contact_data <- contact_matrix(
 contact_data
 ```
 
-**Note: although the contact matrix is not mathematically symmetric, it satisfies the condition that the total number of contacts of one group with another is the same as the reverse. For the mathematical explanation see [here](https://epiforecasts.io/socialmixr/articles/socialmixr.html#symmetric-contact-matrices).**
+**Note: although the contact matrix is not mathematically symmetric, it satisfies the condition that the total number of contacts of one group with another is the same as the reverse. For the mathematical explanation see [the corresponding section in the socialmixr documentation](https://epiforecasts.io/socialmixr/articles/socialmixr.html#symmetric-contact-matrices).**
 
 
 ::::::::::::::::::::::::::::::::::::: callout
 ### Why would a contact matrix be non-symmetric?
 
-One of the arguments of the function `contact_matrix()` is `symmetric=TRUE`. This means that the total number of contacts of age group 1 with age group 2, should be the same as the total number of contacts of age group 2 and age group 1 (see the `socialmixr` [vignette](https://cran.r-project.org/web/packages/socialmixr/vignettes/socialmixr.html) for more detail). However, when contact matrices are estimated from surveys or other sources, the *reported* number of contacts may differ by age group resulting in a non-symmetric contact matrix [(Prem et al 2021)](https://doi.org/10.1371/journal.pcbi.1009098).
+One of the arguments we gave the function `contact_matrix()` is `symmetric=TRUE`. This means that the total number of contacts of age group 1 with age group 2, should be the same as the total number of contacts of age group 2 and age group 1 (see the `socialmixr` [vignette](https://cran.r-project.org/web/packages/socialmixr/vignettes/socialmixr.html) for more detail). However, when contact matrices are estimated from surveys or other sources, the *reported* number of contacts may differ by age group resulting in a non-symmetric contact matrix because of uncertainty from using a limited sample of participants [(Prem et al 2021)](https://doi.org/10.1371/journal.pcbi.1009098). If `symmetric` is set to TRUE, the `contact_matrix()` function will internally use an average of reported contacts to ensure resulting total number of contacts are symmetric.
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 The example above uses the POLYMOD survey. There are a number of surveys available in `socialmixr`, to list the available surveys use `list_surveys()`. To download a survey, we can use `get_survey()`
@@ -100,10 +100,10 @@ zambia_sa_survey <- get_survey("https://doi.org/10.5281/zenodo.3874675")
 
 ## Zambia contact matrix
 
-After downloading the survey, load contact and population data for Zambia using the following age bins:
+After downloading the survey, generate a symmetric contact matrix for Zambia using the following age bins:
 
 + [0,15)
-+ 20 +
++ 20+
 
 :::::::::::::::::::::::: solution 
 
