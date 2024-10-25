@@ -23,10 +23,10 @@ $\frac{\mathbf{K\cdot S}}{\mathbf{N}}$ susceptible individuals, among
 whom $\mathbf{k}' \leq \mathbf{k}$ may become infected. If the infection
 is highly contagious, $\mathbf{k}'$ will be closer to $\mathbf{k}$, and
 vice versa. The probability of transmission is calculated as
-$\mathbfcal{P}= \frac{\mathbf{k}'}{\mathbf{k}}.$ Consequently, on
+$\mathcal{P}= \frac{\mathbf{k}'}{\mathbf{k}}.$ Consequently, on
 average, the infected individual will infect
 $\beta\cdot \frac{\mathbf{S}}{\mathbf{N}}$ susceptible individuals per
-time unit, where $\beta = \mathbfcal{P} \cdot \mathbf{k}$ is called the
+time unit, where $\beta = \mathcal{P} \cdot \mathbf{k}$ is called the
 effective transmission rate. This represents the average rate at which
 an infected individual can transmit the infection to a susceptible
 individual.
@@ -108,11 +108,11 @@ interesting observation --It tells that the disease cases will increase
 if the ratio of new infections to recovered cases is greater than 1.
 
 3.  The ratio $\frac{\beta}{\gamma}$ represents the basic reproduction
-    number, $\mathbfcal{R}_0$, which is defined as the average number of
+    number, $\mathcal{R}_0$, which is defined as the average number of
     new infections caused by a single infected individual in a fully
-    susceptible population. $\mathbfcal{R}_0$ is a crucial metric for
+    susceptible population. $\mathcal{R}_0$ is a crucial metric for
     understanding the transmissibility of an infectious disease. A
-    higher value of $\mathbfcal{R}_0$ indicates a more transmissible
+    higher value of $\mathcal{R}_0$ indicates a more transmissible
     disease, leading to a faster spread within the community.
 
 4.  The $\mathcal{R}_0$ value helps to determine the finalsize- the
@@ -229,7 +229,7 @@ for modeling infectious disease spread.
     -   $\mathcal{R}_0 =15$ (for measles this value typically ranges
         from 12 to 18).
     -   This makes the transmission rate
-        $\beta = \mathbfcal{R}_0\cdot\gamma = 3$
+        $\beta = \mathcal{R}_0\cdot\gamma = 3$
     -   This means each infectious individual causes 3 new infections
         per day in a fully susceptible population.
 
