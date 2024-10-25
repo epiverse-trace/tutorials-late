@@ -252,8 +252,9 @@ bfaso <- epidemics::population(
   name = "Burkina Faso",
   contact_matrix = matrix(1),  # Well-mixed population
   demography_vector = 22.67e6,  # Population size
+  # Initial conditions: Susceptible, exposed, Infectious, vaccinated, recovered
   initial_conditions = matrix(
-    c(1 - 1/22.67e6, 1/22.67e6, 0, 0, 0),  # Initial conditions: Susceptible, exposed, Infectious, vaccinated, and recovered
+    c(1 - 1 / 22.67e6, 1 / 22.67e6, 0, 0, 0),
     nrow = 1, ncol = 5
   )
 )
@@ -261,15 +262,15 @@ bfaso <- epidemics::population(
 # Run the SEIR model simulation
 output <- epidemics::model_default(
   population = bfaso,
-  transmission_rate = 15/5,  # R0/infectious period = 15/5 = 3
-  infectiousness_rate = 1/8,  # 1/incubation period (pre-infectious phase)
-  recovery_rate = 1/5,  # 1/infectious period
+  transmission_rate = 15 / 5,  # R0/infectious period = 15/5 = 3
+  infectiousness_rate = 1 / 8,  # 1/incubation period (pre-infectious phase)
+  recovery_rate = 1 / 5,  # 1/infectious period
   time_end = 120,  # Simulation over 120 days
   increment = 1  # Daily increments
 )
 
 # Plot the epidemic curve for susceptible, exposed, infectious, and recovered
-output %>% 
+output %>%
   filter(compartment %in% c("exposed", "infectious")) %>%
   ggplot(aes(
     x = time,
@@ -285,7 +286,13 @@ output %>%
   labs(
     x = "Simulation Time (days)",
     y = "Individuals (in millions)",
-    caption = expression(paste("The dynamics of SIER model with ", italic(R)[0], "= 15, ", " showing the trajectories of number of exposed and infected individuals"))
+    caption = expression(
+      paste(
+        "The dynamics of SIER model with ",
+        italic(R)[0], "= 15, ",
+        "showing the trajectories of number of exposed and infected individuals"
+      )
+    )
   )
 ```
 
@@ -392,7 +399,7 @@ contact_matrix <- contact_matrix / max(Re(eigen(contact_matrix)$values))
 contact_matrix <- contact_matrix / demography_vector
 
 # Print the contact matrix
-#print(contact_matrix)
+#contact_matrix
 
 # Define the population structure for Burkina Faso
 initial_i <- 1 / bf_pop
@@ -410,7 +417,7 @@ initial_conditions_matrix <- rbind(
 rownames(initial_conditions_matrix) <- rownames(contact_matrix)
 
 # Print the initial conditions
-#print(initial_conditions_matrix)
+#initial_conditions_matrix
 
 # Create the population object
 bf_population <- epidemics::population(
@@ -451,18 +458,25 @@ output %>%
   coord_cartesian(expand = FALSE) +
   theme_bw() +
   theme(
-    legend.position = "top",  
-    legend.text = element_text(size = 10,hjust = 0, lineheight = 121)
-    ) +
+    legend.position = "top",
+    legend.text = element_text(size = 10, hjust = 0, lineheight = 121)
+  ) +
   labs(
     x = "Simulation time (days)",
     linetype = "Compartment",
     y = "Individuals",
-    caption = expression(paste("SIER model showing the trajectories of the number of exposed and infected individuals ", italic(R)[0], " = 15 for different age groups."))
-  ) + 
+    caption =
+      expression(
+        paste(
+          "SIER model showing the trajectories of the number of ",
+          "exposed and infected individuals ",
+          italic(R)[0], " = 15 for different age groups."
+        )
+      )
+  ) +
   guides(
     color = guide_legend(nrow = 2)
-    )
+  )
 ```
 
 
@@ -507,7 +521,7 @@ $\mathcal{R}_{eff}$ for our age-structured model, as follows:
 
 
 ```{r}
-r0 <-  15 #  basic reproduction number 
+r0 <-  15 #  basic reproduction number
 
 # define the number of age and susceptibility groups
 n_demo_grps <- length(demography_vector)
@@ -608,7 +622,10 @@ data_combined <- bind_rows(data_baseline, data_reduced)
 # Plot new infections over time with scenario and demographic groups
 ggplot(data_combined) +
   geom_line(
-    aes(x = time, y = new_infections, col = demography_group, linetype = scenario)
+    aes(
+      x = time, y = new_infections,
+      col = demography_group, linetype = scenario
+    )
   ) +
   # Highlight the reduced contact intervention period
   annotate(
@@ -641,9 +658,16 @@ ggplot(data_combined) +
   labs(
     x = "Simulation Time (days)",
     y = "New Infections",
-    linetype = "Scenario", 
-    caption = expression(paste("New infections under baseline and 20% reduced transmission rate (", beta, ") for different age groups."))
-  ) + 
+    linetype = "Scenario",
+    caption =
+      expression(
+        paste(
+          "New infections under baseline and 20% reduced transmission rate (",
+          beta,
+          ") for different age groups."
+        )
+      )
+  ) +
   # Adjust legend display to fit in two rows
   guides(
     color = guide_legend(nrow = 2)
@@ -668,7 +692,7 @@ vaccinate_elders <- epidemics::vaccination(
   name = "Vaccination compagain",
   time_begin = matrix(30, nrow(contact_matrix)),
   time_end = matrix(90, nrow(contact_matrix)),
-  nu = matrix(c(0.93, 0.97, 0.95, 0.90, 0.95 ))
+  nu = matrix(c(0.93, 0.97, 0.95, 0.90, 0.95))
 )
 
 # Run the epidemic model
@@ -698,18 +722,24 @@ output3 %>%
   coord_cartesian(expand = FALSE) +
   theme_bw() +
   theme(
-    legend.position = "top",  
-    legend.text = element_text(size = 10,hjust = 0, lineheight = 121)
-    ) +
+    legend.position = "top",
+    legend.text = element_text(size = 10, hjust = 0, lineheight = 121)
+  ) +
   labs(
     x = "Simulation time (days)",
     linetype = "Compartment",
     y = "Individuals",
-    caption = expression(paste("SIER with vaccine  showing the trajectories of the number of exposed and infected individuals for different age groups."))
-  ) + 
+    caption =
+      expression(
+        paste(
+          "SIER with vaccine  showing the trajectories of the number of ",
+          "exposed and infected individuals for different age groups."
+        )
+      )
+  ) +
   guides(
     color = guide_legend(nrow = 2)
-    )
+  )
 ```
 
 We can visualize the outcomes of both the baseline model and the
@@ -736,9 +766,11 @@ data_combined <- bind_rows(data_baseline, data_vaccine)
 ggplot(data_combined) +
   # Plot new infections with lines for each demographic group and scenario
   geom_line(
-    aes(x = time, y = new_infections, col = demography_group, linetype = scenario)
+    aes(
+      x = time, y = new_infections,
+      col = demography_group, linetype = scenario
+    )
   ) +
-  
   # Highlight the reduced contact intervention period using a shaded rectangle
   annotate(
     geom = "rect",
@@ -748,10 +780,8 @@ ggplot(data_combined) +
     fill = alpha("red", 0.2),  # Semi-transparent red fill
     linetype = "dashed"  # Dashed border for the rectangle
   ) +
-  
   # Scale the y-axis with comma-formatted labels
   scale_y_continuous(labels = scales::comma) +
-  
   # Define custom line types for scenarios
   scale_linetype_manual(
     name = "Scenario",
@@ -760,35 +790,35 @@ ggplot(data_combined) +
       "Vaccination" = "solid"
     )
   ) +
-  
   # Use a color palette for age groups
   scale_colour_brewer(
     palette = "Dark2",
     name = "Age Group"
   ) +
-  
   # Set axis limits and disable automatic expansion
   expand_limits(y = c(0, 1e3)) +
   coord_cartesian(expand = FALSE) +
-  
   # Apply a clean white background theme
   theme_bw() +
-  
   # Customize theme for better aesthetics
   theme(
     legend.position = "top",  # Position legend at the top
     legend.text = element_text(size = 10),  # Adjust legend text size
     plot.caption = element_text(hjust = 0.5)  # Center align the caption
   ) +
-  
   # Add axis labels and caption for the plot
   labs(
     x = "Simulation Time (days)",  # x-axis label
     y = "New Infections",  # y-axis label
     linetype = "Scenario",  # Legend title for line types
-    caption = expression(paste("New infections under baseline and vaccine-induced immunity with varying efficacy (", nu, ") across different age groups."))
+    caption = expression(
+      paste(
+        "New infections under baseline and vaccine-induced immunity",
+        "with varying efficacy (",
+        nu, ") across different age groups."
+      )
+    )
   ) +
-  
   # Adjust legend display for better readability
   guides(
     color = guide_legend(nrow = 2)  # Split legend into two rows
@@ -820,29 +850,35 @@ output4 <- epidemics::model_default(
 
 # Plot the epidemic curve (infectious individuals)
 output4 %>%
-  filter(compartment == "infectious") %>%  # Filter for infectious individuals
+  filter(compartment == "infectious") %>% # Filter for infectious individuals
   ggplot(aes(
     x = time,  # Time on the x-axis
     y = value,  # Number of infectious individuals on the y-axis
     col = demography_group  # Color by demographic group (age)
   )) +
   geom_line(linewidth = 1.2) +  # Line width for better visibility
-  scale_y_continuous(labels = scales::comma) +  # Format y-axis with commas for thousands
-  scale_colour_brewer(palette = "Dark2", name = "Age Group") +  # Color palette for age groups
-  expand_limits(y = c(0, 1.5e3)) +  # Ensure the y-axis starts from 0 and goes up to 500,000
+  # Format y-axis with commas for thousands
+  scale_y_continuous(labels = scales::comma) +
+  # Color palette for age groups
+  scale_colour_brewer(palette = "Dark2", name = "Age Group") +
+  # Ensure the y-axis starts from 0 and goes up to 500,000
+  expand_limits(y = c(0, 1.5e3)) +
   coord_cartesian(expand = FALSE) +  # Disable axis expansion
   theme_bw() +  # Clean, white background theme
   theme(
     legend.position = "top",  # Place legend at the top
-    legend.text = element_text(size = 10, hjust = 0, lineheight = 1.1),  # Adjust text size and line height
+    # Adjust text size and line height
+    legend.text = element_text(size = 10, hjust = 0, lineheight = 1.1),
     plot.caption = element_text(hjust = 0.5)  # Center align the caption
   ) +
   labs(
     x = "Simulation Time (Days)",  # x-axis label
     y = "Number of Infectious Individuals",  # y-axis label
-    caption = "SIER model with vaccination and contact reduction: Number of infectious individuals by age group"
+    caption = "SIER model with vaccination and contact reduction:
+    Number of infectious individuals by age group"
   ) +
+  # Split the legend into two rows for compactness
   guides(
-    color = guide_legend(nrow = 2)  # Split the legend into two rows for compactness
+    color = guide_legend(nrow = 2)
   )
 ```
