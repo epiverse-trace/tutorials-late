@@ -238,14 +238,17 @@ By applying these assumptions and parameters to
 trajectory of the measles outbreak using the syntax provided by the
 {epidemics} package as shown in the below is code chunk.
 
-```{r}
+```{r,warning=FALSE,message=FALSE}
 # Loading libraries
 library(dplyr)
 library(ggplot2)
 library(epidemics)
+```
 
+
+```{r}
 # Define the population structure for Burkina Faso
-bfaso <- population(
+bfaso <- epidemics::population(
   name = "Burkina Faso",
   contact_matrix = matrix(1),  # Well-mixed population
   demography_vector = 22.67e6,  # Population size
@@ -256,7 +259,7 @@ bfaso <- population(
 )
 
 # Run the SEIR model simulation
-output <- model_default(
+output <- epidemics::model_default(
   population = bfaso,
   transmission_rate = 15/5,  # R0/infectious period = 15/5 = 3
   infectiousness_rate = 1/8,  # 1/incubation period (pre-infectious phase)
@@ -266,8 +269,8 @@ output <- model_default(
 )
 
 # Plot the epidemic curve for susceptible, exposed, infectious, and recovered
-filter(output, 
-       compartment %in% c("exposed", "infectious")) %>%
+output %>% 
+  filter(compartment %in% c("exposed", "infectious")) %>%
   ggplot(aes(
     x = time,
     y = value / 10^6,  # Scale to millions
@@ -296,17 +299,14 @@ of the population that will be infected given a specified basic
 reproduction number $(\mathcal{R}_0)$. The calculation can be done as
 follows:
 
-```{r}
+```{r,message=FALSE,warning=FALSE}
 # Loading the finalsize library
 library(finalsize)
-finalsize::final_size(10)
 ```
 
-
-
-
-
-
+```{r}
+finalsize::final_size(r0 = 10)
+```
 
 For $\mathcal{R}_0 \geq 10$, the results indicate that nearly the entire
 population is expected to be infected by measles. The $HIT$ needed to
@@ -376,13 +376,9 @@ contact_matrix <- matrix(
 # Define the demography vector for Burkina Faso
 demography_vector <- c(0.44, 0.195, 0.29, 0.05, 0.025) * bf_pop
 names(demography_vector) <- rownames(contact_matrix)
-print(demography_vector)
+
+demography_vector
 ```
-
-
-
-
-
 
 ```{r}
 # scale the contact matrix so the largest eigenvalue is 1.0
@@ -394,11 +390,11 @@ contact_matrix <- contact_matrix / max(Re(eigen(contact_matrix)$values))
 # this reflects the assumption that each individual in group {j} make contacts
 # at random with individuals in group {i}
 contact_matrix <- contact_matrix / demography_vector
+
 # Print the contact matrix
 #print(contact_matrix)
 
 # Define the population structure for Burkina Faso
-
 initial_i <- 1 / bf_pop
 initial_conditions <- c(S = 1 - initial_i, E = 0, I = initial_i, R = 0, V = 0)
 
@@ -410,24 +406,27 @@ initial_conditions_matrix <- rbind(
   initial_conditions,
   initial_conditions
 )
+
 rownames(initial_conditions_matrix) <- rownames(contact_matrix)
+
+# Print the initial conditions
 #print(initial_conditions_matrix)
-```
 
-
-
-
-```{r}
 # Create the population object
-bf_population <- population(
+bf_population <- epidemics::population(
   name = "Burkina Faso",
   contact_matrix = contact_matrix,
   demography_vector = demography_vector,
   initial_conditions = initial_conditions_matrix
 )
 
+# Print the population object
+# bf_population
+```
+
+```{r}
 # Run the epidemic model
-output <- model_default(
+output <- epidemics::model_default(
   population = bf_population,
   transmission_rate = 15 / 5,  # R0/infectious period = 15/5 = 3
   infectiousness_rate = 1 / 8,  # 1/incubation period (pre-infectious phase)
@@ -465,10 +464,6 @@ output %>%
     color = guide_legend(nrow = 2)
     )
 ```
-
-
-
-
 
 
 ## Effective Reproduction Number $\mathcal{R}_{eff}$
@@ -513,35 +508,35 @@ $\mathcal{R}_{eff}$ for our age-structured model, as follows:
 
 ```{r}
 r0 <-  15 #  basic reproduction number 
+
 # define the number of age and susceptibility groups
 n_demo_grps <- length(demography_vector)
 n_risk_grps <- 5
+
 # In this example, risk varies across groups
 susceptibility <- matrix(
   data = c(0.80, 0.5, 0.3, 0.2, 0.1), nrow = n_demo_grps, ncol = n_risk_grps
 )
+
 # risk does not vary within groups
 p_susceptibility <- matrix(
   data = 1, nrow = n_demo_grps, ncol = n_risk_grps
 )
+
 # p_susceptibility rows must sum to 1.0
 p_susceptibility <- p_susceptibility / rowSums(p_susceptibility)
 
 
-reff <- r_eff(
+reff <- finalsize::r_eff(
   r0 = r0,
   contact_matrix = contact_matrix,
   demography_vector = demography_vector,
   susceptibility = susceptibility,
   p_susceptibility = p_susceptibility
 )
-print(reff)
+
+reff
 ```
-
-
-
-
-
 
 ::: challenge
 ### $\mathcal{R}_{eff}$ vs $\mathcal{R}_0$
@@ -572,7 +567,7 @@ code chunk below.
 
 
 ```{r}
-reduced_contacts <- intervention(
+reduced_contacts <- epidemics::intervention(
   name = "reduce",
   type = "rate",
   time_begin = 30,
@@ -600,8 +595,8 @@ models.
 
 ```{r}
 # Load new infections data for each scenario
-data_baseline <- new_infections(output, by_group = TRUE)
-data_reduced <- new_infections(output2, by_group = TRUE)
+data_baseline <- epidemics::new_infections(output, by_group = TRUE)
+data_reduced <- epidemics::new_infections(output2, by_group = TRUE)
 
 # Assign scenario names
 data_baseline$scenario <- "Baseline"
@@ -655,11 +650,6 @@ ggplot(data_combined) +
   )
 ```
 
-
-
-
-
-
 ## Vaccination Model
 
 An effective vaccine for measles exists, known as the measles, mumps,
@@ -674,7 +664,7 @@ demonstrated in the code chunk below.
 
 
 ```{r}
-vaccinate_elders <- vaccination(
+vaccinate_elders <- epidemics::vaccination(
   name = "Vaccination compagain",
   time_begin = matrix(30, nrow(contact_matrix)),
   time_end = matrix(90, nrow(contact_matrix)),
@@ -722,11 +712,6 @@ output3 %>%
     )
 ```
 
-
-
-
-
-
 We can visualize the outcomes of both the baseline model and the
 vaccine-intervention model to highlight the differences in infection
 dynamics. This comparison allows us to observe how vaccination impacts
@@ -739,7 +724,7 @@ controlling the epidemic.
 
 ```{r}
 # Load new infections data for each scenario
-data_vaccine <- new_infections(output3, by_group = TRUE)
+data_vaccine <- epidemics::new_infections(output3, by_group = TRUE)
 
 # Assign scenario names
 data_vaccine$scenario <- "Vaccination"
@@ -809,10 +794,6 @@ ggplot(data_combined) +
     color = guide_legend(nrow = 2)  # Split legend into two rows
   )
 ```
-
-
-
-
 
 
 ## Combining interventions
