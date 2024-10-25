@@ -164,7 +164,7 @@ measles outbreaks.
 Given the virus's high transmissibility, even a single case of measles
 can trigger large outbreaks, especially in regions with low vaccination
 coverage. The incubation (pre-infectious) period for measles is
-typically around 8 days, [while the infectious period averages 5 days][masters2023measles]. The SEIR model in
+typically around 8 days, while the infectious period averages 5 days ([Masters et al., 2023](https://www.thelancet.com/journals/lanpub/article/PIIS2468-2667(23)00130-5/fulltext)). The SEIR model in
 [Equation 1](#eq-s1){.quarto-xref} is commonly employed to simulate the
 dynamics of measles outbreaks and evaluate control measures like
 vaccination
@@ -175,9 +175,9 @@ Burkina Faso, like many other countries in Africa, faces recurring
 measles outbreaks. This can be attributed to factors such as limited
 healthcare access, inadequate vaccination coverage, and fragile
 healthcare systems. In 2023, Burkina Faso experienced a particularly
-severe outbreak, [with over 2,000 suspected cases reported][crisis24],
+severe outbreak, with over 2,000 suspected cases reported ([Crisis24, 2024](https://crisis24.garda.com/alerts/2024/02/burkina-faso-elevated-measles-activity-reported-in-multiple-areas-in-february)),
 prompting health authorities and international organizations to scale up
-[vaccination campaigns in an effort to curtail the spread of the disease][savethechildren, thecable].
+vaccination campaigns in an effort to curtail the spread of the disease ([Save the Children, 2024](https://www.savethechildren.net/news/burkina-faso-over-2000-children-diagnosed-suspected-measles-nationwide-outbreak); [The Cable, 2024](https://www.thecable.ng/burkina-faso-records-2000-suspected-cases-as-country-battles-measles-outbreak/)).
 
 We will simulate the measles outbreak in Burkina Faso using the SEIR
 model in [Equation 1](#eq-s1){.quarto-xref}. This will allow us to
@@ -317,7 +317,7 @@ contains the epidemic is about $93\%$, uaing the formula given in
 
 The age structure of Burkina Faso is characteristic of a young
 population, with a majority of the population being under 25 years old.
-[According to recent estimates][un_population_prospects, cia_world_factbook_bf, world_bank_population_data], the age structure
+According to recent estimates ([United Nations, 2023](https://population.un.org/wpp/); [Central Intelligence Agency, 2023](https://www.cia.gov/the-world-factbook/countries/burkina-faso/); [World Bank, 2023](https://data.worldbank.org/indicator/SP.POP.TOTL?locations=BF)), the age structure
 is broken down as follows:
 
 
