@@ -1,6 +1,5 @@
 ---
 title: Introduction to Mathematical Modelling of Infectious Diseases
-toc-title: Table of contents
 ---
 
 # Preface
@@ -239,8 +238,7 @@ By applying these assumptions and parameters to
 trajectory of the measles outbreak using the syntax provided by the
 {epidemics} package as shown in the below is code chunk.
 
-:::: cell
-``` {.r .fold-hide .cell-code}
+```{r}
 # Loading libraries
 library(dplyr)
 library(ggplot2)
@@ -288,10 +286,7 @@ filter(output,
   )
 ```
 
-::: cell-output-display
-![](fig/unnamed-chunk-1-1.png)
-:::
-::::
+
 
 ## Expected Epidemic Size & Herd Immunity
 
@@ -301,18 +296,17 @@ of the population that will be infected given a specified basic
 reproduction number $(\mathcal{R}_0)$. The calculation can be done as
 follows:
 
-:::: cell
-``` {.r .fold-hide .cell-code}
+```{r}
 # Loading the finalsize library
 library(finalsize)
 finalsize::final_size(10)
 ```
 
-::: {.cell-output .cell-output-stdout}
-        demo_grp   susc_grp susceptibility p_infected
-    1 demo_grp_1 susc_grp_1              1  0.9999546
-:::
-::::
+
+
+
+
+
 
 For $\mathcal{R}_0 \geq 10$, the results indicate that nearly the entire
 population is expected to be infected by measles. The $HIT$ needed to
@@ -363,8 +357,7 @@ rates among older age groups:
   : Table for a **hypothetical** mean contacts between different age
   groups in Burkina Faso population.
 
-:::: cell
-``` {.r .cell-code}
+```{r}
 # Initial conditions: one in every 1 million is infected
 bf_pop <- 22.67e6
 contact_matrix <- matrix(
@@ -386,12 +379,12 @@ names(demography_vector) <- rownames(contact_matrix)
 print(demography_vector)
 ```
 
-::: {.cell-output .cell-output-stdout}
-     [0-15) [15-25) [25-55) [55-65)     65+ 
-    9974800 4420650 6574300 1133500  566750 
-:::
 
-``` {.r .cell-code}
+
+
+
+
+```{r}
 # scale the contact matrix so the largest eigenvalue is 1.0
 # this is to ensure that the overall epidemic dynamics correctly reflect
 # the assumed value of R0
@@ -420,10 +413,11 @@ initial_conditions_matrix <- rbind(
 rownames(initial_conditions_matrix) <- rownames(contact_matrix)
 #print(initial_conditions_matrix)
 ```
-::::
 
-:::: cell
-``` {.r .cell-code}
+
+
+
+```{r}
 # Create the population object
 bf_population <- population(
   name = "Burkina Faso",
@@ -472,10 +466,10 @@ output %>%
     )
 ```
 
-::: cell-output-display
-![](fig/unnamed-chunk-4-1.png)
-:::
-::::
+
+
+
+
 
 ## Effective Reproduction Number $\mathcal{R}_{eff}$
 
@@ -516,8 +510,8 @@ The `{finalsize}`package implements
 [Equation 5](#eq-reff){.quarto-xref}, and we can use it to calculate the
 $\mathcal{R}_{eff}$ for our age-structured model, as follows:
 
-:::: cell
-``` {.r .cell-code}
+
+```{r}
 r0 <-  15 #  basic reproduction number 
 # define the number of age and susceptibility groups
 n_demo_grps <- length(demography_vector)
@@ -544,12 +538,12 @@ reff <- r_eff(
 print(reff)
 ```
 
-::: {.cell-output .cell-output-stdout}
-    [1] 8.529089
-:::
-::::
 
-::: callout-question
+
+
+
+
+::: challenge
 ### $\mathcal{R}_{eff}$ vs $\mathcal{R}_0$
 
 How different is the $\mathcal{R}_{eff}$ value from $\mathcal{R}_0$?
@@ -576,8 +570,8 @@ baseline SEIR model, the `{epidemics}` package provides an object called
 `interventions`, which is added to the model definition as shown in the
 code chunk below.
 
-::: cell
-``` {.r .cell-code}
+
+```{r}
 reduced_contacts <- intervention(
   name = "reduce",
   type = "rate",
@@ -597,14 +591,14 @@ output2 <- epidemics::model_default(
   increment = 1  # Daily increments
 )
 ```
-:::
+
 
 To examine the effect that implementing a reduction in contact has on
 the daily number of new infections, we plot the results from the two
 models.
 
-:::: cell
-``` {.r .cell-code}
+
+```{r}
 # Load new infections data for each scenario
 data_baseline <- new_infections(output, by_group = TRUE)
 data_reduced <- new_infections(output2, by_group = TRUE)
@@ -661,10 +655,10 @@ ggplot(data_combined) +
   )
 ```
 
-::: cell-output-display
-![](fig/unnamed-chunk-7-1.png)
-:::
-::::
+
+
+
+
 
 ## Vaccination Model
 
@@ -678,8 +672,8 @@ $[55\to 65)$, and $65+$, respectively. The `{epidemics}` package enables
 the incorporation of vaccination interventions into modeling, as
 demonstrated in the code chunk below.
 
-:::: cell
-``` {.r .cell-code}
+
+```{r}
 vaccinate_elders <- vaccination(
   name = "Vaccination compagain",
   time_begin = matrix(30, nrow(contact_matrix)),
@@ -728,10 +722,10 @@ output3 %>%
     )
 ```
 
-::: cell-output-display
-![](fig/unnamed-chunk-8-1.png)
-:::
-::::
+
+
+
+
 
 We can visualize the outcomes of both the baseline model and the
 vaccine-intervention model to highlight the differences in infection
@@ -742,8 +736,8 @@ outbreaks across different age groups. By contrasting these two models,
 we can better understand the effectiveness of vaccination strategies in
 controlling the epidemic.
 
-:::: cell
-``` {.r .cell-code}
+
+```{r}
 # Load new infections data for each scenario
 data_vaccine <- new_infections(output3, by_group = TRUE)
 
@@ -816,10 +810,10 @@ ggplot(data_combined) +
   )
 ```
 
-::: cell-output-display
-![](fig/unnamed-chunk-9-1.png)
-:::
-::::
+
+
+
+
 
 ## Combining interventions
 
@@ -829,8 +823,8 @@ single model, allowing for more comprehensive simulations of disease
 control strategies. The below code chunk shows how to combine
 interventions together.
 
-:::: cell
-``` {.r .cell-code}
+
+```{r}
 # Run the epidemic model
 output4 <- epidemics::model_default(
   population = bf_population,
@@ -872,7 +866,7 @@ output4 %>%
   )
 ```
 
-::: cell-output-display
-![](fig/unnamed-chunk-10-1.png)
-:::
-::::
+
+
+
+
