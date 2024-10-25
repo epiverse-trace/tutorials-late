@@ -1,0 +1,165 @@
+ID,Email,"First Name
+","Last Name
+",Gender,Nationality,"Country of Residence
+","Current Job Title
+","Organization/Institution Name
+","Do you have funding to cover the full cost of the training?
+",Do you require financial support to attend the workshop?,"If ""Yes,"" please specify the type of funding you require:"
+1,jarjuseysarja@gmail.com,Sarja,Jarjusey,Male,Gambian,Gambia,Epidemiologist,Health Management Information System - Ministry of Health,No,Yes,Travel;
+2,Khadijatoumanneh95@gmail.com,Khadijatou,Manneh,Female,Gambian,Gambia,Student,University of the Gambia,Yes,NA,NA
+3,jnrayissi@gmail.com,Gaspard Junior,AYISSI AYISSI,Male,Cameroonian,Cameroon,Research Assistant,One Health Innovative Solutions,No,Yes,Travel;Subsistence;Accommodation;
+4,a.rahman@snu.edu.so,Abdirahman,Ahmed,Male,Somali,Somalia,Assistant Researcher,Somalia National Institute of Health,No,Yes,Travel;Subsistence;Accommodation;
+5,atsujoshua339@gmail.com,Joshua,Atsu,Male,Ghanaian,Ghana,Student,Kwame Nkrumah University of Science and Technology,No,Yes,Travel;Subsistence;Accommodation;
+6,abratekola@gmail.com,Abraham,Gebremedhn,Male,Ethiopian,Ethiopia,Health research project coordinator,Armauer hansen research institute,No,Yes,Travel;Subsistence;Accommodation;Visa application fee;
+7,zelalem2011@gmail.com,Zelalem Mehari,Nigussie,Male,Ethiopian,Ethiopia,Lecturer,"Bahir Dar University, Ethiopia",No,Yes,Subsistence;Accommodation;Travel;
+9,Esu.Ezeani@lshtm.ac.uk,Esu,Ezeani,Female,Nigeria,The Gambia,Head of the Health and Demographic Surveillance System (HDSS),The Medical Research Council Unit The Gambia at The London School of Hygiene and Tropical Medicine,No,Yes,Travel;Accommodation;
+10,gashuyt1@gmail.com,GASHAW ABEBAW,ADANU,Male,ETHIOPIA,SOUTH Africa,Student,University of South Africa,No,Yes,Travel;Accommodation;Subsistence;
+11,kemuntodoris1@gmail.com,Doris,Nyamwaya,Female,Kenyan,Kenya,Post doctoral fellow,LSHTM/MRC,Yes,NA,NA
+12,menicus193530@gmail.com,Abeeb,Adeniyi,Male,Nigerian,Nigeria,Digital epidemiologist/data scientist,Global Health Research Unit for Genomic Surveillance of Antibiotic Resistance,No,Yes,Travel;Subsistence;Accommodation;
+13,danibiftu@gmail.com,Daniel Biftu,Bekalo,Male,Ethiopia,Ethiopia,Instructor,Haramaya University,No,Yes,Travel;Subsistence;Accommodation;
+14,leratoramoyadi20@gmail.com,Lerato,Ramoyadi,Female,South African,South Africa,Student,University of Cape Town under (AIMS),No,Yes,Travel;Subsistence;Accommodation;
+15,sangbm7@gmail.com,Sang B.,Mendy,Male,Gambian,The Gambia,Poultry farm manager,Saadis Investment Group (SIG),Yes,NA,NA
+16,Alamuhjai@gmail.com,Alagie Muhammed,Jaiteh,Male,Gambia,Finland,MSc Student in Mathematical biology,University of Helsinki,No,Yes,Travel;
+17,Jallowo67@gmail.com,Omar,Jallow,Male,Gambian,The Gambia,Monitoring and Evaluation Assistant,"National Malaria Control Program, Ministry of Health",No,Yes,Travel;Accommodation;Subsistence;Tuition Fee ;
+18,houetoanni@gmail.com,HOUETO,Mahukpego Annick,Female,Benin,Benin,Student,University of Abomey Calavi,No,Yes,Travel;Subsistence;Accommodation;
+19,Afassinouk@ufs.ac.za,Komi,Afassinou,Male,Togolaise,South Africa,Senior Lecturer and Researcher,University of the Free State,No,No,NA
+20,samboat.sbm@gmail.com,Samuel,Manu-Boateng,Male,Ghanaian,Ghana,Graduate Research Student,University of Ghana,No,Yes,Travel;Accommodation;Subsistence;
+21,mwtawiah@gmail.com,Joyce Mawuse,Tawiah,Female,Ghanaian,Ghana,Data Manager,AngloGold Ashanti (Ghana) Malaria Control,No,Yes,Travel;Accommodation;Subsistence;
+22,sani.a.abdou@aims-senegal.org,Sani,Amadou ABDOU,Male,Niger,Gambia,Internship,MRC Unit The Gambia,No,No,NA
+23,enockmwenitete@gmail.com,Enock,Mwenitete,Male,Malawian,Malawi,Statistician,National Statistics Office of Malawi,No,Yes,Travel;Subsistence;Accommodation;
+24,aboukjobe80@gmail.com,Ebrima K.,Jobe,Male,Gambian,Gambia,Senior Program Office,Ministry of Health,No,Yes,Transport support;
+25,ahaneneugonnaya@gmail.com,Adanna,Ezenwa-Ahanene,Female,Nigerian,Nigeria,Biostatistician / Epidemiologist,"Alex Ekwueme Federal University Teaching Hospital, Abakaliki, Nigeria",No,Yes,Travel;Accommodation;Subsistence;
+26,abioduolakiigbe@hotmail.com,Abiodun Kanmi,Olakiigbe,Male,Nigerian,Nigerian,Statistics/Researcher,Nigerian Institute of Medical Research Yaba Lagos Nigeria,No,No,NA
+27,abdoukskbousso@gmail.com,Bousso,Abdou,Male,Senegal,Senegal,Mathématique,University Cheikh Anta Diop,Yes,NA,NA
+28,sanyangarmando@hotmail.com,Armando,Sanyang,Male,Gambian,Gambia,Epidemiologist,Ministry of Health of The Gambia,No,Yes,Travel;Subsistence;
+29,djima.mouhamadou@gmail.com,Mouhamadou Djima,Baranon,Male,Beninese,Kenya,PhD Candidate in Mathematics (Statistics Option),"Pan African University Institute for Basic Sciences, Technology, and Innovation (PAUSTI)",No,Yes,Travel;Subsistence;Accommodation;
+30,shadrachmintah@gmail.com,Shadrach,Mintah,Male,Ghanaian,Ghana,Data Analyst,KNUST - SPH,No,Yes,Travel;Accommodation;
+31,isaacdoku960@gmail.com,Isaac,Doku,Male,Ghanaian,Ghana,Policy Planning officer,GTVETS,No,Yes,Travel;Accommodation;Subsistence;Feeding ;
+32,chepkoech197@gmail.com,Sharon,Chepkoech,Female,Kenyan,Kenya,Assistant lecturer,"Moi University, School of Public Health",No,Yes,Accommodation;Travel;
+33,teslim.adedeji@aims-cameroon.org,Teslim,Adedeji,Male,Nigerian,Cameroon,Student,Africa institute for mathematical sciences,No,Yes,Travel;Accommodation;Subsistence;
+34,hawa.deme@aims-senegal.org,Hawa,DEME,Female,Sénégalaise,Senegal,Etudiante,Anciens Aims- Sénégal,Yes,NA,NA
+35,princetsekpetse30@gmail.com,Prince,Tsekpetse,Male,Ghanaian,Uganda,Master of Public Health Student,Busitema University,No,Yes,Travel;Subsistence;Accommodation;
+36,bernard.opoku@aims-cameroon.org,Bernard,Opoku,Male,Ghana,Spain,Prospective Student,Technical University of Munich,No,Yes,Travel;Subsistence;Accommodation;
+37,Akomolafebusayo2014@gmail.com,Busayo,Akomolafe,Male,Nigerian,Nigeria,Public Health Laboratory Scientist,"Oyo State Primary Healthcare Board, Ministry of Health",Yes,NA,NA
+38,ayembilla2022@gmail.com,Jacob Apibilla,Ayembilla,Male,Ghanaian,Ghana,Lecturer,Accra Technical University,Yes,NA,NA
+39,edzakpa@aimsric.org,Etse Yawo,DZAKPA,Male,Togo,Rwanda,Postdoctoral fellow in climate and health,African Institute for Mathematical Sciences Research and Innovation Centre (AIMS-RIC),No,Yes,Travel;Subsistence;Accommodation;
+40,victoriakajubi@gmail.com,Victoria,Nakalanzi,Female,Uganda,Uganda,Research officer,Ernest Cook Ultrasound Research and Education Institute (ECUREI),No,Yes,Travel;Accommodation;
+41,tgbolahan@ihvnigeria.org,Toluwalope,Gbolahan,Female,Nigerian,Nigeria,Data Analyst,Institute of Human Virology Nigeria (IHVN),No,Yes,Travel;Accommodation;
+42,aminumcdc@gmail.com,Aminu Umar,Muhammad,Male,Nigeria,Nigeria,"Nigeria, Country Director, Pandemic Preparedness and Response. Regional Advisor, Africa, New Vaccine",The Task Force for Global Health Inc.,No,Yes,Travel;Subsistence;Accommodation;
+43,fadepoj@gmail.com,Joshua,Fadepo,Male,Nigeria,Nigeria,State technical facilitator,World health organization,No,Yes,Travel;Accommodation;Subsistence;
+44,Stanlasso@gmail.com,Assohoun,Egomli Stanislas,Male,Côte d’Ivoire,Côte. D ivoire,Researcher,Pasteur institut of Côte  d'Ivoire,No,Yes,Travel;Subsistence;Accommodation;
+45,adekanyeusmanoladipo@gmail.com,Usman,Adekanye,Male,Nigerian,Nigeria,Epidemiologist,Nigerian Ministry of Defence,No,Yes,Travel;Accommodation;Subsistence;
+47,edna@aims.ac.za,Edna Chilenje,Manda,Female,Malawian,Malawi,Lecturer,Mzuzu University,No,Yes,Travel;Accommodation;
+48,seyalhagiepapa@yahoo.com,Alhagie Papa,Sey,Male,Gambian,The Gambia,Data Manager,National Public Health Reference Laboratories,Yes,NA,NA
+49,ebrimanas@gmail.com,Ebrima solo,Nasso,Male,Gambian,Gambia,Data manager,HMIS,No,Yes,Travel;Subsistence;Internet data;
+50,sokhna.f.bigue@aims-senegal.org,Sokhna Fatimata Bigué,Ndiaye,Female,Senegal,Senegal,Master student graduate,African Institute for mathematical sciences,Yes,NA,NA
+51,olagbami.samfem@gmail.com,Oluwafemi Samson,Olagbami,Male,Nigerian,Nigeria,Research Assistant,"International Centre for Applied Mathematical Modelling and Data Analytics, Federal University Oye-Ekiti",No,Yes,Travel;Accommodation;
+52,b.bavug@kbth.gov.gh,Benjamin,Tommy Bavug,Male,Ghanaian,Ghana,Statistician,"Korle Bu Teaching Hospital, Accra",No,Yes,Travel;Accommodation;
+53,comfortj@aims.ac.za,Comfort Sunday,Jones,Female,Nigerian,South Africa,Masters Student,African Institute for Mathematical Sciences,No,Yes,Travel;Subsistence;Accommodation;
+54,paustellaazokpota@gmail.com,Paustella,Azokpota,Female,Beninese,Béni,Research assistant,UAC,No,Yes,Travel;Subsistence;Accommodation;
+55,Olasunkanmiyusuf55@gmail.com,Yusuff,Olasunkanmi,Male,Nigeria,Nigeria,Biostatistician,Institute of Human Virology Nigeria,No,Yes,Travel;Subsistence;Accommodation;
+56,Yusufash02@gmail.com,Yusuf,Ashemi,Male,Nigerian,Nigeria,Disease Support Officer,Global Framework for Control of Transboundary Animal Disease,No,Yes,Accommodation;Subsistence;Travel;
+57,pabegambie@gmail.com,Bisenty,Gomez,Male,Gambian,Gambia,Assistant Public Health Officer,Ministry of Health,No,Yes,Accommodation;Travel;Subsistence;
+58,ceesay1992@gmail.com,Ousman,Ceesay,Male,Gambian,The Gambia,"Public Health Officer, MOH","Directorate of Public Health Services, MOH",No,Yes,Travel;Subsistence;Accommodation;
+59,mnyahuma@gmail.com,Munyaradzi,Nyahuma,Male,Zimbabwean,South Africa,Veterinarian and Head of Department,University of the Free State,No,Yes,Travel;Subsistence;Accommodation;
+60,ajifannaboye30@gmail.com,Aji fanna,Boye,Female,Gambian,Gambia,Student,University of the Gambia,Yes,NA,NA
+61,charlesnnam22@gmail.com,Charles,Obiorah,Male,Nigerian,Nigeria,Medical Laboratory Scientist,Alex Ekwueme Federal University Teaching Hospital Abakaliki,No,Yes,Travel;Subsistence;Accommodation;
+62,bai.cham@lshtm.ac.uk,Bai,Cham,Male,Gambian,The Gambia,Research Fellow,Medical Research Council Unit The Gambia,No,No,NA
+63,ehismethodius@gmail.com,Methodius,Okouzi,Male,Nigerian,Nigeria,Regional Senior Malaria Technical Advisor,Management Sciences for Health,No,Yes,Travel;Subsistence;Accommodation;
+64,solim.pitikalo@aims-senegal.org,Solim,PITIKALO,Female,Togolese,Gambia,Intern  of Data science,MRC,No,Yes,Subsistence;
+65,idan.solo95@gmail.com,Jacob,Idan,Male,Ghanaian,Ghana,Physician Assistant/ Biostatistician,"University Hospital, University of Education, Winneba, Ghana",No,Yes,Travel;Subsistence;Accommodation;
+66,kamamary400@gmail.com,Mary,Kama,Female,Nigeria,Nigeria,Lecturer,Veritas University,No,Yes,Travel;Accommodation;Subsistence;
+67,jnens2020@gmail.com,Nkurunziza,Jean de Dieu,Male,Burundian,Burundi,Lecturer at University,École Normale Supérieure,No,Yes,Travel;Subsistence;Accommodation;Visa fee;
+68,lshmd19@lshtm.ac.uk,Mouhamadou Fadel,DIOP,Male,Senegalese,The Gambia,PhD student,London School of Hygiene and Tropical Medicine (LSHTM)/ MRCG,Yes,NA,NA
+69,musclineganda@gmail.com,Muscline,Ganda,Female,Zimbabwean,Zimbabwe,Senior Research Scientist,Scientific and Industrial Research and Development Centre,No,Yes,Travel;Accommodation;
+70,thierkafr@gmail.com,Thierry,Kalonji Mukendi,Male,Congolese,Democratic Republic of the Congo,Epidemiologist / disease surveillance officer,National Monkeypox and viral haemorrhagic fevers control program/ MoH,No,Yes,Travel;Subsistence;Accommodation;
+71,Elbarbarym@who.com,Mona,Elbarbary,Female,Egypt,Egypt,Senior epidemiologist,WHO,No,Yes,Travel;Subsistence;Accommodation;
+72,ngwabrandon10@gmail.com,Brandon,Ngwa,Male,Cameroonian,Gambia,Bioinformatics Support Officer,Medical Research Council Gambia,No,Yes,Travel;Subsistence;Accommodation;
+73,cdagwak@ihvnigeria.org,Mark,Dagwak,Male,Nigerian,Nigeria,Data Associate,Institute of Human Virology Nigeria,No,Yes,Travel;
+74,gayeca@ul.edu.lr,CALVIN ALVIN,GAYE,Male,LIBERIAN,LIBERIAN,Assistant Professor/ Deputy Director,UNIVERSITY OF LIBERIA,No,Yes,Travel;Subsistence;Accommodation;
+75,aaronihuoma@yahoo.com,Ihuoma,Aaron Wali,Female,Nigeria,Nigeria,Community Medicine Physician,Rivers State University Teaching Hospital,No,Yes,Travel;Subsistence;Accommodation;
+76,fallybealy98@gmail.com,Fally,Bealy,Male,Cameroon,Cameroon,Monitoring and Evaluation Assistant,FINISTECH,No,Yes,Travel;Accommodation;Subsistence;
+77,omonijooluwafemi599@gmail.com,Oluwafemi,Omonijo,Male,Nigeria,Nigeria,Data manager,institute of Human Virology Nigeria,No,Yes,Travel;Subsistence;Accommodation;
+78,boristchioffo@gmail.com,Boris Rosmes,Tchioffo,Male,Cameroonian,Cameroon,PhD candidate,University of Yaounde 1,No,Yes,Travel;Subsistence;Accommodation;
+79,landry.dassoundo@univ-man.edu.ci,Mafoya Landry,Dassoundo,Male,Benin,Ivory Coast,Lecturer,Polytechnic University of Man,No,Yes,Travel;Accommodation;Subsistence;
+80,mrokoyedele@gmail.com,Oyewole,Oyedele,Male,Nigerian,Nigeria,Senior Data Analyst and Project Lead (Global Health Security),"Institute of Human Virology, Nigeria",No,Yes,Travel;Accommodation;
+81,cheikh.t.ndour@aims-senegal.org,Cheikh Tidiane,Ndour,Male,Senegalese,Senegal,Graduate in Mathematical Modeling,African Institute for Mathematical Sciences (AIMS) Senegal,No,Yes,Accommodation;Subsistence;Travel;
+82,alfreddouba1@gmail.com,Alfred,Douba,Male,Ivorian,Côte d'Ivoire,Public health specialist / University teacher,National Institute of Publich Hygiene / Felix Houphouët-Boigny University,No,Yes,Travel;Subsistence;Accommodation;
+83,nndeyekhady75@gmail.com,Ndeye Khady,Ndiaye,Female,Senegalese,Senegal,teacher,imem,No,Yes,Travel;Accommodation;Subsistence;
+84,abbeymagnus@fethi.gov.ng,Tope,Ipinnimo,Male,Nigerian,Nigeria,Clinical Epidemiologist/Consultant Physician,"Federal Teaching Hospital, Ido-Ekiti",No,Yes,Travel;Accommodation;Subsistence;
+85,oedurodola@gmail.com,Opeyemi,Durodola,Male,Nigerian,Canada,PhD Student,Ecole de Technologies Supreme of the University of Quebec,No,Yes,Travel;Accommodation;Subsistence;
+86,Benvollens456@gmail.com,Benvollens,Maluleke,Male,South African,South Africa,Masters of mathematical science student,Africa Institute of mathematical Science (AIMS),No,Yes,Accommodation;Subsistence;Travel;Visa;
+87,Shola.Able-Thomas@lshtm.ac.uk,Shola,Able-Thomas,Male,Gambian,Gambia,Scientific Officer,MRC Unit the Gambia at the London School of Hygiene and Tropical Medicine,No,No,NA
+88,amjadislamaqib@cuvas.edu.pk,Amjad,Aqib,Male,Pakistan,Pakistan,Assistant Professor,Cholistan University of Veterinary and Animal Sciences,No,Yes,Travel;Subsistence;Accommodation;
+89,kennethenwerem@gmail.com,Kenneth,Enwerem,Male,Nigerian,Nigeria,Senior Surveillance and Global Health Security Officer,Institute of Human Virology Nigeria,No,Yes,Travel;Subsistence;Accommodation;
+91,Drtonyuwandu@gmail.com,Anthony,Uwandu-Uzoma,Male,Nigerian,United kingdom,Postgraduate Masters,University of Bradford,Yes,NA,NA
+92,zaynabdambazau@gmail.com,Zainab,Dambazau,Female,Nigerian,Nigeria,Field Epidemiologist/Principal Veterinary Officer,Ministry of Agriculture and Natural Resources Kano,No,Yes,Travel;Accommodation;
+93,Abdikarim106040@gmail.com,ABDIKARIM ABDI,ADAM,Male,Somalia,Somali,National IPC Focal point,Minster of health somalia,No,Yes,Travel;Accommodation;Subsistence;
+94,Ondiegijafar@gmail.com,Jafar,Oyugi,Male,Kenyan,Kenya,Epidemiologist,Ministry of Health,No,Yes,Travel;Subsistence;Accommodation;Plus tuition if its chargeable ;
+95,osboneantoniomaquival@gmail.com,Osbone Antonio,Maquival,Male,Mozambican,Mozambique,Oficial of MEAL at,AJAD,No,Yes,Travel;Accommodation;Subsistence;
+96,kzolam@gmail.com,Zelalem,Anteneh,Male,Ethiopian,Ethiopia,Lecturer and researcher,"Departments of Epidemiology and Biostatistics, Bahir Dar University",No,Yes,Travel;Subsistence;Accommodation;
+97,uchenna.ogoke@uniport.edu.ng,Uchenna,Ogoke,Female,Nigeria,Nigeria,Lecturing,University of Port Harcourt,No,Yes,Travel;Accommodation;Subsistence;
+98,mdzodeu@aims.edu.gh,Michele Laurele,Dzodeu Magoum,Female,Cameroon,Cameroon,Student,University of Dschang,No,Yes,Travel;Accommodation;
+99,muhammad.isah76@gmail.com,Muhammad,Isah,Male,Nigerian,Nigeria,Resident Doctor Department of Community Medicine,University of Abuja Teaching Hospital Abuja,No,Yes,Travel;Accommodation;Subsistence;
+100,donnanicodeme@gmail.com,DONNA,Bill Nicodeme,Male,Cameroonian,Cameroon,PhD Student,University of Dschang,No,Yes,"Partial Travel, subsistence and accomodation;"
+101,avdjindika@gmail.com,Jeewani,Indika,Female,Sri Lankan,Sri Lanka,Entomologist,"National Institute of Health Science, Sri Lanka",No,Yes,Travel;Subsistence;Accommodation;
+102,merveille.b.ndoba@aims-senegal.org,Bayana,Ndoba,Female,Congolese,Sénégal,Intern as a datascientist,Concree,No,Yes,Travel;
+103,Akinrenitemidayo@gmail.com,Temidayo,Akinreni,Male,Nigeria,Nigeria,Research Assistant,Co-creation Hub,No,Yes,Travel;Accommodation;
+104,20189923@mylife.unisa.ac.za,Tamiru Mengst,Habtu,Male,Ethiopian,South Africa,PhD Candidate,University of South Africa (UNISA),No,Yes,Travel;Accommodation;Subsistence;
+105,haddybadjie1977@gmail.com,Badjie,Haddy,Female,Gambian,The Gambia,"Deputy Director of Planning & Information, Ministry of Health",Ministry of Health,No,Yes,Subsistence;
+106,Gebeyaw.Wudie@bdu.edu.et,Gebiyaw,Tsegaye,Male,Ethiopian,Ethiopia,Researcher and Lecturer at University,"Bahir Dar University, College of Medicine and Health Sciences",No,Yes,Travel;Accommodation;Subsistence;
+107,lsh2301346@student.lshtm.ac.uk,Benjamin,Pearce,Male,British,United Kingdom,"Student (MSc, Intensive)",London School of Hygiene and Tropical Medicine,No,Yes,Travel;
+108,richard.yapi@csrs.ci,Richard Brou,Yapi,Male,Ivorian,Côte d'Ivoire,Associate Researcher,Centre Suisse de Recherches Scientifiques en Côte d'Ivoire,No,Yes,Travel;Accommodation;
+109,mawejjeedward@gmail.com,Edward,Mawejje,Male,Ugandan,Uganda,Public Health Specialist,"University research council, URC-LCC",No,Yes,Travel;Accommodation;
+110,esuabommelford@gmail.com,Melford,Esuabom,Male,Nigerian,Nigeria,Epidemiologist/Principal Veterinary Officer,Nigerian Army,No,Yes,Travel;Accommodation;Subsistence;
+111,bumutoni@aimsric.org,Brigitte,Umutoni,Female,Rwandese,Rwanda,PhD student,African Institute of Mathematical Science Research Innovation Center and University of Rwanda,No,Yes,Travel;Accommodation;
+112,laminbjawara@gmail.com,Lamin,Jawara,Male,Gambian,The Gambia,Senior ICT Officer,Ministry of Health,No,Yes,Travel;
+113,abdoulayesadio1997@gmail.com,Abdoulaye,Sadio,Male,Senegalese,Gambia,Bioinformatic Support Officer,MRC unit The Gambia at London School of Hygiene and Tropical Medicine,Yes,NA,NA
+114,zakariah.buwah@kintampo-hrc.org,Zakariah,Buwah,Male,Ghanaian,Ghana,Research Fellow,Kintampo Health Research Centre,No,Yes,Travel;Accommodation;Feeding;
+115,wande.ayanlakin@gmail.com,Ayanwande,Ayanlakin,Male,Nigerian,Nigeria,Data/Information Management Officer [Polio & Routine Immunization],UNICEF (Third Party Contract with CTG),No,Yes,Travel;Subsistence;Accommodation;
+116,adekunlesowole@yahoo.com,Adekunle,Sowole,Male,Nigerian,Nigeria,Scientific Officer,"Obafemi Awolowo University Teaching Hospitals Complex, Ile Ife, Nigeria",No,Yes,Travel;
+117,samuelabidemi2@gmail.com,Samuel,Osikoya,Male,Nigerian,Nigeria,PhD Scholar/Student,"International Centre for Applied Mathematical Modelling and Data Analytics, Federal University Oye-Ekiti, Ekiti State, Nigeria",No,Yes,Travel;Accommodation;
+118,boristamegye20@gmail.com,Boris Kouchou,Tamegye,Male,Cameronian,Italy,Data analyst,CRIMEDIM,Yes,NA,NA
+119,mihen8532@gmail.com,Henry,Wanjala,Male,Kenyan,Kanya,PhD student,Chuka University,No,Yes,Travel;Subsistence;Accommodation;
+120,nakasujjaproscovia@gmail.com,Proscovia,Nakasujja,Female,Ugandan,Uganda,Biostatistician,Makerere University,No,Yes,Travel;Accommodation;Subsistence;
+121,ireneyunzu@gmail.com,Irene,Edward,Female,Tanzanian,Tanzania,Data analyst and Assistant Lecturer,National institute for medical research (NIMR) and Mbeya University of Science and Technology (MUST),No,Yes,Travel;Accommodation;
+122,nabwanamartin@gmail.com,Martin,Nabwana,Male,Ugandan,Uganda,Senior Biostatistian,Makerere University - Johns Hopkins University Research Collaboration,No,Yes,Travel;Subsistence;Accommodation;
+123,bkkijera@gmail.com,Bakalilu,Kijera,Male,Gambian,THe Gambia,Surveillance Officer (Epidemiologist),Expanded Program on Immunization - Ministry of Health,No,No,NA
+124,obmalwine@gmail.com,Malwine,Obuobisah,Female,Ghanaian,Ghana,Health information officer,Korle bu teaching hospital,No,Yes,Travel;Subsistence;Accommodation;
+125,ayodejikazeemlekan@gmail.com,Kazeem,Ayodeji,Male,Nigerian,Nigeria,Data Analyst,Institute of Human Virology Nigeria,No,Yes,Travel;Subsistence;Accommodation;
+126,chabyarimana@aimsric.org,Cassien,Habyarimana,Male,Rwanda,Rwanda,Research Assistant,African Institute for Mathematical Sciences (AIMS) | Research & Innovation Centre,No,Yes,Travel;Subsistence;Accommodation;
+127,abdullahisaminu665@gmail.com,Abdullahi,Saminu,Male,Nigeria,Nigeria,Student,Bayero University Kano,No,Yes,Travel;Accommodation;Subsistence;
+128,djarikaka.nawiyatou@ugb.edu.sn,Nawiyatou,DJARIKAKA,Female,Togolese,Senegal,Master 2 student in data science applied to statistics,Gaston Berger University,No,Yes,Travel;Subsistence;
+129,suleimanai001@gmail.com,Suleiman Idris,Ahmad,Male,Nigerian,Nigeria,Research Fellow (PhD Public Health Student),"Centre for Advanced Medical Research and Training, Usmanu Danfodiyo University Sokoto",No,Yes,Travel;Subsistence;Accommodation;Course fees;
+130,tineleon93@gmail.com,Leontine Ndougou,BAKHOUM,Female,Sénégal,Sénégal,Student,I a Der Thiam University,Yes,NA,NA
+131,akomolafebusayo@2014@gmail.com,Busayo,Kayode,Male,Nigerian,Nigeria,Public Health Laboratory Scientist,"Oyo state Primary Health care board, Ministry of health",No,Yes,Travel;Subsistence;Accommodation;
+132,ndabrodriguez@gmail.com,Rodrigue,Ndabashinze,Male,BURUNDI,Burundi,Research Assistant for epidemics surveillance,"Faculty of Medicine , Kamenge University Teaching Hospital , University of Burundi",No,Yes,Travel;Accommodation;
+133,seckafatoumata@gmail.com,Fatoumata,SECK,Female,Senegalese,Senegal,PhD Candidate,Institut Pasteur de Dakar,Yes,NA,NA
+134,adamudvm13@gmail.com,Adamu Saleh,SAIDU,Male,NIGERIA,NIGERIA,Senior Lecturer Public Health/Epidemiology/Modelling,University of Maiduguri/NCDC,No,Yes,Travel;Accommodation;Subsistence;Feeding;
+135,eigbinaduwa@ihvnigeria.org,Elizabeth,Igbinaduwa,Female,Nigeria,Nigeria,Data Manager,Institute of human Virology Nigeria,No,Yes,Travel;Accommodation;Subsistence;
+136,Lindaobodooluchi@gmail.com,Oluchi Linda,Obodo,Female,Nigeria,Nigeria,Graduate Assistant,"Alex-Ekwueme Federal University Ndufu-Alike Ikwo, Ebonyi State.",No,Yes,Travel;Accommodation;Subsistence;
+137,stephenboat990@gmail.com,Stephen,Boateng,Male,Ghanaian,Ghana,Research Assistant,Kwame Nkrumah University of Science and Technology,No,Yes,Travel;Subsistence;Accommodation;
+138,lemma.Regassa@lshtm.uk.ac,Lemma,Regassa,Male,Ethiopian,Ethiopia,PhD Student,London School of Hygiene and Tropical Medicine,No,Yes,Travel;Accommodation;Subsistence;
+139,ernest@aims.edu.gh,Ernest,BIZIMANA,Male,Rwanda,Rwanda,Regulatory Research & Data Scientist,Rwanda FDA,No,Yes,Travel;Accommodation;
+140,tesfam32@gmail.com,Endalew Tesfa,Getie,Male,Ethiopia,"Amhara, Ethiopia",University Lecturer,Debre Markos University,No,Yes,Travel;Accommodation;Subsistence;
+142,muhabah@mrc.gm,Muhammed,Bah,Male,Gambian,Gambia,Bioinformatics Support Officer,Medical Research Council Unit The Gambia,No,No,NA
+143,happydarly97@gmail.com,HAPPY DARLENE,BASHINGANTAHE,Female,BURUNDIAN,BURUNDI,GENERAL PRACTITIONNER,SAINT JOSEPH POLYCLINIC,No,Yes,Travel;Accommodation;
+144,Natalie.Fischer@lshtm.ac.uk,Natalie,Fischer,Female,Germany,UK,Field Epidemiologist / Assistant Professor in Epidemiology,UK Public Health Rapid Support Team / London School of Hygiene and Tropical Medicine,No,Yes,Travel;Subsistence;Accommodation;
+145,morrow.minteh@lshtm.ac.uk,Morrow,Minteh,Male,Gambian,The Gambia,Scientific Officer,Medical Research Council The Gambia at London School of Hygiene and Tropical Medicine,Yes,NA,NA
+146,napgurta@yahoo.com,NIFARTA PEINGURTA,ANDREW,Female,NIGERIA,NIGERIA,PROGRAM MANAGER & HEAD OF IRCE DATA UNIT,INSTITUTE OF HUMAN VIROLOGY NIGERIA,No,Yes,Travel;Subsistence;Accommodation;
+147,ibetule@yahoo.com,Mary Ojonema,Onoja-Alexander,Female,Nigerian,Nigeria,Associate Professor,"Department of Community Medicine, Faculty of Clinical Sciences, College of Health Sciences, Federal University Lokoja, Lokoja Kogi State Nigeria",No,Yes,Travel;Subsistence;Accommodation;
+148,sajart94@gmail.com,Sajar,Tamba,Male,Gambian,Gambia,HMIS Data Manager,MOH,No,Yes,Subsistence;
+149,roseline.abah@uniabuja.edu.ng,Roseline,Abah,Female,Nigeria,Nigeria,Senior Lecturer,University of Abuja,No,Yes,"Travel;Subsistence;Accommodation;all additional costs which is inform of registration fees, materials, local transportation, communication.;"
+150,kwarbaiaaron@gmail.com,Aaron,kwarbai,Male,Nigerian,Nigeria,Technical officer (VPD),World health organization,No,Yes,Travel;Accommodation;
+151,popoolaolusola92@gmail.com,Saheed,Popoola,Male,Nigerian,Nigeria,Analyst,Solina Centre for International Development and Research,No,Yes,Travel;Accommodation;
+152,ifeoma.udujie@gmail.com,Ifeoma,Uduji,Female,Nigeria,Nigeria,Chief Scientific Officer/Zonal Technical Officer,National Primary Health Care Development Agency,No,Yes,Travel;Accommodation;
+153,haimbalavictor@gmail.com,Victor,Haimbala,Male,Namibian,Namibia,"Research Assistant, PhD student","University of Namibia, School of Medicine",No,Yes,Travel;Accommodation;
+154,nuhafofana8@gmail.com,Nuha,Fofana,Male,Gambian,The Gambia,Field Epidemiologist,"Ministry of Health, The Gambia Government",No,Yes,Subsistence;
+155,ndaom403@gmail.com,Mamadou,NDAO,Male,Senegalese,Senegal,Bioinformatician,Institute for Health Research - Epidemiological Surveillance and Training (IRESSEF),No,Yes,Travel;Subsistence;Accommodation;
+156,wendy.williams@student.unsw.edu.au,Wendy,Williams,Female,Ni-Vanuatu,Australia,Full Time Masters Student - Infectious Disease and Intelligence,University of New South Wales (UNSW),No,Yes,Travel;Accommodation;
+157,sfabimbade81@lautech.edu.ng,Sulaimon,Abimbade,Male,Nigerian,Nigeria,"Faculty member, Department of Pure and Applied Mathematics, Ladoke Akintola University of Technology.",Ladoke Akintola University of Technology,No,Yes,Travel;Accommodation;
+158,emilia.johnson@glasgow.ac.uk,Emilia,Johnson,Female,British,"Scotland, UK",PhD Student (Postgraduate Researcher),University of Glasgow,No,Yes,Travel;
+159,bbakaryt@gmail.com,Bakary T,Barrow,Male,Gambian,Gambia,Senior Health Statistician,MoH,No,Yes,Travel;
+160,lsh2300270@student.lshtm.ac.uk,Sarah,Dickson,Female,Canadian,Canada,Research Assistant,The Ottawa Hospital,No,Yes,Travel;
+161,hamze.gaas@amoud.edu.so,Hamze,Dahir,Male,Somali,Somalia,Associate Dean School of Public Health,Amoud University,No,Yes,Travel;Subsistence;Accommodation;
+162,olousseh@yahoo.fr,Ehouzou Olivier,Oussou,Male,Benin,Benin,Researcher  in vector-borne diseases epidemiology and vectors control ; PhD student in Biodiversity of vectors and molecular entomology,"Centre de Recherche Entomologique de Cotonou (CREC) ; Université Nationale des Sciences Technologies, Ingénierie et Mathématiques (UNSTIM), Benin",No,Yes,Travel;Subsistence;Accommodation;
