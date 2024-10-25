@@ -10,7 +10,7 @@ introduction to the mathematical theory behind modeling infectious epidemics.
 We will use the Susceptible, Exposed, Infected, and Recovered (**SEIR**) model, 
 applicable to diseases like measles, mumps, rubella, as an example.
 
-# Secanrio
+# Scenario
 
 SSuppose a new infection has been detected in a closed community of
 $\mathbf{N}$ individuals, with the infection diagnosed in a single
@@ -150,7 +150,7 @@ to prevent the epidemic from spreading.
 
 # Measles Outbreak in Burkina Faso
 
-## Backaground
+## Background
 
 Measles is a highly contagious viral disease that spreads quickly,
 particularly in environments where people live or gather in close
@@ -865,8 +865,3 @@ output4 %>%
     color = guide_legend(nrow = 2)  # Split the legend into two rows for compactness
   )
 ```
-
-
-
-
-
