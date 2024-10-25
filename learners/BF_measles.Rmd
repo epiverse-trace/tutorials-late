@@ -43,7 +43,7 @@ constant rate $\gamma$, with $\frac{1}{\gamma}$ representing the average
 recovery duration. Upon recovery, they gain lifelong immunity against
 the current infection, meaning they do not become susceptible again, and
 they move to the recovered class ($\mathbf{R}$) (see
-[Figure 1](#fig-seir){.quarto-xref}).
+[Figure 1](#fig-seir){.quarto-xref}).
 
 ![](fig/t0.drawio.png){ref-parent="fig-seir"}
 ![](fig/t1.drawio.png){ref-parent="fig-seir"}
@@ -71,16 +71,16 @@ all other individuals remain susceptible
 ($\mathbf{S}_0= \mathbf{N} -\mathbf{I}_0 = \mathbf{N} -1$). Initially,
 there are no exposed or recovered individuals ($\mathbf{E}_0= 0$ and
 $\mathbf{R}_0 = 0$). These are known as the initial values of the system
-in [Equation 1](#eq-s1){.quarto-xref}.
+in [Equation 1](#eq-s1){.quarto-xref}.
 
-Solving [Equation 1](#eq-s1){.quarto-xref} involves determining the
-values of the compartments at any time $t>t_0$​, starting from the
+Solving [Equation 1](#eq-s1){.quarto-xref} involves determining the
+values of the compartments at any time $t>t_0$, starting from the
 initial conditions. Since the compartments represent individuals, their
 values must always be non-negative. This characteristic is referred to
 as the positivity of the solution.
 
 Before, delving into mathematical details of how to solve
-[Equation 1](#eq-s1){.quarto-xref}, a few key observations can be made:
+[Equation 1](#eq-s1){.quarto-xref}, a few key observations can be made:
 
 1.  At the onset of an epidemic, the number of susceptible individuals
     begins to decrease exponentially, while the number of exposed and
@@ -92,15 +92,15 @@ Before, delving into mathematical details of how to solve
 
 2.  The infection will take off only when $\frac{\mathbf{dE}}{dt} > 0$
     and $\frac{\mathbf{dI}}{dt} > 0$, and taking the values of these two
-    terms from [Equation 1](#eq-s1){.quarto-xref} leads to
+    terms from [Equation 1](#eq-s1){.quarto-xref} leads to
 
 [$$
 \begin{eqnarray} 
-\beta \cdot \frac{S\cdot I}{N}​ &-& \omega \cdot E > 0\\
- \omega\cdot  E &-& \gamma \cdot I​ > 0.
+\beta \cdot \frac{S\cdot I}{N} &-& \omega \cdot E > 0\\
+ \omega\cdot  E &-& \gamma \cdot I > 0.
 \end{eqnarray} 
  \qquad(2)$$]{#eq-s2} Adding the two equations in
-[Equation 2](#eq-s2){.quarto-xref}, gives
+[Equation 2](#eq-s2){.quarto-xref}, gives
 $\frac{\beta}{\gamma} > \frac{\mathbf{N}}{\mathbf{S}}$. At time $t=0$,
 we have $\mathbf{S} = \mathbf{N}-1 \approx  \mathbf{N}$. Therefore, the
 infection with take off $\frac{\beta}{\gamma} > 1$. This is a very
@@ -165,7 +165,7 @@ Given the virus's high transmissibility, even a single case of measles
 can trigger large outbreaks, especially in regions with low vaccination
 coverage. The incubation (pre-infectious) period for measles is
 typically around 8 days, while the infectious period averages 5 days ([Masters et al., 2023](https://www.thelancet.com/journals/lanpub/article/PIIS2468-2667(23)00130-5/fulltext)). The SEIR model in
-[Equation 1](#eq-s1){.quarto-xref} is commonly employed to simulate the
+[Equation 1](#eq-s1){.quarto-xref} is commonly employed to simulate the
 dynamics of measles outbreaks and evaluate control measures like
 vaccination
 
@@ -180,7 +180,7 @@ prompting health authorities and international organizations to scale up
 vaccination campaigns in an effort to curtail the spread of the disease ([Save the Children, 2024](https://www.savethechildren.net/news/burkina-faso-over-2000-children-diagnosed-suspected-measles-nationwide-outbreak); [The Cable, 2024](https://www.thecable.ng/burkina-faso-records-2000-suspected-cases-as-country-battles-measles-outbreak/)).
 
 We will simulate the measles outbreak in Burkina Faso using the SEIR
-model in [Equation 1](#eq-s1){.quarto-xref}. This will allow us to
+model in [Equation 1](#eq-s1){.quarto-xref}. This will allow us to
 explore the outbreak dynamics with and without vaccination. For this
 purpose, we will use the **R** package `{epidemics}`, which is designed
 for modeling infectious disease spread.
@@ -234,7 +234,7 @@ for modeling infectious disease spread.
         per day in a fully susceptible population.
 
 By applying these assumptions and parameters to
-[Equation 1](#eq-s1){.quarto-xref}, we can simulate the potential
+[Equation 1](#eq-s1){.quarto-xref}, we can simulate the potential
 trajectory of the measles outbreak using the syntax provided by the
 {epidemics} package as shown in the below is code chunk.
 
@@ -291,7 +291,7 @@ filter(output,
 ## Expected Epidemic Size & Herd Immunity
 
 Using the `{finalsize}` package implements
-[Equation 3](#eq-fs){.quarto-xref} for calculate the expected proportion
+[Equation 3](#eq-fs){.quarto-xref} for calculate the expected proportion
 of the population that will be infected given a specified basic
 reproduction number $(\mathcal{R}_0)$. The calculation can be done as
 follows:
@@ -311,7 +311,7 @@ finalsize::final_size(10)
 For $\mathcal{R}_0 \geq 10$, the results indicate that nearly the entire
 population is expected to be infected by measles. The $HIT$ needed to
 contains the epidemic is about $93\%$, uaing the formula given in
-[Equation 4](#eq-hit){.quarto-xref}.
+[Equation 4](#eq-hit){.quarto-xref}.
 
 # Age-Structured Model
 
@@ -507,7 +507,7 @@ Where:
     duration an individual remains infectious.
 
 The `{finalsize}`package implements
-[Equation 5](#eq-reff){.quarto-xref}, and we can use it to calculate the
+[Equation 5](#eq-reff){.quarto-xref}, and we can use it to calculate the
 $\mathcal{R}_{eff}$ for our age-structured model, as follows:
 
 
