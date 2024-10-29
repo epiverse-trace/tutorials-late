@@ -12,7 +12,7 @@ applicable to diseases like measles, mumps, rubella, as an example.
 
 # Scenario
 
-SSuppose a new infection has been detected in a closed community of
+Suppose a new infection has been detected in a closed community of
 $\mathbf{N}$ individuals, with the infection diagnosed in a single
 individual. The remaining $\mathbf{N-1}$ individuals are all at risk of
 getting the infection and are considered susceptible ($\mathbf{S}$). An
@@ -32,11 +32,11 @@ an infected individual can transmit the infection to a susceptible
 individual.
 
 Depending on the nature of the disease, a newly infected individual may
-take time to show symptoms. This time period is known as the incubation
+take time to show symptoms. This time period is known as the latent
 period. Susceptible individuals who come into contact with an infected
 person and acquire the infection first move to an intermediate state
 called exposed ($\mathbf{E}$). T here they (he/she) spent, on average,
-$\frac{1}{\omega}$ units time (the incubation period) and then move to
+$\frac{1}{\omega}$ units time (the latent period) and then move to
 the infected class ($\mathbf{I}$) at a constant rate $\omega$. Infected
 individuals are removed (either by recovery or death) from $I$ at a
 constant rate $\gamma$, with $\frac{1}{\gamma}$ representing the average
@@ -163,7 +163,7 @@ measles outbreaks.
 
 Given the virus's high transmissibility, even a single case of measles
 can trigger large outbreaks, especially in regions with low vaccination
-coverage. The incubation (pre-infectious) period for measles is
+coverage. The latent (pre-infectious) period for measles is
 typically around 8 days, while the infectious period averages 5 days ([Masters et al., 2023](https://www.thelancet.com/journals/lanpub/article/PIIS2468-2667(23)00130-5/fulltext)). The SEIR model in
 [Equation 1](#eq-s1) is commonly employed to simulate the
 dynamics of measles outbreaks and evaluate control measures like
@@ -216,7 +216,7 @@ for modeling infectious disease spread.
     -   No individuals are in the exposed stage at the start: $E_0 = 0$.
     -   No individuals have recovered: $R_0 = 0$.
 
-4.  **Incubation Period**: The average incubation period for measles is
+4.  **latent Period**: The average latent period for measles is
     around 8 days (the time period between exposure and becoming
     infectious), so the transition rate from exposed to infectious
     individuals is: $\omega = \frac{1}{8}$.
@@ -263,7 +263,7 @@ bfaso <- epidemics::population(
 output <- epidemics::model_default(
   population = bfaso,
   transmission_rate = 15 / 5,  # R0/infectious period = 15/5 = 3
-  infectiousness_rate = 1 / 8,  # 1/incubation period (pre-infectious phase)
+  infectiousness_rate = 1 / 8,  # 1/latent period (pre-infectious phase)
   recovery_rate = 1 / 5,  # 1/infectious period
   time_end = 120,  # Simulation over 120 days
   increment = 1  # Daily increments
@@ -436,7 +436,7 @@ bf_population <- epidemics::population(
 output <- epidemics::model_default(
   population = bf_population,
   transmission_rate = 15 / 5,  # R0/infectious period = 15/5 = 3
-  infectiousness_rate = 1 / 8,  # 1/incubation period (pre-infectious phase)
+  infectiousness_rate = 1 / 8,  # 1/latent period (pre-infectious phase)
   recovery_rate = 1 / 5,  # 1/infectious period
   time_end = 122,  # Simulation over 122 days
   increment = 1  # Daily increments
@@ -593,7 +593,7 @@ reduced_contacts <- epidemics::intervention(
 output2 <- epidemics::model_default(
   population = bf_population,
   transmission_rate = 15 / 5,  # R0/infectious period = 15/5 = 3
-  infectiousness_rate = 1 / 8,  # 1/incubation period (pre-infectious phase)
+  infectiousness_rate = 1 / 8,  # 1/latent period (pre-infectious phase)
   recovery_rate = 1 / 5,  # 1/infectious period
   intervention = list(transmission_rate = reduced_contacts),
   time_end = 120,  # Simulation over 75 days
@@ -699,7 +699,7 @@ vaccinate_elders <- epidemics::vaccination(
 output3 <- epidemics::model_default(
   population = bf_population,
   transmission_rate = 15 / 5,  # R0/infectious period = 15/5 = 3
-  infectiousness_rate = 1 / 8,  # 1/incubation period (pre-infectious phase)
+  infectiousness_rate = 1 / 8,  # 1/latent period (pre-infectious phase)
   recovery_rate = 1 / 5,  # 1/infectious period
   vaccination = vaccinate_elders,
   time_end = 120,  # Simulation over 120 days
@@ -840,7 +840,7 @@ interventions together.
 output4 <- epidemics::model_default(
   population = bf_population,
   transmission_rate = 15 / 5,  # R0 / infectious period = 3
-  infectiousness_rate = 1 / 8,  # 1 / incubation period (pre-infectious phase)
+  infectiousness_rate = 1 / 8,  # 1 / latent period (pre-infectious phase)
   recovery_rate = 1 / 5,  # 1 / infectious period
   intervention = list(transmission_rate = reduced_contacts),
   vaccination = vaccinate_elders,
