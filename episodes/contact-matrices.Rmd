@@ -56,9 +56,9 @@ $$
 In this example, we would use this to represent that children meet, on average, 2 other children and 2 adult per day (first row), and adults meet, on average, 1 child and 3 other adults per day (second row). We can use this kind of information to account for the role heterogeneity in contact plays in infectious disease transmission.
 
 
-## Estimating contact matrices
+## Using `socialmixr`
 
-Contact matrices can be estimated from surveys or contact data, or synthetic ones can be used. The POLYMOD survey measured contact patterns in 8 European countries using data on the location and duration of contacts reported by the study participants [(Mossong et al. 2008)](https://doi.org/10.1371/journal.pmed.0050074). [Prem et al. 2021](https://doi.org/10.1371/journal.pcbi.1009098) used the POLYMOD data within a Bayesian hierarchical model to project contact matrices for 177 other countries. 
+Contact matrices can be estimated from diary data. For example, the POLYMOD survey measured contact patterns in 8 European countries using data on the location and duration of contacts reported by the study participants [(Mossong et al. 2008)](https://doi.org/10.1371/journal.pmed.0050074).
 
 The R package `{socialmixr}` contains functions which can estimate contact matrices from POLYMOD and other surveys. We can load the POLYMOD survey data :
 
@@ -117,6 +117,16 @@ contact_data_zambia
 ```
 :::::::::::::::::::::::::::::::::
 ::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+::::::::::::::::::::::::::::::::::::: callout
+## Synthetic contact matrices
+
+Contact matrices can be estimated from data obtained from diary (such as POLYMOD), survey or contact data, or synthetic ones can be used. [Prem et al. 2021](https://doi.org/10.1371/journal.pcbi.1009098) used the POLYMOD data within a Bayesian hierarchical model to project contact matrices for 177 other countries.
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+
 
 
 ## Analyses with contact matrices
