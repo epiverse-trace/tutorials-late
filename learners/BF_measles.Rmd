@@ -46,8 +46,9 @@ may not particularly reflects the biological underlying processes.
 ![](fig/t2.drawio.png){ref-parent="fig-seir"}
 ![](fig/t3.drawio.png){ref-parent="fig-seir"}
 
-The four classes considered in the $\mathbf{SEIR}$ model. The sizes
-of these classes change overtime and thus are functions of time $t$, and
+The four S-E-I-R classes considered define the $\mathbf{SEIR}$ model.
+ The number of individuals in each 
+ change overtime and thus are functions of time $t$, and
 the total population at any time $t$ is
 $N(t)=  S(t) + E(t) + I(t)+ R(t)$. The rates of change between these
 classes are captured mathematically through four differential equations
