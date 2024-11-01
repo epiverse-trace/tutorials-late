@@ -30,7 +30,7 @@ symptoms), and time to become infectious, known as the latent period (time from
 infection to infectiousness). The latent period is relevant to the SEIR-type models. 
 Susceptible individuals who come into contact with an infected
 person and acquire the infection first move to an intermediate state
-called exposed ($\mathbf{E}$). T here they (he/she) spent, on average,
+called exposed ($\mathbf{E}$). There they (he/she) spent, on average,
 $\frac{1}{\omega}$ units time (the latent period) and then move to
 the infected class ($\mathbf{I}$) at a constant rate $\omega$. Infected
 individuals are removed (either by recovery or death) from $I$ at a
@@ -38,14 +38,15 @@ constant rate $\gamma$, with $\frac{1}{\gamma}$ representing the average
 recovery duration. Upon recovery, they gain lifelong immunity against
 the current infection, meaning they do not become susceptible again, and
 they move to the recovered class ($\mathbf{R}$) (see
-[Figure 1](#fig-seir)).
+[Figure 1](#fig-seir)). These are some assumptions for modelling purposes and 
+may not particularly reflects the biological underlying processes.  
 
 ![](fig/t0.drawio.png){ref-parent="fig-seir"}
 ![](fig/t1.drawio.png){ref-parent="fig-seir"}
 ![](fig/t2.drawio.png){ref-parent="fig-seir"}
 ![](fig/t3.drawio.png){ref-parent="fig-seir"}
 
-The four classes considered define the $\mathbf{SEIR}$ model. The sizes
+The four classes considered in the $\mathbf{SEIR}$ model. The sizes
 of these classes change overtime and thus are functions of time $t$, and
 the total population at any time $t$ is
 $N(t)=  S(t) + E(t) + I(t)+ R(t)$. The rates of change between these
