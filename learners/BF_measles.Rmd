@@ -16,17 +16,14 @@ Suppose a new infection has been detected in a closed community of
 $\mathbf{N}$ individuals, with the infection diagnosed in a single
 individual. The remaining $\mathbf{N-1}$ individuals are all at risk of
 getting the infection and are considered susceptible ($\mathbf{S}$). An
-infected person interacts, on average per time unit (e.g., a day, week,
-or month), with some $\mathbf{k}$ individuals within the community. In
-particular, the infected person interacts with
-$\frac{\mathbf{K\cdot S}}{\mathbf{N}}$ susceptible individuals, among
-whom $\mathbf{k}' \leq \mathbf{k}$ may become infected. If the infection
+infected person  makes $k$ contacts and have a probability $p$ of infecting 
+each one if susceptible, and can call this $\beta$ for short. If the infection
 is highly contagious, $\mathbf{k}'$ will be closer to $\mathbf{k}$, and
 vice versa. The probability of transmission is calculated as
 $\mathcal{P}= \frac{\mathbf{k}'}{\mathbf{k}}.$ Consequently, on
 average, the infected individual will infect
-$\beta\cdot \frac{\mathbf{S}}{\mathbf{N}}$ susceptible individuals per
-time unit, where $\beta = \mathcal{P} \cdot \mathbf{k}$ is called the
+$\beta.\frac{\mathbf{S}}{\mathbf{N}}$ susceptible individuals per
+time unit, where $\beta = \mathcal{P} .\mathbf{k}$ is called the
 effective transmission rate. This represents the average rate at which
 an infected individual can transmit the infection to a susceptible
 individual.
@@ -59,10 +56,10 @@ as follows:
 
 [$$
 \begin{eqnarray} 
-\frac{dS}{dt} &=& -\beta \cdot \frac{S\cdot I}{N} & & \\
-\frac{dE}{dt} &=&\beta\cdot  \frac{S\cdot I}{N} &-& \omega\cdot  E\\
-\frac{dI}{dt} &=& \omega \cdot E &-& \gamma \cdot I \\
-\frac{dR}{dt} &=& \gamma \cdot I  & &\\ 
+\frac{dS}{dt} &=& -\beta .\frac{S.I}{N} & & \\
+\frac{dE}{dt} &=&\beta. \frac{S.I}{N} &-& \omega. E\\
+\frac{dI}{dt} &=& \omega .E &-& \gamma .I \\
+\frac{dR}{dt} &=& \gamma .I  & &\\ 
 \end{eqnarray}
  \qquad(1)$$]{#eq-s1}
 
@@ -96,8 +93,8 @@ Before, delving into mathematical details of how to solve
 
 [$$
 \begin{eqnarray} 
-\beta \cdot \frac{S\cdot I}{N} &-& \omega \cdot E > 0\\
- \omega\cdot  E &-& \gamma \cdot I > 0.
+\beta .\frac{S.I}{N} &-& \omega .E > 0\\
+ \omega. E &-& \gamma .I > 0.
 \end{eqnarray} 
  \qquad(2)$$]{#eq-s2} Adding the two equations in
 [Equation 2](#eq-s2), gives
@@ -119,7 +116,7 @@ if the ratio of new infections to recovered cases is greater than 1.
     total number of individuals that that will be infected- of the
     outbreak via the following equation [$$
     \begin{equation}
-    z = 1 - e^{-\mathcal{R}_0 \cdot z}
+    z = 1 - e^{-\mathcal{R}_0 .z}
     \end{equation}
      \qquad(3)$$]{#eq-fs}
 
@@ -229,7 +226,7 @@ for modeling infectious disease spread.
     -   $\mathcal{R}_0 =15$ (for measles this value typically ranges
         from 12 to 18).
     -   This makes the transmission rate
-        $\beta = \mathcal{R}_0\cdot\gamma = 3$
+        $\beta = \mathcal{R}_0.gamma = 3$
     -   This means each infectious individual causes 3 new infections
         per day in a fully susceptible population.
 
@@ -497,7 +494,7 @@ formula:
 
 [$$
 \begin{equation}
-\mathcal{R}_{eff} = \rho(C) \cdot \lambda \cdot \gamma 
+\mathcal{R}_{eff} = \rho(C) .\lambda .\gamma 
 \end{equation}
  \qquad(5)$$]{#eq-reff}
 
