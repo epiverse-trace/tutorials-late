@@ -368,26 +368,26 @@ diseases like measles, mumps, rubella, as an example.</p>
 <p>Suppose a new infection has been detected in a closed community of
 <span class="math inline">\(\mathbf{N}\)</span> individuals, with the
 infection diagnosed in a single individual. The remaining <span class="math inline">\(\mathbf{N-1}\)</span> individuals are all at risk
-of getting the infection and are considered susceptible (<span class="math inline">\(\mathbf{S}\)</span>). An infected person
-interacts, on average per time unit (e.g., a day, week, or month), with
-some <span class="math inline">\(\mathbf{k}\)</span> individuals within
-the community. In particular, the infected person interacts with <span class="math inline">\(\frac{\mathbf{K\cdot S}}{\mathbf{N}}\)</span>
-susceptible individuals, among whom <span class="math inline">\(\mathbf{k}&#39; \leq \mathbf{k}\)</span> may
-become infected. If the infection is highly contagious, <span class="math inline">\(\mathbf{k}&#39;\)</span> will be closer to <span class="math inline">\(\mathbf{k}\)</span>, and vice versa. The
-probability of transmission is calculated as <span class="math inline">\(\mathcal{P}=
+of getting the infection and are considered susceptible (<span class="math inline">\(\mathbf{S}\)</span>). An infected person makes
+<span class="math inline">\(k\)</span> contacts and have a probability
+<span class="math inline">\(p\)</span> of infecting each one if
+susceptible, and can call this <span class="math inline">\(\beta\)</span> for short. If the infection is
+highly contagious, <span class="math inline">\(\mathbf{k}&#39;\)</span>
+will be closer to <span class="math inline">\(\mathbf{k}\)</span>, and
+vice versa. The probability of transmission is calculated as <span class="math inline">\(\mathcal{P}=
 \frac{\mathbf{k}&#39;}{\mathbf{k}}.\)</span> Consequently, on average,
-the infected individual will infect <span class="math inline">\(\beta\cdot \frac{\mathbf{S}}{\mathbf{N}}\)</span>
-susceptible individuals per time unit, where <span class="math inline">\(\beta = \mathcal{P} \cdot \mathbf{k}\)</span> is
-called the effective transmission rate. This represents the average rate
-at which an infected individual can transmit the infection to a
-susceptible individual.</p>
+the infected individual will infect <span class="math inline">\(\beta.\frac{\mathbf{S}}{\mathbf{N}}\)</span>
+susceptible individuals per time unit, where <span class="math inline">\(\beta = \mathcal{P} .\mathbf{k}\)</span> is called
+the effective transmission rate. This represents the average rate at
+which an infected individual can transmit the infection to a susceptible
+individual.</p>
 <p>Depending on the nature of the disease, a newly infected individual
-may take time to show symptoms. This time period is known as the
-incubation period. Susceptible individuals who come into contact with an
-infected person and acquire the infection first move to an intermediate
-state called exposed (<span class="math inline">\(\mathbf{E}\)</span>).
-T here they (he/she) spent, on average, <span class="math inline">\(\frac{1}{\omega}\)</span> units time (the
-incubation period) and then move to the infected class (<span class="math inline">\(\mathbf{I}\)</span>) at a constant rate <span class="math inline">\(\omega\)</span>. Infected individuals are removed
+may take time to show symptoms. This time period is known as the latent
+period. Susceptible individuals who come into contact with an infected
+person and acquire the infection first move to an intermediate state
+called exposed (<span class="math inline">\(\mathbf{E}\)</span>). T here
+they (he/she) spent, on average, <span class="math inline">\(\frac{1}{\omega}\)</span> units time (the latent
+period) and then move to the infected class (<span class="math inline">\(\mathbf{I}\)</span>) at a constant rate <span class="math inline">\(\omega\)</span>. Infected individuals are removed
 (either by recovery or death) from <span class="math inline">\(I\)</span> at a constant rate <span class="math inline">\(\gamma\)</span>, with <span class="math inline">\(\frac{1}{\gamma}\)</span> representing the average
 recovery duration. Upon recovery, they gain lifelong immunity against
 the current infection, meaning they do not become susceptible again, and
@@ -400,11 +400,10 @@ rates of change between these classes are captured mathematically
 through four differential equations as follows:</p>
 <p><span id="eq-s1"><span class="math display">\[
 \begin{eqnarray}
-\frac{dS}{dt} &amp;=&amp; -\beta \cdot \frac{S\cdot I}{N} &amp; &amp; \\
-\frac{dE}{dt} &amp;=&amp;\beta\cdot  \frac{S\cdot I}{N} &amp;-&amp;
-\omega\cdot  E\\
-\frac{dI}{dt} &amp;=&amp; \omega \cdot E &amp;-&amp; \gamma \cdot I \\
-\frac{dR}{dt} &amp;=&amp; \gamma \cdot I  &amp; &amp;\\
+\frac{dS}{dt} &amp;=&amp; -\beta .\frac{S.I}{N} &amp; &amp; \\
+\frac{dE}{dt} &amp;=&amp;\beta. \frac{S.I}{N} &amp;-&amp; \omega. E\\
+\frac{dI}{dt} &amp;=&amp; \omega .E &amp;-&amp; \gamma .I \\
+\frac{dR}{dt} &amp;=&amp; \gamma .I  &amp; &amp;\\
 \end{eqnarray}
 \qquad(1)\]</span></span></p>
 <p>At time <span class="math inline">\(t_0=0\)</span>, there is one
@@ -435,8 +434,8 @@ to</p></li>
 </ol>
 <p><span id="eq-s2"><span class="math display">\[
 \begin{eqnarray}
-\beta \cdot \frac{S\cdot I}{N} &amp;-&amp; \omega \cdot E &gt; 0\\
-\omega\cdot  E &amp;-&amp; \gamma \cdot I &gt; 0.
+\beta .\frac{S.I}{N} &amp;-&amp; \omega .E &gt; 0\\
+\omega. E &amp;-&amp; \gamma .I &gt; 0.
 \end{eqnarray}
 \qquad(2)\]</span></span> Adding the two equations in <a href="#eq-s2">Equation 2</a>, gives <span class="math inline">\(\frac{\beta}{\gamma} &gt;
 \frac{\mathbf{N}}{\mathbf{S}}\)</span>. At time <span class="math inline">\(t=0\)</span>, we have <span class="math inline">\(\mathbf{S} = \mathbf{N}-1
@@ -458,7 +457,7 @@ community.</p></li>
 helps to determine the finalsize- the total number of individuals that
 that will be infected- of the outbreak via the following equation <span id="eq-fs"><span class="math display">\[
 \begin{equation}
-z = 1 - e^{-\mathcal{R}_0 \cdot z}
+z = 1 - e^{-\mathcal{R}_0 .z}
 \end{equation}
 \qquad(3)\]</span></span></p></li>
 </ol>
@@ -504,9 +503,8 @@ an efficacy of 93% to 97%, making vaccination a key tool in controlling
 measles outbreaks.</p>
 <p>Given the virus’s high transmissibility, even a single case of
 measles can trigger large outbreaks, especially in regions with low
-vaccination coverage. The incubation (pre-infectious) period for measles
-is typically around 8 days, while the infectious period averages 5 days
-(<a href="https://www.thelancet.com/journals/lanpub/article/PIIS2468-2667(23)00130-5/fulltext">Masters
+vaccination coverage. The latent (pre-infectious) period for measles is
+typically around 8 days, while the infectious period averages 5 days (<a href="https://www.thelancet.com/journals/lanpub/article/PIIS2468-2667(23)00130-5/fulltext">Masters
 et al., 2023</a>). The SEIR model in <a href="#eq-s1">Equation 1</a> is
 commonly employed to simulate the dynamics of measles outbreaks and
 evaluate control measures like vaccination</p>
@@ -558,9 +556,9 @@ susceptible: <span class="math inline">\(S_0 = N - 1\)</span>.</li>
 <li>No individuals have recovered: <span class="math inline">\(R_0 =
 0\)</span>.</li>
 </ul></li>
-<li><p><strong>Incubation Period</strong>: The average incubation period
-for measles is around 8 days (the time period between exposure and
-becoming infectious), so the transition rate from exposed to infectious
+<li><p><strong>latent Period</strong>: The average latent period for
+measles is around 8 days (the time period between exposure and becoming
+infectious), so the transition rate from exposed to infectious
 individuals is: <span class="math inline">\(\omega =
 \frac{1}{8}\)</span>.</p></li>
 <li><p><strong>Infectious Period</strong>: The average infectious period
@@ -570,7 +568,7 @@ lasts for 5 days, which means the recovery rate is: <span class="math inline">\(
 <li><span class="math inline">\(\mathcal{R}_0 =15\)</span> (for measles
 this value typically ranges from 12 to 18).</li>
 <li>This makes the transmission rate <span class="math inline">\(\beta =
-\mathcal{R}_0\cdot\gamma = 3\)</span></li>
+\mathcal{R}_0.gamma = 3\)</span></li>
 <li>This means each infectious individual causes 3 new infections per
 day in a fully susceptible population.</li>
 </ul></li>
@@ -598,7 +596,7 @@ bfaso &lt;- epidemics::population(
 output &lt;- epidemics::model_default(
   population = bfaso,
   transmission_rate = 15 / 5,  # R0/infectious period = 15/5 = 3
-  infectiousness_rate = 1 / 8,  # 1/incubation period (pre-infectious phase)
+  infectiousness_rate = 1 / 8,  # 1/latent period (pre-infectious phase)
   recovery_rate = 1 / 5,  # 1/infectious period
   time_end = 120,  # Simulation over 120 days
   increment = 1  # Daily increments
@@ -807,7 +805,7 @@ bf_population &lt;- epidemics::population(
 output &lt;- epidemics::model_default(
   population = bf_population,
   transmission_rate = 15 / 5,  # R0/infectious period = 15/5 = 3
-  infectiousness_rate = 1 / 8,  # 1/incubation period (pre-infectious phase)
+  infectiousness_rate = 1 / 8,  # 1/latent period (pre-infectious phase)
   recovery_rate = 1 / 5,  # 1/infectious period
   time_end = 122,  # Simulation over 122 days
   increment = 1  # Daily increments
@@ -865,7 +863,7 @@ reproduction number across all age groups while accounting for these
 differences. It is calculated using the following formula:</p>
 <p><span id="eq-reff"><span class="math display">\[
 \begin{equation}
-\mathcal{R}_{eff} = \rho(C) \cdot \lambda \cdot \gamma
+\mathcal{R}_{eff} = \rho(C) .\lambda .\gamma
 \end{equation}
 \qquad(5)\]</span></span></p>
 <p>Where:</p>
@@ -954,7 +952,7 @@ shown in the code chunk below.</p>
 output2 &lt;- epidemics::model_default(
   population = bf_population,
   transmission_rate = 15 / 5,  # R0/infectious period = 15/5 = 3
-  infectiousness_rate = 1 / 8,  # 1/incubation period (pre-infectious phase)
+  infectiousness_rate = 1 / 8,  # 1/latent period (pre-infectious phase)
   recovery_rate = 1 / 5,  # 1/infectious period
   intervention = list(transmission_rate = reduced_contacts),
   time_end = 120,  # Simulation over 75 days
@@ -1050,7 +1048,7 @@ chunk below.</p>
 output3 &lt;- epidemics::model_default(
   population = bf_population,
   transmission_rate = 15 / 5,  # R0/infectious period = 15/5 = 3
-  infectiousness_rate = 1 / 8,  # 1/incubation period (pre-infectious phase)
+  infectiousness_rate = 1 / 8,  # 1/latent period (pre-infectious phase)
   recovery_rate = 1 / 5,  # 1/infectious period
   vaccination = vaccinate_elders,
   time_end = 120,  # Simulation over 120 days
@@ -1183,7 +1181,7 @@ interventions together.</p>
 output4 &lt;- epidemics::model_default(
   population = bf_population,
   transmission_rate = 15 / 5,  # R0 / infectious period = 3
-  infectiousness_rate = 1 / 8,  # 1 / incubation period (pre-infectious phase)
+  infectiousness_rate = 1 / 8,  # 1 / latent period (pre-infectious phase)
   recovery_rate = 1 / 5,  # 1 / infectious period
   intervention = list(transmission_rate = reduced_contacts),
   vaccination = vaccinate_elders,

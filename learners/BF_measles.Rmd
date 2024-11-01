@@ -17,14 +17,10 @@ $\mathbf{N}$ individuals, with the infection diagnosed in a single
 individual. The remaining $\mathbf{N-1}$ individuals are all at risk of
 getting the infection and are considered susceptible ($\mathbf{S}$). An
 infected person  makes $k$ contacts and have a probability $p$ of infecting 
-each one if susceptible, and can call this $\beta$ for short. If the infection
-is highly contagious, $\mathbf{k}'$ will be closer to $\mathbf{k}$, and
-vice versa. The probability of transmission is calculated as
-$\mathcal{P}= \frac{\mathbf{k}'}{\mathbf{k}}.$ Consequently, on
+each one if susceptible, and can call this $\beta$ for short.  Consequently, on
 average, the infected individual will infect
 $\beta.\frac{\mathbf{S}}{\mathbf{N}}$ susceptible individuals per
-time unit, where $\beta = \mathcal{P} .\mathbf{k}$ is called the
-effective transmission rate. This represents the average rate at which
+time unit. This represents the average rate at which
 an infected individual can transmit the infection to a susceptible
 individual.
 
