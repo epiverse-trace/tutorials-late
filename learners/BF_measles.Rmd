@@ -24,9 +24,11 @@ time unit. This represents the average rate at which
 an infected individual can transmit the infection to a susceptible
 individual.
 
-Depending on the nature of the disease, a newly infected individual may
-take time to show symptoms. This time period is known as the latent
-period. Susceptible individuals who come into contact with an infected
+Depending on the nature of the disease, a newly infected individual may take 
+time to show symptoms, known as the incubation period (time from infection to 
+symptoms), and time to become infectious, known as the latent period (time from 
+infection to infectiousness). The latent period is relevant to the SEIR-type models. 
+Susceptible individuals who come into contact with an infected
 person and acquire the infection first move to an intermediate state
 called exposed ($\mathbf{E}$). T here they (he/she) spent, on average,
 $\frac{1}{\omega}$ units time (the latent period) and then move to
