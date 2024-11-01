@@ -377,12 +377,14 @@ susceptible individuals per time unit. This represents the average rate
 at which an infected individual can transmit the infection to a
 susceptible individual.</p>
 <p>Depending on the nature of the disease, a newly infected individual
-may take time to show symptoms. This time period is known as the latent
-period. Susceptible individuals who come into contact with an infected
-person and acquire the infection first move to an intermediate state
-called exposed (<span class="math inline">\(\mathbf{E}\)</span>). T here
-they (he/she) spent, on average, <span class="math inline">\(\frac{1}{\omega}\)</span> units time (the latent
-period) and then move to the infected class (<span class="math inline">\(\mathbf{I}\)</span>) at a constant rate <span class="math inline">\(\omega\)</span>. Infected individuals are removed
+may take time to show symptoms, known as the incubation period (time
+from infection to symptoms), and time to become infectious, known as the
+latent period (time from infection to infectiousness). The latent period
+is relevant to the SEIR-type models. Susceptible individuals who come
+into contact with an infected person and acquire the infection first
+move to an intermediate state called exposed (<span class="math inline">\(\mathbf{E}\)</span>). T here they (he/she) spent,
+on average, <span class="math inline">\(\frac{1}{\omega}\)</span> units
+time (the latent period) and then move to the infected class (<span class="math inline">\(\mathbf{I}\)</span>) at a constant rate <span class="math inline">\(\omega\)</span>. Infected individuals are removed
 (either by recovery or death) from <span class="math inline">\(I\)</span> at a constant rate <span class="math inline">\(\gamma\)</span>, with <span class="math inline">\(\frac{1}{\gamma}\)</span> representing the average
 recovery duration. Upon recovery, they gain lifelong immunity against
 the current infection, meaning they do not become susceptible again, and

@@ -19,7 +19,7 @@ getting the infection and are considered susceptible ($\mathbf{S}$). An
 infected person  makes $k$ contacts and have a probability $p$ of infecting 
 each one if susceptible, and can call this $\beta$ for short.  Consequently, on
 average, the infected individual will infect
-$\beta.\frac{\mathbf{S}}{\mathbf{N}}$ susceptible individuals per
+$\beta.\mathbf{S}$ susceptible individuals per
 time unit. This represents the average rate at which
 an infected individual can transmit the infection to a susceptible
 individual.
