@@ -66,7 +66,7 @@ as follows:
 At time $t_0=0$, there is one infected person ($\mathbf{I}_0 =1$), while
 all other individuals remain susceptible
 ($\mathbf{S}_0= \mathbf{N} -\mathbf{I}_0 = \mathbf{N} -1$). Initially,
-there are no exposed or recovered individuals ($\mathbf{E}_0= 0$ and
+At time $t_0=0$, we assume there is one infected person ($\mathbf{I}_0 =1$), while
 $\mathbf{R}_0 = 0$). These are known as the initial values of the system
 in [Equation 1](#eq-s1).
 
@@ -75,7 +75,7 @@ values of the compartments at any time $t>t_0$, starting from the
 initial conditions. Since the compartments represent individuals, their
 values must always be non-negative. This characteristic is referred to
 as the positivity of the solution.
-
+initial conditions. Since the compartments represent numbers of individuals, their
 Before, delving into mathematical details of how to solve
 [Equation 1](#eq-s1), a few key observations can be made:
 
@@ -87,7 +87,7 @@ Before, delving into mathematical details of how to solve
     Meanwhile, the number of recovered individuals continues to increase
     without decreasing.
 
-2.  The infection will take off only when $\frac{\mathbf{dE}}{dt} > 0$
+2.  The infection will start spreading in the community only when $\frac{\mathbf{dE}}{dt} > 0$
     and $\frac{\mathbf{dI}}{dt} > 0$, and taking the values of these two
     terms from [Equation 1](#eq-s1) leads to
 
@@ -155,7 +155,7 @@ quarters, such as schools, healthcare facilities, or densely populated
 urban areas. Transmission occurs through respiratory droplets when an
 infected person coughs or sneezes, and the virus can remain viable in
 the air for up to two hours. Effective vaccines are available, offering
-an efficacy of 93% to 97% ([About Measles, CDC](https://www.cdc.gov/measles/about/index.html)), making vaccination a key tool in controlling
+an efficacy of 93% to 97% ([About Measles, CDC]()), making vaccination a key tool in controlling
 measles outbreaks.
 
 Given the virus's high transmissibility, even a single case of measles
