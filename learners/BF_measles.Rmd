@@ -281,7 +281,7 @@ output %>%
     y = "Individuals (in millions)",
     caption = expression(
       paste(
-        "The dynamics of SIER model with ",
+        "The dynamics of SEIR model with ",
         italic(R)[0], "= 15, ",
         "showing the trajectories of number of exposed and infected individuals"
       )
@@ -461,7 +461,7 @@ output %>%
     caption =
       expression(
         paste(
-          "SIER model showing the trajectories of the number of ",
+          "SEIR model showing the trajectories of the number of ",
           "exposed and infected individuals ",
           italic(R)[0], " = 15 for different age groups."
         )
@@ -725,7 +725,7 @@ output3 %>%
     caption =
       expression(
         paste(
-          "SIER with vaccine  showing the trajectories of the number of ",
+          "SEIR with vaccine  showing the trajectories of the number of ",
           "exposed and infected individuals for different age groups."
         )
       )
@@ -867,7 +867,7 @@ output4 %>%
   labs(
     x = "Simulation Time (Days)",  # x-axis label
     y = "Number of Infectious Individuals",  # y-axis label
-    caption = "SIER model with vaccination and contact reduction:
+    caption = "SEIR model with vaccination and contact reduction:
     Number of infectious individuals by age group"
   ) +
   # Split the legend into two rows for compactness
