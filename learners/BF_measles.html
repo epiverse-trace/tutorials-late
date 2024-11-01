@@ -497,8 +497,9 @@ quarters, such as schools, healthcare facilities, or densely populated
 urban areas. Transmission occurs through respiratory droplets when an
 infected person coughs or sneezes, and the virus can remain viable in
 the air for up to two hours. Effective vaccines are available, offering
-an efficacy of 93% to 97%, making vaccination a key tool in controlling
-measles outbreaks.</p>
+an efficacy of 93% to 97% (<a href="https://www.cdc.gov/measles/about/index.html">About Measles,
+CDC</a>), making vaccination a key tool in controlling measles
+outbreaks.</p>
 <p>Given the virus’s high transmissibility, even a single case of
 measles can trigger large outbreaks, especially in regions with low
 vaccination coverage. The latent (pre-infectious) period for measles is
@@ -1034,7 +1035,7 @@ vaccine’s efficacy is approximately <span class="math inline">\(93\%\)</span>,
 vaccination interventions into modeling, as demonstrated in the code
 chunk below.</p>
 <pre class="r"><code>vaccinate_elders &lt;- epidemics::vaccination(
-  name = &quot;Vaccination compagain&quot;,
+  name = &quot;Vaccination compaign&quot;,
   time_begin = matrix(30, nrow(contact_matrix)),
   time_end = matrix(90, nrow(contact_matrix)),
   nu = matrix(c(0.93, 0.97, 0.95, 0.90, 0.95))

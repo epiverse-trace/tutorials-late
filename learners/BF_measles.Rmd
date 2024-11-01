@@ -155,7 +155,7 @@ quarters, such as schools, healthcare facilities, or densely populated
 urban areas. Transmission occurs through respiratory droplets when an
 infected person coughs or sneezes, and the virus can remain viable in
 the air for up to two hours. Effective vaccines are available, offering
-an efficacy of 93% to 97%, making vaccination a key tool in controlling
+an efficacy of 93% to 97% ([About Measles, CDC](https://www.cdc.gov/measles/about/index.html)), making vaccination a key tool in controlling
 measles outbreaks.
 
 Given the virus's high transmissibility, even a single case of measles
