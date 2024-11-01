@@ -555,8 +555,7 @@ reff
 How different is the $\mathcal{R}_{eff}$ value from $\mathcal{R}_0$?
 :::
 
-This estimate of $\mathcal{R}_{eff}$ more accurately reflects the transmission potential and can 
-be used to estimate the **HIT** required for achieving sufficient vaccine coverage
+This estimate of $\mathcal{R}_{eff}$ more accurately reflects  transmission potential.
 
 # Interventions models
 
