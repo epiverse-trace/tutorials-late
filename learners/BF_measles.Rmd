@@ -326,7 +326,6 @@ output %>%
 ```
 
 
-
 ## Expected Epidemic Size & Herd Immunity
 
 Using the `{finalsize}` package implements
@@ -346,7 +345,7 @@ finalsize::final_size(r0 = 10)
 
 For $\mathcal{R}_0 \geq 10$, the results indicate that nearly the entire
 population is expected to be infected by measles. The $HIT$ needed to
-contains the epidemic is about $93\%$, uaing the formula given in
+contains the epidemic is about $93\%$, using the formula given in
 [Equation 4](#eq-hit).
 
 # Age-Structured Model
