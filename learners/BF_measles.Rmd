@@ -1,5 +1,7 @@
 ---
 title: Introduction to Mathematical Modelling of Infectious Diseases
+fig_caption: yes
+code_folding: show
 ---
 
 # Preface
@@ -63,20 +65,20 @@ as follows:
 \end{eqnarray}
  \qquad(1)$$]{#eq-s1}
 
-At time $t_0=0$, there is one infected person ($\mathbf{I}_0 =1$), while
+At time $t_0=0$, we assume there is one infected person ($\mathbf{I}_0 =1$), while
 all other individuals remain susceptible
 ($\mathbf{S}_0= \mathbf{N} -\mathbf{I}_0 = \mathbf{N} -1$). Initially,
 At time $t_0=0$, we assume there is one infected person ($\mathbf{I}_0 =1$), while
 $\mathbf{R}_0 = 0$). These are known as the initial values of the system
 in [Equation 1](#eq-s1).
 
-Solving [Equation 1](#eq-s1) involves determining the
+initial conditions. Since the compartments represent numbers of individuals, their
 values of the compartments at any time $t>t_0$, starting from the
 initial conditions. Since the compartments represent individuals, their
 values must always be non-negative. This characteristic is referred to
 as the positivity of the solution.
-initial conditions. Since the compartments represent numbers of individuals, their
-Before, delving into mathematical details of how to solve
+initial conditions. Since the compartments represent numbers of individuals, 
+before delving into mathematical details of how to solve
 [Equation 1](#eq-s1), a few key observations can be made:
 
 1.  At the onset of an epidemic, the number of susceptible individuals
@@ -578,7 +580,7 @@ reff
 
 
 
-::: {.callout-question}
+::: {.alert .alert-secondary}
 
 ### Question
 
