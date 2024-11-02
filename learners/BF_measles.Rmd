@@ -157,6 +157,23 @@ As $\mathcal{R}_0$ increases, the herd immunity threshold also
 increases, meaning a larger proportion of the population must be immune
 to prevent the epidemic from spreading.
 
+To understand the logic behind the HIT formula, note that as time passes, 
+immunity builds up in the population. This reduces the number of susceptible 
+individuals, thereby decreasing the actual number of secondary cases that a 
+typical infected person can produce. This number is called the 
+__Effective Reproduction Number__ ($\mathcal{R}$) and is given by:
+$$ \mathcal{R} = \mathcal{R}_0 \times \mathbf{S}$$.
+
+
+For an epidemic to stop spreading, each infected person must, on average, 
+infect fewer than one other person—meaning we need $\mathcal{R}<1$. 
+This condition leads to:
+$$\mathbf{S} < \frac{1}{\mathcal{R}_0}$$
+
+Thus, if we can reduce the susceptible proportion $\mathbf{S}$ below 
+$\frac{1}{\mathcal{R}_0}$ the effective reproduction number $\mathcal{R}$ 
+will drop below 1, causing the epidemic to stop growing on average.
+
 # Measles Outbreak in Burkina Faso
 
 ## Background
