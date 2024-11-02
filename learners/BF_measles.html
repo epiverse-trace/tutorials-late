@@ -956,10 +956,10 @@ in the population.</p>
 <h1>Interventions models</h1>
 <p>Interventions against measles include prevention, control, and
 treatment. Controlling its spread requires a combination of public
-health measures, such as reducing contact, isolating infectious and
-exposed individuals, and vaccination. In this section, we will simulate
-the SEIR model with interventions using the <code>{epidemics}</code>
-package.</p>
+health measures, such as reducing contact(e.g., curfew and school
+closures in <a href="https://en.wikipedia.org/wiki/2019_Samoa_measles_outbreak">Samoa</a>),
+and vaccination. In this section, we will simulate the SEIR model with
+interventions using the <code>{epidemics}</code> package.</p>
 <div id="contacts-reduction-model" class="section level2">
 <h2>Contacts Reduction Model</h2>
 <p>Reducing contact by a certain percentage, say (20%), impacts the
@@ -1024,7 +1024,7 @@ ggplot(data_combined) +
   scale_linetype_manual(
     name = &quot;Scenario&quot;,
     values = c(
-      &quot;Baseline&quot; = &quot;dashed&quot;,
+      Baseline = &quot;dashed&quot;,
       &quot;Reduced Contact&quot; = &quot;solid&quot;
     )
   ) +
@@ -1060,9 +1060,11 @@ ggplot(data_combined) +
 <div id="vaccination-model" class="section level2">
 <h2>Vaccination Model</h2>
 <p>An effective vaccine for measles exists, known as the measles, mumps,
-and rubella (MMR) vaccine. The efficacy of the measles component of the
-MMR vaccine varies slightly depending on the age at which it is
-administered and the number of doses received. For example, the
+and rubella (MMR) vaccine, and many countires, including <a href="https://www.unicef.org/media/155306/file/Burkina-Faso-Humanitarian-SitRep-31-March-2024.pdf">Burkina
+Faso</a>, incorporates it as part of their national immunization
+strategy. The efficacy of the measles component of the MMR vaccine
+varies slightly depending on the age at which it is administered and the
+number of doses received. For example, let us say the 2-doeses MMR
 vaccine’s efficacy is approximately <span class="math inline">\(93\%\)</span>, <span class="math inline">\(97\%\)</span>, <span class="math inline">\(95\%\)</span>, <span class="math inline">\(94\%\)</span>, and <span class="math inline">\(85\%\)</span> for the age groups <span class="math inline">\([0\to 15)\)</span>, <span class="math inline">\([15\to 25)\)</span>, <span class="math inline">\([25\to 55)\)</span>, <span class="math inline">\([55\to 65)\)</span>, and <span class="math inline">\(65+\)</span>, respectively. The
 <code>{epidemics}</code> package enables the incorporation of
 vaccination interventions into modeling, as demonstrated in the code
@@ -1161,8 +1163,8 @@ ggplot(data_combined) +
   scale_linetype_manual(
     name = &quot;Scenario&quot;,
     values = c(
-      &quot;Baseline&quot; = &quot;dashed&quot;,
-      &quot;Vaccination&quot; = &quot;solid&quot;
+      Baseline = &quot;dashed&quot;,
+      Vaccination = &quot;solid&quot;
     )
   ) +
   # Use a color palette for age groups
