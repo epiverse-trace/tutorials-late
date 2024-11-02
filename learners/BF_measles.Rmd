@@ -161,7 +161,7 @@ To understand the logic behind the HIT formula, note that as time passes,
 immunity builds up in the population. This reduces the number of susceptible 
 individuals, thereby decreasing the actual number of secondary cases that a 
 typical infected person can produce. This number is called the 
-__Effective Reproduction Number__ ($\mathcal{R}$) and is given by:
+Given the virus's high transmissibility, even a single introduced case of measles
 $$ \mathcal{R} = \mathcal{R}_0 \times \mathbf{S}$$.
 
 
@@ -184,10 +184,10 @@ quarters, such as schools, healthcare facilities, or densely populated
 urban areas. Transmission occurs through respiratory droplets when an
 infected person coughs or sneezes, and the virus can remain viable in
 the air for up to two hours. Effective vaccines are available, offering
-an efficacy of 93% to 97% ([About Measles, CDC]()), making vaccination a key tool in controlling
+an efficacy of 93% to 97% ([About Measles, CDC](https://www.cdc.gov/measles/about/index.html)), making vaccination a key tool in controlling
 measles outbreaks.
 
-Given the virus's high transmissibility, even a single case of measles
+Given the virus's high transmissibility, even a single introduced case of measles
 can trigger large outbreaks, especially in regions with low vaccination
 coverage. The latent (pre-infectious) period for measles is
 typically around 8 days, while the infectious period averages 5 days ([Masters et al., 2023](https://www.thelancet.com/journals/lanpub/article/PIIS2468-2667(23)00130-5/fulltext)). The SEIR model in
