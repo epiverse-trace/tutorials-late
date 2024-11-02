@@ -346,7 +346,9 @@ contains the epidemic is about $93\%$, using the formula given in
 
 The age structure of Burkina Faso is characteristic of a young
 population, with a majority of the population being under 25 years old.
-According to recent estimates ([United Nations, 2023](https://population.un.org/wpp/); [Central Intelligence Agency, 2023](https://www.cia.gov/the-world-factbook/countries/burkina-faso/); [World Bank, 2023](https://data.worldbank.org/indicator/SP.POP.TOTL?locations=BF)), the age structure
+According to recent estimates ([United Nations, 2023](https://population.un.org/wpp/);
+ [Central Intelligence Agency, 2023](https://www.cia.gov/the-world-factbook/countries/burkina-faso/); 
+ [World Bank, 2023](https://data.worldbank.org/indicator/SP.POP.TOTL?locations=BF)), the age structure
 is broken down as follows:
 
 
