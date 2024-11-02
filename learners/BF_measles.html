@@ -601,9 +601,8 @@ lasts for 5 days, which means the recovery rate is: <span class="math inline">\(
 this value typically ranges from 12 to 18, or even more <a href="https://www.thelancet.com/journals/laninf/article/PIIS1473-3099(17)30307-9/abstract">Fiona,
 et al</a>.</li>
 <li>This makes the transmission rate <span class="math inline">\(\beta =
-\mathcal{R}_0. \gamma = 3\)</span></li>
-<li>This means each infectious individual causes 3 new infections per
-day in a fully susceptible population.</li>
+\mathcal{R}_0. \gamma = 3\)</span>–meaning each infectious individual
+causes 3 new infections per day in a fully susceptible population.</li>
 </ul></li>
 </ol>
 <p>By applying these assumptions and parameters to <a href="#eq-s1">Equation 1</a>, we can simulate the potential trajectory
@@ -668,8 +667,6 @@ output %&gt;%
 the population that will be infected given a specified basic
 reproduction number <span class="math inline">\((\mathcal{R}_0)\)</span>. The calculation can be
 done as follows:</p>
-<pre class="r"><code># Loading the finalsize library
-library(finalsize)</code></pre>
 <pre class="r"><code>finalsize::final_size(r0 = 10)</code></pre>
 <pre><code>##     demo_grp   susc_grp susceptibility p_infected
 ## 1 demo_grp_1 susc_grp_1              1  0.9999546</code></pre>

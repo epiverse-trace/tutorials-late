@@ -258,8 +258,7 @@ for modeling infectious disease spread.
     -   $\mathcal{R}_0 =15$. For measles this value typically ranges
         from 12 to 18, or even more [Fiona, et al](https://www.thelancet.com/journals/laninf/article/PIIS1473-3099(17)30307-9/abstract).
     -   This makes the transmission rate
-        $\beta = \mathcal{R}_0. \gamma = 3$
-    -   This means each infectious individual causes 3 new infections
+        $\beta = \mathcal{R}_0. \gamma = 3$--meaning each infectious individual causes 3 new infections
         per day in a fully susceptible population.
 
 By applying these assumptions and parameters to
@@ -333,11 +332,6 @@ Using the `{finalsize}` package implements
 of the population that will be infected given a specified basic
 reproduction number $(\mathcal{R}_0)$. The calculation can be done as
 follows:
-
-```{r,message=FALSE,warning=FALSE}
-# Loading the finalsize library
-library(finalsize)
-```
 
 ```{r}
 finalsize::final_size(r0 = 10)
@@ -580,13 +574,19 @@ reff <- finalsize::r_eff(
 reff
 ```
 
-::: challenge
-### $\mathcal{R}_{eff}$ vs $\mathcal{R}_0$
 
-How different is the $\mathcal{R}_{eff}$ value from $\mathcal{R}_0$?
+
+::: {.callout-question}
+
+### Question
+
+$\mathcal{R}_{eff}$ vs $\mathcal{R}_0$: How different is the $\mathcal{R}_{eff}$ value from $\mathcal{R}_0$?
 :::
 
-This estimate of $\mathcal{R}_{eff}$ more accurately reflects  transmission potential.
+
+This estimate of $\mathcal{R}_{eff}$ more accurately; because reflects transmission 
+potential reflects both the inherent transmissibility of the pathogen 
+and the actual state of susceptibility in the population.
 
 # Interventions models
 
