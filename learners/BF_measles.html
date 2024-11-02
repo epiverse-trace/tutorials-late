@@ -460,11 +460,12 @@ transmission over their entire infectious duration.</p>
 <p><span class="math inline">\(\mathcal{R}_0\)</span> is a crucial
 metric for understanding the transmissibility of an infectious disease.
 A higher value of <span class="math inline">\(\mathcal{R}_0\)</span>
-indicates a more transmissible disease, leading to a faster spread
-within the community.</p></li>
-<li><p>The <span class="math inline">\(\mathcal{R}_0\)</span> value
-helps to determine the finalsize- the total number of individuals that
-that will be infected- of the outbreak via the following equation <span id="eq-fs"><span class="math display">\[
+indicates a more transmissible disease.</p></li>
+<li><p>The final size of an epidemic—the total number of individuals who
+will ultimately be infected—is the cumulative count of infections as
+predicted by the model. However, If only the <span class="math inline">\(\mathcal{R}_0\)</span> is known, it can still
+provide insights into the outbreak’s final size through the following
+equation: <span id="eq-fs"><span class="math display">\[
 \begin{equation}
 z = 1 - e^{-\mathcal{R}_0 .z}
 \end{equation}
@@ -479,6 +480,9 @@ reproduction number, and</p></li>
 <li><p><span class="math inline">\(e\)</span> is the base of the natural
 logarithm.</p></li>
 </ul>
+<p>For a detailed derivation and theoretical background on the final
+size equation, please refer to <a href="https://epiverse-trace.github.io/finalsize/articles/theoretical_background.html">this
+article</a>.</p>
 <ol start="5" style="list-style-type: decimal">
 <li>Additionally, the basic reproduction number <span class="math inline">\(\mathcal{R}_0\)</span> is crucial for determining
 the herd immunity threshold (HIT), which represents the minimum

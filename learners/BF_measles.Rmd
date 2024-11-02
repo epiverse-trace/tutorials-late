@@ -118,9 +118,12 @@ are generated at a higher rate than existing infections recover.
     higher value of $\mathcal{R}_0$ indicates a more transmissible
     disease.
 
-4.  The $\mathcal{R}_0$ value helps to determine the finalsize- the
-    total number of individuals that that will be infected- of the
-    outbreak via the following equation [$$
+4.  The final size of an epidemic—the total number of individuals who will 
+ultimately be infected—is  the cumulative count of infections as 
+predicted by the model. However, If only the  $\mathcal{R}_0$  is known, it 
+can still provide insights into the outbreak's final size through 
+the following equation:
+[$$
     \begin{equation}
     z = 1 - e^{-\mathcal{R}_0 .z}
     \end{equation}
@@ -133,6 +136,9 @@ Where:
 -   $\mathcal{R}_0$ is the basic reproduction number, and
 
 -   $e$ is the base of the natural logarithm.
+
+For a detailed derivation and theoretical background on the final size equation,
+ please refer to [this article](https://epiverse-trace.github.io/finalsize/articles/theoretical_background.html).
 
 5.  Additionally, the basic reproduction number $\mathcal{R}_0$ is
     crucial for determining the herd immunity threshold (HIT), which
