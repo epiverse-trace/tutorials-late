@@ -255,7 +255,7 @@ for modeling infectious disease spread.
     -   $\mathcal{R}_0 =15$. For measles this value typically ranges
         from 12 to 18, or even more [Fiona, et al](https://www.thelancet.com/journals/laninf/article/PIIS1473-3099(17)30307-9/abstract).
     -   This makes the transmission rate
-        $\beta = \mathcal{R}_0.gamma = 3$
+        $\beta = \mathcal{R}_0. \gamma = 3$
     -   This means each infectious individual causes 3 new infections
         per day in a fully susceptible population.
 
