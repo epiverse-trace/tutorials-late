@@ -529,10 +529,11 @@ the air for up to two hours. Effective vaccines are available, offering
 an efficacy of 93% to 97% (<a href="https://www.cdc.gov/measles/about/index.html">About Measles,
 CDC</a>), making vaccination a key tool in controlling measles
 outbreaks.</p>
-<p>Given the virus’s high transmissibility, even a single case of
-measles can trigger large outbreaks, especially in regions with low
-vaccination coverage. The latent (pre-infectious) period for measles is
-typically around 8 days, while the infectious period averages 5 days (<a href="https://www.thelancet.com/journals/lanpub/article/PIIS2468-2667(23)00130-5/fulltext">Masters
+<p>Given the virus’s high transmissibility, even a single introduced
+case of measles can trigger large outbreaks, especially in regions with
+low vaccination coverage. The latent (pre-infectious) period for measles
+is typically around 8 days, while the infectious period averages 5 days
+(<a href="https://www.thelancet.com/journals/lanpub/article/PIIS2468-2667(23)00130-5/fulltext">Masters
 et al., 2023</a>). The SEIR model in <a href="#eq-s1">Equation 1</a> is
 commonly employed to simulate the dynamics of measles outbreaks and
 evaluate control measures like vaccination</p>
@@ -579,7 +580,10 @@ schools, or neighborhoods) are not considered.</p></li>
 <ul>
 <li>A single infectious case is introduced into the population: <span class="math inline">\(I_0 = 1\)</span>.</li>
 <li>The entire population, except for this one case, is initially
-susceptible: <span class="math inline">\(S_0 = N - 1\)</span>.</li>
+susceptible: <span class="math inline">\(S_0 = N - 1\)</span>. This
+assumption simplifies the model and allows us to explore the spread of
+infection in the absence of immunity. Although real populations
+typically have some immunity due to vaccination or prior infection.</li>
 <li>No individuals are in the exposed stage at the start: <span class="math inline">\(E_0 = 0\)</span>.</li>
 <li>No individuals have recovered: <span class="math inline">\(R_0 =
 0\)</span>.</li>
@@ -597,7 +601,7 @@ lasts for 5 days, which means the recovery rate is: <span class="math inline">\(
 this value typically ranges from 12 to 18, or even more <a href="https://www.thelancet.com/journals/laninf/article/PIIS1473-3099(17)30307-9/abstract">Fiona,
 et al</a>.</li>
 <li>This makes the transmission rate <span class="math inline">\(\beta =
-\mathcal{R}_0.gamma = 3\)</span></li>
+\mathcal{R}_0. \gamma = 3\)</span></li>
 <li>This means each infectious individual causes 3 new infections per
 day in a fully susceptible population.</li>
 </ul></li>

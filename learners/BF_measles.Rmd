@@ -237,8 +237,11 @@ for modeling infectious disease spread.
 
     -   A single infectious case is introduced into the population:
         $I_0 = 1$.
-    -   The entire population, except for this one case, is initially
-        susceptible: $S_0 = N - 1$.
+    -   The entire population, except for this one case, is initially 
+    susceptible: $S_0 = N - 1$. This 
+    assumption simplifies the model and allows us to explore the spread of 
+    infection in the absence of immunity. Although real populations typically 
+    have some immunity due to vaccination or prior infection.
     -   No individuals are in the exposed stage at the start: $E_0 = 0$.
     -   No individuals have recovered: $R_0 = 0$.
 
