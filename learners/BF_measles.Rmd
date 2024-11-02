@@ -116,7 +116,7 @@ are generated at a higher rate than existing infections recover.
      $\mathcal{R}_0$ is a crucial metric for
     understanding the transmissibility of an infectious disease. A
     higher value of $\mathcal{R}_0$ indicates a more transmissible
-    disease, leading to a faster spread within the community.
+    disease.
 
 4.  The $\mathcal{R}_0$ value helps to determine the finalsize- the
     total number of individuals that that will be infected- of the
