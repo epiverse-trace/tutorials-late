@@ -101,13 +101,19 @@ Before, delving into mathematical details of how to solve
 $\frac{\beta}{\gamma} > \frac{\mathbf{N}}{\mathbf{S}}$. At time $t=0$,
 we have $\mathbf{S} = \mathbf{N}-1 \approx  \mathbf{N}$. Therefore, the
 infection with take off $\frac{\beta}{\gamma} > 1$. This is a very
-interesting observation --It tells that the disease cases will increase
-if the ratio of new infections to recovered cases is greater than 1.
+interesting observation --It tells that the epidemic increases if new inftions
+are generated at a higher rate than existing infections recover.
 
 3.  The ratio $\frac{\beta}{\gamma}$ represents the basic reproduction
     number, $\mathcal{R}_0$, which is defined as the average number of
     new infections caused by a single infected individual in a fully
-    susceptible population. $\mathcal{R}_0$ is a crucial metric for
+    susceptible population. Intuitively, $\beta$ alone only describes the rate 
+    of new infections, without considering how long each infected individual 
+    contributes to transmission. By accounting for the infectious period 
+    $\frac{1}{\gamma}$, we obtain a complete measure of each infected 
+    individual's impact on transmission over their entire infectious duration.
+    
+     $\mathcal{R}_0$ is a crucial metric for
     understanding the transmissibility of an infectious disease. A
     higher value of $\mathcal{R}_0$ indicates a more transmissible
     disease, leading to a faster spread within the community.
