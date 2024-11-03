@@ -554,7 +554,9 @@ Cable, 2024</a>).</p>
 model in <a href="#eq-s1">Equation 1</a>. This will allow us to explore
 the outbreak dynamics with and without vaccination. For this purpose, we
 will use the <strong>R</strong> package <code>{epidemics}</code>, which
-is designed for modeling infectious disease spread.</p>
+is designed for modeling infectious disease spread. In these
+simulations, we will focus specifically on the number of infections,
+which represents a subset of the total reported suspected cases.</p>
 </div>
 <div id="baseline-model" class="section level2">
 <h2>Baseline Model</h2>
@@ -565,16 +567,10 @@ is approximately <span class="math inline">\(N\approx 22.67\)</span>
 million.</p></li>
 <li><p><strong>Population Structure</strong>:</p>
 <ul>
-<li><p><strong>No Age Stratification</strong>: Assume the population is
+<li><strong>No Age Stratification</strong>: Assume the population is
 homogeneous with respect to age. This means that all individuals,
 regardless of age, have the same susceptibility to measles and
-contribute equally to the transmission dynamics.</p></li>
-<li><p><strong>Highly Mixed Community</strong>: Assume the population is
-well-mixed and the transmission occurs uniformly across the entire
-population. Meaning that every individual has an equal probability of
-coming into contact with any other individual. This implies that
-geographic or social structures (like clustering within families,
-schools, or neighborhoods) are not considered.</p></li>
+contribute equally to the transmission dynamics.</li>
 </ul></li>
 <li><p><strong>Initial Conditions</strong>:</p>
 <ul>

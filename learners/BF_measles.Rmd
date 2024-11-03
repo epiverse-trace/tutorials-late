@@ -203,15 +203,18 @@ Burkina Faso, like many other countries in Africa, faces recurring
 measles outbreaks. This can be attributed to factors such as limited
 healthcare access, inadequate vaccination coverage, and fragile
 healthcare systems. In 2023, Burkina Faso experienced a particularly
-severe outbreak, with over 2,000 suspected cases reported ([Crisis24, 2024](https://crisis24.garda.com/alerts/2024/02/burkina-faso-elevated-measles-activity-reported-in-multiple-areas-in-february)),
+severe outbreak, with over 2,000 suspected cases reported 
+([Crisis24, 2024](https://crisis24.garda.com/alerts/2024/02/burkina-faso-elevated-measles-activity-reported-in-multiple-areas-in-february)),
 prompting health authorities and international organizations to scale up
-vaccination campaigns in an effort to curtail the spread of the disease ([Save the Children, 2024](https://www.savethechildren.net/news/burkina-faso-over-2000-children-diagnosed-suspected-measles-nationwide-outbreak); [The Cable, 2024](https://www.thecable.ng/burkina-faso-records-2000-suspected-cases-as-country-battles-measles-outbreak/)).
+vaccination campaigns in an effort to curtail the spread of the disease 
+([Save the Children, 2024](https://www.savethechildren.net/news/burkina-faso-over-2000-children-diagnosed-suspected-measles-nationwide-outbreak); [The Cable, 2024](https://www.thecable.ng/burkina-faso-records-2000-suspected-cases-as-country-battles-measles-outbreak/)).
 
 We will simulate the measles outbreak in Burkina Faso using the SEIR
 model in [Equation 1](#eq-s1). This will allow us to
 explore the outbreak dynamics with and without vaccination. For this
 purpose, we will use the **R** package `{epidemics}`, which is designed
-for modeling infectious disease spread.
+for modeling infectious disease spread. In these simulations, we will focus 
+specifically on the number of infections, which represents a subset of the total reported suspected cases.
 
 ## Baseline Model
 
@@ -226,14 +229,6 @@ for modeling infectious disease spread.
         with respect to age. This means that all individuals, regardless
         of age, have the same susceptibility to measles and contribute
         equally to the transmission dynamics.
-
-    -   **Highly Mixed Community**: Assume the population is well-mixed
-        and the transmission occurs uniformly across the entire
-        population. Meaning that every individual has an equal
-        probability of coming into contact with any other individual.
-        This implies that geographic or social structures (like
-        clustering within families, schools, or neighborhoods) are not
-        considered.
 
 3.  **Initial Conditions**:
 
