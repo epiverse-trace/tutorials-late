@@ -796,24 +796,16 @@ data_vaccine$scenario <- "Vaccination"
 
 # Combine the data from both scenarios (baseline and vaccination)
 data_combined <- bind_rows(data_baseline, data_vaccine)
-
 # Plot new infections over time by scenario and demographic groups
 ggplot(data_combined) +
   # Plot new infections with lines for each demographic group and scenario
   geom_line(
     aes(
-      x = time, y = new_infections,
-      col = demography_group, linetype = scenario
+      x = time,
+      y = new_infections,
+      col = demography_group,
+      linetype = scenario
     )
-  ) +
-  # Highlight the reduced contact intervention period using a shaded rectangle
-  annotate(
-    geom = "rect",
-    xmin = reduced_contacts[["time_begin"]],
-    xmax = reduced_contacts[["time_end"]],
-    ymin = 0, ymax = 0.67e3,  # Define the rectangle's limits
-    fill = alpha("red", 0.2),  # Semi-transparent red fill
-    linetype = "dashed"  # Dashed border for the rectangle
   ) +
   # Scale the y-axis with comma-formatted labels
   scale_y_continuous(labels = scales::comma) +

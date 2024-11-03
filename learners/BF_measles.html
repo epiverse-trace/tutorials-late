@@ -412,14 +412,14 @@ person (<span class="math inline">\(\mathbf{I}_0 =1\)</span>), while
 <span class="math inline">\(\mathbf{R}_0 = 0\)</span>). These are known
 as the initial values of the system in <a href="#eq-s1">Equation
 1</a>.</p>
-<p>Solving <a href="#eq-s1">Equation 1</a> involves determining the
-values of the compartments at any time <span class="math inline">\(t&gt;t_0\)</span>, starting from the initial
+<p>initial conditions. Since the compartments represent numbers of
+individuals, their values of the compartments at any time <span class="math inline">\(t&gt;t_0\)</span>, starting from the initial
 conditions. Since the compartments represent individuals, their values
 must always be non-negative. This characteristic is referred to as the
 positivity of the solution. initial conditions. Since the compartments
-represent numbers of individuals, their Before, delving into
-mathematical details of how to solve <a href="#eq-s1">Equation 1</a>, a
-few key observations can be made:</p>
+represent numbers of individuals, before delving into mathematical
+details of how to solve <a href="#eq-s1">Equation 1</a>, a few key
+observations can be made:</p>
 <ol style="list-style-type: decimal">
 <li><p>At the onset of an epidemic, the number of susceptible
 individuals begins to decrease exponentially, while the number of
@@ -1138,24 +1138,16 @@ data_vaccine$scenario &lt;- &quot;Vaccination&quot;
 
 # Combine the data from both scenarios (baseline and vaccination)
 data_combined &lt;- bind_rows(data_baseline, data_vaccine)
-
 # Plot new infections over time by scenario and demographic groups
 ggplot(data_combined) +
   # Plot new infections with lines for each demographic group and scenario
   geom_line(
     aes(
-      x = time, y = new_infections,
-      col = demography_group, linetype = scenario
+      x = time,
+      y = new_infections,
+      col = demography_group,
+      linetype = scenario
     )
-  ) +
-  # Highlight the reduced contact intervention period using a shaded rectangle
-  annotate(
-    geom = &quot;rect&quot;,
-    xmin = reduced_contacts[[&quot;time_begin&quot;]],
-    xmax = reduced_contacts[[&quot;time_end&quot;]],
-    ymin = 0, ymax = 0.67e3,  # Define the rectangle&#39;s limits
-    fill = alpha(&quot;red&quot;, 0.2),  # Semi-transparent red fill
-    linetype = &quot;dashed&quot;  # Dashed border for the rectangle
   ) +
   # Scale the y-axis with comma-formatted labels
   scale_y_continuous(labels = scales::comma) +
