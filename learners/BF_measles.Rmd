@@ -81,13 +81,14 @@ initial conditions. Since the compartments represent numbers of individuals,
 before delving into mathematical details of how to solve
 [Equation 1](#eq-s1), a few key observations can be made:
 
-1.  At the onset of an epidemic, the number of susceptible individuals
+1. At the onset of an epidemic, the number of susceptible individuals
     begins to decrease exponentially, while the number of exposed and
     infectious individuals increases. As the epidemic progresses, the
     susceptible population becomes depleted, and the exposed and
     infectious groups reach their peak before starting to decline.
     Meanwhile, the number of recovered individuals continues to increase
-    without decreasing.
+    without decreasing. (Note that these observations  hold true when
+$\mathcal{R}_0 > 1$, as we shall see later in this document).
 
 2.  The infection will start spreading in the community only when $\frac{\mathbf{dE}}{dt} > 0$
     and $\frac{\mathbf{dI}}{dt} > 0$, and taking the values of these two
