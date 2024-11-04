@@ -275,8 +275,8 @@ library(epidemics)
 # Define the population structure for Burkina Faso
 bfaso <- epidemics::population(
   name = "Burkina Faso",
-  contact_matrix = matrix(1),  # Well-mixed population
-  demography_vector = 22.67e6,  # Population size
+  contact_matrix = matrix(1), # Well-mixed population
+  demography_vector = 22.67e6, # Population size
   # Initial conditions: Susceptible, exposed, Infectious, vaccinated, recovered
   initial_conditions = matrix(
     c(1 - 1 / 22.67e6, 1 / 22.67e6, 0, 0, 0),
@@ -287,11 +287,11 @@ bfaso <- epidemics::population(
 # Run the SEIR model simulation
 output <- epidemics::model_default(
   population = bfaso,
-  transmission_rate = 15 / 5,  # R0/infectious period = 15/5 = 3
-  infectiousness_rate = 1 / 8,  # 1/latent period (pre-infectious phase)
-  recovery_rate = 1 / 5,  # 1/infectious period
-  time_end = 120,  # Simulation over 120 days
-  increment = 1  # Daily increments
+  transmission_rate = 15 / 5, # R0/infectious period = 15/5 = 3
+  infectiousness_rate = 1 / 8, # 1/latent period (pre-infectious phase)
+  recovery_rate = 1 / 5, # 1/infectious period
+  time_end = 120, # Simulation over 120 days
+  increment = 1 # Daily increments
 )
 
 # Plot the epidemic curve for susceptible, exposed, infectious, and recovered
@@ -299,7 +299,7 @@ output %>%
   filter(compartment %in% c("exposed", "infectious")) %>%
   ggplot(aes(
     x = time,
-    y = value / 10^6,  # Scale to millions
+    y = value / 10^6, # Scale to millions
     col = compartment,
     linetype = compartment
   )) +
@@ -389,13 +389,15 @@ rates among older age groups:
 # Initial conditions: one in every 1 million is infected
 bf_pop <- 22.67e6
 contact_matrix <- matrix(
-  c(20, 10, 5, 2, 1,   # Contacts from 0-14 years
-    10, 15, 10, 4, 2,   # Contacts from 15-24 years
-    5, 10, 15, 6, 3,    # Contacts from 25-54 years
-    2, 4, 6, 10, 5,     # Contacts from 55-64 years
-    1, 2, 3, 5, 10),    # Contacts from 65+ years
-  nrow = 5,              # Number of rows
-  byrow = TRUE,          # Fill the matrix by rows
+  c(
+    20, 10, 5, 2, 1, # Contacts from 0-14 years
+    10, 15, 10, 4, 2, # Contacts from 15-24 years
+    5, 10, 15, 6, 3, # Contacts from 25-54 years
+    2, 4, 6, 10, 5, # Contacts from 55-64 years
+    1, 2, 3, 5, 10
+  ), # Contacts from 65+ years
+  nrow = 5, # Number of rows
+  byrow = TRUE, # Fill the matrix by rows
   dimnames = list(
     c("[0-15)", "[15-25)", "[25-55)", "[55-65)", "65+"),
     c("[0-15)", "[15-25)", "[25-55)", "[55-65)", "65+")
@@ -420,7 +422,7 @@ contact_matrix <- contact_matrix / max(Re(eigen(contact_matrix)$values))
 contact_matrix <- contact_matrix / demography_vector
 
 # Print the contact matrix
-#contact_matrix
+# contact_matrix
 
 # Define the population structure for Burkina Faso
 initial_i <- 1 / bf_pop
@@ -438,7 +440,7 @@ initial_conditions_matrix <- rbind(
 rownames(initial_conditions_matrix) <- rownames(contact_matrix)
 
 # Print the initial conditions
-#initial_conditions_matrix
+# initial_conditions_matrix
 
 # Create the population object
 bf_population <- epidemics::population(
@@ -454,17 +456,17 @@ bf_population <- epidemics::population(
 
 ```{r}
 # Run the epidemic model
-output <- epidemics::model_default(
+output1 <- epidemics::model_default(
   population = bf_population,
-  transmission_rate = 15 / 5,  # R0/infectious period = 15/5 = 3
-  infectiousness_rate = 1 / 8,  # 1/latent period (pre-infectious phase)
-  recovery_rate = 1 / 5,  # 1/infectious period
-  time_end = 122,  # Simulation over 122 days
-  increment = 1  # Daily increments
+  transmission_rate = 15 / 5, # R0/infectious period = 15/5 = 3
+  infectiousness_rate = 1 / 8, # 1/latent period (pre-infectious phase)
+  recovery_rate = 1 / 5, # 1/infectious period
+  time_end = 122, # Simulation over 122 days
+  increment = 1 # Daily increments
 )
 
 # Plot the epidemic curve
-output %>%
+output1 %>%
   filter(compartment %in% c("exposed", "infectious")) %>%
   ggplot(aes(
     x = time,
@@ -542,7 +544,7 @@ $\mathcal{R}_{eff}$ for our age-structured model, as follows:
 
 
 ```{r}
-r0 <-  15 #  basic reproduction number
+r0 <- 15 #  basic reproduction number
 
 # define the number of age and susceptibility groups
 n_demo_grps <- length(demography_vector)
@@ -619,12 +621,12 @@ reduced_contacts <- epidemics::intervention(
 # Run the epidemic model
 output2 <- epidemics::model_default(
   population = bf_population,
-  transmission_rate = 15 / 5,  # R0/infectious period = 15/5 = 3
-  infectiousness_rate = 1 / 8,  # 1/latent period (pre-infectious phase)
-  recovery_rate = 1 / 5,  # 1/infectious period
+  transmission_rate = 15 / 5, # R0/infectious period = 15/5 = 3
+  infectiousness_rate = 1 / 8, # 1/latent period (pre-infectious phase)
+  recovery_rate = 1 / 5, # 1/infectious period
   intervention = list(transmission_rate = reduced_contacts),
-  time_end = 120,  # Simulation over 75 days
-  increment = 1  # Daily increments
+  time_end = 120, # Simulation over 75 days
+  increment = 1 # Daily increments
 )
 ```
 
@@ -636,7 +638,7 @@ models.
 
 ```{r}
 # Load new infections data for each scenario
-data_baseline <- epidemics::new_infections(output, by_group = TRUE)
+data_baseline <- epidemics::new_infections(output1, by_group = TRUE)
 data_reduced <- epidemics::new_infections(output2, by_group = TRUE)
 
 # Assign scenario names
@@ -653,15 +655,6 @@ ggplot(data_combined) +
       x = time, y = new_infections,
       col = demography_group, linetype = scenario
     )
-  ) +
-  # Highlight the reduced contact intervention period
-  annotate(
-    geom = "rect",
-    xmin = reduced_contacts[["time_begin"]],
-    xmax = reduced_contacts[["time_end"]],
-    ymin = 0, ymax = 0.67e3,
-    fill = alpha("red", 0.2),
-    linetype = "dashed"
   ) +
   # Set axis scaling and formatting
   scale_y_continuous(labels = scales::comma) +
@@ -728,12 +721,12 @@ vaccinate_elders <- epidemics::vaccination(
 # Run the epidemic model
 output3 <- epidemics::model_default(
   population = bf_population,
-  transmission_rate = 15 / 5,  # R0/infectious period = 15/5 = 3
-  infectiousness_rate = 1 / 8,  # 1/latent period (pre-infectious phase)
-  recovery_rate = 1 / 5,  # 1/infectious period
+  transmission_rate = 15 / 5, # R0/infectious period = 15/5 = 3
+  infectiousness_rate = 1 / 8, # 1/latent period (pre-infectious phase)
+  recovery_rate = 1 / 5, # 1/infectious period
   vaccination = vaccinate_elders,
-  time_end = 120,  # Simulation over 120 days
-  increment = 1  # Daily increments
+  time_end = 120, # Simulation over 120 days
+  increment = 1 # Daily increments
 )
 
 # Plot the epidemic curve
@@ -784,15 +777,19 @@ controlling the epidemic.
 
 ```{r}
 # Load new infections data for each scenario
-data_vaccine <- epidemics::new_infections(output3, by_group = TRUE)
+data_vaccine <- epidemics::new_infections(
+  output3,
+  compartments_from_susceptible = "vaccinated",
+  by_group = TRUE
+)
 
 # Assign scenario names
 data_vaccine$scenario <- "Vaccination"
 
 # Combine the data from both scenarios (baseline and vaccination)
-data_combined <- bind_rows(data_baseline, data_vaccine)
+data_combined2 <- bind_rows(data_baseline, data_vaccine)
 # Plot new infections over time by scenario and demographic groups
-ggplot(data_combined) +
+ggplot(data_combined2) +
   # Plot new infections with lines for each demographic group and scenario
   geom_line(
     aes(
@@ -824,15 +821,15 @@ ggplot(data_combined) +
   theme_bw() +
   # Customize theme for better aesthetics
   theme(
-    legend.position = "top",  # Position legend at the top
-    legend.text = element_text(size = 10),  # Adjust legend text size
-    plot.caption = element_text(hjust = 0.5)  # Center align the caption
+    legend.position = "top", # Position legend at the top
+    legend.text = element_text(size = 10), # Adjust legend text size
+    plot.caption = element_text(hjust = 0.5) # Center align the caption
   ) +
   # Add axis labels and caption for the plot
   labs(
-    x = "Simulation Time (days)",  # x-axis label
-    y = "New Infections",  # y-axis label
-    linetype = "Scenario",  # Legend title for line types
+    x = "Simulation Time (days)", # x-axis label
+    y = "New Infections", # y-axis label
+    linetype = "Scenario", # Legend title for line types
     caption = expression(
       paste(
         "New infections under baseline and vaccine-induced immunity",
@@ -843,7 +840,7 @@ ggplot(data_combined) +
   ) +
   # Adjust legend display for better readability
   guides(
-    color = guide_legend(nrow = 2)  # Split legend into two rows
+    color = guide_legend(nrow = 2) # Split legend into two rows
   )
 ```
 
@@ -861,41 +858,41 @@ interventions together.
 # Run the epidemic model
 output4 <- epidemics::model_default(
   population = bf_population,
-  transmission_rate = 15 / 5,  # R0 / infectious period = 3
-  infectiousness_rate = 1 / 8,  # 1 / latent period (pre-infectious phase)
-  recovery_rate = 1 / 5,  # 1 / infectious period
+  transmission_rate = 15 / 5, # R0 / infectious period = 3
+  infectiousness_rate = 1 / 8, # 1 / latent period (pre-infectious phase)
+  recovery_rate = 1 / 5, # 1 / infectious period
   intervention = list(transmission_rate = reduced_contacts),
   vaccination = vaccinate_elders,
-  time_end = 120,  # Simulation over 75 days
-  increment = 1  # Daily increments
+  time_end = 120, # Simulation over 75 days
+  increment = 1 # Daily increments
 )
 
 # Plot the epidemic curve (infectious individuals)
 output4 %>%
   filter(compartment == "infectious") %>% # Filter for infectious individuals
   ggplot(aes(
-    x = time,  # Time on the x-axis
-    y = value,  # Number of infectious individuals on the y-axis
-    col = demography_group  # Color by demographic group (age)
+    x = time, # Time on the x-axis
+    y = value, # Number of infectious individuals on the y-axis
+    col = demography_group # Color by demographic group (age)
   )) +
-  geom_line(linewidth = 1.2) +  # Line width for better visibility
+  geom_line(linewidth = 1.2) + # Line width for better visibility
   # Format y-axis with commas for thousands
   scale_y_continuous(labels = scales::comma) +
   # Color palette for age groups
   scale_colour_brewer(palette = "Dark2", name = "Age Group") +
   # Ensure the y-axis starts from 0 and goes up to 500,000
   expand_limits(y = c(0, 1.5e3)) +
-  coord_cartesian(expand = FALSE) +  # Disable axis expansion
-  theme_bw() +  # Clean, white background theme
+  coord_cartesian(expand = FALSE) + # Disable axis expansion
+  theme_bw() + # Clean, white background theme
   theme(
-    legend.position = "top",  # Place legend at the top
+    legend.position = "top", # Place legend at the top
     # Adjust text size and line height
     legend.text = element_text(size = 10, hjust = 0, lineheight = 1.1),
-    plot.caption = element_text(hjust = 0.5)  # Center align the caption
+    plot.caption = element_text(hjust = 0.5) # Center align the caption
   ) +
   labs(
-    x = "Simulation Time (Days)",  # x-axis label
-    y = "Number of Infectious Individuals",  # y-axis label
+    x = "Simulation Time (Days)", # x-axis label
+    y = "Number of Infectious Individuals", # y-axis label
     caption = "SEIR model with vaccination and contact reduction:
     Number of infectious individuals by age group"
   ) +
