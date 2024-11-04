@@ -19,10 +19,7 @@ $\mathbf{N}$ individuals, with the infection diagnosed in a single
 individual. The remaining $\mathbf{N-1}$ individuals are all at risk of
 getting the infection and are considered susceptible ($\mathbf{S}$). An
 infected person  makes $k$ contacts and have a probability $p$ of infecting 
-each one if susceptible, and can call this $\beta$ for short.  Consequently, on
-average, the infected individual will infect
-$\beta.\mathbf{S}$ susceptible individuals per
-time unit. This represents the average rate at which
+each one if susceptible, and we can call this $\beta$ for short. This represents the average rate at which
 an infected individual can transmit the infection to a susceptible
 individual.
 
@@ -48,7 +45,7 @@ may not particularly reflects the biological underlying processes.
 ![](fig/t2.drawio.png){ref-parent="fig-seir"}
 ![](fig/t3.drawio.png){ref-parent="fig-seir"}
 
-The four S-E-I-R classes considered define the $\mathbf{SEIR}$ model.
+The four S-E-I-R classes considered in the $\mathbf{SEIR}$ model.
  The number of individuals in each 
  change overtime and thus are functions of time $t$, and
 the total population at any time $t$ is
@@ -58,27 +55,23 @@ as follows:
 
 [$$
 \begin{eqnarray} 
-\frac{dS}{dt} &=& -\beta .\frac{S.I}{N} & & \\
-\frac{dE}{dt} &=&\beta. \frac{S.I}{N} &-& \omega. E\\
-\frac{dI}{dt} &=& \omega .E &-& \gamma .I \\
-\frac{dR}{dt} &=& \gamma .I  & &\\ 
+\frac{dS}{dt} &=& -\beta \frac{S.I}{N} & & \\
+\frac{dE}{dt} &=&\beta \frac{S.I}{N} &-& \omega E\\
+\frac{dI}{dt} &=& \omega E &-& \gamma I \\
+\frac{dR}{dt} &=& \gamma I  & &\\ 
 \end{eqnarray}
  \qquad(1)$$]{#eq-s1}
 
-At time $t_0=0$, we assume there is one infected person ($\mathbf{I}_0 =1$), while
+At time $t_0=0$, we assume there is one infected person ($\mathbf{I}_0 =1$); 
+no exposed ($\mathbf{E}_0 = 0$) or recovery ($\mathbf{R}_0 = 0$). and while
 all other individuals remain susceptible
-($\mathbf{S}_0= \mathbf{N} -\mathbf{I}_0 = \mathbf{N} -1$). Initially,
-At time $t_0=0$, we assume there is one infected person ($\mathbf{I}_0 =1$), while
-$\mathbf{R}_0 = 0$). These are known as the initial values of the system
+($\mathbf{S}_0= \mathbf{N} -\mathbf{I}_0 = \mathbf{N} -1$). These are known as the initial values of the system
 in [Equation 1](#eq-s1).
 
-initial conditions. Since the compartments represent numbers of individuals, their
-values of the compartments at any time $t>t_0$, starting from the
-initial conditions. Since the compartments represent individuals, their
+ Since the compartments represent individuals, their
 values must always be non-negative. This characteristic is referred to
-as the positivity of the solution.
-initial conditions. Since the compartments represent numbers of individuals, 
-before delving into mathematical details of how to solve
+as the positivity of the solution. 
+Before delving into mathematical details of how to solve
 [Equation 1](#eq-s1), a few key observations can be made:
 
 1. At the onset of an epidemic, the number of susceptible individuals
@@ -87,7 +80,7 @@ before delving into mathematical details of how to solve
     susceptible population becomes depleted, and the exposed and
     infectious groups reach their peak before starting to decline.
     Meanwhile, the number of recovered individuals continues to increase
-    without decreasing. (Note that these observations  hold true when
+    without decreasing. (Note that these observations  hold true only when
 $\mathcal{R}_0 > 1$, as we shall see later in this document).
 
 2.  The infection will start spreading in the community only when $\frac{\mathbf{dE}}{dt} > 0$
@@ -114,9 +107,7 @@ are generated at a higher rate than existing infections recover.
     of new infections, without considering how long each infected individual 
     contributes to transmission. By accounting for the infectious period 
     $\frac{1}{\gamma}$, we obtain a complete measure of each infected 
-    individual's impact on transmission over their entire infectious duration.
-    
-     $\mathcal{R}_0$ is a crucial metric for
+    individual's impact on transmission over their entire infectious duration. $\mathcal{R}_0$ is a crucial metric for
     understanding the transmissibility of an infectious disease. A
     higher value of $\mathcal{R}_0$ indicates a more transmissible
     disease.
@@ -163,10 +154,9 @@ to prevent the epidemic from spreading.
 To understand the logic behind the HIT formula, note that as time passes, 
 immunity builds up in the population. This reduces the number of susceptible 
 individuals, thereby decreasing the actual number of secondary cases that a 
-typical infected person can produce. This number is called the 
-Given the virus's high transmissibility, even a single introduced case of measles
-$$ \mathcal{R} = \mathcal{R}_0 \times \mathbf{S}$$.
-
+typical infected person can produce. This number is called the effect 
+reproduction number  ($\mathcal{R}$), and it is given as:
+$$ \mathcal{R} = \mathcal{R}_0 \times \mathbf{S}.$$
 
 For an epidemic to stop spreading, each infected person must, on average, 
 infect fewer than one other person—meaning we need $\mathcal{R}<1$. 
@@ -194,13 +184,13 @@ Given the virus's high transmissibility, even a single introduced case of measle
 can trigger large outbreaks, especially in regions with low vaccination
 coverage. The latent (pre-infectious) period for measles is
 typically around 8 days, while the infectious period averages 5 days ([Masters et al., 2023](https://www.thelancet.com/journals/lanpub/article/PIIS2468-2667(23)00130-5/fulltext)). The SEIR model in
-[Equation 1](#eq-s1) is commonly employed to simulate the
+[Equation 1](#eq-s1) can e employed to simulate the
 dynamics of measles outbreaks and evaluate control measures like
-vaccination
+vaccination.
 
 ## Burkina Faso Situation in Jan 2024
 
-Burkina Faso, like many other countries in Africa, faces recurring
+Burkina Faso faces recurring
 measles outbreaks. This can be attributed to factors such as limited
 healthcare access, inadequate vaccination coverage, and fragile
 healthcare systems. In 2023, Burkina Faso experienced a particularly
@@ -212,7 +202,7 @@ vaccination campaigns in an effort to curtail the spread of the disease
 
 We will simulate the measles outbreak in Burkina Faso using the SEIR
 model in [Equation 1](#eq-s1). This will allow us to
-explore the outbreak dynamics with and without vaccination. For this
+explore the outbreak dynamics with and without interventions. For this
 purpose, we will use the **R** package `{epidemics}`, which is designed
 for modeling infectious disease spread. In these simulations, we will focus 
 specifically on the number of infections, which represents a subset of the total reported suspected cases.
@@ -249,14 +239,14 @@ specifically on the number of infections, which represents a subset of the total
     individuals is: $\omega = \frac{1}{8}$.
 
 5.  **Infectious Period**: The average infectious period lasts for 5
-    days, which means the recovery rate is: $\gamma = \frac{1}{5}$
+    days, which means the recovery rate is: $\gamma = \frac{1}{5}$.
 
 6.  **Basic Reproduction Number** $\mathcal{R}_0$:
 
     -   $\mathcal{R}_0 =15$. For measles this value typically ranges
         from 12 to 18, or even more [Fiona, et al](https://www.thelancet.com/journals/laninf/article/PIIS1473-3099(17)30307-9/abstract).
     -   This makes the transmission rate
-        $\beta = \mathcal{R}_0. \gamma = 3$--meaning each infectious individual causes 3 new infections
+        $\beta = \mathcal{R}_0 \gamma = 3$--meaning each infectious individual causes 3 new infections
         per day in a fully susceptible population.
 
 By applying these assumptions and parameters to
@@ -325,7 +315,7 @@ output %>%
 
 ## Expected Epidemic Size & Herd Immunity
 
-Using the `{finalsize}` package implements
+The `{finalsize}` package implements
 [Equation 3](#eq-fs) for calculate the expected proportion
 of the population that will be infected given a specified basic
 reproduction number $(\mathcal{R}_0)$. The calculation can be done as
@@ -354,7 +344,7 @@ is broken down as follows:
 -   $[15\to 25)$ years: \~19.5 (19-20)%
 -   $[25\to 55)$ years: \~29 (28-30)%
 -   $[55\to 65)$ years: \~5 (3-5)%
--   $65+$ : \~2.5 (2-3)%
+-   $65+$ years : \~2.5 (2-3)%
 
 
 ## **Contact Matrix**
@@ -504,7 +494,7 @@ output1 %>%
 ```
 
 
-## Effective Reproduction Number $\mathcal{R}_{eff}$
+## Effective Reproduction Number ($\mathcal{R}_{eff}$)
 
 Age-structured models account for heterogeneous characteristics in the
 population, such as:
@@ -521,7 +511,7 @@ formula:
 
 [$$
 \begin{equation}
-\mathcal{R}_{eff} = \rho(C) .\lambda .\gamma 
+\mathcal{R}_{eff} = \rho(C) \lambda \gamma 
 \end{equation}
  \qquad(5)$$]{#eq-reff}
 
