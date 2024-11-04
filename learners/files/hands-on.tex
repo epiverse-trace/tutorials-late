@@ -14,7 +14,7 @@
 \maketitle
 
 \section{Intrdocution}
-This document aims to assess and enhance your understanding of the fundamental 
+This document aims to assess  your understanding of the fundamental 
 principles of mathematical modeling while guiding you in constructing models using 
 a simple SEIR framework for infectious disease outbreaks. 
  
@@ -26,8 +26,8 @@ a simple SEIR framework for infectious disease outbreaks.
 
 \begin{itemize}
     \item \( S \) stands for \underline{\hspace{2cm}}, meaning \underline{\hspace{3cm}}.
-The parameter that explains the transition from the Susceptible (\( S \)) compartment 
-to the Exposed (\( E \)) compartment is \underline{\hspace{6cm}}.
+The parameter that explains the transition from  (\( S \)) compartment 
+to  (\( E \)) compartment is \underline{\hspace{6cm}}.
 \item \(E\) stands for \underline{\hspace{2cm}}, meaning that it can 
     \underline{\hspace{3cm}}. 
     
@@ -35,7 +35,7 @@ to the Exposed (\( E \)) compartment is \underline{\hspace{6cm}}.
     
     \item \( I \) stands for \underline{\hspace{2cm}}, meaning that it can 
     \underline{\hspace{3cm}}.
-    The rate that explains the transition from  (\( I \)) to Recovered (\( R \)) is the rate of \underline{\hspace{6cm}}.
+    The rate that explains the transition from  (\( I \)) to  (\( R \)) is the rate of \underline{\hspace{6cm}}.
     
     \item \( R \) stands for \underline{\hspace{3cm}}. This compartment includes those who have ceased to be infectious and acquire immunity against infection, regardless of the clinical course.
 \end{itemize}
@@ -112,21 +112,21 @@ Based on the above diagram,deduce the following equations that describe this sys
 \section*{Compartment Equations}
 
 \begin{itemize}
-    \item \textbf{Susceptible compartment:}
+    \item \textbf{S compartment:}
     \[
     \frac{dS}{dt} = 
     \]
     
-    \item \textbf{Exposed compartment:}
+    \item \textbf{E compartment:}
     \[
     \frac{dE}{dt} = 
     \]
-    \item \textbf{Infectious compartment:}
+    \item \textbf{I compartment:}
     \[
     \frac{dI}{dt} = \
     \]
     
-    \item \textbf{Recovered compartment:}
+    \item \textbf{R compartment:}
     \[
     \frac{dR}{dt} =
     \]
@@ -138,7 +138,7 @@ The expression for the basic reproduction number ($R_0$) in the above system  is
 \begin{equation*} R_0 = \frac{\mu}{(\mu + \sigma)} \frac{\beta}{(\mu + \gamma)}. \end{equation*}
 
 To calculate the $R_0$ value for given parameter values,  write an R function 
-called Measles$_r0$ that implements this formula. The function will use the following parameter values:
+called Measles$R_0$ that implements this formula. The function will use the following parameter values:
 
     \begin{itemize}
         \item $\mu = \frac{1}{75}$ (natural mortality rate)
@@ -146,5 +146,5 @@ called Measles$_r0$ that implements this formula. The function will use the foll
         \item $\gamma = 1/8$ (recovery rate)
         \item $\beta = 1.8$ (transmission rate)
     \end{itemize}
-
+Then compute the final size of such epidemic.
 \end{document}
