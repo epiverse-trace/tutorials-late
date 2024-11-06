@@ -96,7 +96,6 @@ output_baseline <- model_default(
 
 ::::::::::::::::::::::::::::::::::::: prereq
 
-## Prerequisites
 + Complete tutorials [Simulating transmission](../episodes/simulating-transmission.md) and [Modelling interventions](../episodes/modelling-interventions.md)
 
 Learners should familiarise themselves with following concept dependencies before working through this tutorial: 
@@ -338,8 +337,6 @@ output <- model_vacamole(
 
 
 ::::::::::::::::: solution
-
-### SOLUTION
 
 1.  Run the model
 
