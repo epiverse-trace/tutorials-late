@@ -23,7 +23,6 @@ exercises: 30 # exercise time in minutes
 
 ::::::::::::::::::::::::::::::::::::: prereq
 
-## Prerequisites
 + Complete tutorials [Simulating transmission](../episodes/simulating-transmission.md) and [Modelling interventions](../episodes/modelling-interventions.md)
 
 Learners should familiarise themselves with following concept dependencies before working through this tutorial: 
@@ -226,8 +225,6 @@ output <- model_vacamole(
 
 
 ::::::::::::::::: solution
-
-### SOLUTION
 
 1.  Run the model
 
@@ -672,8 +669,8 @@ intervention_effect
 ``` output
    scenario averted_median averted_lower averted_upper
       <int>          <num>         <num>         <num>
-1:        1             31             2           119
-2:        2             20           -16           113
+1:        1             32             1           117
+2:        2             21           -19           106
 ```
 
 

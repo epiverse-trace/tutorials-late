@@ -11,7 +11,6 @@ exercises: 30 # exercise time in minutes
 
 - How do I investigate the effect of interventions on disease trajectories? 
 
-
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: objectives
@@ -22,7 +21,6 @@ exercises: 30 # exercise time in minutes
 
 ::::::::::::::::::::::::::::::::::::: prereq
 
-## Prerequisites
 + Complete tutorial on [Simulating transmission](../episodes/simulating-transmission.md).
 
 Learners should also familiarise themselves with following concept dependencies before working through this tutorial: 
@@ -393,8 +391,6 @@ Plot the three interventions vaccination, school closure and mask mandate and th
 
 
 :::::::::::::::::::::::: solution 
-
-## Output
 
 
 ``` r

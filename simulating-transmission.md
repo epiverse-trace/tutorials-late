@@ -26,8 +26,6 @@ exercises: 30 # exercise time in minutes
 
 ::::::::::::::::::::::::::::::::::::: prereq
 
-## Prerequisites
-
 Learners should familiarise themselves with following concept dependencies before working through this tutorial: 
 
 **Mathematical Modelling** : [Introduction to infectious disease models](https://doi.org/10.1038/s41592-020-0856-2), [state variables](../learners/reference.md#state), [model parameters](../learners/reference.md#parsode), [initial conditions](../learners/reference.md#initial), [differential equations](../learners/reference.md#ordinary).
@@ -153,8 +151,6 @@ contact_matrix
 ```
 
 :::::::::::::::::::::::: solution 
-
-## Output
  
 
 ``` output
