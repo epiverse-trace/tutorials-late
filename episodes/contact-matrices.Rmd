@@ -201,8 +201,8 @@ Susceptible individuals in age group $i$ become infected dependent on their rate
 
 $$
 \begin{aligned}
-\frac{dS_i}{dt} & = - \beta S_i \sum_j C_{i,j} I_j \\
-\frac{dI_i}{dt} &= \beta S_i\sum_j C_{i,j} I_j - \gamma I_i \\
+\frac{dS_i}{dt} & = - \beta S_i \sum_j C_{j,i} I_j \\
+\frac{dI_i}{dt} &= \beta S_i\sum_j C_{j,i} I_j - \gamma I_i \\
 \frac{dR_i}{dt} &=\gamma I_i \\
 \end{aligned}
 $$
