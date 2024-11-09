@@ -84,7 +84,7 @@ Before delving into mathematical details of how to solve
 $\mathcal{R}_0 > 1$, as we shall see later in this document).
 
 2.  The infection will start spreading in the community only when $\frac{\mathbf{dE}}{dt} > 0$
-    and $\frac{\mathbf{dI}}{dt} > 0$, and taking the values of these two
+    or $\frac{\mathbf{dI}}{dt} > 0$, and taking the values of these two
     terms from [Equation 1](#eq-s1) leads to
 
 [$$
@@ -97,7 +97,7 @@ $\mathcal{R}_0 > 1$, as we shall see later in this document).
 $\frac{\beta}{\gamma} > \frac{\mathbf{N}}{\mathbf{S}}$. At time $t=0$,
 we have $\mathbf{S} = \mathbf{N}-1 \approx  \mathbf{N}$. Therefore, the
 infection with take off $\frac{\beta}{\gamma} > 1$. This is a very
-interesting observation --It tells that the epidemic increases if new inftions
+interesting observation --It tells that the epidemic increases if new infections
 are generated at a higher rate than existing infections recover.
 
 3.  The ratio $\frac{\beta}{\gamma}$ represents the basic reproduction
