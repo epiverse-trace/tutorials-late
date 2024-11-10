@@ -154,7 +154,7 @@ to prevent the epidemic from spreading.
 To understand the logic behind the HIT formula, note that as time passes, 
 immunity builds up in the population. This reduces the number of susceptible 
 individuals, thereby decreasing the actual number of secondary cases that a 
-typical infected person can produce. This number is called the effect 
+typical infected person can produce. This number is called the effective 
 reproduction number  ($\mathcal{R}$), and it is given as:
 $$ \mathcal{R} = \mathcal{R}_0 \times \mathbf{S}.$$
 
