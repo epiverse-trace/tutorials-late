@@ -152,7 +152,9 @@ If contacts vary between groups, then the average number of secondary cases won'
 
 2. **Convert contact matrix into contact rates**
 
-Whereas a contact matrix gives the average number of contacts that one groups makes with another, epidemic dynamics in different groups depend on the rate at which one group infects another. We therefore need to scale the rate of interaction between different groups (i.e. the number of contacts per unit time) to get the rate of transmission. However, we need to be careful that we are defining transmission to and from each group correctly in any model. Specifically, the entry $(1,2)$ in the `contact_data` matrix above represents contacts by group $1$ made with group $2$. But if we want to know the rate at which a group $1$ are getting infected, then we want to add up the number of individuals infected in each group $2$ multiplied by the number of contacts made, `contact_data$matrix[2,1]`.
+Whereas a contact matrix gives the average number of contacts that one groups makes with another, epidemic dynamics in different groups depend on the rate at which one group infects another. We therefore need to scale the rate of interaction between different groups (i.e. the number of contacts per unit time) to get the rate of transmission. However, we need to be careful that we are defining transmission to and from each group correctly in any model. Specifically, the entry $(i,j)$ in a mathematical model contact matrix represents contacts by group $i$ made with group $j$. But if we want to know the rate at which a group $i$ are getting infected, then we want to calculate the proportion of individuals infected in each group $j$ ($I_j/N_j$), multiplied by the number of contacts made with group $i$ ($C[i,j]$), multiplied by the transmission risk per contact ($\beta$).
+
+
 
 ### In mathematical models
 
@@ -191,21 +193,21 @@ The [differential equations](../learners/reference.md#ordinary) below describe h
 
 $$
 \begin{aligned}
-\frac{dS}{dt} & = - \beta S I \\
-\frac{dI}{dt} &= \beta S I - \gamma I \\
+\frac{dS}{dt} & = - \beta S I /N \\
+\frac{dI}{dt} &= \beta S I /N - \gamma I \\
 \frac{dR}{dt} &=\gamma I \\
 \end{aligned}
 $$
 To add age structure to our model, we need to add additional equations for the infection states $S$, $I$ and $R$ for each age group $i$. If we want to assume that there is heterogeneity in contacts between age groups then we must adapt the transmission term $\beta SI$ to include the contact matrix $C$ as follows :
 
-$$ \beta S_i \sum_j C_{i,j} I_j. $$ 
+$$ \beta S_i \sum_j C_{i,j} I_j/N_j. $$ 
 
 Susceptible individuals in age group $i$ become infected dependent on their rate of contact with individuals in each age group. For each disease state ($S$, $E$, $I$ and $R$) and age group ($i$), we have a differential equation describing the rate of change with respect to time.  
 
 $$
 \begin{aligned}
-\frac{dS_i}{dt} & = - \beta S_i \sum_j C_{i,j} I_j \\
-\frac{dI_i}{dt} &= \beta S_i\sum_j C_{i,j} I_j - \gamma I_i \\
+\frac{dS_i}{dt} & = - \beta S_i \sum_j C_{i,j} I_j/N_j \\
+\frac{dI_i}{dt} &= \beta S_i\sum_j C_{i,j} I_j/N_j - \gamma I_i \\
 \frac{dR_i}{dt} &=\gamma I_i \\
 \end{aligned}
 $$
