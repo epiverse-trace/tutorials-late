@@ -89,7 +89,7 @@ $\mathcal{R}_0 > 1$, as we shall see later in this document).
 
 [$$
 \begin{eqnarray} 
-\beta .\frac{S.I}{N} &-& \omega .E > 0\\
+\beta .\frac{S.I}{N} &-& \alpha .E > 0\\
  \omega. E &-& \gamma .I > 0.
 \end{eqnarray} 
  \qquad(2)$$]{#eq-s2} Adding the two equations in
