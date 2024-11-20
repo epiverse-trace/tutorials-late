@@ -598,7 +598,7 @@ screening in healthcare settings. To include such interventions in the
 baseline SEIR model, the `{epidemics}` package provides an object called
 `interventions`, which is added to the model definition as shown in the
 code chunk below.
-
+We assume that a school closure will reduce the frequency of contacts within and between different age groups. We assume that school closures will reduce the contact between school-aged children (aged 0-15) by 0.5 and will cause a small reduction (0.01) in the contact between adults (aged 15 and over).
 
 ```{r}
 reduced_contacts <- epidemics::intervention(
