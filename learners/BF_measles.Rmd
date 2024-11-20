@@ -57,7 +57,7 @@ as follows:
 \begin{eqnarray} 
 \frac{dS}{dt} &=& -\beta \frac{S.I}{N} & & \\
 \frac{dE}{dt} &=&\beta \frac{S.I}{N} &-& \alpha E\\
-\frac{dI}{dt} &=& \omega E &-& \gamma I \\
+\frac{dI}{dt} &=& \alpha E &-& \gamma I \\
 \frac{dR}{dt} &=& \gamma I  & &\\ 
 \end{eqnarray}
  \qquad(1)$$]{#eq-s1}
