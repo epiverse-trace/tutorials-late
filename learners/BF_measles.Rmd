@@ -31,7 +31,7 @@ Susceptible individuals who come into contact with an infected
 person and acquire the infection first move to an intermediate state
 called exposed ($\mathbf{E}$). There they (he/she) spent, on average,
 $\frac{1}{\alpha}$ units time (the latent period) and then move to
-the infected class ($\mathbf{I}$) at a constant rate $\omega$. Infected
+the infected class ($\mathbf{I}$) at a constant rate $\alpha$. Infected
 individuals are removed (either by recovery or death) from $I$ at a
 constant rate $\gamma$, with $\frac{1}{\gamma}$ representing the average
 recovery duration. Upon recovery, they gain lifelong immunity against
