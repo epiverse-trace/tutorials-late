@@ -691,8 +691,8 @@ An effective vaccine for measles exists, known as the measles, mumps,
 and rubella (MMR) vaccine, and many countires, including 
 [Burkina Faso](https://www.unicef.org/media/155306/file/Burkina-Faso-Humanitarian-SitRep-31-March-2024.pdf),
  incorporates it as part of their 
-national immunization strategy. The efficacy of the measles component of the
-MMR vaccine varies slightly depending on the age at which it is
+national immunization strategy. The effect of vaccination with
+MMR vaccine varies slightly depending on the vaccination rate per age at which it is
 administered and the number of doses received. For example, let us say the 2-doses MMR
 vaccination rate is approximately $0.01$, $0.02$, $0.03$, $0.04$, and
 $0.05$ for the age groups $[0\to 15)$, $[15\to 25)$, $[25\to 55)$,
