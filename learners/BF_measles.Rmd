@@ -673,7 +673,7 @@ ggplot(data_combined) +
     caption =
       expression(
         paste(
-          "New infections under baseline and 20% reduced transmission rate (",
+          "New infections under baseline and reduced transmission rate (",
           beta,
           ") for different age groups."
         )
