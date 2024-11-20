@@ -236,7 +236,7 @@ specifically on the number of infections, which represents a subset of the total
 4.  **latent Period**: The average latent period for measles is
     around 8 days (the time period between exposure and becoming
     infectious), so the transition rate from exposed to infectious
-    individuals is: $\omega = \frac{1}{8}$.
+    individuals is: $\alpha = \frac{1}{8}$.
 
 5.  **Infectious Period**: The average infectious period lasts for 5
     days, which means the recovery rate is: $\gamma = \frac{1}{5}$.
