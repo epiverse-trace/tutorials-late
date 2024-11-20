@@ -104,6 +104,15 @@ Where:
   and $c$, where $p$ is the probability of transmission during contact, and $c$ 
   is the contact rate, defined as the average number of contacts per unit of time. 
 
+Model parameters are often (but not always) specified as rates.
+The rate at which an event occurs is the inverse of the average time until that event.
+For example, in the SEIR model, the recovery rate $\gamma$ is the inverse of the average infectious period.\\
+
+Values of these rates can be determined from the natural history of the disease.
+For example,  if people are on average infectious for 8 days, then in the model, 
+1/8 of currently infectious people would recover each day
+(i.e. the rate of recovery, $\gamma=1/8=0.125$).
+
 \section{Equations}\label{eqs}
 Note that in the diagram, arrows entering compartments are expressed as positive 
 terms in the equations, while arrows exiting compartments are represented with negative terms.
