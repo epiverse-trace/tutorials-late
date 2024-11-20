@@ -452,7 +452,7 @@ output1 <- epidemics::model_default(
   transmission_rate = 15 / 5, # R0/infectious period = 15/5 = 3
   infectiousness_rate = 1 / 8, # 1/latent period (pre-infectious phase)
   recovery_rate = 1 / 5, # 1/infectious period
-  time_end = 122, # Simulation over 122 days
+  time_end = 120, # Simulation over 120 days
   increment = 1 # Daily increments
 )
 
