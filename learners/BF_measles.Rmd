@@ -706,7 +706,7 @@ vaccinate_elders <- epidemics::vaccination(
   name = "Vaccination compaign",
   time_begin = matrix(30, nrow(contact_matrix)),
   time_end = matrix(90, nrow(contact_matrix)),
-  nu = matrix(c(0.93, 0.97, 0.95, 0.90, 0.95))
+  nu = matrix(c(0.01, 0.02, 0.03, 0.04, 0.05))
 )
 
 # Run the epidemic model
