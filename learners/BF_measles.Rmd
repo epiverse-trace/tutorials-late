@@ -602,7 +602,7 @@ code chunk below.
 
 ```{r}
 reduced_contacts <- epidemics::intervention(
-  name = "reduce",
+  name = "school closure",
   type = "rate",
   time_begin = 30,
   time_end = 30 + 60,
