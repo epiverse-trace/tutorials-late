@@ -303,7 +303,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Introduction to Mathematical Modelling of Infectious Diseases</h1>
-        <p>Last updated on 2024-11-20 |
+        <p>Last updated on 2024-11-21 |
 
         <a href="https://github.com/epiverse-trace/tutorials-late/edit/main/learners/BF_measles.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -1192,22 +1192,13 @@ interventions together.</p>
 <span>  transmission_rate <span class="op">=</span> <span class="fl">15</span> <span class="op">/</span> <span class="fl">5</span>, <span class="co"># R0 / infectious period = 3</span></span>
 <span>  infectiousness_rate <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">8</span>, <span class="co"># 1 / latent period (pre-infectious phase)</span></span>
 <span>  recovery_rate <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">5</span>, <span class="co"># 1 / infectious period</span></span>
-<span>  intervention <span class="op">=</span> <span class="fu">list</span><span class="op">(</span>transmission_rate <span class="op">=</span> <span class="va">reduced_contacts</span><span class="op">)</span>,</span>
+<span>  intervention <span class="op">=</span> <span class="fu">list</span><span class="op">(</span>contacts <span class="op">=</span> <span class="va">reduced_contacts</span><span class="op">)</span>,</span>
 <span>  vaccination <span class="op">=</span> <span class="va">vaccinate_elders</span>,</span>
 <span>  time_end <span class="op">=</span> <span class="fl">120</span>, <span class="co"># Simulation over 75 days</span></span>
 <span>  increment <span class="op">=</span> <span class="fl">1</span> <span class="co"># Daily increments</span></span>
-<span><span class="op">)</span></span></code></pre>
-</div>
-<div class="codewrapper">
-<h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="error" tabindex="0"><code>Error in FUN(X[[i]], ...): Assertion on 'x' failed: Must inherit from class 'rate_intervention', but has classes 'contacts_intervention','intervention'.</code></pre>
-</div>
-<div class="codewrapper sourceCode" id="cb17">
-<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Plot the epidemic curve (infectious individuals)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Plot the epidemic curve (infectious individuals)</span></span>
 <span><span class="va">output4</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">filter</span><span class="op">(</span><span class="va">compartment</span> <span class="op">==</span> <span class="st">"infectious"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="co"># Filter for infectious individuals</span></span>
 <span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span></span>
@@ -1241,16 +1232,10 @@ interventions together.</p>
 <span>    color <span class="op">=</span> <span class="fu">guide_legend</span><span class="op">(</span>nrow <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre>
 </div>
-<div class="codewrapper">
-<h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="error" tabindex="0"><code>Error in eval(expr, envir, enclos): object 'output4' not found</code></pre>
-</div>
-<!--
+<figure><img src="../fig/BF_measles-rendered-unnamed-chunk-12-1.png" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure><!--
 Place links that you need to refer to multiple times across pages here. Delete
 any links that you are not going to use.
- -->
-</div>
+ --></div>
 </div>
 
 
@@ -1312,9 +1297,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://epiverse-trace.github.io/tutorials-late/instructor/BF_measles.html",
   "identifier": "https://epiverse-trace.github.io/tutorials-late/instructor/BF_measles.html",
-  "dateCreated": "2024-11-20",
-  "dateModified": "2024-11-20",
-  "datePublished": "2024-11-20"
+  "dateCreated": "2024-11-21",
+  "dateModified": "2024-11-21",
+  "datePublished": "2024-11-21"
 }
 
   </script><script>
