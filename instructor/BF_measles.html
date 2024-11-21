@@ -927,11 +927,10 @@ and vaccination. In this section, we will simulate the SEIR model with
 interventions using the <code>{epidemics}</code> package.</p>
 <div class="section level2">
 <h2 id="contacts-reduction-model">Contacts Reduction Model<a class="anchor" aria-label="anchor" href="#contacts-reduction-model"></a></h2>
-<p>Reducing contact by a certain percentage, say (20%), impacts the
-transmission rate <span class="math inline">\(( \beta )\)</span>. This
-reduction can be achieved through measures such as quarantine, limiting
-public gatherings, and regular screening in healthcare settings. To
-include such interventions in the baseline SEIR model, the
+<p>Reducing contact by a certain percentage impacts the contact rate.
+This reduction can be achieved through measures such as quarantine,
+limiting public gatherings, and regular screening in healthcare
+settings. To include such interventions in the baseline SEIR model, the
 <code>{epidemics}</code> package provides an object called
 <code>interventions</code>, which is added to the model definition as
 shown in the code chunk below. We assume that a school closure will
