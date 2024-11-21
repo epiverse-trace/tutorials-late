@@ -888,18 +888,12 @@ output4 <- epidemics::model_default(
   transmission_rate = 15 / 5, # R0 / infectious period = 3
   infectiousness_rate = 1 / 8, # 1 / latent period (pre-infectious phase)
   recovery_rate = 1 / 5, # 1 / infectious period
-  intervention = list(transmission_rate = reduced_contacts),
+  intervention = list(contacts = reduced_contacts),
   vaccination = vaccinate_elders,
   time_end = 120, # Simulation over 75 days
   increment = 1 # Daily increments
 )
-```
 
-``` error
-Error in FUN(X[[i]], ...): Assertion on 'x' failed: Must inherit from class 'rate_intervention', but has classes 'contacts_intervention','intervention'.
-```
-
-``` r
 # Plot the epidemic curve (infectious individuals)
 output4 %>%
   filter(compartment == "infectious") %>% # Filter for infectious individuals
@@ -935,6 +929,4 @@ output4 %>%
   )
 ```
 
-``` error
-Error in eval(expr, envir, enclos): object 'output4' not found
-```
+<img src="fig/BF_measles-rendered-unnamed-chunk-12-1.png" style="display: block; margin: auto;" />

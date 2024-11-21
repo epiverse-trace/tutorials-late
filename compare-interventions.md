@@ -467,12 +467,12 @@ head(output)
 6:         0.4925786                0.25     0.1818182      300         2
         population intervention vaccination time_dependence increment scenario
             <list>       <list>      <list>          <list>     <num>    <int>
-1: <population[4]>    <list[1]>                   <list[1]>         1        1
-2: <population[4]>    <list[1]>                   <list[1]>         1        2
-3: <population[4]>    <list[2]>                   <list[1]>         1        3
-4: <population[4]>    <list[1]>                   <list[1]>         1        1
-5: <population[4]>    <list[1]>                   <list[1]>         1        2
-6: <population[4]>    <list[2]>                   <list[1]>         1        3
+1: <population[4]>    <list[1]>      [NULL]       <list[1]>         1        1
+2: <population[4]>    <list[1]>      [NULL]       <list[1]>         1        2
+3: <population[4]>    <list[2]>      [NULL]       <list[1]>         1        3
+4: <population[4]>    <list[1]>      [NULL]       <list[1]>         1        1
+5: <population[4]>    <list[1]>      [NULL]       <list[1]>         1        2
+6: <population[4]>    <list[2]>      [NULL]       <list[1]>         1        3
                    data
                  <list>
 1: <data.table[4515x4]>
@@ -669,8 +669,8 @@ intervention_effect
 ``` output
    scenario averted_median averted_lower averted_upper
       <int>          <num>         <num>         <num>
-1:        1             35             2           126
-2:        2             25           -15           132
+1:        1             34             1           120
+2:        2             23           -17           124
 ```
 
 
