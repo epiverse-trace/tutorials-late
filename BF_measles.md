@@ -616,8 +616,8 @@ the SEIR model with interventions using the `{epidemics}` package.
 
 ## Contacts Reduction Model
 
-Reducing contact by a certain percentage, say (20%), impacts the
-transmission rate $( \beta )$. This reduction can be achieved through
+Reducing contact by a certain percentage impacts the
+contact rate. This reduction can be achieved through
 measures such as quarantine, limiting public gatherings, and regular
 screening in healthcare settings. To include such interventions in the
 baseline SEIR model, the `{epidemics}` package provides an object called
