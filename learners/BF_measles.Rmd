@@ -852,7 +852,7 @@ output4 <- epidemics::model_default(
   transmission_rate = 15 / 5, # R0 / infectious period = 3
   infectiousness_rate = 1 / 8, # 1 / latent period (pre-infectious phase)
   recovery_rate = 1 / 5, # 1 / infectious period
-  intervention = list(transmission_rate = reduced_contacts),
+  intervention = list(contacts = reduced_contacts),
   vaccination = vaccinate_elders,
   time_end = 120, # Simulation over 75 days
   increment = 1 # Daily increments
