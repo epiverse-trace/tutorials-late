@@ -263,30 +263,21 @@ infections %>%
     x = "Simulation time (days)",
     y = "Individuals"
   )
-
-
-
-
-
 ```
+
+
+::::::::::::::::::::::::::::::::::::: callout
+## Herd immunity
+
+indirect versus direct effects, herd immunity and relationship with $1/R_0$
+::::::::::::::::::::::::::::::::::::::::::::::::
 
 
 ::::::::::::::::::::::::::::::::::::: challenge 
 
-## Challenge 1 : can the learner run existing code
+## Vaccination threshold
 
-Load contact and population data from socialmixr::polymod
-
-```r
-polymod <- socialmixr::polymod
-contact_data <- socialmixr::contact_matrix(
-  polymod,
-  countries = "United Kingdom",
-  age.limits = c(0, 20, 40),
-  symmetric = TRUE
-)
-contact_data
-```
+what is the vaccination rate required to prevent an epidemic
 
 :::::::::::::::::::::::: solution 
 
@@ -308,44 +299,14 @@ contact_data
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 
-## Section header
+## Targetted vaccination
 
-Lesson content
-
-::::::::::::::::::::::::::::::::::::: callout
-## Explainer
-Add additional maths (or epi) content for novice learners
-
-::::::::::::::::::::::::::::::::::::::::::::::::
-
-::::::::::::::::::::::::::::::::::::: challenge 
-
-## Challenge 2 : edit code/answer a question
-
-Load contact and population data for Poland from socialmixr::polymod using the following age bins:
-
-+ [0,15)
-+ [15, 50)
-+ 50 +
-
-:::::::::::::::::::::::: solution 
-
-```{r polymod_poland}
-polymod <- socialmixr::polymod
-contact_data <- socialmixr::contact_matrix(
-  polymod,
-  countries = "Poland",
-  age.limits = c(0, 15, 50),
-  symmetric = TRUE
-)
-contact_data
-```
-:::::::::::::::::::::::::::::::::
-::::::::::::::::::::::::::::::::::::::::::::::::
+Effect of vaccinating high risk groups
 
 
+## Vaccination versus NPIs
 
-
+compare multiple intervention scenarios, to lead onto health economics
 
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
