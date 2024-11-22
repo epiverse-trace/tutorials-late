@@ -1,0 +1,355 @@
+---
+title: 'Vaccine comparisons'
+teaching: 10
+exercises: 2
+---
+
+:::::::::::::::::::::::::::::::::::::: questions 
+
+- What questions will this lesson cover?
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::: objectives
+
+- Objective 1
+- Objective 2
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::: prereq
+
++ Complete tutorials [Simulating transmission](../episodes/simulating-transmission.md), [Modelling interventions](../episodes/modelling-interventions.md) and [Comparing public health outcomes of interventions](../episodes/compare-interventions.md). 
+
+Learners should familiarise themselves with following concept dependencies before working through this tutorial: 
+
+**Outbreak response** : [Intervention types](https://www.cdc.gov/nonpharmaceutical-interventions/).
+:::::::::::::::::::::::::::::::::
+
+
+## Introduction
+
+Introductory text
+
+```{r}
+library(ggplot2)
+library(epidemics)
+library(dplyr)
+```
+
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: instructor
+
+Inline instructor notes can help inform instructors of timing challenges
+associated with the lessons. They appear in the "Instructor View".
+
+READ THESE LINES AND ERASE:
+
+The Workbench-related sections that the developer must keep are:
+
+- YAML on top
+- Questions
+- Objectives
+- Keypoints
+
+The Epiverse-TRACE sections that we encourage to keep are:
+
+- Prerequisites
+- Introduction
+
+Take a look to the Contributing.md file for more writing guidelines.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+## Direct and indirect effects of vaccination
+
+Using the set up from simulating interventions
+
+
+```{r, echo = FALSE}
+polymod <- socialmixr::polymod
+contact_data <- socialmixr::contact_matrix(
+  polymod,
+  countries = "United Kingdom",
+  age.limits = c(0, 15, 65),
+  symmetric = TRUE
+)
+
+
+# prepare contact matrix
+contact_matrix <- t(contact_data$matrix)
+
+# prepare the demography vector
+demography_vector <- contact_data$demography$population
+names(demography_vector) <- rownames(contact_matrix)
+
+# initial conditions: one in every 1 million is infected
+initial_i <- 1e-6
+initial_conditions <- c(
+  S = 1 - initial_i, E = 0, I = initial_i, R = 0, V = 0
+)
+
+# build for all age groups
+initial_conditions <- matrix(
+  rep(initial_conditions, dim(contact_matrix)[1]),
+  ncol = 5, byrow = TRUE
+)
+rownames(initial_conditions) <- rownames(contact_matrix)
+
+# prepare the population to model as affected by the epidemic
+uk_population <- epidemics::population(
+  name = "UK",
+  contact_matrix = contact_matrix,
+  demography_vector = demography_vector,
+  initial_conditions = initial_conditions
+)
+
+# time periods
+preinfectious_period <- 4.0
+infectious_period <- 5.5
+basic_reproduction <- 2.7
+
+# rates
+infectiousness_rate <- 1.0 / preinfectious_period
+recovery_rate <- 1.0 / infectious_period
+transmission_rate <- basic_reproduction / infectious_period
+```
+
+
+```{r}
+vaccinate_01 <- vaccination(
+  name = "vaccinate all",
+  time_begin = matrix(0, nrow(contact_matrix)),
+  time_end = matrix(0 + 150, nrow(contact_matrix)),
+  nu = matrix(c(0.001, 0.001, 0.001))
+)
+
+vaccinate_02 <- vaccination(
+  name = "vaccinate all",
+  time_begin = matrix(0, nrow(contact_matrix)),
+  time_end = matrix(0 + 150, nrow(contact_matrix)),
+  nu = matrix(c(0.01, 0.01, 0.01))
+)
+```
+
+
+```{r}
+output_baseline <- model_default(
+  # population
+  population = uk_population,
+  # rate
+  transmission_rate = transmission_rate,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
+  # time
+  time_end = 200, increment = 1.0
+)
+
+output_vaccinate_01 <- model_default(
+  # population
+  population = uk_population,
+  # rate
+  transmission_rate = transmission_rate,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
+  # intervention
+  vaccination = vaccinate_01,
+  # time
+  time_end = 200, increment = 1.0
+)
+
+output_vaccinate_02 <- model_default(
+  # population
+  population = uk_population,
+  # rate
+  transmission_rate = transmission_rate,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
+  # intervention
+  vaccination = vaccinate_02,
+  # time
+  time_end = 200, increment = 1.0
+)
+
+```
+
+
+```{r}
+# create intervention_type column for plotting
+output_baseline$vaccination_scenario <- "baseline"
+output_vaccinate_01$vaccination_scenario <- "vaccinate 0.001"
+output_vaccinate_02$vaccination_scenario <- "vaccinate 0.01"
+output <- rbind(output_baseline, output_vaccinate_01, output_vaccinate_02)
+
+
+output %>%
+  filter(compartment == "vaccinated") %>%
+  ggplot() +
+  ggtitle("Number vaccinated") +
+  aes(
+    x = time,
+    y = value,
+    color = vaccination_scenario,
+    linetype = vaccination_scenario
+  ) +
+  stat_summary(
+    fun = "sum",
+    geom = "line",
+    linewidth = 1
+  ) +
+  scale_y_continuous(
+    labels = scales::comma
+  ) +
+  geom_vline(
+    xintercept = c(
+      vaccinate_01$time_begin,
+      vaccinate_01$time_end
+    ),
+    linetype = 2
+  ) +
+  theme_bw() +
+  labs(
+    x = "Simulation time (days)",
+    y = "Individuals"
+  )
+```
+
+
+```{r}
+
+baseline_infections <- new_infections(output_baseline,
+                                      compartments_from_susceptible =
+                                        "vaccinated",
+                                      by_group = FALSE)
+vaccinate_01_infections <- new_infections(output_vaccinate_01,
+                                          compartments_from_susceptible =
+                                            "vaccinated",
+                                          by_group = FALSE)
+vaccinate_02_infections <- new_infections(output_vaccinate_02,
+                                          compartments_from_susceptible =
+                                            "vaccinated",
+                                          by_group = FALSE)
+
+baseline_infections$vaccination_scenario <- "baseline"
+vaccinate_01_infections$vaccination_scenario <- "vaccinate 0.001"
+vaccinate_02_infections$vaccination_scenario <- "vaccinate 0.01"
+
+infections <- rbind(baseline_infections,
+                    vaccinate_01_infections,
+                    vaccinate_02_infections)
+
+
+infections %>%
+  ggplot() +
+  ggtitle("New infections") +
+  geom_line(
+            aes(time, new_infections, colour = vaccination_scenario,
+              linetype = vaccination_scenario
+            ),
+            linewidth = 1) +
+  scale_y_continuous(
+    labels = scales::comma
+  ) +
+  geom_vline(
+    xintercept = c(
+      vaccinate_01$time_begin,
+      vaccinate_01$time_end
+    ),
+    linetype = 2
+  ) +
+  theme_bw() +
+  labs(
+    x = "Simulation time (days)",
+    y = "Individuals"
+  )
+
+
+
+
+
+```
+
+
+::::::::::::::::::::::::::::::::::::: challenge 
+
+## Challenge 1 : can the learner run existing code
+
+Load contact and population data from socialmixr::polymod
+
+```r
+polymod <- socialmixr::polymod
+contact_data <- socialmixr::contact_matrix(
+  polymod,
+  countries = "United Kingdom",
+  age.limits = c(0, 20, 40),
+  symmetric = TRUE
+)
+contact_data
+```
+
+:::::::::::::::::::::::: solution 
+
+## Output
+ 
+```{r polymod_uk, echo = FALSE}
+polymod <- socialmixr::polymod
+contact_data <- socialmixr::contact_matrix(
+  polymod,
+  countries = "United Kingdom",
+  age.limits = c(0, 20, 40),
+  symmetric = TRUE
+)
+contact_data
+```
+
+
+:::::::::::::::::::::::::::::::::
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+## Section header
+
+Lesson content
+
+::::::::::::::::::::::::::::::::::::: callout
+## Explainer
+Add additional maths (or epi) content for novice learners
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::: challenge 
+
+## Challenge 2 : edit code/answer a question
+
+Load contact and population data for Poland from socialmixr::polymod using the following age bins:
+
++ [0,15)
++ [15, 50)
++ 50 +
+
+:::::::::::::::::::::::: solution 
+
+```{r polymod_poland}
+polymod <- socialmixr::polymod
+contact_data <- socialmixr::contact_matrix(
+  polymod,
+  countries = "Poland",
+  age.limits = c(0, 15, 50),
+  symmetric = TRUE
+)
+contact_data
+```
+:::::::::::::::::::::::::::::::::
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+
+
+
+::::::::::::::::::::::::::::::::::::: keypoints 
+
+- Summarise the key points of the lesson using bullet points
+
+
+::::::::::::::::::::::::::::::::::::::::::::::::
