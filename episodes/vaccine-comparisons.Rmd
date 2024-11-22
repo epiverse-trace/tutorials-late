@@ -299,9 +299,126 @@ contact_data
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 
-## Targetted vaccination
+## Targeted vaccination
 
 Effect of vaccinating high risk groups
+
+```{r, collapse=TRUE}
+vaccinate_group_1 <- vaccination(
+  name = "vaccinate all",
+  time_begin = matrix(40, nrow(contact_matrix)),
+  time_end = matrix(40 + 150, nrow(contact_matrix)),
+  nu = matrix(c(0.001 * 3, 0, 0))
+)
+
+vaccinate_group_2 <- vaccination(
+  name = "vaccinate all",
+  time_begin = matrix(40, nrow(contact_matrix)),
+  time_end = matrix(40 + 150, nrow(contact_matrix)),
+  nu = matrix(c(0, 0.001 * 3, 0))
+)
+
+vaccinate_group_3 <- vaccination(
+  name = "vaccinate all",
+  time_begin = matrix(40, nrow(contact_matrix)),
+  time_end = matrix(40 + 150, nrow(contact_matrix)),
+  nu = matrix(c(0, 0, 0.001 * 3))
+)
+
+output_vaccinate_group_1 <- model_default(
+  # population
+  population = uk_population,
+  # rate
+  transmission_rate = transmission_rate,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
+  # intervention
+  vaccination = vaccinate_group_1,
+  # time
+  time_end = 300, increment = 1.0
+)
+
+output_vaccinate_group_2 <- model_default(
+  # population
+  population = uk_population,
+  # rate
+  transmission_rate = transmission_rate,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
+  # intervention
+  vaccination = vaccinate_group_2,
+  # time
+  time_end = 300, increment = 1.0
+)
+
+
+output_vaccinate_group_3 <- model_default(
+  # population
+  population = uk_population,
+  # rate
+  transmission_rate = transmission_rate,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
+  # intervention
+  vaccination = vaccinate_group_3,
+  # time
+  time_end = 300, increment = 1.0
+)
+
+vaccinate_group_1_infections <- new_infections(output_vaccinate_group_1,
+                                               compartments_from_susceptible =
+                                                 "vaccinated", by_group = FALSE)
+vaccinate_group_2_infections <- new_infections(output_vaccinate_group_2,
+                                               compartments_from_susceptible =
+                                                 "vaccinated", by_group = FALSE)
+vaccinate_group_3_infections <- new_infections(output_vaccinate_group_3,
+                                               compartments_from_susceptible =
+                                                 "vaccinated", by_group = FALSE)
+
+vaccinate_group_1_infections$vaccination_scenario <- "vaccinate group 1"
+vaccinate_group_2_infections$vaccination_scenario <- "vaccinate group 2"
+vaccinate_group_3_infections$vaccination_scenario <- "vaccinate group 3"
+
+output_infections <- rbind(baseline_infections,
+                           vaccinate_01_infections,
+                           vaccinate_group_1_infections,
+                           vaccinate_group_2_infections,
+                           vaccinate_group_3_infections)
+
+
+output_infections %>%
+  ggplot() +
+  geom_line(
+            aes(time, new_infections, colour = vaccination_scenario,
+              linetype = vaccination_scenario
+            ),
+            linewidth = 1) +
+  scale_y_continuous(
+    labels = scales::comma
+  ) +
+  geom_vline(
+    xintercept = c(
+      vaccinate_01$time_begin,
+      vaccinate_01$time_end
+    ),
+    linetype = 2
+  ) +
+  theme_bw() +
+  labs(
+    x = "Simulation time (days)",
+    y = "Individuals"
+  )
+```
+
+
+
+
+
+
+
+
+
+
 
 
 ## Vaccination versus NPIs
