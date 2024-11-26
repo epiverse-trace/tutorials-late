@@ -303,7 +303,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Introduction to Mathematical Modelling of Infectious Diseases</h1>
-        <p>Last updated on 2024-11-21 |
+        <p>Last updated on 2024-11-26 |
 
         <a href="https://github.com/epiverse-trace/tutorials-late/edit/main/learners/BF_measles.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -343,14 +343,14 @@ from infection to symptoms), and time to become infectious, known as the
 latent period (time from infection to infectiousness). The latent period
 is relevant to the SEIR-type models. Susceptible individuals who come
 into contact with an infected person and acquire the infection first
-move to an intermediate state called exposed (<span class="math inline">\(\mathbf{E}\)</span>). There they (he/she) spent,
-on average, <span class="math inline">\(\frac{1}{\alpha}\)</span> units
+move to an intermediate state called exposed (<span class="math inline">\(\mathbf{E}\)</span>). There they spend, on
+average, <span class="math inline">\(\frac{1}{\alpha}\)</span> units of
 time (the latent period) and then move to the infected class (<span class="math inline">\(\mathbf{I}\)</span>) at a constant rate <span class="math inline">\(\alpha\)</span>. Infected individuals are removed
 (either by recovery or death) from <span class="math inline">\(I\)</span> at a constant rate <span class="math inline">\(\gamma\)</span>, with <span class="math inline">\(\frac{1}{\gamma}\)</span> representing the average
 recovery duration. Upon recovery, they gain lifelong immunity against
 the current infection, meaning they do not become susceptible again, and
 they move to the recovered class (<span class="math inline">\(\mathbf{R}\)</span>) (see <a href="#fig-seir">Figure 1</a>). These are some assumptions for modelling
-purposes and may not particularly reflects the biological underlying
+purposes and may not particularly reflect the biological underlying
 processes.</p>
 <p><img src="../fig/t0.drawio.png" ref-parent="fig-seir" class="figure"><img src="../fig/t1.drawio.png" ref-parent="fig-seir" class="figure"><img src="../fig/t2.drawio.png" ref-parent="fig-seir" class="figure"><img src="../fig/t3.drawio.png" ref-parent="fig-seir" class="figure"></p>
 <p>The four S-E-I-R classes considered in the <span class="math inline">\(\mathbf{SEIR}\)</span> model. The number of
@@ -399,9 +399,9 @@ taking the values of these two terms from <a href="#eq-s1">Equation
 \end{eqnarray}
 \qquad(2)\]</span></span> Adding the two equations in <a href="#eq-s2">Equation 2</a>, gives <span class="math inline">\(\frac{\beta}{\gamma} &gt;
 \frac{\mathbf{N}}{\mathbf{S}}\)</span>. At time <span class="math inline">\(t=0\)</span>, we have <span class="math inline">\(\mathbf{S} = \mathbf{N}-1
-\approx  \mathbf{N}\)</span>. Therefore, the infection with take off
+\approx  \mathbf{N}\)</span>. Therefore, the infection will take off if
 <span class="math inline">\(\frac{\beta}{\gamma} &gt; 1\)</span>. This
-is a very interesting observation –It tells that the epidemic increases
+is a very interesting observation – It tells that the epidemic increases
 if new infections are generated at a higher rate than existing
 infections recover.</p>
 <ol start="3" style="list-style-type: decimal"><li><p>The ratio <span class="math inline">\(\frac{\beta}{\gamma}\)</span> represents the basic
@@ -455,15 +455,16 @@ spreading.</p>
 passes, immunity builds up in the population. This reduces the number of
 susceptible individuals, thereby decreasing the actual number of
 secondary cases that a typical infected person can produce. This number
-is called the effective reproduction number (<span class="math inline">\(\mathcal{R}\)</span>), and it is given as: <span class="math display">\[ \mathcal{R} = \mathcal{R}_0 \times
+is called the effective reproduction number (<span class="math inline">\(\mathcal{R}_{eff}\)</span>), and it is given as:
+<span class="math display">\[ \mathcal{R}_{eff} = \mathcal{R}_0 \times
 \mathbf{S}.\]</span></p>
 <p>For an epidemic to stop spreading, each infected person must, on
 average, infect fewer than one other person—meaning we need <span class="math inline">\(\mathcal{R}&lt;1\)</span>. This condition leads
 to: <span class="math display">\[\mathbf{S} &lt;
 \frac{1}{\mathcal{R}_0}\]</span></p>
 <p>Thus, if we can reduce the susceptible proportion <span class="math inline">\(\mathbf{S}\)</span> below <span class="math inline">\(\frac{1}{\mathcal{R}_0}\)</span> the effective
-reproduction number <span class="math inline">\(\mathcal{R}\)</span>
-will drop below 1, causing the epidemic to stop growing on average.</p>
+reproduction number <span class="math inline">\(\mathcal{R}_{eff}\)</span> will drop below 1,
+causing the epidemic to stop growing on average.</p>
 </div>
 <div class="section level1">
 <h1 id="measles-outbreak-in-burkina-faso">Measles Outbreak in Burkina Faso<a class="anchor" aria-label="anchor" href="#measles-outbreak-in-burkina-faso"></a></h1>
@@ -911,27 +912,27 @@ model, as follows:</p>
 <h3 id="question">Question<a class="anchor" aria-label="anchor" href="#question"></a></h3>
 <p><span class="math inline">\(\mathcal{R}_{eff}\)</span> vs <span class="math inline">\(\mathcal{R}_0\)</span>: How different is the <span class="math inline">\(\mathcal{R}_{eff}\)</span> value from <span class="math inline">\(\mathcal{R}_0\)</span>?</p>
 </div>
-<p>This estimate of <span class="math inline">\(\mathcal{R}_{eff}\)</span> more accurately;
-because reflects transmission potential reflects both the inherent
-transmissibility of the pathogen and the actual state of susceptibility
-in the population.</p>
+<p><span class="math inline">\(\mathcal{R}_{eff}\)</span> more
+accurately reflects the transmission potential because it takes into
+account both the inherent transmissibility of the pathogen and the
+actual state of susceptibility in the population.</p>
 </div>
 </div>
 <div class="section level1">
 <h1 id="interventions-models">Interventions models<a class="anchor" aria-label="anchor" href="#interventions-models"></a></h1>
 <p>Interventions against measles include prevention, control, and
 treatment. Controlling its spread requires a combination of public
-health measures, such as reducing contact(e.g., curfew and school
+health measures, such as reducing contact (e.g., curfew and school
 closures in <a href="https://en.wikipedia.org/wiki/2019_Samoa_measles_outbreak" class="external-link">Samoa</a>),
 and vaccination. In this section, we will simulate the SEIR model with
 interventions using the <code>{epidemics}</code> package.</p>
 <div class="section level2">
 <h2 id="contacts-reduction-model">Contacts Reduction Model<a class="anchor" aria-label="anchor" href="#contacts-reduction-model"></a></h2>
-<p>Reducing contact by a certain percentage impacts the contact rate.
-This reduction can be achieved through measures such as quarantine,
-limiting public gatherings, and regular screening in healthcare
-settings. To include such interventions in the baseline SEIR model, the
-<code>{epidemics}</code> package provides an object called
+<p>Reducing contact by a certain percentage impacts the transmission
+rate. This reduction can be achieved through measures such as
+quarantine, limiting public gatherings, and regular screening in
+healthcare settings. To include such interventions in the baseline SEIR
+model, the <code>{epidemics}</code> package provides an object called
 <code>interventions</code>, which is added to the model definition as
 shown in the code chunk below. We assume that a school closure will
 reduce the frequency of contacts within and between different age
@@ -957,7 +958,7 @@ school-aged children (aged 0-15) by 0.5 and will cause a small reduction
 <span>  infectiousness_rate <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">8</span>, <span class="co"># 1/latent period (pre-infectious phase)</span></span>
 <span>  recovery_rate <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">5</span>, <span class="co"># 1/infectious period</span></span>
 <span>  intervention <span class="op">=</span> <span class="fu">list</span><span class="op">(</span>contacts <span class="op">=</span> <span class="va">reduced_contacts</span><span class="op">)</span>,</span>
-<span>  time_end <span class="op">=</span> <span class="fl">120</span>, <span class="co"># Simulation over 75 days</span></span>
+<span>  time_end <span class="op">=</span> <span class="fl">120</span>, <span class="co"># Number of days to simulate </span></span>
 <span>  increment <span class="op">=</span> <span class="fl">1</span> <span class="co"># Daily increments</span></span>
 <span><span class="op">)</span></span></code></pre>
 </div>
@@ -968,7 +969,7 @@ models.</p>
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Load new infections data for each scenario</span></span>
+<code class="sourceCode R"><span><span class="co"># Extract new infections data for each scenario</span></span>
 <span><span class="va">data_baseline</span> <span class="op">&lt;-</span> <span class="fu">epidemics</span><span class="fu">::</span><span class="fu">new_infections</span><span class="op">(</span><span class="va">output1</span>, by_group <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">data_reduced</span> <span class="op">&lt;-</span> <span class="fu">epidemics</span><span class="fu">::</span><span class="fu">new_infections</span><span class="op">(</span><span class="va">output2</span>, by_group <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
@@ -1193,7 +1194,7 @@ interventions together.</p>
 <span>  recovery_rate <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">5</span>, <span class="co"># 1 / infectious period</span></span>
 <span>  intervention <span class="op">=</span> <span class="fu">list</span><span class="op">(</span>contacts <span class="op">=</span> <span class="va">reduced_contacts</span><span class="op">)</span>,</span>
 <span>  vaccination <span class="op">=</span> <span class="va">vaccinate_elders</span>,</span>
-<span>  time_end <span class="op">=</span> <span class="fl">120</span>, <span class="co"># Simulation over 75 days</span></span>
+<span>  time_end <span class="op">=</span> <span class="fl">120</span>, <span class="co"># Number of days to simulate</span></span>
 <span>  increment <span class="op">=</span> <span class="fl">1</span> <span class="co"># Daily increments</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -1296,8 +1297,8 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://epiverse-trace.github.io/tutorials-late/instructor/BF_measles.html",
   "identifier": "https://epiverse-trace.github.io/tutorials-late/instructor/BF_measles.html",
-  "dateCreated": "2024-11-21",
-  "dateModified": "2024-11-21",
+  "dateCreated": "2024-11-26",
+  "dateModified": "2024-11-26",
   "datePublished": "2024-11-26"
 }
 
