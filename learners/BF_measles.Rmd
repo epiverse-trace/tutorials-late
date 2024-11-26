@@ -29,8 +29,8 @@ symptoms), and time to become infectious, known as the latent period (time from
 infection to infectiousness). The latent period is relevant to the SEIR-type models. 
 Susceptible individuals who come into contact with an infected
 person and acquire the infection first move to an intermediate state
-called exposed ($\mathbf{E}$). There they (he/she) spent, on average,
-$\frac{1}{\alpha}$ units time (the latent period) and then move to
+called exposed ($\mathbf{E}$). There they spend, on average,
+$\frac{1}{\alpha}$ units of time (the latent period) and then move to
 the infected class ($\mathbf{I}$) at a constant rate $\alpha$. Infected
 individuals are removed (either by recovery or death) from $I$ at a
 constant rate $\gamma$, with $\frac{1}{\gamma}$ representing the average
@@ -38,7 +38,7 @@ recovery duration. Upon recovery, they gain lifelong immunity against
 the current infection, meaning they do not become susceptible again, and
 they move to the recovered class ($\mathbf{R}$) (see
 [Figure 1](#fig-seir)). These are some assumptions for modelling purposes and 
-may not particularly reflects the biological underlying processes.  
+may not particularly reflect the biological underlying processes.  
 
 ![](fig/t0.drawio.png){ref-parent="fig-seir"}
 ![](fig/t1.drawio.png){ref-parent="fig-seir"}
@@ -96,8 +96,8 @@ $\mathcal{R}_0 > 1$, as we shall see later in this document).
 [Equation 2](#eq-s2), gives
 $\frac{\beta}{\gamma} > \frac{\mathbf{N}}{\mathbf{S}}$. At time $t=0$,
 we have $\mathbf{S} = \mathbf{N}-1 \approx  \mathbf{N}$. Therefore, the
-infection with take off $\frac{\beta}{\gamma} > 1$. This is a very
-interesting observation --It tells that the epidemic increases if new infections
+infection will take off if $\frac{\beta}{\gamma} > 1$. This is a very
+interesting observation -- It tells that the epidemic increases if new infections
 are generated at a higher rate than existing infections recover.
 
 3.  The ratio $\frac{\beta}{\gamma}$ represents the basic reproduction
@@ -155,8 +155,8 @@ To understand the logic behind the HIT formula, note that as time passes,
 immunity builds up in the population. This reduces the number of susceptible 
 individuals, thereby decreasing the actual number of secondary cases that a 
 typical infected person can produce. This number is called the effective 
-reproduction number  ($\mathcal{R}$), and it is given as:
-$$ \mathcal{R} = \mathcal{R}_0 \times \mathbf{S}.$$
+reproduction number  ($\mathcal{R}_{eff}$), and it is given as:
+$$ \mathcal{R}_{eff} = \mathcal{R}_0 \times \mathbf{S}.$$
 
 For an epidemic to stop spreading, each infected person must, on average, 
 infect fewer than one other person—meaning we need $\mathcal{R}<1$. 
@@ -164,7 +164,7 @@ This condition leads to:
 $$\mathbf{S} < \frac{1}{\mathcal{R}_0}$$
 
 Thus, if we can reduce the susceptible proportion $\mathbf{S}$ below 
-$\frac{1}{\mathcal{R}_0}$ the effective reproduction number $\mathcal{R}$ 
+$\frac{1}{\mathcal{R}_0}$ the effective reproduction number $\mathcal{R}_{eff}$ 
 will drop below 1, causing the epidemic to stop growing on average.
 
 # Measles Outbreak in Burkina Faso
@@ -576,15 +576,14 @@ $\mathcal{R}_{eff}$ vs $\mathcal{R}_0$: How different is the $\mathcal{R}_{eff}$
 :::
 
 
-This estimate of $\mathcal{R}_{eff}$ more accurately; because reflects transmission 
-potential reflects both the inherent transmissibility of the pathogen 
-and the actual state of susceptibility in the population.
+$\mathcal{R}_{eff}$ more accurately reflects the transmission 
+potential because it takes into account both the inherent transmissibility of the pathogen and the actual state of susceptibility in the population.
 
 # Interventions models
 
 Interventions against measles include prevention, control, and
 treatment. Controlling its spread requires a combination of public
-health measures, such as reducing contact(e.g., curfew and school closures in 
+health measures, such as reducing contact (e.g., curfew and school closures in 
 [Samoa](https://en.wikipedia.org/wiki/2019_Samoa_measles_outbreak)),
  and vaccination. In this section, we will simulate
 the SEIR model with interventions using the `{epidemics}` package.
@@ -592,7 +591,7 @@ the SEIR model with interventions using the `{epidemics}` package.
 ## Contacts Reduction Model
 
 Reducing contact by a certain percentage impacts the
-contact rate. This reduction can be achieved through
+transmission rate. This reduction can be achieved through
 measures such as quarantine, limiting public gatherings, and regular
 screening in healthcare settings. To include such interventions in the
 baseline SEIR model, the `{epidemics}` package provides an object called
@@ -616,7 +615,7 @@ output2 <- epidemics::model_default(
   infectiousness_rate = 1 / 8, # 1/latent period (pre-infectious phase)
   recovery_rate = 1 / 5, # 1/infectious period
   intervention = list(contacts = reduced_contacts),
-  time_end = 120, # Simulation over 75 days
+  time_end = 120, # Number of days to simulate 
   increment = 1 # Daily increments
 )
 ```
@@ -628,7 +627,7 @@ models.
 
 
 ```{r}
-# Load new infections data for each scenario
+# Extract new infections data for each scenario
 data_baseline <- epidemics::new_infections(output1, by_group = TRUE)
 data_reduced <- epidemics::new_infections(output2, by_group = TRUE)
 
@@ -844,7 +843,6 @@ single model, allowing for more comprehensive simulations of disease
 control strategies. The below code chunk shows how to combine
 interventions together.
 
-
 ```{r}
 # Run the epidemic model
 output4 <- epidemics::model_default(
@@ -854,7 +852,7 @@ output4 <- epidemics::model_default(
   recovery_rate = 1 / 5, # 1 / infectious period
   intervention = list(contacts = reduced_contacts),
   vaccination = vaccinate_elders,
-  time_end = 120, # Simulation over 75 days
+  time_end = 120, # Number of days to simulate
   increment = 1 # Daily increments
 )
 
