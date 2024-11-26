@@ -31,7 +31,7 @@ Learners should familiarise themselves with following concept dependencies befor
 
 Introductory text
 
-```{r}
+```{r, message = FALSE}
 library(ggplot2)
 library(epidemics)
 library(dplyr)
@@ -64,10 +64,19 @@ Take a look to the Contributing.md file for more writing guidelines.
 
 ## Direct and indirect effects of vaccination
 
-Using the set up from simulating interventions
+Vaccination programs using infection-blocking vaccines have two benefits:
+
+1. Reducing individual risk of infection (**direct** effect of vaccination)
+2. Reducing onward contribution to transmission (**indirect** effect of vaccination).
 
 
-```{r, echo = FALSE}
+We will illustrate this using results from `model_default()` in `{epidemics}`. Using the contact matrix and parameters from the COVID-19 outbreak example in [Modelling interventions](../episodes/modelling-interventions.md) we will investigate the impact of two vaccination programs on the number of infections. We will assume that vaccination programs start on day 0 and continue to be in place for 150 days. We will assume all age groups are vaccinated at the same rate in each program as follows :
+
++ vaccination program 01 : vaccination rate 0.001
++ vaccination program 02 : vaccination rate 0.01.
+
+
+```{r, echo = FALSE, message = FALSE}
 polymod <- socialmixr::polymod
 contact_data <- socialmixr::contact_matrix(
   polymod,
@@ -118,23 +127,31 @@ transmission_rate <- basic_reproduction / infectious_period
 
 
 ```{r}
+# prepare vaccination objects
 vaccinate_01 <- vaccination(
   name = "vaccinate all",
   time_begin = matrix(0, nrow(contact_matrix)),
-  time_end = matrix(0 + 150, nrow(contact_matrix)),
+  time_end = matrix(150, nrow(contact_matrix)),
   nu = matrix(c(0.001, 0.001, 0.001))
 )
 
 vaccinate_02 <- vaccination(
   name = "vaccinate all",
   time_begin = matrix(0, nrow(contact_matrix)),
-  time_end = matrix(0 + 150, nrow(contact_matrix)),
+  time_end = matrix(150, nrow(contact_matrix)),
   nu = matrix(c(0.01, 0.01, 0.01))
 )
 ```
 
 
-```{r}
+We see the intuitive result that the higher the vaccination rate, the more people that are vaccinated. 
+
+
+::: tab
+
+### Output
+
+```{r, echo = FALSE, eval = TRUE}
 output_baseline <- model_default(
   # population
   population = uk_population,
@@ -172,11 +189,86 @@ output_vaccinate_02 <- model_default(
   time_end = 200, increment = 1.0
 )
 
+# create vaccination_scenario column for plotting
+output_baseline$vaccination_scenario <- "baseline"
+output_vaccinate_01$vaccination_scenario <- "vaccinate 0.001"
+output_vaccinate_02$vaccination_scenario <- "vaccinate 0.01"
+output <- rbind(output_baseline, output_vaccinate_01, output_vaccinate_02)
+
+
+output %>%
+  filter(compartment == "vaccinated") %>%
+  ggplot() +
+  ggtitle("Number vaccinated") +
+  aes(
+    x = time,
+    y = value,
+    color = vaccination_scenario,
+    linetype = vaccination_scenario
+  ) +
+  stat_summary(
+    fun = "sum",
+    geom = "line",
+    linewidth = 1
+  ) +
+  scale_y_continuous(
+    labels = scales::comma
+  ) +
+  geom_vline(
+    xintercept = c(
+      vaccinate_01$time_begin,
+      vaccinate_01$time_end
+    ),
+    linetype = 2
+  ) +
+  theme_bw() +
+  labs(
+    x = "Simulation time (days)",
+    y = "Individuals"
+  )
 ```
 
+### R Code
 
-```{r}
-# create intervention_type column for plotting
+```{r, echo = TRUE, eval = FALSE}
+output_baseline <- model_default(
+  # population
+  population = uk_population,
+  # rate
+  transmission_rate = transmission_rate,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
+  # time
+  time_end = 200, increment = 1.0
+)
+
+output_vaccinate_01 <- model_default(
+  # population
+  population = uk_population,
+  # rate
+  transmission_rate = transmission_rate,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
+  # intervention
+  vaccination = vaccinate_01,
+  # time
+  time_end = 200, increment = 1.0
+)
+
+output_vaccinate_02 <- model_default(
+  # population
+  population = uk_population,
+  # rate
+  transmission_rate = transmission_rate,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
+  # intervention
+  vaccination = vaccinate_02,
+  # time
+  time_end = 200, increment = 1.0
+)
+
+# create vaccination_scenario column for plotting
 output_baseline$vaccination_scenario <- "baseline"
 output_vaccinate_01$vaccination_scenario <- "vaccinate 0.001"
 output_vaccinate_02$vaccination_scenario <- "vaccinate 0.01"
@@ -216,8 +308,32 @@ output %>%
 ```
 
 
-```{r}
+:::
 
+To show the **indirect** effect of vaccinations, we want to see the effect that vaccination has on the number of new infections. We will use the function `new_infections()` in `{epidemics}` to calculate the number of new infections over time for the different vaccination programs. 
+
+The inputs required are :
+
++ `data` : the model output,
++ `compartments_from_susceptible` : this is an optional input, but in our case needed. We don't want the number of people vaccinated to be counted as new infections, so we need to specify the name of the model compartment where individuals transition out from `susceptible` (in this example `vaccinated`),
++ `by_group` : should the results be calculated for each demographic group separately. 
+
+
+```{r}
+vaccinate_01_infections <- new_infections(output_vaccinate_01,
+                                          compartments_from_susceptible =
+                                            "vaccinated",
+                                          by_group = FALSE)
+
+```
+
+
+::: tab
+
+### Output 
+
+```{r, echo = FALSE, eval = TRUE}
+# calculate new infections
 baseline_infections <- new_infections(output_baseline,
                                       compartments_from_susceptible =
                                         "vaccinated",
@@ -231,10 +347,10 @@ vaccinate_02_infections <- new_infections(output_vaccinate_02,
                                             "vaccinated",
                                           by_group = FALSE)
 
+# create vaccination_scenario column for plotting
 baseline_infections$vaccination_scenario <- "baseline"
 vaccinate_01_infections$vaccination_scenario <- "vaccinate 0.001"
 vaccinate_02_infections$vaccination_scenario <- "vaccinate 0.01"
-
 infections <- rbind(baseline_infections,
                     vaccinate_01_infections,
                     vaccinate_02_infections)
@@ -265,6 +381,63 @@ infections %>%
   )
 ```
 
+### R code
+
+```{r, echo = TRUE, eval = FALSE}
+# calculate new infections
+baseline_infections <- new_infections(output_baseline,
+                                      compartments_from_susceptible =
+                                        "vaccinated",
+                                      by_group = FALSE)
+vaccinate_01_infections <- new_infections(output_vaccinate_01,
+                                          compartments_from_susceptible =
+                                            "vaccinated",
+                                          by_group = FALSE)
+vaccinate_02_infections <- new_infections(output_vaccinate_02,
+                                          compartments_from_susceptible =
+                                            "vaccinated",
+                                          by_group = FALSE)
+
+# create vaccination_scenario column for plotting
+baseline_infections$vaccination_scenario <- "baseline"
+vaccinate_01_infections$vaccination_scenario <- "vaccinate 0.001"
+vaccinate_02_infections$vaccination_scenario <- "vaccinate 0.01"
+infections <- rbind(baseline_infections,
+                    vaccinate_01_infections,
+                    vaccinate_02_infections)
+
+
+infections %>%
+  ggplot() +
+  ggtitle("New infections") +
+  geom_line(
+            aes(time, new_infections, colour = vaccination_scenario,
+              linetype = vaccination_scenario
+            ),
+            linewidth = 1) +
+  scale_y_continuous(
+    labels = scales::comma
+  ) +
+  geom_vline(
+    xintercept = c(
+      vaccinate_01$time_begin,
+      vaccinate_01$time_end
+    ),
+    linetype = 2
+  ) +
+  theme_bw() +
+  labs(
+    x = "Simulation time (days)",
+    y = "Individuals"
+  )
+```
+
+:::
+
+
+We see that even after accounting for the number of people vaccinated, there are fewer new infections when you have a higher vaccination rate. This is because there are fewer people susceptible to infection, and therefore fewer people who can become infected and contribute to onward infection. 
+
+This **indirect** effect of vaccination programs is key to successfully controlling and eradicating infections. 
 
 ::::::::::::::::::::::::::::::::::::: callout
 ## Herd immunity
@@ -275,7 +448,7 @@ indirect versus direct effects, herd immunity and relationship with $1/R_0$
 
 ::::::::::::::::::::::::::::::::::::: challenge 
 
-## Vaccination threshold
+## Vaccination thresholds
 
 what is the vaccination rate required to prevent an epidemic
 
