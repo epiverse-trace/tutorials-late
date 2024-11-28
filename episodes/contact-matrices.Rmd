@@ -107,7 +107,7 @@ zambia_sa_survey <- get_survey("https://doi.org/10.5281/zenodo.3874675")
 
 After downloading the survey, generate a symmetric contact matrix for Zambia using the following age bins:
 
-+ [0,15)
++ [0,20)
 + 20+
 
 :::::::::::::::::::::::: solution 
