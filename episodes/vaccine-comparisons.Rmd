@@ -437,12 +437,16 @@ infections %>%
 
 We see that even after accounting for the number of people vaccinated, there are fewer new infections when you have a higher vaccination rate. This is because there are fewer people susceptible to infection, and therefore fewer people who can become infected and contribute to onward infection. 
 
-This **indirect** effect of vaccination programs is key to successfully controlling and eradicating infections. 
+This **indirect** effect of vaccination programs is key to successfully controlling and eradicating infections. Vaccinated people 
 
 ::::::::::::::::::::::::::::::::::::: callout
-## Herd immunity
+## Herd immunity threshold
 
-indirect versus direct effects, herd immunity and relationship with $1/R_0$
+For homogeneous mixing populations, there exists a target threshold of vaccination based on the basic reproduction number $R_0$. 
+
+
+
+
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 
