@@ -282,7 +282,7 @@ In the example above the dimension of the contact matrix will be the same as the
 
 For example, we might have a meta population model with two geographic areas. Then our contact matrix would be a 2 x 2 matrix with entries representing the contact between and within the geographic areas.
 
-### 
+
 
 ## Summary 
 
