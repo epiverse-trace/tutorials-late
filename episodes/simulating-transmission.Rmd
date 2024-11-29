@@ -293,6 +293,14 @@ contact_matrix
 
 The result is a square matrix with rows and columns for each age group. Contact matrices can be loaded from other sources, but they must be formatted as a matrix to be used in `epidemics`.
 
+::::::::::::::::::::::::::::::::::::: callout
+
+### Normalisation
+
+In `{epidemics}` the contact matrix normalisation happens within the function call, so we don't need to normalise the contact matrix before we pass it to `population()` (see section 3. Population Structure). For details on normalisation, see the tutorial on [contact matrices]([Simulating transmission](../episodes/contact-matrices.md)) .
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
 ### 2. Initial conditions
 
 The initial conditions are the proportion of individuals in each disease state $S$, $E$, $I$ and $R$ for each age group at time 0. In this example, we have three age groups age between 0 and 20 years, age between 20 and 40 years and over. Let's assume that in the youngest age category, one in a million individuals are infectious, and the remaining age categories are infection free. 
@@ -353,6 +361,8 @@ uk_population <- population(
   initial_conditions = initial_conditions
 )
 ```
+
+
 
 
 ### 4. Model parameters
