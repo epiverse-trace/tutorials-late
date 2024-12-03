@@ -669,8 +669,8 @@ intervention_effect
 ``` output
    scenario averted_median averted_lower averted_upper
       <int>          <num>         <num>         <num>
-1:        1             34             1           120
-2:        2             23           -17           124
+1:        1             29             1           121
+2:        2             19           -21           116
 ```
 
 
