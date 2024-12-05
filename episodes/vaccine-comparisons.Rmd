@@ -270,7 +270,7 @@ output_vaccinate_02 <- model_default(
 
 # create intervention_type column for plotting
 output_baseline$intervention_type <- "baseline"
-output_vaccinate_01$intervention_type<- "vaccinate 0.001"
+output_vaccinate_01$intervention_type <- "vaccinate 0.001"
 output_vaccinate_02$intervention_type <- "vaccinate 0.01"
 output <- rbind(output_baseline, output_vaccinate_01, output_vaccinate_02)
 
@@ -350,7 +350,7 @@ vaccinate_02_infections <- new_infections(output_vaccinate_02,
 # create intervention_type column for plotting
 baseline_infections$intervention_type <- "baseline"
 vaccinate_01_infections$intervention_type <- "vaccinate 0.001"
-vaccinate_02_infections$intervention_type<- "vaccinate 0.01"
+vaccinate_02_infections$intervention_type <- "vaccinate 0.01"
 infections <- rbind(baseline_infections,
                     vaccinate_01_infections,
                     vaccinate_02_infections)
@@ -620,7 +620,7 @@ close_schools_early <- intervention(
 
 # vaccinate early
 vacc_early <- vaccination(
-  name = "vaccinate early", 
+  name = "vaccinate early",
   nu = matrix(0.01, nrow = 3),
   time_begin = matrix(early_start, nrow = 3),
   time_end = matrix(early_start + duration, nrow = 3)
