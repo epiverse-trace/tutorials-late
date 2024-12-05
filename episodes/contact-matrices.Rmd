@@ -55,6 +55,11 @@ $$
 $$
 In this example, we would use this to represent that children meet, on average, 2 other children and 2 adult per day (first row), and adults meet, on average, 1 child and 3 other adults per day (second row). We can use this kind of information to account for the role heterogeneity in contact plays in infectious disease transmission.
 
+::::::::::::::::::::::::::::::::::::: callout
+
+### A Note on Notation
+For a contact matrix with rows $i$ and columns $j$, we call $C[i,j]$ the average number of contacts of group $i$ with group $j$, calculated as the number of contacts between the two groups averaged across all individuals in group $i$.
+::::::::::::::::::::::::::::::::::::::::::::::::
 
 ## Using `socialmixr`
 
