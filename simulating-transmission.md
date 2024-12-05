@@ -87,13 +87,13 @@ For each disease state ($S$, $E$, $I$ and $R$) and age group ($i$), we have a di
 
 $$
 \begin{aligned}
-\frac{dS_i}{dt} & = - \beta S_i \sum_j C_{i,j} I_j \\
-\frac{dE_i}{dt} &= \beta S_i\sum_j C_{i,j} I_j - \alpha E_i \\
+\frac{dS_i}{dt} & = - \beta S_i \sum_j C_{i,j} I_j/N_j \\
+\frac{dE_i}{dt} &= \beta S_i\sum_j C_{i,j} I_j/N_j - \alpha E_i \\
 \frac{dI_i}{dt} &= \alpha E_i - \gamma I_i \\
 \frac{dR_i}{dt} &=\gamma I_i \\
 \end{aligned}
 $$
-Individuals in age group ($i$) move from the susceptible state ($S_i$) to the exposed state ($E_i$) via age-specific contacts with infectious individuals in all groups $\beta S_i \sum_j C_{i,j} I_j$. The contact matrix $C$ allows for heterogeneity in contacts between age groups. They then move to the infectious state at a rate $\alpha$ and recover at a rate $\gamma$. There is no loss of immunity (there are no flows out of the recovered state).
+Individuals in age group ($i$) move from the susceptible state ($S_i$) to the exposed state ($E_i$) via age-specific contacts with infectious individuals in all groups $\beta S_i \sum_j C_{i,j} I_j/N_j$. The contact matrix $C$ allows for heterogeneity in contacts between age groups. They then move to the infectious state at a rate $\alpha$ and recover at a rate $\gamma$. There is no loss of immunity (there are no flows out of the recovered state).
 
 The model parameters are:
 
@@ -124,7 +124,7 @@ To generate trajectories using our model, we must prepare the following inputs:
 
 ### 1. Contact matrix
 
-Contact matrices can be estimated from surveys or contact data, or synthetic ones can be used. We will use the R package `{socialmixr}` to load a contact matrix estimated from POLYMOD survey data [(Mossong et al. 2008)](https://doi.org/10.1371/journal.pmed.0050074).
+We will use the R package `{socialmixr}` to load a contact matrix estimated from POLYMOD survey data [(Mossong et al. 2008)](https://doi.org/10.1371/journal.pmed.0050074).
 
 
 ::::::::::::::::::::::::::::::::::::: challenge 
@@ -168,11 +168,12 @@ contact.age.group   [0,20)  [20,40)      40+
 The result is a square matrix with rows and columns for each age group. Contact matrices can be loaded from other sources, but they must be formatted as a matrix to be used in `epidemics`.
 
 ::::::::::::::::::::::::::::::::::::: callout
-### Why would a contact matrix be non-symmetric?
 
-One of the arguments of the function `contact_matrix()` is `symmetric=TRUE`. This means that the total number of contacts of age group 1 with age group 2, should be the same as the total number of contacts of age group 2 and age group 1 (see the `socialmixr` [vignette](https://cran.r-project.org/web/packages/socialmixr/vignettes/socialmixr.html) for more detail). However, when contact matrices are estimated from surveys or other sources, the *reported* number of contacts may differ by age group resulting in a non-symmetric contact matrix [(Prem et al 2021)](https://doi.org/10.1371/journal.pcbi.1009098).
+### Normalisation
+
+In `{epidemics}` the contact matrix normalisation happens within the function call, so we don't need to normalise the contact matrix before we pass it to `population()` (see section 3. Population Structure). For details on normalisation, see the tutorial on [contact matrices]([Simulating transmission](../episodes/contact-matrices.md)) .
+
 ::::::::::::::::::::::::::::::::::::::::::::::::
-
 
 ### 2. Initial conditions
 
@@ -251,6 +252,8 @@ uk_population <- population(
   initial_conditions = initial_conditions
 )
 ```
+
+
 
 
 ### 4. Model parameters

@@ -340,8 +340,8 @@ The equations describing this model are as follows:
 
 $$
 \begin{aligned}
-\frac{dS_i}{dt} & = - \beta S_i \sum_j C_{i,j} I_j -\nu_{t} S_i \\
-\frac{dE_i}{dt} &= \beta S_i\sum_j C_{i,j} I_j - \alpha E_i \\
+\frac{dS_i}{dt} & = - \beta S_i \sum_j C_{i,j} I_j/N_j -\nu_{t} S_i \\
+\frac{dE_i}{dt} &= \beta S_i\sum_j C_{i,j} I_j/N_j - \alpha E_i \\
 \frac{dI_i}{dt} &= \alpha E_i - \gamma I_i \\
 \frac{dR_i}{dt} &=\gamma I_i \\
 \frac{dV_i}{dt} & =\nu_{i,t} S_i\\
