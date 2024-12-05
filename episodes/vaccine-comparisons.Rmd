@@ -189,10 +189,10 @@ output_vaccinate_02 <- model_default(
   time_end = 200, increment = 1.0
 )
 
-# create vaccination_scenario column for plotting
-output_baseline$vaccination_scenario <- "baseline"
-output_vaccinate_01$vaccination_scenario <- "vaccinate 0.001"
-output_vaccinate_02$vaccination_scenario <- "vaccinate 0.01"
+# create intervention_type column for plotting
+output_baseline$intervention_type  <- "baseline"
+output_vaccinate_01$intervention_type  <- "vaccinate 0.001"
+output_vaccinate_02$intervention_type  <- "vaccinate 0.01"
 output <- rbind(output_baseline, output_vaccinate_01, output_vaccinate_02)
 
 
@@ -203,8 +203,8 @@ output %>%
   aes(
     x = time,
     y = value,
-    color = vaccination_scenario,
-    linetype = vaccination_scenario
+    color = intervention_type,
+    linetype = intervention_type
   ) +
   stat_summary(
     fun = "sum",
@@ -268,10 +268,10 @@ output_vaccinate_02 <- model_default(
   time_end = 200, increment = 1.0
 )
 
-# create vaccination_scenario column for plotting
-output_baseline$vaccination_scenario <- "baseline"
-output_vaccinate_01$vaccination_scenario <- "vaccinate 0.001"
-output_vaccinate_02$vaccination_scenario <- "vaccinate 0.01"
+# create intervention_type column for plotting
+output_baseline$intervention_type <- "baseline"
+output_vaccinate_01$intervention_type<- "vaccinate 0.001"
+output_vaccinate_02$intervention_type <- "vaccinate 0.01"
 output <- rbind(output_baseline, output_vaccinate_01, output_vaccinate_02)
 
 
@@ -282,8 +282,8 @@ output %>%
   aes(
     x = time,
     y = value,
-    color = vaccination_scenario,
-    linetype = vaccination_scenario
+    color = intervention_type,
+    linetype = intervention_type
   ) +
   stat_summary(
     fun = "sum",
@@ -347,10 +347,10 @@ vaccinate_02_infections <- new_infections(output_vaccinate_02,
                                             "vaccinated",
                                           by_group = FALSE)
 
-# create vaccination_scenario column for plotting
-baseline_infections$vaccination_scenario <- "baseline"
-vaccinate_01_infections$vaccination_scenario <- "vaccinate 0.001"
-vaccinate_02_infections$vaccination_scenario <- "vaccinate 0.01"
+# create intervention_type column for plotting
+baseline_infections$intervention_type <- "baseline"
+vaccinate_01_infections$intervention_type <- "vaccinate 0.001"
+vaccinate_02_infections$intervention_type<- "vaccinate 0.01"
 infections <- rbind(baseline_infections,
                     vaccinate_01_infections,
                     vaccinate_02_infections)
@@ -360,8 +360,8 @@ infections %>%
   ggplot() +
   ggtitle("New infections") +
   geom_line(
-            aes(time, new_infections, colour = vaccination_scenario,
-              linetype = vaccination_scenario
+            aes(time, new_infections, colour = intervention_type,
+              linetype = intervention_type
             ),
             linewidth = 1) +
   scale_y_continuous(
@@ -398,10 +398,10 @@ vaccinate_02_infections <- new_infections(output_vaccinate_02,
                                             "vaccinated",
                                           by_group = FALSE)
 
-# create vaccination_scenario column for plotting
-baseline_infections$vaccination_scenario <- "baseline"
-vaccinate_01_infections$vaccination_scenario <- "vaccinate 0.001"
-vaccinate_02_infections$vaccination_scenario <- "vaccinate 0.01"
+# create intervention_type column for plotting
+baseline_infections$intervention_type <- "baseline"
+vaccinate_01_infections$intervention_type  <- "vaccinate 0.001"
+vaccinate_02_infections$intervention_type  <- "vaccinate 0.01"
 infections <- rbind(baseline_infections,
                     vaccinate_01_infections,
                     vaccinate_02_infections)
@@ -411,8 +411,8 @@ infections %>%
   ggplot() +
   ggtitle("New infections") +
   geom_line(
-            aes(time, new_infections, colour = vaccination_scenario,
-              linetype = vaccination_scenario
+            aes(time, new_infections, colour = intervention_type,
+              linetype = intervention_type
             ),
             linewidth = 1) +
   scale_y_continuous(
@@ -552,9 +552,9 @@ vaccinate_group_3_infections <- new_infections(output_vaccinate_group_3,
                                                compartments_from_susceptible =
                                                  "vaccinated", by_group = FALSE)
 
-vaccinate_group_1_infections$vaccination_scenario <- "vaccinate group 1"
-vaccinate_group_2_infections$vaccination_scenario <- "vaccinate group 2"
-vaccinate_group_3_infections$vaccination_scenario <- "vaccinate group 3"
+vaccinate_group_1_infections$intervention_type  <- "vaccinate group 1"
+vaccinate_group_2_infections$intervention_type  <- "vaccinate group 2"
+vaccinate_group_3_infections$intervention_type  <- "vaccinate group 3"
 
 output_infections <- rbind(baseline_infections,
                            vaccinate_01_infections,
@@ -566,8 +566,8 @@ output_infections <- rbind(baseline_infections,
 output_infections %>%
   ggplot() +
   geom_line(
-            aes(time, new_infections, colour = vaccination_scenario,
-              linetype = vaccination_scenario
+            aes(time, new_infections, colour = intervention_type,
+              linetype = intervention_type
             ),
             linewidth = 1) +
   scale_y_continuous(
@@ -601,6 +601,130 @@ output_infections %>%
 ## Vaccination versus NPIs
 
 compare multiple intervention scenarios, to lead onto health economics
+
+```{r, echo = FALSE}
+early_start <- 0
+late_start <- 50
+duration <- 100
+time_end <- 200
+
+# close schools early
+close_schools_early <- intervention(
+  name = "School closure",
+  type = "contacts",
+  time_begin = early_start,
+  time_end = early_start + duration,
+  reduction = matrix(c(0.5, 0.01, 0.01))
+)
+
+
+# vaccinate early
+vacc_early <- vaccination(
+  name = "vaccinate early", 
+  nu = matrix(0.01, nrow = 3),
+  time_begin = matrix(early_start, nrow = 3),
+  time_end = matrix(early_start + duration, nrow = 3)
+)
+
+# vaccination late
+vacc_late <- vaccination(
+  name = "vaccinate all",
+  time_begin = matrix(late_start, nrow(contact_matrix)),
+  time_end = matrix(late_start + duration, nrow(contact_matrix)),
+  nu = matrix(c(0.01, 0.01, 0.01))
+)
+
+# npis only (early)
+output_npi_early <- model_default(
+  population = uk_population,
+  transmission_rate = transmission_rate,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
+  intervention = list(contacts = close_schools_early),
+  time_end = time_end, increment = 1.0
+)
+
+# vaccination only (early)
+output_vacc_early <- model_default(
+  population = uk_population,
+  transmission_rate = transmission_rate,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
+  vaccination = vacc_early,
+  time_end = time_end, increment = 1.0
+)
+
+# vaccination only (late)
+output_vacc_late <- model_default(
+  population = uk_population,
+  transmission_rate = transmission_rate,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
+  vaccination = vacc_late,
+  time_end = time_end, increment = 1.0
+)
+
+# npis started early + vaccination late
+output_npi_early_vacc_late <- model_default(
+  population = uk_population,
+  transmission_rate = transmission_rate,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
+  vaccination = vacc_late,
+  intervention = list(contacts = close_schools_early),
+  time_end = time_end, increment = 1.0
+)
+
+output_npi_early_vacc_late$intervention_type <- "npi early, vacc late"
+output_npi_early$intervention_type <- "npi early"
+output_vacc_early$intervention_type <- "vacc early"
+output_vacc_late$intervention_type <- "vacc late"
+
+output <- rbind(output_baseline, output_vacc_late,
+                output_vacc_early, output_npi_early,
+                output_npi_early_vacc_late)
+
+```
+
+```{r, echo = FALSE}
+output %>%
+  filter(compartment == "infectious") %>%
+  ggplot() +
+  aes(
+    x = time,
+    y = value,
+    color = intervention_type,
+    linetype = intervention_type
+  ) +
+  stat_summary(
+    fun = "sum",
+    geom = "line",
+    linewidth = 1
+  ) +
+  scale_y_continuous(
+    labels = scales::comma
+  ) +
+  geom_vline(
+    xintercept = c(
+      early_start,
+      early_start + duration
+    ),
+    linetype = 2
+  ) +
+  geom_vline(
+    xintercept = c(
+      late_start,
+      late_start + duration
+    ),
+    linetype = 3
+  ) +
+  theme_bw() +
+  labs(
+    x = "Simulation time (days)",
+    y = "Individuals"
+  )
+```
+
 
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
