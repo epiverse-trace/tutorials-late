@@ -588,21 +588,23 @@ output_infections %>%
 ```
 
 
-
-
-
-
-
-
-
-
-
-
 ## Vaccination versus NPIs
 
-compare multiple intervention scenarios, to lead onto health economics
+Modelling is a useful tool for understanding the potential impact of the timing and different combinations of control measures. In an outbreak scenario, vaccines can be used alongside other control measures. A recent study by [Barnsley et al. (2024)](https://doi.org/10.1016/S2214-109X(24)00286-9) used modelling to show the impact the COVID-19 vaccine could have had alongside non-pharmaceutical interventions NPIs if the vaccine had been developed within 100 days of the pathogen threat being recognised. We will use this study as inspiration to show the impact of a vaccine versus NPI implemented at different times. 
 
-```{r, echo = FALSE}
+The NPI we will consider is closing schools. Specifically, a school closure that will reduce the contacts between school aged children (aged 0-15) by 0.5, and will cause a small reduction (0.01) in the contacts between adults (aged 15 and over). For the vaccine program, we assume an equal vaccination rate of 0.01 in each age group.
+
+We define **early implementation** as the first day of the simulation, and **late implementation** as 50 days after the start of the simulation. We assume the control measures are in place for 100 days after they start. 
+
+The combinations we will consider are :
+
++ early implementation of closing schools,
++ early implementation of a vaccine,
++ late implementation of a vaccine,
++ early implementation of closing schools and late implementation of a vaccine. 
+
+The code below details how the interventions are simulated:  
+```{r}
 early_start <- 0
 late_start <- 50
 duration <- 100
@@ -617,20 +619,34 @@ close_schools_early <- intervention(
   reduction = matrix(c(0.5, 0.01, 0.01))
 )
 
+# vaccination late
+vacc_late <- vaccination(
+  name = "vaccinate late",
+  time_begin = matrix(late_start, nrow(contact_matrix)),
+  time_end = matrix(late_start + duration, nrow(contact_matrix)),
+  nu = matrix(c(0.01, 0.01, 0.01))
+)
 
+# npis started early + vaccination late
+output_npi_early_vacc_late <- model_default(
+  population = uk_population,
+  transmission_rate = transmission_rate,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
+  vaccination = vacc_late,
+  intervention = list(contacts = close_schools_early),
+  time_end = time_end, increment = 1.0
+)
+```
+
+
+
+```{r, echo = FALSE}
 # vaccinate early
 vacc_early <- vaccination(
   name = "vaccinate early",
-  nu = matrix(0.01, nrow = 3),
-  time_begin = matrix(early_start, nrow = 3),
-  time_end = matrix(early_start + duration, nrow = 3)
-)
-
-# vaccination late
-vacc_late <- vaccination(
-  name = "vaccinate all",
-  time_begin = matrix(late_start, nrow(contact_matrix)),
-  time_end = matrix(late_start + duration, nrow(contact_matrix)),
+  time_begin = matrix(early_start, nrow(contact_matrix)),
+  time_end = matrix(early_start + duration, nrow(contact_matrix)),
   nu = matrix(c(0.01, 0.01, 0.01))
 )
 
@@ -664,17 +680,6 @@ output_vacc_late <- model_default(
   time_end = time_end, increment = 1.0
 )
 
-# npis started early + vaccination late
-output_npi_early_vacc_late <- model_default(
-  population = uk_population,
-  transmission_rate = transmission_rate,
-  infectiousness_rate = infectiousness_rate,
-  recovery_rate = recovery_rate,
-  vaccination = vacc_late,
-  intervention = list(contacts = close_schools_early),
-  time_end = time_end, increment = 1.0
-)
-
 output_npi_early_vacc_late$intervention_type <- "npi early, vacc late"
 output_npi_early$intervention_type <- "npi early"
 output_vacc_early$intervention_type <- "vacc early"
@@ -685,6 +690,9 @@ output <- rbind(output_baseline, output_vacc_late,
                 output_npi_early_vacc_late)
 
 ```
+
+Implementing NPIs only early shifts the timing of the peak of infectious individuals but does not decrease the magnify much.Implementing the vaccine early is the most effective control for reducing the peak number of infectious individuals. Having an NPI in place before the vaccine is implemented (`npi early, vacc late`) is more effective than simply just implementing the vaccine late.
+
 
 ```{r, echo = FALSE}
 output %>%
@@ -724,6 +732,143 @@ output %>%
     y = "Individuals"
   )
 ```
+
+
+
+::::::::::::::::::::::::::::::::::::: challenge 
+
+## Lifting NPI measures
+
+Investigate the impact lifting the  after implementing the vaccine. Adapt the code below to lift the NPI after 20, 50 and 100 days.
+
+```{r}
+early_start <- 0
+late_start <- 50
+duration <- 100
+time_end <- 200
+
+# close schools early
+close_schools_early <- intervention(
+  name = "School closure",
+  type = "contacts",
+  time_begin = early_start,
+  time_end = early_start + duration,
+  reduction = matrix(c(0.5, 0.01, 0.01))
+)
+
+# vaccination late
+vacc_late <- vaccination(
+  name = "vaccinate late",
+  time_begin = matrix(late_start, nrow(contact_matrix)),
+  time_end = matrix(late_start + duration, nrow(contact_matrix)),
+  nu = matrix(c(0.01, 0.01, 0.01))
+)
+
+# npis started early + vaccination late
+output_npi_early_vacc_late <- model_default(
+  population = uk_population,
+  transmission_rate = transmission_rate,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
+  vaccination = vacc_late,
+  intervention = list(contacts = close_schools_early),
+  time_end = time_end, increment = 1.0
+)
+```
+
+:::::::::::::::::::::::: solution 
+
+## Output
+```{r}
+duration_20 <- 20
+duration_50 <- 50
+  
+close_schools_early_20 <- intervention(
+  name = "School closure",
+  type = "contacts",
+  time_begin = early_start,
+  time_end = early_start + duration_20,
+  reduction = matrix(c(0.5, 0.01, 0.01))
+)  
+
+close_schools_early_50 <- intervention(
+  name = "School closure",
+  type = "contacts",
+  time_begin = early_start,
+  time_end = early_start + duration_50,
+  reduction = matrix(c(0.5, 0.01, 0.01))
+)  
+
+output_npi_early_vacc_late_20 <- model_default(
+  population = uk_population,
+  transmission_rate = transmission_rate,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
+  vaccination = vacc_late,
+  intervention = list(contacts = close_schools_early_20),
+  time_end = 300, increment = 1.0
+)
+
+output_npi_early_vacc_late_50 <- model_default(
+  population = uk_population,
+  transmission_rate = transmission_rate,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
+  vaccination = vacc_late,
+  intervention = list(contacts = close_schools_early_50),
+  time_end = 300, increment = 1.0
+)
+
+output_npi_early_vacc_late_20$intervention_type <- "20 days"
+output_npi_early_vacc_late_50$intervention_type <- "50 days"
+output_npi_early_vacc_late$intervention_type <- "100 days"
+
+output_npis <- rbind(output_npi_early_vacc_late_20,
+                output_npi_early_vacc_late_50,
+                output_npi_early_vacc_late)
+
+output_npis %>%
+  filter(compartment == "infectious") %>%
+  ggplot() +
+  aes(
+    x = time,
+    y = value,
+    color = intervention_type,
+    linetype = intervention_type
+  ) +
+  stat_summary(
+    fun = "sum",
+    geom = "line",
+    linewidth = 1
+  ) +
+  scale_y_continuous(
+    labels = scales::comma
+  ) +
+  geom_vline(
+    xintercept = c(
+      early_start,
+      early_start + duration
+    ),
+    linetype = 2
+  ) +
+  geom_vline(
+    xintercept = c(
+      late_start,
+      late_start + duration
+    ),
+    linetype = 3
+  ) +
+  theme_bw() +
+  labs(
+    x = "Simulation time (days)",
+    y = "Individuals"
+  )
+```
+
+
+
+:::::::::::::::::::::::::::::::::
+::::::::::::::::::::::::::::::::::::::::::::::::
 
 
 ::::::::::::::::::::::::::::::::::::: keypoints 
