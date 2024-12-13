@@ -461,14 +461,7 @@ what is the vaccination rate required to prevent an epidemic
 ## Output
  
 ```{r polymod_uk, echo = FALSE}
-polymod <- socialmixr::polymod
-contact_data <- socialmixr::contact_matrix(
-  polymod,
-  countries = "United Kingdom",
-  age.limits = c(0, 20, 40),
-  symmetric = TRUE
-)
-contact_data
+x <- 2
 ```
 
 
@@ -478,9 +471,29 @@ contact_data
 
 ## Targeted vaccination
 
-Effect of vaccinating high risk groups
+For infections that have a higher burden in different risk groups, targeted vaccination programs can be utilised to control infection. For example, if there is hetergetinty in contacts by age, targeting different age groups for vaccination will result in different disease trajectories. 
 
-```{r, collapse=TRUE}
+The contact matrix for our example is :
+
+```{r}
+contact_matrix
+```
+
+There is higher levels of mixing within the 0-15 and 15-65 age group, than in the 65+ age a group so we expect that targeting different age groups will result in different disease trajectories. 
+
+To show the effect of targeted vaccination, we will compare the following scenarios:
+
++ vaccinating each age group at a rate 0.001,
++ vaccinating ages 0-15 only (group 1) at a rate 0.003,
++ vaccinating ages 15-65 only (group 2) at a rate 0.003,
++ vaccinating ages 65+ only (group 3) at a rate 0.003.
+
+
+::: tab
+
+### Output
+
+```{r, echo = FALSE}
 vaccinate_group_1 <- vaccination(
   name = "vaccinate all",
   time_begin = matrix(40, nrow(contact_matrix)),
@@ -512,7 +525,7 @@ output_vaccinate_group_1 <- model_default(
   # intervention
   vaccination = vaccinate_group_1,
   # time
-  time_end = 300, increment = 1.0
+  time_end = 200, increment = 1.0
 )
 
 output_vaccinate_group_2 <- model_default(
@@ -525,7 +538,7 @@ output_vaccinate_group_2 <- model_default(
   # intervention
   vaccination = vaccinate_group_2,
   # time
-  time_end = 300, increment = 1.0
+  time_end = 200, increment = 1.0
 )
 
 
@@ -539,7 +552,7 @@ output_vaccinate_group_3 <- model_default(
   # intervention
   vaccination = vaccinate_group_3,
   # time
-  time_end = 300, increment = 1.0
+  time_end = 200, increment = 1.0
 )
 
 vaccinate_group_1_infections <- new_infections(output_vaccinate_group_1,
@@ -587,6 +600,119 @@ output_infections %>%
   )
 ```
 
+### R Code
+
+```{r, echo = TRUE, eval = FALSE}
+vaccinate_group_1 <- vaccination(
+  name = "vaccinate all",
+  time_begin = matrix(40, nrow(contact_matrix)),
+  time_end = matrix(40 + 150, nrow(contact_matrix)),
+  nu = matrix(c(0.001 * 3, 0, 0))
+)
+
+vaccinate_group_2 <- vaccination(
+  name = "vaccinate all",
+  time_begin = matrix(40, nrow(contact_matrix)),
+  time_end = matrix(40 + 150, nrow(contact_matrix)),
+  nu = matrix(c(0, 0.001 * 3, 0))
+)
+
+vaccinate_group_3 <- vaccination(
+  name = "vaccinate all",
+  time_begin = matrix(40, nrow(contact_matrix)),
+  time_end = matrix(40 + 150, nrow(contact_matrix)),
+  nu = matrix(c(0, 0, 0.001 * 3))
+)
+
+output_vaccinate_group_1 <- model_default(
+  # population
+  population = uk_population,
+  # rate
+  transmission_rate = transmission_rate,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
+  # intervention
+  vaccination = vaccinate_group_1,
+  # time
+  time_end = 200, increment = 1.0
+)
+
+output_vaccinate_group_2 <- model_default(
+  # population
+  population = uk_population,
+  # rate
+  transmission_rate = transmission_rate,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
+  # intervention
+  vaccination = vaccinate_group_2,
+  # time
+  time_end = 200, increment = 1.0
+)
+
+
+output_vaccinate_group_3 <- model_default(
+  # population
+  population = uk_population,
+  # rate
+  transmission_rate = transmission_rate,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
+  # intervention
+  vaccination = vaccinate_group_3,
+  # time
+  time_end = 200, increment = 1.0
+)
+
+vaccinate_group_1_infections <- new_infections(output_vaccinate_group_1,
+                                               compartments_from_susceptible =
+                                                 "vaccinated", by_group = FALSE)
+vaccinate_group_2_infections <- new_infections(output_vaccinate_group_2,
+                                               compartments_from_susceptible =
+                                                 "vaccinated", by_group = FALSE)
+vaccinate_group_3_infections <- new_infections(output_vaccinate_group_3,
+                                               compartments_from_susceptible =
+                                                 "vaccinated", by_group = FALSE)
+
+vaccinate_group_1_infections$intervention_type  <- "vaccinate group 1"
+vaccinate_group_2_infections$intervention_type  <- "vaccinate group 2"
+vaccinate_group_3_infections$intervention_type  <- "vaccinate group 3"
+
+output_infections <- rbind(baseline_infections,
+                           vaccinate_01_infections,
+                           vaccinate_group_1_infections,
+                           vaccinate_group_2_infections,
+                           vaccinate_group_3_infections)
+
+
+output_infections %>%
+  ggplot() +
+  geom_line(
+            aes(time, new_infections, colour = intervention_type,
+              linetype = intervention_type
+            ),
+            linewidth = 1) +
+  scale_y_continuous(
+    labels = scales::comma
+  ) +
+  geom_vline(
+    xintercept = c(
+      vaccinate_01$time_begin,
+      vaccinate_01$time_end
+    ),
+    linetype = 2
+  ) +
+  theme_bw() +
+  labs(
+    x = "Simulation time (days)",
+    y = "Individuals"
+  )
+```
+
+
+:::
+
+Vaccinating group 3 only results in the highest epidemic peak szie. Targeting group 2 results in the smallest epidemic peak size. Whereas targeting all age groups pushes the epidemic peak time later.  
 
 ## Vaccination versus NPIs
 
@@ -782,14 +908,14 @@ output_npi_early_vacc_late <- model_default(
 ```{r}
 duration_20 <- 20
 duration_50 <- 50
-  
+
 close_schools_early_20 <- intervention(
   name = "School closure",
   type = "contacts",
   time_begin = early_start,
   time_end = early_start + duration_20,
   reduction = matrix(c(0.5, 0.01, 0.01))
-)  
+)
 
 close_schools_early_50 <- intervention(
   name = "School closure",
@@ -797,7 +923,7 @@ close_schools_early_50 <- intervention(
   time_begin = early_start,
   time_end = early_start + duration_50,
   reduction = matrix(c(0.5, 0.01, 0.01))
-)  
+)
 
 output_npi_early_vacc_late_20 <- model_default(
   population = uk_population,
@@ -824,8 +950,8 @@ output_npi_early_vacc_late_50$intervention_type <- "50 days"
 output_npi_early_vacc_late$intervention_type <- "100 days"
 
 output_npis <- rbind(output_npi_early_vacc_late_20,
-                output_npi_early_vacc_late_50,
-                output_npi_early_vacc_late)
+                     output_npi_early_vacc_late_50,
+                     output_npi_early_vacc_late)
 
 output_npis %>%
   filter(compartment == "infectious") %>%
