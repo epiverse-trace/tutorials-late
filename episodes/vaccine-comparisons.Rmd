@@ -6,14 +6,16 @@ exercises: 2
 
 :::::::::::::::::::::::::::::::::::::: questions 
 
-- What questions will this lesson cover?
+- What are the direct and indirect effects of vaccination?
+- What are the benefits of targeted vaccination programs?
+- What is the trade off of vaccination and NPIs?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: objectives
 
-- Objective 1
-- Objective 2
+- Understand the potential impact of vaccination programs
+- Implement vaccination programs and NPI measures simultaneously using `{epidemics}`
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -999,7 +1001,8 @@ output_npis %>%
 
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
-- Summarise the key points of the lesson using bullet points
-
+- Herd immunity is a indirect effect of vaccination programs
+- Targeted vaccination programs have benefits when there is heterogeneity in contacts
+- The timing of implementation of vaccination programs and NPIs can result in very different disease trajectories
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
