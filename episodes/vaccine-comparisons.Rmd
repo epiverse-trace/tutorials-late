@@ -455,25 +455,6 @@ For details of the mathematical derivation check out this [Plus Magazine article
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 
-::::::::::::::::::::::::::::::::::::: challenge 
-
-## Vaccination thresholds
-
-what is the vaccination rate required to prevent an epidemic
-
-:::::::::::::::::::::::: solution 
-
-## Output
- 
-```{r polymod_uk, echo = FALSE}
-x <- 2
-```
-
-
-:::::::::::::::::::::::::::::::::
-::::::::::::::::::::::::::::::::::::::::::::::::
-
-
 ## Targeted vaccination
 
 For infections that have a higher burden in different risk groups, targeted vaccination programs can be utilised to control infection. For example, if there is heterogeneity in contacts by age, targeting different age groups for vaccination will result in different disease trajectories. 
