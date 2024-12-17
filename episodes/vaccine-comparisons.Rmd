@@ -439,15 +439,18 @@ infections %>%
 
 We see that even after accounting for the number of people vaccinated, there are fewer new infections when you have a higher vaccination rate. This is because there are fewer people susceptible to infection, and therefore fewer people who can become infected and contribute to onward infection. 
 
-This **indirect** effect of vaccination programs is key to successfully controlling and eradicating infections. Vaccinated people 
+This **indirect** effect of vaccination programs is key to successfully controlling and eradicating infections. 
 
 ::::::::::::::::::::::::::::::::::::: callout
 ## Herd immunity threshold
 
-For homogeneous mixing populations, there exists a target threshold of vaccination based on the basic reproduction number $R_0$. 
+For homogeneous mixing populations, there exists a target threshold of vaccination based on the basic reproduction number $R_0$ to achieve [herd immunity](../learners/reference.md#herdimmunity) .
 
+The proportion of the population ($p$) that needs to be immune to achieve herd immunity is:
 
+$$p = 1- \frac{1}{R_0}. $$
 
+For details of the mathematical derivation check out this [Plus Magazine article](https://plus.maths.org/content/maths-minute-r0-and-herd-immunity).
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -473,7 +476,7 @@ x <- 2
 
 ## Targeted vaccination
 
-For infections that have a higher burden in different risk groups, targeted vaccination programs can be utilised to control infection. For example, if there is hetergetinty in contacts by age, targeting different age groups for vaccination will result in different disease trajectories. 
+For infections that have a higher burden in different risk groups, targeted vaccination programs can be utilised to control infection. For example, if there is heterogeneity in contacts by age, targeting different age groups for vaccination will result in different disease trajectories. 
 
 The contact matrix for our example is :
 
@@ -714,7 +717,7 @@ output_infections %>%
 
 :::
 
-Vaccinating group 3 only results in the highest epidemic peak szie. Targeting group 2 results in the smallest epidemic peak size. Whereas targeting all age groups pushes the epidemic peak time later.  
+Vaccinating group 3 only results in the highest epidemic peak size. Targeting group 2 results in the smallest epidemic peak size. Whereas targeting all age groups pushes the epidemic peak time later.  
 
 ## Vaccination versus NPIs
 

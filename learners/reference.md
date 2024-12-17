@@ -53,7 +53,10 @@ The generation time distribution is commonly estimated from data on the [serial 
 [Growth rate]{#growth}
 : The exponential growth rate tells us how much cases are increasing or decreasing at the start of an epidemic. It gives us a measure of speed of transmission, see [Dushoff & Park, 2021](https://royalsocietypublishing.org/doi/full/10.1098/rspb.2020.1556).
 
-<!-- ## H -->
+## H
+[Herd immunity]{#herdimmunity}
+When enough of the population are immune to infection, susceptible individuals are protected from infection.
+[More information on herd immunity](https://vaccineknowledge.ox.ac.uk/herd-immunity#What-is-herd-immunity).
 
 ## I 
 
