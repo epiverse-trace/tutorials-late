@@ -1,7 +1,7 @@
 ---
-title: 'Vaccine comparisons'
-teaching: 10
-exercises: 2
+title: 'Comparing vaccination strategies'
+teaching: 50
+exercises: 20
 ---
 
 :::::::::::::::::::::::::::::::::::::: questions 
@@ -438,7 +438,7 @@ infections %>%
 :::
 
 
-We see that even after accounting for the number of people vaccinated, there are fewer new infections when you have a higher vaccination rate. This is because there are fewer people susceptible to infection, and therefore fewer people who can become infected and contribute to onward infection. 
+We see that after accounting for the number of people vaccinated, there are fewer new infections when you have a higher vaccination rate. This is because there are fewer people susceptible to infection, and therefore fewer people who can become infected and contribute to onward infection. 
 
 This **indirect** effect of vaccination programs is key to successfully controlling and eradicating infections. 
 
@@ -703,7 +703,7 @@ Vaccinating group 3 only results in the highest epidemic peak size. Targeting gr
 
 ## Vaccination versus NPIs
 
-Modelling is a useful tool for understanding the potential impact of the timing and different combinations of control measures. In an outbreak scenario, vaccines can be used alongside other control measures. A recent study by [Barnsley et al. (2024)](https://doi.org/10.1016/S2214-109X(24)00286-9) used modelling to show the impact the COVID-19 vaccine could have had alongside non-pharmaceutical interventions NPIs if the vaccine had been developed within 100 days of the pathogen threat being recognised. We will use this study as inspiration to show the impact of a vaccine versus NPI implemented at different times. 
+Modelling is a useful tool for understanding the potential impact of the timing and different combinations of control measures. In an outbreak scenario, vaccines can be used alongside other control measures. A recent study by [Barnsley et al. (2024)](https://doi.org/10.1016/S2214-109X(24)00286-9) used modelling to show the impact the COVID-19 vaccine could have had alongside non-pharmaceutical interventions (NPIs) if the vaccine had been developed within 100 days of the pathogen threat being recognised. We will use this study as inspiration to show the impact of a vaccine versus NPI implemented at different times. 
 
 The NPI we will consider is closing schools. Specifically, a school closure that will reduce the contacts between school aged children (aged 0-15) by 0.5, and will cause a small reduction (0.01) in the contacts between adults (aged 15 and over). For the vaccine program, we assume an equal vaccination rate of 0.01 in each age group.
 
@@ -793,10 +793,10 @@ output_vacc_late <- model_default(
   time_end = time_end, increment = 1.0
 )
 
-output_npi_early_vacc_late$intervention_type <- "npi early, vacc late"
-output_npi_early$intervention_type <- "npi early"
-output_vacc_early$intervention_type <- "vacc early"
-output_vacc_late$intervention_type <- "vacc late"
+output_npi_early_vacc_late$intervention_type <- "early npi, late vacc"
+output_npi_early$intervention_type <- "early npi"
+output_vacc_early$intervention_type <- "early vacc"
+output_vacc_late$intervention_type <- "late vacc"
 
 output <- rbind(output_baseline, output_vacc_late,
                 output_vacc_early, output_npi_early,
@@ -804,7 +804,8 @@ output <- rbind(output_baseline, output_vacc_late,
 
 ```
 
-Implementing NPIs only early shifts the timing of the peak of infectious individuals but does not decrease the magnify much.Implementing the vaccine early is the most effective control for reducing the peak number of infectious individuals. Having an NPI in place before the vaccine is implemented (`npi early, vacc late`) is more effective than simply just implementing the vaccine late.
+
+Early implementation of NPIs (`early npi`) shifts the timing of the peak of infectious individuals but does not decrease the magnitude by much. Early implementation of the vaccine (`early vacc`) is the most effective control for reducing the peak number of infectious individuals. Having an NPI in place before the vaccine is implemented (`early npi, late vacc`) is more effective than simply just implementing the vaccine late (`late vacc`).
 
 
 ```{r, echo = FALSE}
@@ -852,42 +853,7 @@ output %>%
 
 ## Lifting NPI measures
 
-Investigate the impact lifting the  after implementing the vaccine. Adapt the code below to lift the NPI after 20, 50 and 100 days.
-
-```{r}
-early_start <- 0
-late_start <- 50
-duration <- 100
-time_end <- 200
-
-# close schools early
-close_schools_early <- intervention(
-  name = "School closure",
-  type = "contacts",
-  time_begin = early_start,
-  time_end = early_start + duration,
-  reduction = matrix(c(0.5, 0.01, 0.01))
-)
-
-# vaccination late
-vacc_late <- vaccination(
-  name = "vaccinate late",
-  time_begin = matrix(late_start, nrow(contact_matrix)),
-  time_end = matrix(late_start + duration, nrow(contact_matrix)),
-  nu = matrix(c(0.01, 0.01, 0.01))
-)
-
-# npis started early + vaccination late
-output_npi_early_vacc_late <- model_default(
-  population = uk_population,
-  transmission_rate = transmission_rate,
-  infectiousness_rate = infectiousness_rate,
-  recovery_rate = recovery_rate,
-  vaccination = vacc_late,
-  intervention = list(contacts = close_schools_early),
-  time_end = time_end, increment = 1.0
-)
-```
+Investigate the impact lifting the  after implementing the vaccine. Adapt the code below to lift the NPI after 20, 50 and 100 days
 
 :::::::::::::::::::::::: solution 
 
