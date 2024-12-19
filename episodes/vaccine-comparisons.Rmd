@@ -31,8 +31,9 @@ Learners should familiarise themselves with following concept dependencies befor
 
 ## Introduction
 
-Introductory text
+Vaccine programs can be used to help control epidemics via direct and indirect protection from infection. Vaccination programs can target specific risk groups or be used alongside other control measures. In this tutorial we will compare different vaccination strategies using models from `{epidemics}`. 
 
+We will use the following R packages: 
 ```{r, message = FALSE}
 library(ggplot2)
 library(epidemics)
@@ -981,6 +982,12 @@ output_npis %>%
 
 :::::::::::::::::::::::::::::::::
 ::::::::::::::::::::::::::::::::::::::::::::::::
+
+## Summary
+
+Using model generated disease trajectories we have investigated the potential impact of different vaccination strategies. When infection has group specific risk, targeted vaccination programs may be more effective in reducing epidemic peak. 
+
+In this tutorial we have investigated the potential effect of infection blocking vaccines, but we can use models to explore other effects of vaccines including imperfect vaccines. The disease trajectories generated in this tutorial can be used to calculate measures such as DALYs averted as part of health economic analyses.
 
 
 ::::::::::::::::::::::::::::::::::::: keypoints 
