@@ -31,9 +31,12 @@ Learners should familiarise themselves with following concept dependencies befor
 
 ## Introduction
 
-Vaccine programs can be used to help control epidemics via direct and indirect protection from infection. Vaccination programs can target specific risk groups or be used alongside other control measures. In this tutorial we will compare different vaccination strategies using models from `{epidemics}`. 
+Vaccine programs can be used to help control epidemics via direct and indirect protection from infection. We can use mathematical models to make predictions about the potential impact of different vaccination strategies.   
 
-We will use the following R packages: 
+When vaccine programs are not immediately available to be rolled out, either from capacity or development perspective, we want to know how non-pharmaceutical interventions (NPIs) can be used to best control the epidemic in the mean time, and after a vaccine program has started. Additionally, in the case of some infections, targeting specific risk groups for vaccination may be more effective than vaccinating everyone. 
+
+In this tutorial we will compare different vaccination strategies using models from `{epidemics}`. We will use the following R packages: 
+
 ```{r, message = FALSE}
 library(ggplot2)
 library(epidemics)
@@ -703,7 +706,7 @@ Vaccinating group 3 only results in the highest epidemic peak size. Targeting gr
 
 ## Vaccination versus NPIs
 
-Modelling is a useful tool for understanding the potential impact of the timing and different combinations of control measures. In an outbreak scenario, vaccines can be used alongside other control measures. A recent study by [Barnsley et al. (2024)](https://doi.org/10.1016/S2214-109X(24)00286-9) used modelling to show the impact the COVID-19 vaccine could have had alongside non-pharmaceutical interventions (NPIs) if the vaccine had been developed within 100 days of the pathogen threat being recognised. We will use this study as inspiration to show the impact of a vaccine versus NPI implemented at different times. 
+Modelling is a useful tool for understanding the potential impact of the timing and different combinations of control measures. In an outbreak scenario, vaccines can be used alongside other control measures. A recent study by [Barnsley et al. (2024)](https://doi.org/10.1016/S2214-109X(24)00286-9) used modelling to show the impact the COVID-19 vaccine could have had alongside NPIs if the vaccine had been developed within 100 days of the pathogen threat being recognised. We will use this study as inspiration to show the impact of a vaccine versus NPI implemented at different times. 
 
 The NPI we will consider is closing schools. Specifically, a school closure that will reduce the contacts between school aged children (aged 0-15) by 0.5, and will cause a small reduction (0.01) in the contacts between adults (aged 15 and over). For the vaccine program, we assume an equal vaccination rate of 0.01 in each age group.
 
@@ -951,7 +954,7 @@ output_npis %>%
 
 ## Summary
 
-Using model generated disease trajectories we have investigated the potential impact of different vaccination strategies. When infection has group specific risk, targeted vaccination programs may be more effective in reducing epidemic peak. 
+Using model generated disease trajectories we have investigated the potential impact of different vaccination strategies. When infection has group specific risk, targeted vaccination programs may be more effective in reducing epidemic peak. NPIs can be utilised alongside vaccine roll outs to control epidemic peaks when vaccines may not be readily available. 
 
 In this tutorial we have investigated the potential effect of infection blocking vaccines, but we can use models to explore other effects of vaccines including imperfect vaccines. The disease trajectories generated in this tutorial can be used to calculate measures such as DALYs averted as part of health economic analyses.
 
