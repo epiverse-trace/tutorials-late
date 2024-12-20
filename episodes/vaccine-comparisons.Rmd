@@ -33,7 +33,7 @@ Learners should familiarise themselves with following concept dependencies befor
 
 Vaccine programs can be used to help control epidemics via direct and indirect protection from infection. We can use mathematical models to make predictions about the potential impact of different vaccination strategies.   
 
-When vaccine programs are not immediately available to be rolled out, either from capacity or development perspective, we want to know how non-pharmaceutical interventions (NPIs) can be used to best control the epidemic in the mean time, and after a vaccine program has started. Additionally, in the case of some infections, targeting specific risk groups for vaccination may be more effective than vaccinating everyone. 
+In the case of some infections, targeting specific risk groups for vaccination may be more effective than vaccinating everyone. When vaccine programs are not immediately available to be rolled out, either from a capacity or development perspective, we want to know how non-pharmaceutical interventions (NPIs) can be used to control the epidemic in the mean time, and after a vaccine program has started. 
 
 In this tutorial we will compare different vaccination strategies using models from `{epidemics}`. We will use the following R packages: 
 
