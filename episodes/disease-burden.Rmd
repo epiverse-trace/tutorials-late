@@ -1,0 +1,132 @@
+---
+title: 'Modelling disease burden'
+teaching: 10 # teaching time in minutes
+exercises: 5 # exercise time in minutes
+---
+
+:::::::::::::::::::::::::::::::::::::: questions 
+
+- How can we model disease burden?
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::: objectives
+
+- Understand when mathematical models of transmission can be separated from models of burden
+- Generate disease burden using a burden model
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::: prereq
+
++ Complete tutorial on [Simulating transmission](../episodes/simulating-transmission.md)
+
+:::::::::::::::::::::::::::::::::
+
+
+## Introduction
+
+Introductory text
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: instructor
+
+Inline instructor notes can help inform instructors of timing challenges
+associated with the lessons. They appear in the "Instructor View".
+
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+## Models of transmission and models of burden
+
+Lesson content
+
+
+
+
+## A burden model
+
+```{r}
+# Simulate some random new cases
+n_days <- 200 # Number of days in the simulation
+new_cases <- rpois(n_days, lambda = 10) # Random daily new cases (Poisson distributed)
+new_cases[101:200] <- 0 # End outbreak after day 100
+
+# Define delay parameters
+onset_to_admission <- epiparameter(
+  disease = "Disease X",
+  epi_name = "onset to admission",
+  prob_distribution = create_prob_distribution(
+    prob_distribution = "gamma",
+    prob_distribution_params = c(shape = 5, scale = 4),
+    discretise = TRUE
+  )
+)
+
+admission_to_discharge <- epiparameter(
+  disease = "Disease X",
+  epi_name = "admission to discharge",
+  prob_distribution = create_prob_distribution(
+    prob_distribution = "gamma",
+    prob_distribution_params = c(shape = 10, scale = 2),
+    discretise = TRUE
+  )
+)
+
+ihr <- 0.1 # Infection-hospitalisation ratio
+
+# Simulate hospitalizations and discharges
+simulate_hospitalizations <- function(new_cases, onset_to_admission, 
+                                      admission_to_discharge, ihr) {
+  hosp_day <- c()    # Track daily hospitalizations
+  discharge_day <- c() # Track daily discharges
+  
+  for (day in seq_along(new_cases)) {
+    # Hospitalizations from current day's new cases
+    n_cases_today <- rbinom(1, new_cases[day], ihr)
+    if (n_cases_today > 0) {
+      hosp_delays <- generate(onset_to_admission, n_cases_today)
+      hosp_day <- c(hosp_day, day + hosp_delays)
+    }
+  }
+  
+  # Calculate discharges based on hospitalizations
+  for (hosp_date in hosp_day) {
+    disch_delays <- generate(admission_to_discharge, 1)
+    discharge_day <- c(discharge_day, hosp_date + disch_delays)
+  }
+  
+  list(hosp_day = hosp_day, discharge_day = discharge_day)
+}
+
+# Run the simulation
+sim_results <- simulate_hospitalizations(new_cases, onset_to_admission,
+                                         admission_to_discharge, ihr)
+
+# Calculate daily hospitalizations and discharges
+hospitalizations <- table(factor(sim_results$hosp_day, levels = 1:n_days))
+discharges <- table(factor(sim_results$discharge_day, levels = 1:n_days))
+
+# Total in hospital calculation
+in_hospital <- cumsum(hospitalizations) - cumsum(discharges)
+
+# Plot results
+plot(new_cases,type="l",ylim=c(0,30))
+lines(as.numeric(hospitalizations),col="red")
+lines(as.numeric(in_hospital),col="blue")
+```
+
+
+
+## Summary
+
+Summary text
+
+
+
+::::::::::::::::::::::::::::::::::::: keypoints 
+
+- Summarise the key points of the lesson using bullet points
+
+
+::::::::::::::::::::::::::::::::::::::::::::::::
