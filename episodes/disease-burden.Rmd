@@ -28,6 +28,12 @@ exercises: 5 # exercise time in minutes
 
 Introductory text
 
+
+```{r}
+library(epiparameter)
+```
+
+
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: instructor
 
 Inline instructor notes can help inform instructors of timing challenges
@@ -76,12 +82,12 @@ admission_to_discharge <- epiparameter(
 ihr <- 0.1 # Infection-hospitalisation ratio
 
 # Simulate hospitalizations and discharges
-simulate_hospitalizations <- function(new_cases, onset_to_admission, 
+simulate_hospitalizations <- function(new_cases, onset_to_admission,
                                       admission_to_discharge, ihr) {
   hosp_day <- c()    # Track daily hospitalizations
   discharge_day <- c() # Track daily discharges
-  
-  for (day in seq_along(new_cases)) {
+
+    for (day in seq_along(new_cases)) {
     # Hospitalizations from current day's new cases
     n_cases_today <- rbinom(1, new_cases[day], ihr)
     if (n_cases_today > 0) {
@@ -89,13 +95,13 @@ simulate_hospitalizations <- function(new_cases, onset_to_admission,
       hosp_day <- c(hosp_day, day + hosp_delays)
     }
   }
-  
+
   # Calculate discharges based on hospitalizations
   for (hosp_date in hosp_day) {
     disch_delays <- generate(admission_to_discharge, 1)
     discharge_day <- c(discharge_day, hosp_date + disch_delays)
   }
-  
+
   list(hosp_day = hosp_day, discharge_day = discharge_day)
 }
 
