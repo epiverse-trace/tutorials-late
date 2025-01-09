@@ -53,10 +53,13 @@ Lesson content
 ## A burden model
 
 ```{r}
+set.seed(200)
 # Simulate some random new cases
 n_days <- 200 # Number of days in the simulation
 new_cases <- rpois(n_days, lambda = 10) # Random daily new cases (Poisson distributed)
 new_cases[101:200] <- 0 # End outbreak after day 100
+
+new_cases <- data.frame(time = seq(1, 200, by =1), new_infections = new_cases)
 
 # Define delay parameters
 onset_to_admission <- epiparameter(
@@ -87,9 +90,10 @@ simulate_hospitalizations <- function(new_cases, onset_to_admission,
   hosp_day <- c()    # Track daily hospitalizations
   discharge_day <- c() # Track daily discharges
 
-    for (day in seq_along(new_cases)) {
+    for (i in 1:max(new_cases$time)) {
+    day <- new_cases$time[i]
     # Hospitalizations from current day's new cases
-    n_cases_today <- rbinom(1, new_cases[day], ihr)
+    n_cases_today <- rbinom(1, new_cases$new_infections[day], ihr)
     if (n_cases_today > 0) {
       hosp_delays <- generate(onset_to_admission, n_cases_today)
       hosp_day <- c(hosp_day, day + hosp_delays)
@@ -116,6 +120,7 @@ discharges <- table(factor(sim_results$discharge_day, levels = 1:n_days))
 # Total in hospital calculation
 in_hospital <- cumsum(hospitalizations) - cumsum(discharges)
 
+head(cbind(new_cases,as.numeric(hospitalizations),as.numeric(in_hospital)))
 # Plot results
 plot(new_cases,type="l",ylim=c(0,30))
 lines(as.numeric(hospitalizations),col="red")
