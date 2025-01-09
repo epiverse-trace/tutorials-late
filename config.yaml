@@ -65,7 +65,7 @@ episodes:
 - modelling-interventions.Rmd
 - compare-interventions.Rmd
 - vaccine-comparisons.Rmd
-
+- disease-burden.Rmd
 
 # Information for Learners
 learners: 
