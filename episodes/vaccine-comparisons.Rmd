@@ -8,7 +8,7 @@ exercises: 20
 
 - What are the direct and indirect effects of vaccination?
 - What are the benefits of targeted vaccination programs?
-- What is the trade off of vaccination and NPIs?
+- What happens if we combine vaccination and NPIs?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -33,7 +33,7 @@ Learners should familiarise themselves with following concept dependencies befor
 
 Vaccine programs can be used to help control epidemics via direct and indirect protection from infection. We can use mathematical models to make predictions about the potential impact of different vaccination strategies.   
 
-In the case of some infections, targeting specific risk groups for vaccination may be a more effective strategy than vaccinating everyone. When vaccine programs are not immediately available to be rolled out, either from a capacity or development perspective, we want to know how non-pharmaceutical interventions (NPIs) can be used to control the epidemic in the mean time, and after a vaccine program has started. 
+Depending on how infections spread, targeting specific risk groups for vaccination may be a more effective strategy than vaccinating everyone. When vaccine programs are not immediately available to be rolled out, either from a capacity or development perspective, we may also want to know how non-pharmaceutical interventions (NPIs) can be used to control the epidemic in the mean time, as well as after a vaccine program has started. 
 
 In this tutorial we will compare different vaccination strategies using models from `{epidemics}`. We will use the following R packages: 
 
@@ -316,7 +316,7 @@ output %>%
 
 :::
 
-To show the **indirect** effect of vaccinations, we want to see the effect that vaccination has on the number of new infections. We will use the function `new_infections()` in `{epidemics}` to calculate the number of new infections over time for the different vaccination programs. 
+To understand the **indirect** effect of vaccinations, we want to know the effect that vaccination has on transmission, and hence the rate at new infections occur. We will use the function `new_infections()` in `{epidemics}` to calculate the number of new infections over time for the different vaccination programs. 
 
 The inputs required are :
 
@@ -473,7 +473,7 @@ There is higher levels of mixing within the 0-15 and 15-65 age group, than in th
 
 To show the effect of targeted vaccination, we will compare the following scenarios:
 
-+ vaccinating each age group at a rate 0.001,
++ vaccinating all age groups at a rate 0.001,
 + vaccinating ages 0-15 only (group 1) at a rate 0.003,
 + vaccinating ages 15-65 only (group 2) at a rate 0.003,
 + vaccinating ages 65+ only (group 3) at a rate 0.003.
@@ -954,7 +954,7 @@ output_npis %>%
 
 ## Summary
 
-Using model generated disease trajectories we have investigated the potential impact of different vaccination strategies. When infection has group specific risk, targeted vaccination programs may be more effective in reducing epidemic peak. NPIs can be utilised alongside vaccine roll outs to control epidemic peaks when vaccines may not be readily available. 
+Using model generated disease trajectories we have investigated the potential impact of different vaccination strategies. When infection has group specific risk, targeted vaccination programs may be more effective in reducing epidemic peak. NPIs can be used alongside vaccine development to delay epidemic peaks before vaccines are readily available. 
 
 In this tutorial we have investigated the potential effect of infection blocking vaccines, but we can use models to explore other effects of vaccines including imperfect vaccines. The disease trajectories generated in this tutorial can be used to calculate measures such as DALYs averted as part of health economic analyses.
 
