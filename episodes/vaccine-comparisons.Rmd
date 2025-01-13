@@ -40,6 +40,7 @@ In this tutorial we will compare different vaccination strategies using models f
 ```{r, message = FALSE}
 library(ggplot2)
 library(epidemics)
+library(tidyverse)
 library(dplyr)
 ```
 
@@ -444,6 +445,17 @@ infections %>%
 We see that after accounting for the number of people vaccinated, there are fewer new infections when you have a higher vaccination rate. This is because there are fewer people susceptible to infection, and therefore fewer people who can become infected and contribute to onward infection. 
 
 This **indirect** effect of vaccination programs is key to successfully controlling and eradicating infections. 
+
+
+```{r}
+# create new column of cumulative infections
+vaccinate_01_infections$cumulative_infections <- cumsum(vaccinate_01_infections$new_infections)
+vaccinate_02_infections$cumulative_infections <- cumsum(vaccinate_02_infections$new_infections)
+
+pivot_longer(vaccinate_01_infections, cols = "cumulative_infections")
+
+```
+
 
 ::::::::::::::::::::::::::::::::::::: callout
 ## Herd immunity threshold
