@@ -807,7 +807,7 @@ output <- rbind(output_baseline, output_vacc_late,
 ```
 
 
-Early implementation of NPIs (`early npi`) shifts the timing of the peak of infectious individuals but does not decrease the magnitude by much. Early implementation of the vaccine (`early vacc`) is the most effective control for reducing the peak number of infectious individuals. Having an NPI in place before the vaccine is implemented (`early npi, late vacc`) is more effective than simply just implementing the vaccine late (`late vacc`).
+Early implementation of NPIs (`early npi`) delays the timing of the peak of infectious individuals but does not decrease the magnitude by much once the measure is lifted. Early implementation of the vaccine (`early vacc`) is the most effective control for reducing the peak number of infectious individuals, because it reduces the size of the susceptible group rather than just temporarily keeping infections away from it. Having an NPI in place before the vaccine is implemented (`early npi, late vacc`) is more effective than simply just implementing the vaccine late (`late vacc`).
 
 
 ```{r, echo = FALSE}
