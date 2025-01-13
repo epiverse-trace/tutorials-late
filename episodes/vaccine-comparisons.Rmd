@@ -463,7 +463,7 @@ For details of the mathematical derivation check out this [Plus Magazine article
 
 For infections that have a higher burden in different risk groups, targeted vaccination programs can be utilised to control infection. For example, if there is heterogeneity in contacts by age, targeting different age groups for vaccination will result in different disease trajectories. 
 
-The contact matrix for our example is :
+We will use the same contact matrix as above from [Modelling interventions](../episodes/modelling-interventions.md) :
 
 ```{r}
 contact_matrix
