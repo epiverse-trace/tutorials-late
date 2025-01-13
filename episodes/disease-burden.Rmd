@@ -52,16 +52,92 @@ Lesson content
 
 ## A burden model
 
+```{r, echo = FALSE}
+library(epidemics)
+library(socialmixr)
+library(tidyverse)
+
+# load contact and population data from socialmixr::polymod
+polymod <- socialmixr::polymod
+contact_data <- socialmixr::contact_matrix(
+  polymod,
+  countries = "United Kingdom",
+  age.limits = c(0, 20, 40),
+  symmetric = TRUE
+)
+
+# prepare contact matrix
+contact_matrix <- t(contact_data$matrix)
+
+# prepare the demography vector
+demography_vector <- contact_data$demography$population
+names(demography_vector) <- rownames(contact_matrix)
+
+# initial conditions: one in every 1 million is infected
+initial_i <- 1e-6
+initial_conditions_inf <- c(
+  S = 1 - initial_i, E = 0, I = initial_i, R = 0, V = 0
+)
+
+initial_conditions_free <- c(
+  S = 1, E = 0, I = 0, R = 0, V = 0
+)
+
+# build for all age groups
+initial_conditions <- rbind(
+  initial_conditions_inf,
+  initial_conditions_free,
+  initial_conditions_free
+)
+rownames(initial_conditions) <- rownames(contact_matrix)
+
+# prepare the population to model as affected by the epidemic
+uk_population <- epidemics::population(
+  name = "UK",
+  contact_matrix = contact_matrix,
+  demography_vector = demography_vector,
+  initial_conditions = initial_conditions
+)
+
+# time periods
+preinfectious_period <- 3.0
+infectious_period <- 7.0
+basic_reproduction <- 1.46
+
+# rates
+infectiousness_rate <- 1.0 / preinfectious_period
+recovery_rate <- 1.0 / infectious_period
+transmission_rate <- basic_reproduction / infectious_period
+
+# run an epidemic model using `epidemic()`
+output_plot <- epidemics::model_default(
+  population = uk_population,
+  transmission_rate = transmission_rate,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
+  time_end = 600, increment = 1.0
+)
+
+new_cases <- new_infections(output_plot,
+               by_group = FALSE)
+new_cases
+```
+
+
+
 ```{r}
 set.seed(200)
-# Simulate some random new cases
-n_days <- 200 # Number of days in the simulation
-new_cases <- rpois(n_days, lambda = 10) # Random daily new cases (Poisson distributed)
-new_cases[101:200] <- 0 # End outbreak after day 100
+# # simulate some random new cases
+# n_days <- 200 # number of days in the simulation
+# new_cases <- rpois(n_days, lambda = 10) # random daily new cases (Poisson distributed)
+# new_cases[101:200] <- 0 # end outbreak after day 100
+# 
+# new_cases <- data.frame(time = seq(1, 200, by =1), new_infections = new_cases)
+# new_cases
+n_days <- max(new_cases$time)
 
-new_cases <- data.frame(time = seq(1, 200, by =1), new_infections = new_cases)
 
-# Define delay parameters
+# define delay parameters
 onset_to_admission <- epiparameter(
   disease = "Disease X",
   epi_name = "onset to admission",
@@ -82,38 +158,43 @@ admission_to_discharge <- epiparameter(
   )
 )
 
-ihr <- 0.1 # Infection-hospitalisation ratio
+ihr <- 0.1 # infection-hospitalisation ratio
 
-# Simulate hospitalizations and discharges
+# simulate hospitalizations and discharges
 simulate_hospitalizations <- function(new_cases, onset_to_admission,
                                       admission_to_discharge, ihr) {
-  hosp_day <- c()    # Track daily hospitalizations
-  discharge_day <- c() # Track daily discharges
+  hosp_day <- c()    # track daily hospitalizations
+  discharge_day <- c() # track daily discharges
 
     for (i in 1:max(new_cases$time)) {
-    day <- new_cases$time[i]
-    # Hospitalizations from current day's new cases
-    n_cases_today <- rbinom(1, new_cases$new_infections[day], ihr)
+    #day <- new_cases$time[i]
+    # hospitalizations from current day's new cases
+    n_cases_today <- rbinom(1, new_cases$new_infections[i], ihr)
+    # if there are new cases on this day
     if (n_cases_today > 0) {
+      # generate the onset to admission for each case
       hosp_delays <- generate(onset_to_admission, n_cases_today)
+      # store the day of hospitalization
       hosp_day <- c(hosp_day, day + hosp_delays)
     }
   }
 
-  # Calculate discharges based on hospitalizations
+  # calculate discharges based on hospitalizations
   for (hosp_date in hosp_day) {
+    # simulate the delay time for each hospitalization date
     disch_delays <- generate(admission_to_discharge, 1)
+    # store the discharge day
     discharge_day <- c(discharge_day, hosp_date + disch_delays)
   }
 
   list(hosp_day = hosp_day, discharge_day = discharge_day)
 }
 
-# Run the simulation
+# run the simulation
 sim_results <- simulate_hospitalizations(new_cases, onset_to_admission,
                                          admission_to_discharge, ihr)
 
-# Calculate daily hospitalizations and discharges
+# calculate daily hospitalizations and discharges
 hospitalizations <- table(factor(sim_results$hosp_day, levels = 1:n_days))
 discharges <- table(factor(sim_results$discharge_day, levels = 1:n_days))
 
