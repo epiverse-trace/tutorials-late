@@ -710,7 +710,7 @@ Modelling is a useful tool for understanding the potential impact of the timing 
 
 The NPI we will consider is closing schools. Specifically, a school closure that will reduce the contacts between school aged children (aged 0-15) by 0.5, and will cause a small reduction (0.01) in the contacts between adults (aged 15 and over). For the vaccine program, we assume an equal vaccination rate of 0.01 in each age group.
 
-We define **early implementation** as the first day of the simulation  (i.e. when there are less than 100 infections in total), and **late implementation** as 50 days after the start of the simulation (i.e when there are approximately 50,000 infections in total). We assume the control measures are in place for 100 days after they start. 
+We define **early implementation** as the first day of the simulation  (i.e. when there are less than 100 infections in total), and **late implementation** as 50 days after the start of the simulation (i.e. when there are approximately 50,000 infections in total). We assume the control measures are in place for 100 days after they start. 
 
 The combinations we will consider are :
 
