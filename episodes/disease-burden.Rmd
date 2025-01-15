@@ -29,8 +29,11 @@ exercises: 5 # exercise time in minutes
 Introductory text
 
 
-```{r}
+```{r, warning = FALSE, message = FALSE}
 library(epiparameter)
+library(epidemics)
+library(socialmixr)
+library(tidyverse)
 ```
 
 
@@ -52,11 +55,7 @@ Lesson content
 
 ## A burden model
 
-```{r, echo = FALSE}
-library(epidemics)
-library(socialmixr)
-library(tidyverse)
-
+```{r, echo = FALSE, message = FALSE}
 # load contact and population data from socialmixr::polymod
 polymod <- socialmixr::polymod
 contact_data <- socialmixr::contact_matrix(
@@ -119,24 +118,12 @@ output_plot <- epidemics::model_default(
 )
 
 new_cases <- new_infections(output_plot,
-               by_group = FALSE)
-new_cases
+                            by_group = FALSE)
 ```
 
 
 
-```{r}
-set.seed(200)
-# # simulate some random new cases
-# n_days <- 200 # number of days in the simulation
-# new_cases <- rpois(n_days, lambda = 10) # random daily new cases (Poisson distributed)
-# new_cases[101:200] <- 0 # end outbreak after day 100
-# 
-# new_cases <- data.frame(time = seq(1, 200, by =1), new_infections = new_cases)
-# new_cases
-n_days <- max(new_cases$time)
-
-
+```{r, message = FALSE}
 # define delay parameters
 onset_to_admission <- epiparameter(
   disease = "Disease X",
@@ -158,54 +145,25 @@ admission_to_discharge <- epiparameter(
   )
 )
 
+```
+
+```{r, message = FALSE}
 ihr <- 0.1 # infection-hospitalisation ratio
 
-# simulate hospitalizations and discharges
-simulate_hospitalizations <- function(new_cases, onset_to_admission,
-                                      admission_to_discharge, ihr) {
-  hosp_day <- c()    # track daily hospitalizations
-  discharge_day <- c() # track daily discharges
+# Calculate expected numbers with convolution:
+hosp <- new_cases$new_infections * ihr
 
-    for (i in 1:max(new_cases$time)) {
-    #day <- new_cases$time[i]
-    # hospitalizations from current day's new cases
-    n_cases_today <- rbinom(1, new_cases$new_infections[i], ihr)
-    # if there are new cases on this day
-    if (n_cases_today > 0) {
-      # generate the onset to admission for each case
-      hosp_delays <- generate(onset_to_admission, n_cases_today)
-      # store the day of hospitalization
-      hosp_day <- c(hosp_day, day + hosp_delays)
-    }
-  }
+# define tail of the delay distribution
+tail_value <- quantile(onset_to_admission, 0.999)
 
-  # calculate discharges based on hospitalizations
-  for (hosp_date in hosp_day) {
-    # simulate the delay time for each hospitalization date
-    disch_delays <- generate(admission_to_discharge, 1)
-    # store the discharge day
-    discharge_day <- c(discharge_day, hosp_date + disch_delays)
-  }
-
-  list(hosp_day = hosp_day, discharge_day = discharge_day)
-}
-
-# run the simulation
-sim_results <- simulate_hospitalizations(new_cases, onset_to_admission,
-                                         admission_to_discharge, ihr)
-
-# calculate daily hospitalizations and discharges
-hospitalizations <- table(factor(sim_results$hosp_day, levels = 1:n_days))
-discharges <- table(factor(sim_results$discharge_day, levels = 1:n_days))
-
-# Total in hospital calculation
+hospitalizations <- convolve(hosp, rev(density(onset_to_admission, 0:tail_value)), type = "open")[1:length(hosp)]
+discharges <- convolve(hospitalizations, rev(density(admission_to_discharge, 0:tail_value)), type = "open")[1:length(hospitalizations)]
 in_hospital <- cumsum(hospitalizations) - cumsum(discharges)
 
-head(cbind(new_cases,as.numeric(hospitalizations),as.numeric(in_hospital)))
 # Plot results
-plot(new_cases,type="l",ylim=c(0,30))
-lines(as.numeric(hospitalizations),col="red")
-lines(as.numeric(in_hospital),col="blue")
+plot(new_cases, type = "l")
+lines(as.numeric(hospitalizations), col = "red")
+lines(as.numeric(in_hospital), col = "blue")
 ```
 
 
