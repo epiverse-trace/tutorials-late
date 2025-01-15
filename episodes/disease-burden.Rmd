@@ -135,6 +135,7 @@ onset_to_admission <- epiparameter(
   )
 )
 
+
 admission_to_discharge <- epiparameter(
   disease = "Disease X",
   epi_name = "admission to discharge",
@@ -144,6 +145,27 @@ admission_to_discharge <- epiparameter(
     discretise = TRUE
   )
 )
+
+x_range <- seq(0, 60, by = 0.1)
+density_df <- data.frame(days = x_range,
+                         density_admission = density(admission_to_discharge, x_range),
+                         density_discharge = density(onset_to_admission, x_range))
+
+ggplot(data = density_df, aes(x = days, y = density_admission))  +
+  geom_line() +
+  theme_bw() +
+  labs(
+    x = "onset to admission (days)",
+    y = "pdf"
+  )
+
+ggplot(data = density_df, aes(x = days, y = density_discharge)) +
+  geom_line() +
+  theme_bw() +
+  labs(
+    x = "admission to discharge (days)",
+    y = "pdf"
+  )
 
 ```
 
