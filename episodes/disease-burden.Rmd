@@ -176,10 +176,11 @@ ihr <- 0.1 # infection-hospitalisation ratio
 hosp <- new_cases$new_infections * ihr
 
 # define tail of the delay distribution
-tail_value <- quantile(onset_to_admission, 0.999)
+tail_value_admission <- quantile(onset_to_admission, 0.999)
+tail_value_discharge <- quantile(admission_to_discharge, 0.999)
 
-hospitalizations <- convolve(hosp, rev(density(onset_to_admission, 0:tail_value)), type = "open")[1:length(hosp)]
-discharges <- convolve(hospitalizations, rev(density(admission_to_discharge, 0:tail_value)), type = "open")[1:length(hospitalizations)]
+hospitalizations <- convolve(hosp, rev(density(onset_to_admission, 0:tail_value_admission)), type = "open")[1:length(hosp)]
+discharges <- convolve(hospitalizations, rev(density(admission_to_discharge, 0:tail_value_discharge)), type = "open")[1:length(hospitalizations)]
 in_hospital <- cumsum(hospitalizations) - cumsum(discharges)
 
 # Plot results
