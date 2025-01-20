@@ -26,14 +26,17 @@ exercises: 5 # exercise time in minutes
 
 ## Introduction
 
-Introductory text
+In previous tutorials we have used mathematical models to generate trajectories of infections, but we may also be interested in measures of disease. That could be measures of health in the population such as mild versus severe infections, or measures important to contingency planning of services being overwhelmed such as hospitalisations. 
 
+In the case of hospitalisations, mathematical models comprised of ODEs may include a compartment for individuals in hospital (see for example the [Vacamole model](../episodes/compare-interventions.md#vacamole-model)). For diseases like Ebola, hospitalised cases contribute to new infections and therefore it is necessary to keep track of hospitalised individuals so their contribution to infection can be modelled. When hospitalised cases contribute little to transmission we can separate out models of transmission from models of burden. 
+
+In this tutorial we will translate new infections generated from a transmission model to hospitalisations over time. We will use the in `{epidemics}` package to simulate disease trajectories, access to social contact data with `{socialmixr}` and `{ggplot2}` for plotting. 
 
 ```{r, warning = FALSE, message = FALSE}
 library(epiparameter)
 library(epidemics)
 library(socialmixr)
-library(tidyverse)
+library(ggplot2)
 ```
 
 
@@ -46,14 +49,15 @@ associated with the lessons. They appear in the "Instructor View".
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 
-## Models of transmission and models of burden
-
-Lesson content
-
-
-
-
 ## A burden model
+
+
+
+**transmission model** 
+
+**burden model** may not be strictly defined as equations but is still a model by definition. 
+
+We will first gernate new 
 
 ```{r, echo = FALSE, message = FALSE}
 # load contact and population data from socialmixr::polymod
