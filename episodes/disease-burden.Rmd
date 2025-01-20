@@ -151,7 +151,8 @@ To visualise this distribution we can create a density plot :
 ```{r}
 x_range <- seq(0, 60, by = 0.1)
 density_df <- data.frame(days = x_range,
-                         density_admission = density(onset_to_admission, x_range))
+                         density_admission = density(onset_to_admission,
+                                                     x_range))
 
 ggplot(data = density_df, aes(x = days, y = density_admission))  +
   geom_line() +
@@ -185,7 +186,8 @@ admission_to_discharge <- epiparameter(
 
 x_range <- seq(0, 60, by = 0.1)
 density_df <- data.frame(days = x_range,
-                         density_discharge = density(admission_to_discharge, x_range))
+                         density_discharge = density(admission_to_discharge,
+                                                     x_range))
 
 
 ggplot(data = density_df, aes(x = days, y = density_discharge)) +
