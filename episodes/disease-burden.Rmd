@@ -51,13 +51,9 @@ associated with the lessons. They appear in the "Instructor View".
 
 ## A burden model
 
+We will extend the influenza example in the tutorial [Simulating transmission](../episodes/simulating-transmission.md) to calculate hospitalisations over time. In this example our **transmission model** is an SEIR model comprised of ODEs. Our **burden model** will convert new infections to hospitalisations over time using processes using convolutions. 
 
-
-**transmission model** 
-
-**burden model** may not be strictly defined as equations but is still a model by definition. 
-
-We will first gernate new 
+We will first obtain the new infections through time from our influenza example (see tutorial on [Simulating transmission](../episodes/simulating-transmission.md) for code to generate `output_plot`) using `new_infections()` in `{epidemics}`
 
 ```{r, echo = FALSE, message = FALSE}
 # load contact and population data from socialmixr::polymod
@@ -121,8 +117,11 @@ output_plot <- epidemics::model_default(
   time_end = 600, increment = 1.0
 )
 
-new_cases <- new_infections(output_plot,
-                            by_group = FALSE)
+```
+
+```{r}
+new_cases <- new_infections(output_plot, by_group = FALSE)
+head(new_cases)
 ```
 
 To convert the new infections to hospitalisations we need to parameter distributions to describe the following processes :
@@ -206,21 +205,27 @@ ggplot(data = density_df, aes(x = days, y = density_discharge)) +
 
 
 
-
-```{r, message = FALSE}
+```{r}
 ihr <- 0.1 # infection-hospitalisation ratio
 
 # Calculate expected numbers with convolution:
 hosp <- new_cases$new_infections * ihr
+```
 
+```{r}
 # define tail of the delay distribution
 tail_value_admission <- quantile(onset_to_admission, 0.999)
+
+hospitalizations <- convolve(hosp, rev(density(onset_to_admission, 0:tail_value_admission)), type = "open")[seq_along(hosp)]
+```
+
+```{r}
 tail_value_discharge <- quantile(admission_to_discharge, 0.999)
-
-hospitalizations <- convolve(hosp, rev(density(onset_to_admission, 0:tail_value_admission)), type = "open")[1:length(hosp)]
-discharges <- convolve(hospitalizations, rev(density(admission_to_discharge, 0:tail_value_discharge)), type = "open")[1:length(hospitalizations)]
+discharges <- convolve(hospitalizations, rev(density(admission_to_discharge, 0:tail_value_discharge)), type = "open")[seq_along(hospitalizations)]
 in_hospital <- cumsum(hospitalizations) - cumsum(discharges)
+```
 
+```{r}
 # Plot results
 plot(new_cases, type = "l")
 lines(as.numeric(hospitalizations), col = "red")
