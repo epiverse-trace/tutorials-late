@@ -216,17 +216,23 @@ hosp <- new_cases$new_infections * ihr
 # define tail of the delay distribution
 tail_value_admission <- quantile(onset_to_admission, 0.999)
 
-hospitalizations <- convolve(hosp, rev(density(onset_to_admission, 0:tail_value_admission)), type = "open")[seq_along(hosp)]
+hospitalizations <- convolve(hosp,
+                             rev(density(onset_to_admission,
+                                         0:tail_value_admission)),
+                             type = "open")[seq_along(hosp)]
 ```
 
 ```{r}
 tail_value_discharge <- quantile(admission_to_discharge, 0.999)
-discharges <- convolve(hospitalizations, rev(density(admission_to_discharge, 0:tail_value_discharge)), type = "open")[seq_along(hospitalizations)]
+discharges <- convolve(hospitalizations, rev(density(admission_to_discharge,
+                                                     0:tail_value_discharge)),
+                       type = "open")[seq_along(hospitalizations)]
+# calculate the current number in hospital
 in_hospital <- cumsum(hospitalizations) - cumsum(discharges)
 ```
 
 ```{r}
-# Plot results
+# plot results
 plot(new_cases, type = "l")
 lines(as.numeric(hospitalizations), col = "red")
 lines(as.numeric(in_hospital), col = "blue")
