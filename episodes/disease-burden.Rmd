@@ -121,12 +121,18 @@ new_cases <- new_infections(output_plot,
                             by_group = FALSE)
 ```
 
+To convert the new infections to hospitalisations we need to parameter distributions to describe the following processes :
 
++ the time from onset of infection to admission to hospital,
+
++ the time from admission to discharge from hospital. 
+
+We will use the function `epiparameter()` from `{epiparameter}` package to define and store parameter distributions for these processes.
 
 ```{r, message = FALSE}
 # define delay parameters
 onset_to_admission <- epiparameter(
-  disease = "Disease X",
+  disease = "COVID-19",
   epi_name = "onset to admission",
   prob_distribution = create_prob_distribution(
     prob_distribution = "gamma",
@@ -134,10 +140,37 @@ onset_to_admission <- epiparameter(
     discretise = TRUE
   )
 )
+```
+
+To visualise this distribution we can create a density plot :
+
+```{r}
+x_range <- seq(0, 60, by = 0.1)
+density_df <- data.frame(days = x_range,
+                         density_admission = density(onset_to_admission, x_range))
+
+ggplot(data = density_df, aes(x = days, y = density_admission))  +
+  geom_line() +
+  theme_bw() +
+  labs(
+    x = "onset to admission (days)",
+    y = "pdf"
+  )
+
+```
 
 
+::::::::::::::::::::::::::::::::::::: challenge 
+
+## Define distribution for admission to discharge
+
+Using the function `epiparameter()` define the distribution for admission to discharge as a Gamma distribution with shape = 10 and scale = 2 and plot the density of this distribution. 
+
+:::::::::::::::::::::::: solution 
+ 
+```{r, message = FALSE}
 admission_to_discharge <- epiparameter(
-  disease = "Disease X",
+  disease = "COVID-19",
   epi_name = "admission to discharge",
   prob_distribution = create_prob_distribution(
     prob_distribution = "gamma",
@@ -148,16 +181,8 @@ admission_to_discharge <- epiparameter(
 
 x_range <- seq(0, 60, by = 0.1)
 density_df <- data.frame(days = x_range,
-                         density_admission = density(admission_to_discharge, x_range),
-                         density_discharge = density(onset_to_admission, x_range))
+                         density_discharge = density(admission_to_discharge, x_range))
 
-ggplot(data = density_df, aes(x = days, y = density_admission))  +
-  geom_line() +
-  theme_bw() +
-  labs(
-    x = "onset to admission (days)",
-    y = "pdf"
-  )
 
 ggplot(data = density_df, aes(x = days, y = density_discharge)) +
   geom_line() +
@@ -168,6 +193,13 @@ ggplot(data = density_df, aes(x = days, y = density_discharge)) +
   )
 
 ```
+
+:::::::::::::::::::::::::::::::::
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+
+
 
 ```{r, message = FALSE}
 ihr <- 0.1 # infection-hospitalisation ratio
