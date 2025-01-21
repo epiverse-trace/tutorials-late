@@ -223,6 +223,7 @@ hosp <- new_cases$new_infections * ihr
 We convolve the expected number of hospitalisations (hosp) with the distribution of onset to admission times to obtain the estimated number of new hospitalisations
 
 
+
 ```{r}
 # define tail of the delay distribution
 tail_value_admission <- quantile(onset_to_admission, 0.999)
@@ -244,17 +245,23 @@ tail_value_discharge <- quantile(admission_to_discharge, 0.999)
 discharges <- convolve(hospitalisations, rev(density(admission_to_discharge,
                                                      0:tail_value_discharge)),
                        type = "open")[seq_along(hospitalisations)]
+```
+
+#### 4. Calculate the number in hospital as the difference between the cumulative sumo of hospitalisation and the cumulative sum of discharges
+
+We can use the R function `cumsum()` to calculate the cumulative number of hospitalisations and discharges. The difference between these two quantities gives is the current number of people in hospital. 
+
+```{r}
 # calculate the current number in hospital
 in_hospital <- cumsum(hospitalisations) - cumsum(discharges)
 ```
 
-
-
+We create a data frame to plot our outcomes using `pivot_longer()`:
 ```{r}
 # create data frame
 hosp_df <- cbind(new_cases, in_hospital = in_hospital,
                  hospitalisations = hospitalisations)
-# pivot longer for plotting
+# pivot longer for plotting 
 hosp_df_long <- pivot_longer(hosp_df, cols = new_infections:hospitalisations,
                              names_to = "outcome", values_to = "value")
 
