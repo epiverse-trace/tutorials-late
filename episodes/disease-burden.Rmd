@@ -202,39 +202,58 @@ ggplot(data = density_df, aes(x = days, y = density_discharge)) +
 :::::::::::::::::::::::::::::::::
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
+To convert the new infections to number in hospital over time we will do the following:
+
+1. Calculate the expected numbers of new hospitalisations using the infection hospitalisation ratio (IHR)
+2. Calculate the estimated number of new hospitalisations using the onset to admission distribution
+3. Calculate the estimated number of discharges
+4. Calculate the number in hospital as the difference between the cumulative sumo of hospitalisation and the cumulative sum of discharges
 
 
-
+#### 1. Calculate the expected numbers of new hospitalisations using the infection hospitalisation ratio (IHR)
 ```{r}
 ihr <- 0.1 # infection-hospitalisation ratio
 
-# Calculate expected numbers with convolution:
+# calculate expected numbers with convolution:
 hosp <- new_cases$new_infections * ihr
 ```
+
+#### 2. Calculate the estimated number of new hospitalisations using the onset to admission distribution
+
+We convolve the expected number of hospitalisations (hosp) with the distribution of onset to admission times to obtain the estimated number of new hospitalisations
+
 
 ```{r}
 # define tail of the delay distribution
 tail_value_admission <- quantile(onset_to_admission, 0.999)
 
-hospitalizations <- convolve(hosp,
+hospitalisations <- convolve(hosp,
                              rev(density(onset_to_admission,
                                          0:tail_value_admission)),
                              type = "open")[seq_along(hosp)]
 ```
 
+
+#### 3. Calculate the estimated number of discharges
+
+Using the same approach as above, we convolve the hospitalisations with the distribution of admission to discharge times to obtain the estimated number of new discharges
+
+
 ```{r}
 tail_value_discharge <- quantile(admission_to_discharge, 0.999)
-discharges <- convolve(hospitalizations, rev(density(admission_to_discharge,
+discharges <- convolve(hospitalisations, rev(density(admission_to_discharge,
                                                      0:tail_value_discharge)),
-                       type = "open")[seq_along(hospitalizations)]
+                       type = "open")[seq_along(hospitalisations)]
 # calculate the current number in hospital
-in_hospital <- cumsum(hospitalizations) - cumsum(discharges)
+in_hospital <- cumsum(hospitalisations) - cumsum(discharges)
 ```
+
+
 
 ```{r}
 # plot results
 plot(new_cases, type = "l")
-lines(as.numeric(hospitalizations), col = "red")
+lines(as.numeric(hospitalisations), col = "red")
 lines(as.numeric(in_hospital), col = "blue")
 ```
 
