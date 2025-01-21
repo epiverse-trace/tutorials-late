@@ -223,7 +223,6 @@ hosp <- new_cases$new_infections * ihr
 We convolve the expected number of hospitalisations (hosp) with the distribution of onset to admission times to obtain the estimated number of new hospitalisations
 
 
-
 ```{r}
 # define tail of the delay distribution
 tail_value_admission <- quantile(onset_to_admission, 0.999)
@@ -278,13 +277,12 @@ ggplot(data = hosp_df_long) +
 
 ## Summary
 
-Summary text
-
-
+In this tutorial we estimated the number of people in hospital based on daily new infections from a transmission model. Other measures of disease burden can be calculated using outputs of transmission models, such as Disability-Adjusted Life-Years (DALYs). Calculating measures of burden from transmission models is one way we can utilise mathematical modelling in health economic analyses. 
 
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
-- Summarise the key points of the lesson using bullet points
+- Transmission models should include disease burden when it is important for onward transmission
+- Outputs of transmission models can be used as inputs to models of burden
 
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
