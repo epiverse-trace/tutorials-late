@@ -272,7 +272,7 @@ We create a data frame to plot our outcomes using `pivot_longer()`:
 # create data frame
 hosp_df <- cbind(new_cases, in_hospital = in_hospital,
                  hospitalisations = hospitalisations)
-# pivot longer for plotting 
+# pivot longer for plotting
 hosp_df_long <- pivot_longer(hosp_df, cols = new_infections:hospitalisations,
                              names_to = "outcome", values_to = "value")
 
