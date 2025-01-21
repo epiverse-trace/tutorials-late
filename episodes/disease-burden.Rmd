@@ -1,7 +1,7 @@
 ---
 title: 'Modelling disease burden'
-teaching: 10 # teaching time in minutes
-exercises: 5 # exercise time in minutes
+teaching: 40 # teaching time in minutes
+exercises: 10 # exercise time in minutes
 ---
 
 :::::::::::::::::::::::::::::::::::::: questions 
@@ -30,13 +30,13 @@ In previous tutorials we have used mathematical models to generate trajectories 
 
 In the case of hospitalisations, mathematical models comprised of ODEs may include a compartment for individuals in hospital (see for example the [Vacamole model](../episodes/compare-interventions.md#vacamole-model)). For diseases like Ebola, hospitalised cases contribute to new infections and therefore it is necessary to keep track of hospitalised individuals so their contribution to infection can be modelled. When hospitalised cases contribute little to transmission we can separate out models of transmission from models of burden. 
 
-In this tutorial we will translate new infections generated from a transmission model to hospitalisations over time. We will use the in `{epidemics}` package to simulate disease trajectories, access to social contact data with `{socialmixr}` and `{ggplot2}` for plotting. 
+In this tutorial we will translate new infections generated from a transmission model to hospitalisations over time. We will use the in `{epidemics}` package to simulate disease trajectories, access to social contact data with `{socialmixr}` and `{tidyverse}` for data manipulation and plotting. 
 
 ```{r, warning = FALSE, message = FALSE}
 library(epiparameter)
 library(epidemics)
 library(socialmixr)
-library(ggplot2)
+library(tidyverse)
 ```
 
 
@@ -154,7 +154,7 @@ density_df <- data.frame(days = x_range,
                                                      x_range))
 
 ggplot(data = density_df, aes(x = days, y = density_admission))  +
-  geom_line() +
+  geom_line(linewidth = 1.2) +
   theme_bw() +
   labs(
     x = "onset to admission (days)",
@@ -190,7 +190,7 @@ density_df <- data.frame(days = x_range,
 
 
 ggplot(data = density_df, aes(x = days, y = density_discharge)) +
-  geom_line() +
+  geom_line(linewidth = 1.2) +
   theme_bw() +
   labs(
     x = "admission to discharge (days)",
@@ -223,6 +223,7 @@ hosp <- new_cases$new_infections * ihr
 We convolve the expected number of hospitalisations (hosp) with the distribution of onset to admission times to obtain the estimated number of new hospitalisations
 
 
+
 ```{r}
 # define tail of the delay distribution
 tail_value_admission <- quantile(onset_to_admission, 0.999)
@@ -251,13 +252,29 @@ in_hospital <- cumsum(hospitalisations) - cumsum(discharges)
 
 
 ```{r}
-# plot results
-plot(new_cases, type = "l")
-lines(as.numeric(hospitalisations), col = "red")
-lines(as.numeric(in_hospital), col = "blue")
+# create data frame
+hosp_df <- cbind(new_cases, in_hospital = in_hospital,
+                 hospitalisations = hospitalisations)
+# pivot longer for plotting
+hosp_df_long <- pivot_longer(hosp_df, cols = new_infections:hospitalisations,
+                             names_to = "outcome", values_to = "value")
+
+
+ggplot(data = hosp_df_long) +
+  geom_line(
+    aes(
+      x = time,
+      y = value,
+      colour = outcome
+    ),
+    linewidth = 1.2
+  ) +
+  theme_bw() +
+  labs(
+    x = "Time (days)",
+    y = "Individuals"
+  )
 ```
-
-
 
 ## Summary
 
