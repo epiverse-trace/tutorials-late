@@ -76,7 +76,6 @@ Vaccination programs using infection-blocking vaccines have two benefits:
 1. Reducing individual risk of infection (**direct** effect of vaccination)
 2. Reducing onward contribution to transmission (**indirect** effect of vaccination).
 
-
 We will illustrate this using results from `model_default()` in `{epidemics}`. Using the contact matrix and parameters from the COVID-19 outbreak example in [Modelling interventions](../episodes/modelling-interventions.md) we will investigate the impact of two vaccination programs on the number of infections. We will assume that vaccination programs start on day 0 and continue to be in place for 150 days. We will assume all age groups are vaccinated at the same rate in each program as follows :
 
 + vaccination program 01 : vaccination rate 0.001
@@ -988,6 +987,9 @@ output_npis %>%
 ## Summary
 
 Using model generated disease trajectories we have investigated the potential impact of different vaccination strategies. When infection has group specific risk, targeted vaccination programs may be more effective in reducing epidemic peak. NPIs can be used alongside vaccine development to delay epidemic peaks before vaccines are readily available. 
+
+We used a SEIR model with a vaccination class, but if we modelled immunity to infection
+then we could investigate the impact of a vaccination program if it was implemented very late in the epidemic (i.e. after post-infection immunity had accumulated). See for example, [Baguelin et al. 2010](https://doi.org/10.1016/j.vaccine.2010.01.002)
 
 In this tutorial we have investigated the potential effect of infection blocking vaccines, but we can use models to explore other effects of vaccines including imperfect vaccines. The disease trajectories generated in this tutorial can be used to calculate measures such as [DALYs](../learners/reference.md#dalys) averted as part of health economic analyses.
 
