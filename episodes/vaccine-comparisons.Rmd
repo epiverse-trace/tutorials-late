@@ -446,14 +446,24 @@ We see that after accounting for the number of people vaccinated, there are fewe
 
 This **indirect** effect of vaccination programs is key to successfully controlling and eradicating infections. 
 
+To compare the impact of the interventions we can compare the cumulative infections under each program. We can see the difference in infection numbers is by several orders of magnitude.
 
 ```{r}
-# create new column of cumulative infections
-vaccinate_01_infections$cumulative_infections <- cumsum(vaccinate_01_infections$new_infections)
-vaccinate_02_infections$cumulative_infections <- cumsum(vaccinate_02_infections$new_infections)
+# create function that returns the intervention type and cumulative sum for
+# given infections
+find_cumsum <- function(infections) {
+  return(data.frame(intervention_type = unique(infections$intervention_type),
+                    cumulative_sum = tail(cumsum(infections$new_infections),
+                                          n = 1)))
+}
 
-pivot_longer(vaccinate_01_infections, cols = "cumulative_infections")
+# create list of interventions
+interventions <- lst(baseline_infections,
+                      vaccinate_01_infections,
+                      vaccinate_02_infections)
 
+# apply function to each data frame in the list
+map_dfr(interventions, find_cumsum)
 ```
 
 
@@ -714,7 +724,19 @@ output_infections %>%
 
 :::
 
-Vaccinating group 3 only results in the highest epidemic peak size. Targeting group 2 results in the smallest epidemic peak size. Whereas targeting all age groups pushes the epidemic peak time later.  
+Vaccinating group 3 only results in the highest epidemic peak size. Targeting group 2 results in the smallest epidemic peak size. Whereas targeting all age groups pushes the epidemic peak time later. As before, let's compare the cumulative number of infections under the different interventions:
+
+```{r}
+interventions_targetted <- lst(baseline_infections,
+                      vaccinate_01_infections,
+                      vaccinate_group_1_infections,
+                      vaccinate_group_2_infections,
+                      vaccinate_group_3_infections)
+
+# apply function to each data frame in the list
+map_dfr(interventions_targetted, find_cumsum)
+```
+
 
 ## Vaccination versus NPIs
 
