@@ -30,6 +30,9 @@ Different sampling approaches can generate biases given left and right censoring
 
 ## D
 
+[DALYs]{#dalys}
+: Disability-Adjusted Life-Years are a measure of burden of disease. Specifically they measure the years of life loss due to disease associated morbidity. [More information on DALYs](https://www.who.int/data/gho/indicator-metadata-registry/imr-details/158).
+
 [Deterministic model]{#deterministic}
 : Models that will always have the same trajectory for given initial conditions and parameter values. Examples include ordinary differential equations and difference equations. 
 

@@ -989,7 +989,7 @@ output_npis %>%
 
 Using model generated disease trajectories we have investigated the potential impact of different vaccination strategies. When infection has group specific risk, targeted vaccination programs may be more effective in reducing epidemic peak. NPIs can be used alongside vaccine development to delay epidemic peaks before vaccines are readily available. 
 
-In this tutorial we have investigated the potential effect of infection blocking vaccines, but we can use models to explore other effects of vaccines including imperfect vaccines. The disease trajectories generated in this tutorial can be used to calculate measures such as DALYs averted as part of health economic analyses.
+In this tutorial we have investigated the potential effect of infection blocking vaccines, but we can use models to explore other effects of vaccines including imperfect vaccines. The disease trajectories generated in this tutorial can be used to calculate measures such as [DALYs](../learners/reference.md#dalys) averted as part of health economic analyses.
 
 
 ::::::::::::::::::::::::::::::::::::: keypoints 
