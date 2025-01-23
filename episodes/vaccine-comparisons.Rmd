@@ -470,7 +470,7 @@ map_dfr(interventions, find_cumsum)
 ::::::::::::::::::::::::::::::::::::: callout
 ## Herd immunity threshold
 
-For homogeneous mixing populations, there exists a target threshold of vaccination based on the basic reproduction number $R_0$ to achieve [herd immunity](../learners/reference.md#herdimmunity) .
+There exists a target threshold of vaccination based on the basic reproduction number $R_0$ to achieve [herd immunity](../learners/reference.md#herdimmunity) .
 
 The proportion of the population ($p$) that needs to be immune to achieve herd immunity is:
 
