@@ -445,7 +445,10 @@ We see that after accounting for the number of people vaccinated, there are fewe
 
 This **indirect** effect of vaccination programs is key to successfully controlling and eradicating infections. 
 
-To compare the impact of the interventions we can compare the cumulative infections under each program. We can see the difference in infection numbers is by several orders of magnitude.
+
+To evaluate the impact of the vaccination programs, we are often interested in both the peak size (i.e. healthcare pressure at single point in time) as well as overall epidemic size (i.e. cumulative number of infections).
+
+We can find the cumulative sum using the R function `cumsum()` and use `purr::map_dfr()` to loop over a list of new infection data frames. We can see the difference in infection numbers is by several orders of magnitude.
 
 ```{r}
 # create function that returns the intervention type and cumulative sum for
