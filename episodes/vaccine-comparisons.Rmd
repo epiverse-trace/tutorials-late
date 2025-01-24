@@ -366,7 +366,9 @@ infections %>%
   ggplot() +
   ggtitle("New infections") +
   geom_line(
-            aes(time, new_infections, colour = intervention_type,
+            aes(time,
+              new_infections,
+              colour = intervention_type,
               linetype = intervention_type
             ),
             linewidth = 1) +
@@ -461,8 +463,8 @@ find_cumsum <- function(infections) {
 
 # create list of interventions
 interventions <- lst(baseline_infections,
-                      vaccinate_01_infections,
-                      vaccinate_02_infections)
+                     vaccinate_01_infections,
+                     vaccinate_02_infections)
 
 # apply function to each data frame in the list
 map_dfr(interventions, find_cumsum)
@@ -730,14 +732,115 @@ Vaccinating group 3 only results in the highest epidemic peak size. Targeting gr
 
 ```{r}
 interventions_targetted <- lst(baseline_infections,
-                      vaccinate_01_infections,
-                      vaccinate_group_1_infections,
-                      vaccinate_group_2_infections,
-                      vaccinate_group_3_infections)
+                               vaccinate_01_infections,
+                               vaccinate_group_1_infections,
+                               vaccinate_group_2_infections,
+                               vaccinate_group_3_infections)
 
 # apply function to each data frame in the list
 map_dfr(interventions_targetted, find_cumsum)
 ```
+
+### Age specific infection-fatality-risk 
+
+Targeting specific age groups can reduce the impact of infections that have age specific risk of mortality. To illustrate this, we can define an age specific infection-fatality-risk (IFR) :
+
+```{r}
+ifr <- c(0.00001, 0.001, 0.4)
+names(ifr) <- rownames(contact_matrix)
+```
+
+To convert infections to deaths, we will need new infections by age group, so we call `new_infections()` with `by_group = TRUE` and then mutiple the new infections by the IFR for that age group:
+
+```{r}
+vaccinate_group_1_age <- new_infections(output_vaccinate_group_1,
+                                        compartments_from_susceptible =
+                                          "vaccinated", by_group = TRUE)
+
+vaccinate_group_1_deaths <-
+  1:3 %>%
+  map_dfr(function(x) vaccinate_group_1_age %>%
+            filter(demography_group == names(ifr)[x]) %>%
+            mutate(deaths = new_infections * ifr[x]))
+```
+
+
+```{r, echo = FALSE}
+vaccinate_01_age <- new_infections(output_vaccinate_01,
+                                   compartments_from_susceptible =
+                                     "vaccinated", by_group = TRUE)
+
+vaccinate_01_deaths <-
+  1:3 %>%
+  map_dfr(function(x) vaccinate_01_age %>%
+            filter(demography_group == names(ifr)[x]) %>%
+            mutate(deaths = new_infections * ifr[x]))
+
+vaccinate_group_2_age <- new_infections(output_vaccinate_group_2,
+                                        compartments_from_susceptible =
+                                          "vaccinated", by_group = TRUE)
+
+vaccinate_group_2_deaths <-
+  1:3 %>%
+  map_dfr(function(x) vaccinate_group_2_age %>%
+            filter(demography_group == names(ifr)[x]) %>%
+            mutate(deaths = new_infections * ifr[x]))
+
+vaccinate_group_3_age <- new_infections(output_vaccinate_group_3,
+                                        compartments_from_susceptible =
+                                          "vaccinated", by_group = TRUE)
+
+vaccinate_group_3_deaths <-
+  1:3 %>%
+  map_dfr(function(x) vaccinate_group_3_age %>%
+            filter(demography_group == names(ifr)[x]) %>%
+            mutate(deaths = new_infections * ifr[x]))
+
+
+baseline_age <- new_infections(output_baseline,
+                               compartments_from_susceptible =
+                                 "vaccinated", by_group = TRUE)
+
+baseline_deaths <-
+  1:3 %>%
+  map_dfr(function(x) baseline_age %>%
+            filter(demography_group == names(ifr)[x]) %>%
+            mutate(deaths = new_infections * ifr[x]))
+```
+
+Vaccinating all age groups has the greatest impact on deaths in the eldest age group (over 65 years of age), but we also see that vaccinating group 2 reduces the deaths in the eldest age group. Targeting younger groups can the number of deaths in the eldest age group (over 65 years of age).
+
+```{r}
+baseline_deaths$intervention_type  <- "baseline"
+vaccinate_01_deaths$intervention_type  <- "vaccinate 0.001"
+vaccinate_group_1_deaths$intervention_type  <- "vaccinate group 1"
+vaccinate_group_2_deaths$intervention_type  <- "vaccinate group 2"
+vaccinate_group_3_deaths$intervention_type  <- "vaccinate group 3"
+
+output_deaths <- rbind(baseline_deaths,
+                       vaccinate_01_deaths,
+                       vaccinate_group_1_deaths,
+                       vaccinate_group_2_deaths,
+                       vaccinate_group_3_deaths)
+
+output_deaths %>%
+  filter(demography_group == "65+") %>%
+  ggplot() +
+  ggtitle("Deaths") +
+  geom_line(
+            aes(time,
+              deaths,
+              colour = intervention_type,
+              linetype = demography_group
+            ),
+            linewidth = 1) +
+  theme_bw() +
+  labs(
+    x = "Simulation time (days)",
+    y = "Individuals"
+  )
+```
+
 
 
 ## Vaccination versus NPIs
