@@ -750,7 +750,7 @@ ifr <- c(0.00001, 0.001, 0.4)
 names(ifr) <- rownames(contact_matrix)
 ```
 
-To convert infections to deaths, we will need new infections by age group, so we call `new_infections()` with `by_group = TRUE` and then mutiple the new infections by the IFR for that age group:
+To convert infections to deaths, we will need new infections by age group, so we call `new_infections()` with `by_group = TRUE` and then multiple the new infections by the IFR for that age group:
 
 ```{r}
 vaccinate_group_1_age <- new_infections(output_vaccinate_group_1,
