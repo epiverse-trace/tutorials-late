@@ -10,7 +10,9 @@ name: lint
 
 jobs:
   lint:
-    runs-on: ubuntu-latest
+    # we get errors about pak not supporting 24.04 for sysdeps with ubuntu-latest
+    # https://github.com/r-lib/pak/blob/683f1be2cc2662d8e4073167910a1dd2f1e63b89/R/system-requirements.R#L194-L204
+    runs-on: ubuntu-22.04
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       RENV_PATHS_ROOT: ~/.local/share/renv/
