@@ -4,6 +4,12 @@ teaching: 40
 exercises: 10
 ---
 
+```{r setup, echo= FALSE, message = FALSE, warning = FALSE}
+library(DiagrammeR)
+library(webshot)
+webshot::install_phantomjs(force = TRUE)
+```
+
 :::::::::::::::::::::::::::::::::::::: questions 
 
 - What is a contact matrix?
