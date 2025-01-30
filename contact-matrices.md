@@ -4,6 +4,8 @@ teaching: 40
 exercises: 10
 ---
 
+
+
 :::::::::::::::::::::::::::::::::::::: questions 
 
 - What is a contact matrix?
@@ -229,8 +231,7 @@ Whereas a contact matrix gives the average number of contacts that one groups ma
 
 Consider the SIR model where individuals are categorized as either susceptible $S$, infected but not yet infectious $E$, infectious $I$ or recovered $R$. The schematic below shows the processes which describe the flow of individuals between the disease states $S$, $I$ and $R$ and the key parameters for each process.
 
-<!--html_preserve--><div class="grViz html-widget html-fill-item" id="htmlwidget-6f06b558cb147e703ff6" style="width:504px;height:504px;"></div>
-<script type="application/json" data-for="htmlwidget-6f06b558cb147e703ff6">{"x":{"diagram":"digraph {\n\n  # graph statement\n  #################\n  graph [layout = dot,\n         rankdir = LR,\n         overlap = true,\n         fontsize = 10]\n\n  # nodes\n  #######\n  node [shape = square,\n       fixedsize = true\n       width = 1.3]\n\n       S\n       I\n       R\n\n  # edges\n  #######\n  S -> I [label = \" infection \n(transmission rate &beta;)\"]\n  I -> R [label = \" recovery \n(recovery rate &gamma;)\"]\n\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script><!--/html_preserve-->
+<img src="fig/contact-matrices-rendered-diagram-1.png" style="display: block; margin: auto;" />
 
 The [differential equations](../learners/reference.md#ordinary) below describe how individuals move from one state to another [(Bjørnstad et al. 2020)](https://doi.org/10.1038/s41592-020-0822-z).
 
