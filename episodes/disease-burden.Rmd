@@ -157,7 +157,7 @@ ggplot(data = density_df, aes(x = days, y = density_admission))  +
   geom_line(linewidth = 1.2) +
   theme_bw() +
   labs(
-    x = "onset to admission (days)",
+    x = "infection to admission (days)",
     y = "pdf"
   )
 
@@ -218,7 +218,7 @@ ihr <- 0.1 # infection-hospitalisation ratio
 hosp <- new_cases$new_infections * ihr
 ```
 
-#### 2. Calculate the estimated number of new hospitalisations using the onset to admission distribution
+#### 2. Calculate the estimated number of new hospitalisations using the infection to admission distribution
 
 To estimate the number of new hospitalisations we use a method called convolution. 
 
@@ -231,16 +231,16 @@ If we want to know how people are admitted to hospital on day $t$, then we need 
 
 The function `convolve()` requires inputs of two vectors which will be convolved and `type`. Here we will specify `type = "open"`, this fills the vectors with 0s to ensure they are the same length. 
 
-The inputs to be convolved are the expected number of infections that will end up hospitalised (`hosp`) and the density values of the distribution of onset to admission times. We will calculate the density for the minimum possible value (0 days) up to the tail of the distribution (here defined as the 99.9th quantile, i.e. it is very unlikely any cases will be hospitalised after a delay this long).
+The inputs to be convolved are the expected number of infections that will end up hospitalised (`hosp`) and the density values of the distribution of infection to admission times. We will calculate the density for the minimum possible value (0 days) up to the tail of the distribution (here defined as the 99.9th quantile, i.e. it is very unlikely any cases will be hospitalised after a delay this long).
 
 Convolution requires one of the inputs to be reversed, in our case we will reverse the density distribution of infection to admission times. This is because if people infected earlier in time get admitted today, it means they've had a longer delay from infection to admission than someone infected more recently. In effect the infection to admission delay tells us how far we have to 'rewind' time to find previously new infections that are now showing up as hospital admissions.
 
 ```{r}
 # define tail of the delay distribution
-tail_value_admission <- quantile(onset_to_admission, 0.999)
+tail_value_admission <- quantile(infection_to_admission, 0.999)
 
 hospitalisations <- convolve(hosp,
-                             rev(density(onset_to_admission,
+                             rev(density(infection_to_admission,
                                          0:tail_value_admission)),
                              type = "open")[seq_along(hosp)]
 ```
