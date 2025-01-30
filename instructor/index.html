@@ -216,7 +216,7 @@
 <div class="accordion accordion-flush" id="accordionFlush2">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading2">
-        <a href="simulating-transmission.html">1. Simulating transmission</a>
+        <a href="contact-matrices.html">1. Contact matrices</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -225,7 +225,7 @@
 <div class="accordion accordion-flush" id="accordionFlush3">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading3">
-        <a href="model-choices.html">2. Choosing an appropriate model</a>
+        <a href="simulating-transmission.html">2. Simulating transmission</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -234,7 +234,7 @@
 <div class="accordion accordion-flush" id="accordionFlush4">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading4">
-        <a href="modelling-interventions.html">3. Modelling interventions</a>
+        <a href="model-choices.html">3. Choosing an appropriate model</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -243,7 +243,16 @@
 <div class="accordion accordion-flush" id="accordionFlush5">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading5">
-        <a href="compare-interventions.html">4. Comparing public health outcomes of interventions</a>
+        <a href="modelling-interventions.html">4. Modelling interventions</a>
+    </div><!--/div.accordion-header-->
+
+  </div><!--/div.accordion-item-->
+</div><!--/div.accordion-flush-->
+
+<div class="accordion accordion-flush" id="accordionFlush6">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading6">
+        <a href="compare-interventions.html">5. Comparing public health outcomes of interventions</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -291,11 +300,11 @@
         <!-- START: inst/pkgdown/templates/content-syllabus.html -->
   <div class="col-xl-8 col-lg-12 primary-content">
     <nav class="lesson-content mx-md-4" aria-label="Next Chapter"><!-- content for small screens --><div class="d-block d-sm-block d-md-none">
-        <a class="chapter-link float-end" href="../instructor/simulating-transmission.html">Next<i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
+        <a class="chapter-link float-end" href="../instructor/contact-matrices.html">Next<i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
       </div>
       <!-- content for large screens -->
       <div class="d-none d-sm-none d-md-block">
-        <a class="chapter-link float-end" href="../instructor/simulating-transmission.html" rel="next">Next: Simulating... <i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
+        <a class="chapter-link float-end" href="../instructor/contact-matrices.html" rel="next">Next: Contact matrices... <i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
       </div>
       <hr></nav><main id="main-content" class="main-content"><h1 class="schedule-heading">Summary and Schedule</h1>
       
@@ -314,7 +323,18 @@ any links that you are not going to use.
 <span class="visually-hidden">Duration: </span>00h 00m
 </td>
 <td>
- 1. <a href="simulating-transmission.html">Simulating transmission</a>
+ 1. <a href="contact-matrices.html">Contact matrices</a>
+</td>
+<td>
+What is a contact matrix?<br>How are contact matrices
+estimated?<br>How are contact matrices used in epidemiological
+analysis?
+</td>
+</tr><tr><td>
+<span class="visually-hidden">Duration: </span>00h 50m
+</td>
+<td>
+ 2. <a href="simulating-transmission.html">Simulating transmission</a>
 </td>
 <td>
 How do I simulate disease spread using a mathematical model?<br>What
@@ -322,37 +342,37 @@ inputs are needed for a model simulation?<br>How do I account for
 uncertainty?
 </td>
 </tr><tr><td>
-<span class="visually-hidden">Duration: </span>01h 15m
+<span class="visually-hidden">Duration: </span>02h 05m
 </td>
 <td>
- 2. <a href="model-choices.html">Choosing an appropriate model</a>
+ 3. <a href="model-choices.html">Choosing an appropriate model</a>
 </td>
 <td>
 How do I choose a mathematical model that’s appropriate to complete my
 analytical task?
 </td>
 </tr><tr><td>
-<span class="visually-hidden">Duration: </span>01h 45m
+<span class="visually-hidden">Duration: </span>02h 35m
 </td>
 <td>
- 3. <a href="modelling-interventions.html">Modelling interventions</a>
+ 4. <a href="modelling-interventions.html">Modelling interventions</a>
 </td>
 <td>
 How do I investigate the effect of interventions on disease
 trajectories?
 </td>
 </tr><tr><td>
-<span class="visually-hidden">Duration: </span>03h 00m
+<span class="visually-hidden">Duration: </span>03h 50m
 </td>
 <td>
- 4. <a href="compare-interventions.html">Comparing public health
+ 5. <a href="compare-interventions.html">Comparing public health
 outcomes of interventions</a>
 </td>
 <td>
 How can I quantify the effect of an intervention?
 </td>
 </tr><tr><td>
-<span class="visually-hidden">Duration: </span>04h 15m
+<span class="visually-hidden">Duration: </span>05h 05m
 </td>
 <td>
 Finish
@@ -542,7 +562,7 @@ press <kbd>Enter</kbd>.</p>
   do you get an error with {epidemics}?
   </h3>
 </button>
-<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
+<div id="collapseSpoiler1" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler1" aria-labelledby="headingSpoiler1">
 <div class="accordion-body">
 <p>If you get an error message when installing {epidemics}, try this
 alternative code:</p>
@@ -636,11 +656,11 @@ Place links that you need to refer to multiple times across pages here. Delete
 any links that you are not going to use.
  -->
 </section></section></main><nav class="bottom-pagination mx-md-4" aria-label="Next Chapter"><!-- content for small screens --><div class="d-block d-sm-block d-md-none">
-        <a class="chapter-link float-end" href="../instructor/simulating-transmission.html">Next<i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
+        <a class="chapter-link float-end" href="../instructor/contact-matrices.html">Next<i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
       </div>
       <!-- content for large screens -->
       <div class="d-none d-sm-none d-md-block">
-        <a class="chapter-link float-end" href="../instructor/simulating-transmission.html" rel="next">Next: Simulating... <i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
+        <a class="chapter-link float-end" href="../instructor/contact-matrices.html" rel="next">Next: Contact matrices... <i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
       </div>
     </nav></div>
 <!-- END  : inst/pkgdown/templates/content-syllabus.html -->
@@ -683,9 +703,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://epiverse-trace.github.io/tutorials-late/instructor/index.html",
   "identifier": "https://epiverse-trace.github.io/tutorials-late/instructor/index.html",
-  "dateCreated": "2025-01-28",
-  "dateModified": "2025-01-28",
-  "datePublished": "2025-01-28"
+  "dateCreated": "2025-01-30",
+  "dateModified": "2025-01-30",
+  "datePublished": "2025-01-30"
 }
 
   </script><script>

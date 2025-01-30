@@ -124,11 +124,11 @@
   Scenario modelling for outbreak analytics with R
 </div>
 
-<aside class="col-md-12 lesson-progress"><div style="width: 71%" class="percentage">
-    71%
+<aside class="col-md-12 lesson-progress"><div style="width: 75%" class="percentage">
+    75%
   </div>
   <div class="progress epiverse-trace">
-    <div class="progress-bar epiverse-trace" role="progressbar" style="width: 71%" aria-valuenow="71" aria-label="Lesson Progress" aria-valuemin="0" aria-valuemax="100">
+    <div class="progress-bar epiverse-trace" role="progressbar" style="width: 75%" aria-valuenow="75" aria-label="Lesson Progress" aria-valuemin="0" aria-valuemax="100">
     </div>
   </div>
 </aside><div class="container">
@@ -212,7 +212,7 @@
 <div class="accordion accordion-flush" id="accordionFlush2">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading2">
-        <a href="simulating-transmission.html">1. Simulating transmission</a>
+        <a href="contact-matrices.html">1. Contact matrices</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -221,7 +221,7 @@
 <div class="accordion accordion-flush" id="accordionFlush3">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading3">
-        <a href="model-choices.html">2. Choosing an appropriate model</a>
+        <a href="simulating-transmission.html">2. Simulating transmission</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -230,7 +230,16 @@
 <div class="accordion accordion-flush" id="accordionFlush4">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading4">
-        <a href="modelling-interventions.html">3. Modelling interventions</a>
+        <a href="model-choices.html">3. Choosing an appropriate model</a>
+    </div><!--/div.accordion-header-->
+
+  </div><!--/div.accordion-item-->
+</div><!--/div.accordion-flush-->
+
+<div class="accordion accordion-flush" id="accordionFlush5">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading5">
+        <a href="modelling-interventions.html">4. Modelling interventions</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -242,7 +251,7 @@
       <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapsecurrent" aria-expanded="true" aria-controls="flush-collapsecurrent">
         <span class="visually-hidden">Current Chapter</span>
         <span class="current-chapter">
-        4. Comparing public health outcomes of interventions
+        5. Comparing public health outcomes of interventions
         </span>
       </button>
     </div><!--/div.accordion-header-->
@@ -316,7 +325,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Comparing public health outcomes of interventions</h1>
-        <p>Last updated on 2025-01-28 |
+        <p>Last updated on 2025-01-30 |
 
         <a href="https://github.com/epiverse-trace/tutorials-late/edit/main/episodes/compare-interventions.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -404,7 +413,7 @@ call to the <a href="https://tidyverse.tidyverse.org" class="external-link">tidy
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
   <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
 <div class="accordion-body">
 <p>In this tutorial we introduce the concept of the counter factual and
 how to compare scenarios (counter factual versus intervention) against
@@ -579,7 +588,7 @@ time</li>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint1" aria-expanded="false" aria-controls="collapseHint1">
   <h4 class="accordion-header" id="headingHint1"> HINT : Running the model with default parameter values </h4>
 </button>
-<div id="collapseHint1" class="accordion-collapse collapse" aria-labelledby="headingHint1" data-bs-parent="#accordionHint1">
+<div id="collapseHint1" class="accordion-collapse collapse" data-bs-parent="#accordionHint1" aria-labelledby="headingHint1">
 <div class="accordion-body">
 <p>We can run the Vacamole model with <a href="https://epiverse-trace.github.io/epidemics/articles/model_vacamole.html#model-epidemic-using-vacamole" class="external-link">default
 parameter values</a> by just specifying the population object and number
@@ -602,7 +611,7 @@ of time steps to run the model for:</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <ol style="list-style-type: decimal"><li>Run the model</li>
 </ol><div class="codewrapper sourceCode" id="cb6">
@@ -996,7 +1005,7 @@ may take several minutes to run.</em></p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb20">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1100,8 +1109,8 @@ total of 20000 model runs.</code></pre>
 </h3>
 <pre class="output" tabindex="0"><code>   scenario averted_median averted_lower averted_upper
       &lt;int&gt;          &lt;num&gt;         &lt;num&gt;         &lt;num&gt;
-1:        1             35             1           125
-2:        2             22           -18           119</code></pre>
+1:        1             32             1           124
+2:        2             22           -20           119</code></pre>
 </div>
 <p><strong>Note: The number of infections averted can be negative. This
 is due to the stochastic variation in the disease trajectories for a
@@ -1186,9 +1195,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://epiverse-trace.github.io/tutorials-late/instructor/compare-interventions.html",
   "identifier": "https://epiverse-trace.github.io/tutorials-late/instructor/compare-interventions.html",
-  "dateCreated": "2025-01-28",
-  "dateModified": "2025-01-28",
-  "datePublished": "2025-01-28"
+  "dateCreated": "2025-01-30",
+  "dateModified": "2025-01-30",
+  "datePublished": "2025-01-30"
 }
 
   </script><script>

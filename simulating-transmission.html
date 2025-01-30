@@ -124,11 +124,11 @@
   Scenario modelling for outbreak analytics with R
 </div>
 
-<aside class="col-md-12 lesson-progress"><div style="width: 0%" class="percentage">
-    0%
+<aside class="col-md-12 lesson-progress"><div style="width: 16%" class="percentage">
+    16%
   </div>
   <div class="progress epiverse-trace">
-    <div class="progress-bar epiverse-trace" role="progressbar" style="width: 0%" aria-valuenow="0" aria-label="Lesson Progress" aria-valuemin="0" aria-valuemax="100">
+    <div class="progress-bar epiverse-trace" role="progressbar" style="width: 16%" aria-valuenow="16" aria-label="Lesson Progress" aria-valuemin="0" aria-valuemax="100">
     </div>
   </div>
 </aside><div class="container">
@@ -209,13 +209,22 @@
   </div><!--/div.accordion-item-->
 </div><!--/div.accordion-flush-->
 
+<div class="accordion accordion-flush" id="accordionFlush2">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading2">
+        <a href="contact-matrices.html">1. Contact matrices</a>
+    </div><!--/div.accordion-header-->
+
+  </div><!--/div.accordion-item-->
+</div><!--/div.accordion-flush-->
+
 <div class="accordion accordion-flush" id="accordionFlushcurrent">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-headingcurrent">
       <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapsecurrent" aria-expanded="true" aria-controls="flush-collapsecurrent">
         <span class="visually-hidden">Current Chapter</span>
         <span class="current-chapter">
-        1. Simulating transmission
+        2. Simulating transmission
         </span>
       </button>
     </div><!--/div.accordion-header-->
@@ -233,19 +242,10 @@
   </div><!--/div.accordion-item-->
 </div><!--/div.accordion-flush-->
 
-<div class="accordion accordion-flush" id="accordionFlush3">
-  <div class="accordion-item">
-    <div class="accordion-header" id="flush-heading3">
-        <a href="model-choices.html">2. Choosing an appropriate model</a>
-    </div><!--/div.accordion-header-->
-
-  </div><!--/div.accordion-item-->
-</div><!--/div.accordion-flush-->
-
 <div class="accordion accordion-flush" id="accordionFlush4">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading4">
-        <a href="modelling-interventions.html">3. Modelling interventions</a>
+        <a href="model-choices.html">3. Choosing an appropriate model</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -254,7 +254,16 @@
 <div class="accordion accordion-flush" id="accordionFlush5">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading5">
-        <a href="compare-interventions.html">4. Comparing public health outcomes of interventions</a>
+        <a href="modelling-interventions.html">4. Modelling interventions</a>
+    </div><!--/div.accordion-header-->
+
+  </div><!--/div.accordion-item-->
+</div><!--/div.accordion-flush-->
+
+<div class="accordion accordion-flush" id="accordionFlush6">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading6">
+        <a href="compare-interventions.html">5. Comparing public health outcomes of interventions</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -302,14 +311,14 @@
         <!-- START: inst/pkgdown/templates/content-instructor.html -->
   <div class="col-xl-8 col-lg-12 primary-content">
     <nav class="lesson-content mx-md-4" aria-label="Previous and Next Chapter"><!-- content for small screens --><div class="d-block d-sm-block d-md-none">
-        <a class="chapter-link" href="index.html"><i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>Previous</a>
+        <a class="chapter-link" href="contact-matrices.html"><i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>Previous</a>
         <a class="chapter-link float-end" href="model-choices.html">Next<i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
       </div>
       <!-- content for large screens -->
       <div class="d-none d-sm-none d-md-block">
-        <a class="chapter-link" href="index.html" rel="prev">
+        <a class="chapter-link" href="contact-matrices.html" rel="prev">
           <i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>
-          Home
+          Previous: Contact matrices
         </a>
         <a class="chapter-link float-end" href="model-choices.html" rel="next">
           Next: Choosing an...
@@ -318,7 +327,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Simulating transmission</h1>
-        <p>Last updated on 2025-01-28 |
+        <p>Last updated on 2025-01-30 |
 
         <a href="https://github.com/epiverse-trace/tutorials-late/edit/main/episodes/simulating-transmission.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -444,14 +453,14 @@ and <span class="math inline">\(R\)</span>) and age group (<span class="math inl
 describing the rate of change with respect to time.</p>
 <p><span class="math display">\[
 \begin{aligned}
-\frac{dS_i}{dt} &amp; = - \beta S_i \sum_j C_{i,j} I_j \\
-\frac{dE_i}{dt} &amp;= \beta S_i\sum_j C_{i,j} I_j - \alpha E_i \\
+\frac{dS_i}{dt} &amp; = - \beta S_i \sum_j C_{i,j} I_j/N_j \\
+\frac{dE_i}{dt} &amp;= \beta S_i\sum_j C_{i,j} I_j/N_j - \alpha E_i \\
 \frac{dI_i}{dt} &amp;= \alpha E_i - \gamma I_i \\
 \frac{dR_i}{dt} &amp;=\gamma I_i \\
 \end{aligned}
 \]</span> Individuals in age group (<span class="math inline">\(i\)</span>) move from the susceptible state (<span class="math inline">\(S_i\)</span>) to the exposed state (<span class="math inline">\(E_i\)</span>) via age-specific contacts with
 infectious individuals in all groups <span class="math inline">\(\beta
-S_i \sum_j C_{i,j} I_j\)</span>. The contact matrix <span class="math inline">\(C\)</span> allows for heterogeneity in contacts
+S_i \sum_j C_{i,j} I_j/N_j\)</span>. The contact matrix <span class="math inline">\(C\)</span> allows for heterogeneity in contacts
 between age groups. They then move to the infectious state at a rate
 <span class="math inline">\(\alpha\)</span> and recover at a rate <span class="math inline">\(\gamma\)</span>. There is no loss of immunity
 (there are no flows out of the recovered state).</p>
@@ -495,10 +504,8 @@ following inputs:</p>
 <li>Model parameters</li>
 </ol><div class="section level3">
 <h3 id="contact-matrix">1. Contact matrix<a class="anchor" aria-label="anchor" href="#contact-matrix"></a></h3>
-<p>Contact matrices can be estimated from surveys or contact data, or
-synthetic ones can be used. We will use the R package
-<a href="https://github.com/epiforecasts/socialmixr" class="external-link">socialmixr</a> to load a contact matrix estimated from
-POLYMOD survey data <a href="https://doi.org/10.1371/journal.pmed.0050074" class="external-link">(Mossong et
+<p>We will use the R package <a href="https://github.com/epiforecasts/socialmixr" class="external-link">socialmixr</a> to load a contact
+matrix estimated from POLYMOD survey data <a href="https://doi.org/10.1371/journal.pmed.0050074" class="external-link">(Mossong et
 al. 2008)</a>.</p>
 <div id="load-contact-and-population-data" class="callout challenge">
 <div class="callout-square">
@@ -536,7 +543,7 @@ year age bins:</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -554,22 +561,19 @@ contact.age.group   [0,20)  [20,40)      40+
 <p>The result is a square matrix with rows and columns for each age
 group. Contact matrices can be loaded from other sources, but they must
 be formatted as a matrix to be used in <code>epidemics</code>.</p>
-<div id="why-would-a-contact-matrix-be-non-symmetric" class="callout">
+<div id="normalisation" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
-<div id="why-would-a-contact-matrix-be-non-symmetric" class="callout-inner">
-<h3 class="callout-title">Why would a contact matrix be non-symmetric?</h3>
+<div id="normalisation" class="callout-inner">
+<h3 class="callout-title">Normalisation</h3>
 <div class="callout-content">
-<p>One of the arguments of the function <code>contact_matrix()</code> is
-<code>symmetric=TRUE</code>. This means that the total number of
-contacts of age group 1 with age group 2, should be the same as the
-total number of contacts of age group 2 and age group 1 (see the
-<code>socialmixr</code> <a href="https://cran.r-project.org/web/packages/socialmixr/vignettes/socialmixr.html" class="external-link">vignette</a>
-for more detail). However, when contact matrices are estimated from
-surveys or other sources, the <em>reported</em> number of contacts may
-differ by age group resulting in a non-symmetric contact matrix <a href="https://doi.org/10.1371/journal.pcbi.1009098" class="external-link">(Prem et al
-2021)</a>.</p>
+<p>In <code>{epidemics}</code> the contact matrix normalisation happens
+within the function call, so we don’t need to normalise the contact
+matrix before we pass it to <code>population()</code> (see section 3.
+Population Structure). For details on normalisation, see the tutorial on
+<a href="%5BSimulating%20transmission%5D(../episodes/contact-matrices.md)">contact
+matrices</a> .</p>
 </div>
 </div>
 </div>
@@ -952,14 +956,14 @@ any links that you are not going to use.
  -->
 </section></div> <!-- / div.lesson-content -->
     </main><!-- / main#main-content.main-content --><nav class="bottom-pagination mx-md-4" aria-label="Previous and Next Chapter"><div class="d-block d-sm-block d-md-none">
-        <a class="chapter-link" href="index.html"><i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>Previous</a>
+        <a class="chapter-link" href="contact-matrices.html"><i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>Previous</a>
         <a class="chapter-link float-end" href="model-choices.html">Next<i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
       </div>
       <!-- content for large screens -->
       <div class="d-none d-sm-none d-md-block">
-        <a class="chapter-link" href="index.html" rel="prev">
+        <a class="chapter-link" href="contact-matrices.html" rel="prev">
           <i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>
-          Home
+          Previous: Contact matrices
         </a>
         <a class="chapter-link float-end" href="model-choices.html" rel="next">
           Next: Choosing an...
@@ -1007,9 +1011,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://epiverse-trace.github.io/tutorials-late/simulating-transmission.html",
   "identifier": "https://epiverse-trace.github.io/tutorials-late/simulating-transmission.html",
-  "dateCreated": "2025-01-28",
-  "dateModified": "2025-01-28",
-  "datePublished": "2025-01-28"
+  "dateCreated": "2025-01-30",
+  "dateModified": "2025-01-30",
+  "datePublished": "2025-01-30"
 }
 
   </script><script>
