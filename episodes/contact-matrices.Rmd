@@ -5,8 +5,7 @@ exercises: 10
 ---
 
 ```{r setup, echo= FALSE, message = FALSE, warning = FALSE}
-library(DiagrammeR)
-library(webshot)
+# we need {webshot} to print {DiagrammeR} outputs
 webshot::install_phantomjs(force = TRUE)
 ```
 
