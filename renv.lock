@@ -1228,6 +1228,65 @@
       "Maintainer": "Dirk Eddelbuettel <edd@debian.org>",
       "Repository": "CRAN"
     },
+    "distcrete": {
+      "Package": "distcrete",
+      "Version": "1.0.3",
+      "Source": "Repository",
+      "Title": "Discrete Distribution Approximations",
+      "Authors@R": "c( person(\"Steph\",\"Locke\", role=\"cre\", email = \"steph@itsalocke.com\"), person(\"Rich\", \"FitzJohn\", role = c(\"aut\"), email = \"rich.fitzjohn@gmail.com\"), person(\"Anne\", \"Cori\", role = \"aut\"), person(\"Thibaut\", \"Jombart\", role = \"aut\"))",
+      "Description": "Creates discretised versions of continuous  distribution functions by mapping continuous values  to an underlying discrete grid, based on a (uniform)  frequency of discretisation, a valid discretisation  point, and an integration range. For a review of  discretisation methods, see  Chakraborty (2015) <doi:10.1186/s40488-015-0028-6>.",
+      "License": "MIT + file LICENSE",
+      "LazyData": "true",
+      "URL": "https://github.com/reconhub/distcrete",
+      "BugReports": "https://github.com/reconhub/distcrete/issues",
+      "Suggests": [
+        "knitr",
+        "rmarkdown",
+        "testthat"
+      ],
+      "RoxygenNote": "6.0.1",
+      "VignetteBuilder": "knitr",
+      "NeedsCompilation": "no",
+      "Author": "Steph Locke [cre], Rich FitzJohn [aut], Anne Cori [aut], Thibaut Jombart [aut]",
+      "Maintainer": "Steph Locke <steph@itsalocke.com>",
+      "Repository": "CRAN"
+    },
+    "distributional": {
+      "Package": "distributional",
+      "Version": "0.4.0",
+      "Source": "Repository",
+      "Title": "Vectorised Probability Distributions",
+      "Authors@R": "c(person(given = \"Mitchell\", family = \"O'Hara-Wild\", role = c(\"aut\", \"cre\"), email = \"mail@mitchelloharawild.com\", comment = c(ORCID = \"0000-0001-6729-7695\")), person(given = \"Matthew\", family = \"Kay\", role = c(\"aut\"), comment = c(ORCID = \"0000-0001-9446-0419\")), person(given = \"Alex\", family = \"Hayes\", role = c(\"aut\"), comment = c(ORCID = \"0000-0002-4985-5160\")), person(given = \"Earo\", family = \"Wang\", role = c(\"ctb\"), comment = c(ORCID = \"0000-0001-6448-5260\")))",
+      "Description": "Vectorised distribution objects with tools for manipulating,  visualising, and using probability distributions. Designed to allow model prediction outputs to return distributions rather than their parameters,  allowing users to directly interact with predictive distributions in a data-oriented workflow. In addition to providing generic replacements for p/d/q/r functions, other useful statistics can be computed including means, variances, intervals, and highest density regions.",
+      "License": "GPL-3",
+      "Imports": [
+        "vctrs (>= 0.3.0)",
+        "rlang (>= 0.4.5)",
+        "generics",
+        "stats",
+        "numDeriv",
+        "utils",
+        "lifecycle"
+      ],
+      "Suggests": [
+        "testthat (>= 2.1.0)",
+        "covr",
+        "mvtnorm",
+        "actuar (>= 2.0.0)",
+        "ggdist",
+        "ggplot2"
+      ],
+      "RdMacros": "lifecycle",
+      "URL": "https://pkg.mitchelloharawild.com/distributional/, https://github.com/mitchelloharawild/distributional",
+      "BugReports": "https://github.com/mitchelloharawild/distributional/issues",
+      "Encoding": "UTF-8",
+      "Language": "en-GB",
+      "RoxygenNote": "7.2.3",
+      "NeedsCompilation": "no",
+      "Author": "Mitchell O'Hara-Wild [aut, cre] (<https://orcid.org/0000-0001-6729-7695>), Matthew Kay [aut] (<https://orcid.org/0000-0001-9446-0419>), Alex Hayes [aut] (<https://orcid.org/0000-0002-4985-5160>), Earo Wang [ctb] (<https://orcid.org/0000-0001-6448-5260>)",
+      "Maintainer": "Mitchell O'Hara-Wild <mail@mitchelloharawild.com>",
+      "Repository": "CRAN"
+    },
     "dplyr": {
       "Package": "dplyr",
       "Version": "1.1.4",
@@ -1395,6 +1454,93 @@
       "RemotePkgRef": "epiverse-trace/epidemics",
       "RemoteRef": "HEAD",
       "RemoteSha": "f706261bac19282e813ca43675ff16dcb79b3d40"
+    },
+    "epiparameter": {
+      "Package": "epiparameter",
+      "Version": "0.4.0",
+      "Source": "Repository",
+      "Title": "Classes and Helper Functions for Working with Epidemiological Parameters",
+      "Authors@R": "c( person(\"Joshua W.\", \"Lambert\", , \"joshua.lambert@lshtm.ac.uk\", role = c(\"aut\", \"cre\", \"cph\"), comment = c(ORCID = \"0000-0001-5218-3046\")), person(\"Adam\", \"Kucharski\", , \"adam.kucharski@lshtm.ac.uk\", role = c(\"aut\", \"cph\"), comment = c(ORCID = \"0000-0001-8814-9421\")), person(\"Carmen\", \"Tamayo\", , \"carmen.tamayo-cuartero@lshtm.ac.uk\", role = \"aut\", comment = c(ORCID = \"0000-0003-4184-2864\")), person(\"Hugo\", \"Gruson\", , \"hugo.gruson@data.org\", role = c(\"ctb\", \"rev\"), comment = c(ORCID = \"0000-0002-4094-1476\")), person(\"Sebastian\", \"Funk\", , \"sebastian.funk@lshtm.ac.uk\", role = \"ctb\", comment = c(ORCID = \"0000-0002-2842-3406\")), person(\"Pratik\", \"Gupte\", , \"pratik.gupte@lshtm.ac.uk\", role = \"rev\", comment = c(ORCID = \"0000-0001-5294-7819\")), person(\"James M.\", \"Azam\", , \"james.azam@lshtm.ac.uk\", role = \"rev\", comment = c(ORCID = \"0000-0001-5782-7330\")), person(\"Chris\", \"Hartgerink\", , \"chris@data.org\", role = \"rev\", comment = c(ORCID = \"0000-0003-1050-6809\")), person(\"Tim\", \"Taylor\", , \"tim.taylor@hiddenelephants.co.uk\", role = \"rev\", comment = c(ORCID = \"0000-0002-8587-7113\")) )",
+      "Description": "Classes and helper functions for loading, extracting, converting,  manipulating, plotting and aggregating epidemiological parameters for infectious diseases.  Epidemiological parameters extracted from the literature are loaded from the 'epiparameterDB' R package.",
+      "License": "MIT + file LICENSE",
+      "URL": "https://github.com/epiverse-trace/epiparameter/, https://epiverse-trace.github.io/epiparameter/",
+      "BugReports": "https://github.com/epiverse-trace/epiparameter/issues",
+      "Depends": [
+        "R (>= 4.1.0)"
+      ],
+      "Imports": [
+        "cachem",
+        "checkmate",
+        "cli",
+        "distcrete",
+        "distributional",
+        "epiparameterDB",
+        "graphics",
+        "lifecycle",
+        "pillar",
+        "rlang",
+        "stats",
+        "tools",
+        "utils"
+      ],
+      "Suggests": [
+        "bookdown",
+        "DT",
+        "ggplot2",
+        "knitr",
+        "RColorBrewer",
+        "rmarkdown",
+        "spelling",
+        "testthat (>= 3.0.0)",
+        "vdiffr (>= 1.0.7)",
+        "visNetwork"
+      ],
+      "VignetteBuilder": "knitr",
+      "Config/Needs/check": "mrc-ide/epireview",
+      "Config/Needs/website": "epiverse-trace/epiversetheme, mrc-ide/epireview",
+      "Config/potools/style": "explicit",
+      "Config/testthat/edition": "3",
+      "Encoding": "UTF-8",
+      "Language": "en-GB",
+      "LazyData": "true",
+      "RoxygenNote": "7.3.2",
+      "NeedsCompilation": "no",
+      "Author": "Joshua W. Lambert [aut, cre, cph] (<https://orcid.org/0000-0001-5218-3046>), Adam Kucharski [aut, cph] (<https://orcid.org/0000-0001-8814-9421>), Carmen Tamayo [aut] (<https://orcid.org/0000-0003-4184-2864>), Hugo Gruson [ctb, rev] (<https://orcid.org/0000-0002-4094-1476>), Sebastian Funk [ctb] (<https://orcid.org/0000-0002-2842-3406>), Pratik Gupte [rev] (<https://orcid.org/0000-0001-5294-7819>), James M. Azam [rev] (<https://orcid.org/0000-0001-5782-7330>), Chris Hartgerink [rev] (<https://orcid.org/0000-0003-1050-6809>), Tim Taylor [rev] (<https://orcid.org/0000-0002-8587-7113>)",
+      "Maintainer": "Joshua W. Lambert <joshua.lambert@lshtm.ac.uk>",
+      "Repository": "CRAN"
+    },
+    "epiparameterDB": {
+      "Package": "epiparameterDB",
+      "Version": "0.1.0",
+      "Source": "Repository",
+      "Title": "Database of Epidemiological Parameters",
+      "Authors@R": "c( person(\"Joshua W.\", \"Lambert\", , \"joshua.lambert@lshtm.ac.uk\", role = c(\"cre\", \"aut\", \"cph\"), comment = c(ORCID = \"0000-0001-5218-3046\")), person(\"Adam\", \"Kucharski\", , \"adam.kucharski@lshtm.ac.uk\", role = \"aut\", comment = c(ORCID = \"0000-0001-8814-9421\")), person(\"Carmen\", \"Tamayo\", , \"carmen.tamayo-cuartero@lshtm.ac.uk\", role = \"aut\", comment = c(ORCID = \"0000-0003-4184-2864\")) )",
+      "Description": "A data package containing a database of epidemiological parameters. It stores the data for the 'epiparameter' R package. Epidemiological parameter estimates are extracted from the literature.",
+      "License": "CC0",
+      "URL": "https://github.com/epiverse-trace/epiparameterDB/",
+      "BugReports": "https://github.com/epiverse-trace/epiparameterDB/issues",
+      "Depends": [
+        "R (>= 4.0.0)"
+      ],
+      "Suggests": [
+        "DT",
+        "jsonlite",
+        "knitr",
+        "rmarkdown",
+        "spelling",
+        "testthat (>= 3.0.0)"
+      ],
+      "VignetteBuilder": "knitr",
+      "Config/Needs/website": "epiverse-trace/epiversetheme",
+      "Config/testthat/edition": "3",
+      "Encoding": "UTF-8",
+      "Language": "en-GB",
+      "LazyData": "true",
+      "RoxygenNote": "7.3.2",
+      "NeedsCompilation": "no",
+      "Author": "Joshua W. Lambert [cre, aut, cph] (<https://orcid.org/0000-0001-5218-3046>), Adam Kucharski [aut] (<https://orcid.org/0000-0001-8814-9421>), Carmen Tamayo [aut] (<https://orcid.org/0000-0003-4184-2864>)",
+      "Maintainer": "Joshua W. Lambert <joshua.lambert@lshtm.ac.uk>",
+      "Repository": "CRAN"
     },
     "evaluate": {
       "Package": "evaluate",
@@ -2834,6 +2980,25 @@
       "NeedsCompilation": "yes",
       "Author": "José Pinheiro [aut] (S version), Douglas Bates [aut] (up to 2007), Saikat DebRoy [ctb] (up to 2002), Deepayan Sarkar [ctb] (up to 2005), EISPACK authors [ctb] (src/rs.f), Siem Heisterkamp [ctb] (Author fixed sigma), Bert Van Willigen [ctb] (Programmer fixed sigma), Johannes Ranke [ctb] (varConstProp()), R Core Team [aut, cre] (02zz1nj61)",
       "Maintainer": "R Core Team <R-core@R-project.org>",
+      "Repository": "CRAN"
+    },
+    "numDeriv": {
+      "Package": "numDeriv",
+      "Version": "2016.8-1.1",
+      "Source": "Repository",
+      "Title": "Accurate Numerical Derivatives",
+      "Description": "Methods for calculating (usually) accurate numerical first and second order derivatives. Accurate calculations  are done using 'Richardson''s' extrapolation or, when applicable, a complex step derivative is available. A simple difference  method is also provided. Simple difference is (usually) less accurate but is much quicker than 'Richardson''s' extrapolation and provides a  useful cross-check.  Methods are provided for real scalar and vector valued functions.",
+      "Depends": [
+        "R (>= 2.11.1)"
+      ],
+      "LazyLoad": "yes",
+      "ByteCompile": "yes",
+      "License": "GPL-2",
+      "Copyright": "2006-2011, Bank of Canada. 2012-2016, Paul Gilbert",
+      "Author": "Paul Gilbert and Ravi Varadhan",
+      "Maintainer": "Paul Gilbert <pgilbert.ttv9z@ncf.ca>",
+      "URL": "http://optimizer.r-forge.r-project.org/",
+      "NeedsCompilation": "no",
       "Repository": "CRAN"
     },
     "oai": {
