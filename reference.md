@@ -30,6 +30,9 @@ Different sampling approaches can generate biases given left and right censoring
 
 ## D
 
+[DALYs]{#dalys}
+: Disability-Adjusted Life-Years are a measure of burden of disease. Specifically they measure the years of life loss due to disease associated morbidity. [More information on DALYs](https://www.who.int/data/gho/indicator-metadata-registry/imr-details/158).
+
 [Deterministic model]{#deterministic}
 : Models that will always have the same trajectory for given initial conditions and parameter values. Examples include ordinary differential equations and difference equations. 
 
@@ -53,7 +56,10 @@ The generation time distribution is commonly estimated from data on the [serial 
 [Growth rate]{#growth}
 : The exponential growth rate tells us how much cases are increasing or decreasing at the start of an epidemic. It gives us a measure of speed of transmission, see [Dushoff & Park, 2021](https://royalsocietypublishing.org/doi/full/10.1098/rspb.2020.1556).
 
-<!-- ## H -->
+## H
+[Herd immunity]{#herdimmunity}
+When enough of the population are immune to infection, susceptible individuals are protected from infection.
+[More information on herd immunity](https://vaccineknowledge.ox.ac.uk/herd-immunity#What-is-herd-immunity).
 
 ## I 
 
