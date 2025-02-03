@@ -1,0 +1,270 @@
+---
+title: 'Modelling disease burden'
+teaching: 40 # teaching time in minutes
+exercises: 10 # exercise time in minutes
+---
+
+:::::::::::::::::::::::::::::::::::::: questions 
+
+- How can we model disease burden and healthcare demand?
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::: objectives
+
+- Understand when mathematical models of transmission can be separated from models of burden
+- Generate estimates of disease burden and healthcare demand using a burden model
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::: prereq
+
++ Complete tutorial on [Simulating transmission](../episodes/simulating-transmission.md)
+
+:::::::::::::::::::::::::::::::::
+
+
+## Introduction
+
+In previous tutorials we have used mathematical models to generate trajectories of infections, but we may also be interested in measures of disease. That could be measures of health in the population such as mild versus severe infections, or measures important to contingency planning of services being overwhelmed such as hospitalisations. 
+
+In the case of hospitalisations, mathematical models comprised of ODEs may include a compartment for individuals in hospital (see for example the [Vacamole model](../episodes/compare-interventions.md#vacamole-model)). For diseases like Ebola, hospitalised cases contribute to new infections and therefore it is necessary to keep track of hospitalised individuals so their contribution to infection can be modelled. When hospitalised cases contribute little to transmission (i.e. if most transmission happens early in the infection and severe illness typically occurs later on) we can separate out models of transmission from models of burden. In other wrods, we can first run an epidemic model to simulate infections, then use these values to simulate disease burden as a follow-on analysis.
+
+In this tutorial we will translate new infections generated from a transmission model to hospital admissions and number of hospitalised cases over time. We will use the in `{epidemics}` package to simulate disease trajectories, access to social contact data with `{socialmixr}` and `{tidyverse}` for data manipulation and plotting. 
+
+
+``` r
+library(epiparameter)
+library(epidemics)
+library(socialmixr)
+library(tidyverse)
+```
+
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: instructor
+
+Inline instructor notes can help inform instructors of timing challenges
+associated with the lessons. They appear in the "Instructor View".
+
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+## A burden model
+
+We will extend the influenza example in the tutorial [Simulating transmission](../episodes/simulating-transmission.md) to calculate hospitalisations over time. In this example our **transmission model** is an SEIR model comprised of ODEs. Our **burden model** will convert new infections to hospitalisations over time by summing up all the new hospitalisations we expect to occur on each day according to the delay from infection to hospitalisation. We can do this summation using a calculation known as a convolution.
+
+We will first obtain the new infections through time from our influenza example (see tutorial on [Simulating transmission](../episodes/simulating-transmission.md) for code to generate `output_plot`) using `new_infections()` in `{epidemics}`
+
+
+
+
+``` r
+new_cases <- new_infections(output_plot, by_group = FALSE)
+head(new_cases)
+```
+
+``` output
+Key: <time>
+    time new_infections
+   <num>          <num>
+1:     0       0.000000
+2:     1       3.467732
+3:     2       3.205905
+4:     3       3.110635
+5:     4       3.116127
+6:     5       3.183494
+```
+
+To convert the new infections to hospitalisations we need to parameter distributions to describe the following processes :
+
++ the time from infection to admission to hospital,
+
++ the time from admission to discharge from hospital. 
+
+We will use the function `epiparameter()` from `{epiparameter}` package to define and store parameter distributions for these processes.
+
+
+``` r
+# define delay parameters
+infection_to_admission <- epiparameter(
+  disease = "COVID-19",
+  epi_name = "infection to admission",
+  prob_distribution = create_prob_distribution(
+    prob_distribution = "gamma",
+    prob_distribution_params = c(shape = 5, scale = 4),
+    discretise = TRUE
+  )
+)
+```
+
+To visualise this distribution we can create a density plot :
+
+
+``` r
+x_range <- seq(0, 60, by = 0.1)
+density_df <- data.frame(days = x_range,
+                         density_admission = density(infection_to_admission,
+                                                     x_range))
+
+ggplot(data = density_df, aes(x = days, y = density_admission))  +
+  geom_line(linewidth = 1.2) +
+  theme_bw() +
+  labs(
+    x = "infection to admission (days)",
+    y = "pdf"
+  )
+```
+
+<img src="fig/disease-burden-rendered-unnamed-chunk-5-1.png" style="display: block; margin: auto;" />
+
+
+::::::::::::::::::::::::::::::::::::: challenge 
+
+## Define distribution for admission to discharge
+
+Using the function `epiparameter()` define the distribution for admission to discharge as a Gamma distribution with shape = 10 and scale = 2 and plot the density of this distribution. 
+
+:::::::::::::::::::::::: solution 
+ 
+
+``` r
+admission_to_discharge <- epiparameter(
+  disease = "COVID-19",
+  epi_name = "admission to discharge",
+  prob_distribution = create_prob_distribution(
+    prob_distribution = "gamma",
+    prob_distribution_params = c(shape = 10, scale = 2),
+    discretise = TRUE
+  )
+)
+
+x_range <- seq(0, 60, by = 0.1)
+density_df <- data.frame(days = x_range,
+                         density_discharge = density(admission_to_discharge,
+                                                     x_range))
+
+
+ggplot(data = density_df, aes(x = days, y = density_discharge)) +
+  geom_line(linewidth = 1.2) +
+  theme_bw() +
+  labs(
+    x = "admission to discharge (days)",
+    y = "pdf"
+  )
+```
+
+<img src="fig/disease-burden-rendered-unnamed-chunk-6-1.png" style="display: block; margin: auto;" />
+
+:::::::::::::::::::::::::::::::::
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+To convert the new infections to number in hospital over time we will do the following:
+
+1. Calculate the expected numbers of new infections that will be hospitalised using the infection hospitalisation ratio (IHR)
+2. Calculate the estimated number of new hospitalisations at each point in time using the infection to admission distribution
+3. Calculate the estimated number of discharge at each point in time using the admission to discharge distribution
+4. Calculate the number in hospital at each point in time as the difference between the cumulative sum of hospital admissions and the cumulative sum of discharges so far.
+
+
+#### 1. Calculate the expected numbers of new hospitalisations using the infection hospitalisation ratio (IHR)
+
+``` r
+ihr <- 0.1 # infection-hospitalisation ratio
+
+# calculate expected numbers with convolution:
+hosp <- new_cases$new_infections * ihr
+```
+
+#### 2. Calculate the estimated number of new hospitalisations using the infection to admission distribution
+
+To estimate the number of new hospitalisations we use a method called convolution. 
+
+::::::::::::::::::::::::::::::::::::: callout
+### What is convolution?
+
+If we want to know how people are admitted to hospital on day $t$, then we need to add up the number of people admitted on day $t$ but infected on day $t-1$, day $t-2$, day $t-3$ etc. We therefore need to sum over the distribution of delays from infection to admission. If $f_j$ is the probability an infected individual who will be hospitalised will be admitted to hospital $j$ days later, and $I_{t-j}$ is the number of individuals infected on day $t-j$, then the total admissions on day $t$ is equal to $\sum_j I_{t-j} f_j$.  This type of rolling calculation is known as a convolution (see this [Wolfram article](https://mathworld.wolfram.com/Convolution.html) for some mathematical detail). There are different methods to calculate convolutions, but we will use the built in R function `convolve()`to perform the summation efficiently from the number of infections and the delay distribution.
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+The function `convolve()` requires inputs of two vectors which will be convolved and `type`. Here we will specify `type = "open"`, this fills the vectors with 0s to ensure they are the same length. 
+
+The inputs to be convolved are the expected number of infections that will end up hospitalised (`hosp`) and the density values of the distribution of infection to admission times. We will calculate the density for the minimum possible value (0 days) up to the tail of the distribution (here defined as the 99.9th quantile, i.e. it is very unlikely any cases will be hospitalised after a delay this long).
+
+Convolution requires one of the inputs to be reversed, in our case we will reverse the density distribution of infection to admission times. This is because if people infected earlier in time get admitted today, it means they've had a longer delay from infection to admission than someone infected more recently. In effect the infection to admission delay tells us how far we have to 'rewind' time to find previously new infections that are now showing up as hospital admissions.
+
+
+``` r
+# define tail of the delay distribution
+tail_value_admission <- quantile(infection_to_admission, 0.999)
+
+hospitalisations <- convolve(hosp,
+                             rev(density(infection_to_admission,
+                                         0:tail_value_admission)),
+                             type = "open")[seq_along(hosp)]
+```
+
+
+#### 3. Calculate the estimated number of discharges
+
+Using the same approach as above, we convolve the hospitalisations with the distribution of admission to discharge times to obtain the estimated number of new discharges.
+
+
+
+``` r
+tail_value_discharge <- quantile(admission_to_discharge, 0.999)
+discharges <- convolve(hospitalisations, rev(density(admission_to_discharge,
+                                                     0:tail_value_discharge)),
+                       type = "open")[seq_along(hospitalisations)]
+```
+
+#### 4. Calculate the number in hospital as the difference between the cumulative sumo of hospitalisation and the cumulative sum of discharges
+
+We can use the R function `cumsum()` to calculate the cumulative number of hospitalisations and discharges. The difference between these two quantities gives is the current number of people in hospital. 
+
+
+``` r
+# calculate the current number in hospital
+in_hospital <- cumsum(hospitalisations) - cumsum(discharges)
+```
+
+We create a data frame to plot our outcomes using `pivot_longer()`:
+
+``` r
+# create data frame
+hosp_df <- cbind(new_cases, in_hospital = in_hospital,
+                 hospitalisations = hospitalisations)
+# pivot longer for plotting
+hosp_df_long <- pivot_longer(hosp_df, cols = new_infections:hospitalisations,
+                             names_to = "outcome", values_to = "value")
+
+
+ggplot(data = hosp_df_long) +
+  geom_line(
+    aes(
+      x = time,
+      y = value,
+      colour = outcome
+    ),
+    linewidth = 1.2
+  ) +
+  theme_bw() +
+  labs(
+    x = "Time (days)",
+    y = "Individuals"
+  )
+```
+
+<img src="fig/disease-burden-rendered-unnamed-chunk-11-1.png" style="display: block; margin: auto;" />
+
+## Summary
+
+In this tutorial we estimated the number of people in hospital based on daily new infections from a transmission model. Other measures of disease burden can be calculated using outputs of transmission models, such as Disability-Adjusted Life-Years (DALYs). Calculating measures of burden from transmission models is one way we can utilise mathematical modelling in health economic analyses. As a follow-up, you might also be interested in [this how to guide](https://epiverse-trace.github.io/howto/analyses/reconstruct_transmission/estimate_infections.html), which shows how we can take reported hospitalisations or deaths over time and 'de-convolve' them to get an estimate of the original infection events.
+
+::::::::::::::::::::::::::::::::::::: keypoints 
+
+- Transmission models should include disease burden when it is important for onward transmission
+- Outputs of transmission models can be used as inputs to models of burden
+
+
+::::::::::::::::::::::::::::::::::::::::::::::::
