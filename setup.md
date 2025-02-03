@@ -107,7 +107,9 @@ if(!require("pak")) install.packages("pak")
 
 new_packages <- c(
   "socialmixr",
+  "finalsize",
   "epiverse-trace/epidemics",
+  "epiparameter",
   "scales",
   "tidyverse"
 )
@@ -176,7 +178,9 @@ When the installation has finished, you can try to load the packages by pasting 
 
 ```r
 library(socialmixr)
+library(finalsize)
 library(epidemics)
+library(epiparameter)
 library(scales)
 library(tidyverse)
 ```

@@ -14,6 +14,6 @@
 "instructors/instructor-notes.md" "ca3834a1b0f9e70c4702aa7a367a6bb5" "site/built/instructor-notes.md" "2025-02-03"
 "learners/BF_measles.Rmd" "96bb097b26f09276c095e12f5c9927dc" "site/built/BF_measles.md" "2025-02-03"
 "learners/reference.md" "9e836f1ec999f95f55135cdd2c78d2e6" "site/built/reference.md" "2025-02-03"
-"learners/setup.md" "84c16abddfc207bfb445fdd69d4f36a9" "site/built/setup.md" "2025-02-03"
+"learners/setup.md" "30977fe4b0add6ea48f908226b2a2204" "site/built/setup.md" "2025-02-03"
 "profiles/learner-profiles.md" "31b503c4b5bd1f0960ada730eca4a25e" "site/built/learner-profiles.md" "2025-02-03"
 "renv/profiles/lesson-requirements/renv.lock" "2cd10aa66d17c7dbcc1313ac51ca3e6b" "site/built/renv.lock" "2025-02-03"
