@@ -10,9 +10,7 @@ name: lint
 
 jobs:
   lint:
-    # we get errors about pak not supporting 24.04 for sysdeps with ubuntu-latest
-    # https://github.com/r-lib/pak/blob/683f1be2cc2662d8e4073167910a1dd2f1e63b89/R/system-requirements.R#L194-L204
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       RENV_PATHS_ROOT: ~/.local/share/renv/
@@ -23,6 +21,14 @@ jobs:
         with:
           use-public-rspm: true
 
+      # support for sysreqs on ubuntu 24.04 will land in remotes > 2.5.0 
+      # so we install the dev version for now
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          packages: |
+            any::lintr
+            r-lib/remotes
+
       - name: "Setup Lesson Engine"
         uses: carpentries/actions/setup-sandpaper@main
         with:
@@ -32,10 +38,6 @@ jobs:
         uses: carpentries/actions/setup-lesson-deps@main
         with:
           cache-version: ${{ secrets.CACHE_VERSION }}
-
-      - uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          packages: any::lintr
 
       - name: Lint
         run: lintr::lint_dir("episodes")
