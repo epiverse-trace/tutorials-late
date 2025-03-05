@@ -142,8 +142,7 @@ Consider the following questions:
 
 A deterministic SEIR model with age specific direct transmission. 
 
-<!--html_preserve--><div class="grViz html-widget html-fill-item" id="htmlwidget-2907d53b0871e7dbf834" style="width:504px;height:504px;"></div>
-<script type="application/json" data-for="htmlwidget-2907d53b0871e7dbf834">{"x":{"diagram":"digraph {\n\n  # graph statement\n  #################\n  graph [layout = dot,\n         rankdir = LR,\n         overlap = true,\n         fontsize = 10]\n\n  # nodes\n  #######\n  node [shape = square,\n       fixedsize = true\n       width = 1.3]\n\n       S\n       E\n       I\n       R\n\n  # edges\n  #######\n  S -> E [label = \" infection \n(transmissibility &beta;)\"]\n  E -> I [label = \" onset of infectiousness \n(infectiousness rate &alpha;)\"]\n  I -> R [label = \" recovery \n(recovery rate &gamma;)\"]\n\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script><!--/html_preserve-->
+<img src="fig/model-choices-rendered-diagram-1.png" style="display: block; margin: auto;" />
 
 
 The model is capable of simulating an Ebola type outbreak, but as the model is deterministic, we are not able to explore stochastic variation in the early stages of the outbreak.
@@ -162,8 +161,7 @@ The key parameters affecting the transition between states are:
 
 **Note: the functional relationship between the preinfectious  period ($\rho^E$) and the transition rate between exposed and infectious ($\gamma^E$) is $\rho^E = k^E/\gamma^E$ where $k^E$ is the shape of the Erlang distribution. Similarly for the infectious period $\rho^I = k^I/\gamma^I$. For more detail on the stochastic model formulation refer to the section on [Discrete-time Ebola virus disease model](https://epiverse-trace.github.io/epidemics/articles/model_ebola.html#details-discrete-time-ebola-virus-disease-model) in the "Modelling responses to a stochastic Ebola virus epidemic" vignette. ** 
 
-<!--html_preserve--><div class="grViz html-widget html-fill-item" id="htmlwidget-e4af9ca629df551fc17d" style="width:504px;height:504px;"></div>
-<script type="application/json" data-for="htmlwidget-e4af9ca629df551fc17d">{"x":{"diagram":"digraph {\n\n  # graph statement\n  #################\n  graph [layout = dot,\n  rankdir = LR,\n  overlap = true,\n  fontsize = 10]\n\n  # nodes\n  #######\n  node [shape = square,\n       fixedsize = true\n       width = 1.3]\n\n       S\n       E\n       I\n       H\n       F\n       R\n\n  # edges\n  #######\n  S -> E [label = \" infection (&beta;)\"]\n  E -> I [label = \" onset of \ninfectiousness (&gamma; E)\"]\n  I -> F [label = \" death (funeral) \n(&gamma; I)\"]\n  F -> R [label = \" safe burial (one timestep) \"]\n  I -> H [label = \" hospitalisation (p hosp)\"]\n  H -> R [label = \" recovery or safe burial \n (&gamma; I)\"]\n\n  subgraph {\n    rank = same; I; F;\n  }\n  subgraph {\n    rank = same; H; R;\n  }\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script><!--/html_preserve-->
+<img src="fig/model-choices-rendered-unnamed-chunk-1-1.png" style="display: block; margin: auto;" />
 
 The model has additional parameters describing the transmission risk in hospital and funeral settings: 
 
