@@ -9,6 +9,9 @@ exercises: 30 # exercise time in minutes
 webshot::install_phantomjs(force = TRUE)
 library(epidemics)
 
+# hidden seed for stable stochastic output in lesson
+set.seed(33)
+
 polymod <- socialmixr::polymod
 contact_data <- socialmixr::contact_matrix(
   polymod,
