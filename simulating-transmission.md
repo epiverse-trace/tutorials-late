@@ -398,7 +398,7 @@ We ran our model with $R_0= 1.5$. However, we believe that $R_0$ follows a norma
 
 
 ``` r
-# get mean mean and sd over time
+# specify the mean and standard deviation of R0
 r_estimate_mean <- 1.5
 r_estimate_sd <- 0.05
 
