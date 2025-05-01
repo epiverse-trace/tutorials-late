@@ -109,21 +109,19 @@ Learners should familiarise themselves with following concept dependencies befor
 
 ## Introduction
 
-In this tutorial we will compare intervention scenarios against each other. To quantify the effect of the intervention we need to compare our intervention scenario to a counter factual (baseline) scenario. The *counter factual* here is the scenario in which nothing changes, often referred to as the 'do nothing' scenario. The counter factual scenario may feature no interventions at all or, if we are investigating the potential impact of an additional intervention in the later stages of an outbreak, there may be existing interventions in place. 
+In this tutorial, we will compare intervention scenarios against each other. To quantify the effect of an intervention, we need to compare our intervention scenario to a counterfactual (baseline) scenario. The *counterfactual* here is the scenario in which nothing changes, often referred to as the "do-nothing" scenario. The counterfactual scenario may feature:
+- No interventions at all, or
+- Existing interventions in place (if we are investigating the potential impact of an additional intervention)
 
-We must also decide what our *outcome of interest* is to make comparisons between intervention and counter factual scenarios. The outcome of interest can be:
+We must also define our *outcome of interest* to make comparisons between intervention and counterfactual scenarios. The outcome of interest can be:
+- Direct model outputs (e.g., number of infections, hospitalizations)
+- Epidemiological metrics (e.g., epidemic peak time, final outbreak size)
+- Health impact measures (e.g., Quality-Adjusted Life Years [QALYs] or Disability-Adjusted Life Years [DALYs])
+- Economic measures (e.g., healthcare costs, productivity losses)
 
-+ a model outcome, e.g. number of infections or hospitalisations,
-+ a metric such as the epidemic peak time or size,
-+ a measure that uses the model outcomes, such as QALY/DALYs.
-
-In this tutorial we are going to learn how to use the `{epidemics}` package to compare the effect of different interventions on simulated disease trajectories. We will access social contact data with `{socialmixr}`. We'll use `{dplyr}`, `{ggplot2}` and the pipe `%>%` to connect some of their functions, so let's also call to the `{tidyverse}` package:
-
-```{r,message=FALSE,warning=FALSE}
-library(epidemics)
-library(socialmixr)
-library(tidyverse)
-```
+In this tutorial, we will learn how to use the `{epidemics}` package to compare the effect of different interventions on simulated disease trajectories. We will use:
+- `{socialmixr}` for social contact data
+- `{tidyverse}` (including `{dplyr}` and `{ggplot2}`) for data manipulation and visualization
 
 
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: instructor
@@ -234,15 +232,16 @@ output %>%
 
 ### Vacamole model
 
-The Vacamole model is a deterministic model based on a system of ODEs in [Ainslie et al. 2022](https://doi.org/10.2807/1560-7917.ES.2022.27.44.2101090) to describe the effect of vaccination on COVID-19 dynamics. The model consists of 11 compartments, individuals are classed as one of the following:
+The Vacamole model is a deterministic model based on a system of Ordinary Differential Equations (ODEs) developed by [Ainslie et al. (2022)](https://doi.org/10.2807/1560-7917.ES.2022.27.44.2101090) to describe the effect of vaccination on COVID-19 dynamics. The model consists of 11 compartments, where individuals are classified as:
 
-+ susceptible, $S$,
-+ partial vaccination ($V_1$), fully vaccination ($V_2$),
-+ exposed, $E$ and exposed while vaccinated, $E_V$,
-+ infectious, $I$ and infectious while vaccinated, $I_V$,
-+ hospitalised, $H$ and hospitalised while vaccinated, $H_V$,
-+ dead, $D$,
-+ recovered, $R$.
++ Susceptible ($S$)
++ Partially vaccinated ($V_1$)
++ Fully vaccinated ($V_2$)
++ Exposed ($E$) and exposed while vaccinated ($E_V$)
++ Infectious ($I$) and infectious while vaccinated ($I_V$)
++ Hospitalized ($H$) and hospitalized while vaccinated ($H_V$)
++ Dead ($D$)
++ Recovered ($R$)
 
 The diagram below describes the flow of individuals through the different compartments.
 
@@ -305,17 +304,23 @@ DiagrammeR::grViz("digraph{
 
 ## Running a counterfactual scenario using the Vacamole model
 
-1. Run the model with the default parameter values for the UK population assuming that :
+1. Run the model with the default parameter values for the UK population assuming that:
 
-+ 1 in a million individual are infectious (and not vaccinated) at the start of the simulation
-+ The contact matrix for the United Kingdom has age bins:
-  + age between 0 and 20 years,
-  + age between 20 and 40,
-  + 40 years and over.
++ One in every million individuals (0.0001%) is infectious (and not vaccinated) at the start of the simulation
++ The contact matrix for the United Kingdom has the following age bins:
+  + 0-20 years
+  + 20-40 years
+  + 40+ years
 
-For scenarios :
-+ baseline : two dose vaccination program. Dose 1 (vaccination rate 0.01) starts from day 30, dose 2 (vaccination rate 0.01) starts from day 60. Both programs run fro 300 days. 
-+ intervention :a mask mandate starting from time 60 for 100 days, assuming a reduction in the transmission rate of 0.163
+For the following scenarios:
++ Baseline: Two-dose vaccination program
+  - Dose 1 (vaccination rate 0.01) starts from day 30
+  - Dose 2 (vaccination rate 0.01) starts from day 60
+  - Both programs run for 300 days
++ Intervention: Mask mandate
+  - Starts from day 60
+  - Lasts for 100 days
+  - Reduces transmission rate by 16.3% (based on empirical studies of mask effectiveness)
 
 There is no vaccination scheme in place
 
@@ -476,33 +481,9 @@ output_vacamole %>%
 
 ## Calculating outcomes averted
 
-Visualisations are a useful tool to compare intervention scenario model predictions through time. In addition to visualisations, we also want to quantify the impact of interventions. An outcome of interest we can use is the number of infections averted. This measure allows us to quantify the difference between different intervention scenarios.
+While visualizations are useful for comparing intervention scenarios over time, we also need quantitative measures of intervention impact. One such measure is the number of infections averted, which helps us understand the difference between intervention scenarios.
 
-In `{epidemics}`, we can use the function `outcomes_averted()` to calculate the number of infections averted while accounting for uncertainty in key parameter values. We will extend the COVID-19 example in [Modelling interventions](../episodes/modelling-interventions.md) to account for some uncertainty in the parameter values, specifically in the basic reproduction $R_0$. We do this as follows: 
-
-```{r}
-# time periods
-preinfectious_period <- 4.0
-infectious_period <- 5.5
-
-# specify the mean and standard deviation of R0
-r_estimate_mean <- 2.7
-r_estimate_sd <- 0.05
-
-# generate 100 R samples
-r_samples <- withr::with_seed(
-  seed = 1,
-  rnorm(
-    n = 100, mean = r_estimate_mean, sd = r_estimate_sd
-  )
-)
-
-beta <- r_samples / infectious_period
-
-# rates
-infectiousness_rate <- 1.0 / preinfectious_period
-recovery_rate <- 1.0 / infectious_period
-```
+The `{epidemics}` package provides the `outcomes_averted()` function to calculate infections averted while accounting for parameter uncertainty. Let's extend our COVID-19 example from [Modelling interventions](../episodes/modelling-interventions.md) to account for uncertainty in the basic reproduction number ($R_0$).
 
 We use these parameter values alongside the population structure and contact matrix used in [Modelling interventions](../episodes/modelling-interventions.md) to run the model for the baseline scenario:
 
@@ -717,7 +698,15 @@ intervention_effect
 
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
-- The counter factual scenario must be defined to make comparisons
-- Scenarios can be compared using visualisations and by calculating outcomes averted
+- A counterfactual (baseline) scenario must be clearly defined for meaningful comparisons
+- Scenarios can be compared using both visualizations and quantitative measures
+- The outcomes_averted() function helps quantify intervention effects
+- Parameter uncertainty should be considered in intervention analysis
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
+
+## References
+
+1. Ainslie, K. E., Walters, C. E., Fu, H., Bhatia, S., Wang, H., Xi, X., ... & Ferguson, N. M. (2022). Evidence of initial success for China exiting 'zero-COVID'? Modelling study. Eurosurveillance, 27(44), 2101090.
+2. Jarvis, C. I., Van Zandvoort, K., Gimma, A., Prem, K., Klepac, P., Rubin, G. J., & Edmunds, W. J. (2020). Quantifying the impact of physical distance measures on the transmission of COVID-19 in the UK. BMC medicine, 18(1), 1-10.
+3. Davies, N. G., Kucharski, A. J., Eggo, R. M., Gimma, A., Edmunds, W. J., & Centre for the Mathematical Modelling of Infectious Diseases COVID-19 Working Group. (2020). Effects of non-pharmaceutical interventions on COVID-19 cases, deaths, and demand for hospital services in the UK: a modelling study. The Lancet Public Health, 5(7), e375-e385.
