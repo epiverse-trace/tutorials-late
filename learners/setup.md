@@ -4,48 +4,50 @@ title: Setup
 
 ## Motivation
 
-**Outbreaks** appear with different diseases and in different contexts, but what all of them have in common is the key public health questions ([Cori et al. 2017](https://royalsocietypublishing.org/doi/10.1098/rstb.2016.0371#d1e605)). We can relate these key public health questions to outbreak data analysis tasks.
+**Outbreaks** of infectious diseases can appear as a result of different pathogens, and in different contexts, but they typically lead to similar public health questions, from understanding patterns of transmission and severity to examining the effect of control measures ([Cori et al. 2017](https://royalsocietypublishing.org/doi/10.1098/rstb.2016.0371#d1e605)). We can relate each of these public health questions to a series of outbreak data analysis tasks. The more efficiently and reliably we can perform these tasks, the faster and more accurately we can answer the underlying questions.
 
-Epiverse-TRACE aims to provide a software ecosystem for [**outbreak analytics**](reference.md#outbreakanalytics) with integrated, generalisable and scalable community-driven software. We support the development of R packages, make the existing ones interoperable for the user experience, and stimulate a community of practice.
+Epiverse-TRACE aims to provide a software ecosystem for [**outbreak analytics**](reference.md#outbreakanalytics) with integrated, generalisable and scalable community-driven software. We support the development of new R packages, help link together existing tools to make them more user-friendly, and contribute to a community of practice, spanning field epidemiologists, data scientists, lab researchers, health agency analysts, software engineers and more.
 
 ### Epiverse-TRACE tutorials
 
-The tutorials are built around an outbreak analysis pipeline split into three stages: **Early tasks**, **Middle tasks** and **Late tasks**.
+Our tutorials are built around an outbreak analysis pipeline split into three stages: **Early tasks**, **Middle tasks** and **Late tasks**. The outputs of tasks completed in earlier stages commonly feed into the tasks required for later ones.
+
 
 ![An overview of the tutorial topics](https://epiverse-trace.github.io/task_pipeline-minimal.svg)
 
-Each task has its tutorial website. Each tutorial website consists of a set of episodes.
+Each task has its tutorial website and each tutorial website consists of a set of episodes covering different topics.
 
 | [Early task tutorials ➠](https://epiverse-trace.github.io/tutorials-early/) | [Middle task tutorials ➠](https://epiverse-trace.github.io/tutorials-middle) | [Late task tutorials ➠](https://epiverse-trace.github.io/tutorials-late/) |
 |---|---|---|
-| Reading and cleaning case data | Real-time analysis and forecasting | Scenario modelling |
-| Read and clean linelist data, Access delay distributions, and Estimate transmission metrics. | Forecast cases, Estimate severity, and Estimate superspreading. | Simulate disease spread and Investigate interventions. |
+| Read and clean case data, and make linelist | Real-time analysis and forecasting | Scenario modelling |
+| Read, clean and validate case data, convert linelist data to incidence for visualization. | Access delay distributions and estimate transmission metrics, forecast cases, estimate severity and superspreading. | Simulate disease spread and investigate interventions. |
 
 Each episode contains:
 
-+ **Overview** : describes what questions will be answered and what are the objectives of the episode.
-+ **Prerequisites**: describes what episodes/packages need to be covered before the current episode.
-+ **Example R code** : work through the episodes on your own computer using the example R code.
-+ **Challenges** : complete challenges to test your understanding.
-+ **Explainers** : add to your understanding of mathematical and modelling concepts with the explainer boxes.
++ **Overview**: describes what questions will be answered and the objectives of the episode.
++ **Prerequisites**: describes what episodes/packages ideally need to be covered before the current episode.
++ **Example R code**: example R code so you can work through the episodes on your own computer.
++ **Challenges**: challenges that can be completed to test your understanding.
++ **Explainers**: boxes to enhance your understanding of mathematical and modelling concepts.
 
-Also check out the [glossary](../reference.md) for any terms you may be unfamiliar with.
+Also check out the [glossary](./reference.md) for any terms you may be unfamiliar with.
 
 ### Epiverse-TRACE R packages
 
-Our strategy is to gradually incorporate specialised **R packages** into our traditional analysis pipeline. These packages should fill the gaps in these epidemiology-specific tasks in response to outbreaks.
+Our strategy is to gradually incorporate specialised **R packages** into a traditional analysis pipeline. These packages should fill the gaps in these epidemiology-specific tasks in response to outbreaks.
 
 ![In **R**, the fundamental unit of shareable code is the **package**. A package bundles together code, data, documentation, and tests and is easy to share with others ([Wickham and Bryan, 2023](https://r-pkgs.org/introduction.html))](episodes/fig/pkgs-hexlogos-2.png)
 
 :::::::::::::::::::::::::::: prereq
 
-This course assumes intermediate R knowledge. This workshop is for you if:
+This content assumes intermediate R knowledge. This tutorials are for you if:
 
-- You can use the magrittr pipe `%>%` and/or native pipe `|>`
-- You are familiar with functions from `{dplyr}`, `{tidyr}`, and `{ggplot2}`
 - You can read data into R, transform and reshape data, and make a wide variety of graphs
+- You are familiar with functions from `{dplyr}`, `{tidyr}`, and `{ggplot2}`
+- You can use the magrittr pipe `%>%` and/or native pipe `|>`.
 
-We expect participants to have some exposure to basic Statistical, Mathematical and Epidemic theory concepts, but NOT intermediate or expert familiarity with modeling.
+
+We expect learners to have some exposure to basic Statistical, Mathematical and Epidemic theory concepts, but NOT intermediate or expert familiarity with modeling.
 
 ::::::::::::::::::::::::::::
 
