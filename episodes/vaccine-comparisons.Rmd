@@ -49,7 +49,7 @@ Before proceeding, let's define some important terms:
 
 - **Herd immunity**: A form of indirect protection from infectious disease that occurs when a sufficient proportion of a population has become immune to an infection, thereby reducing the likelihood of infection for individuals who lack immunity.
 - **Vaccination strategies**: Different approaches to administering vaccines, which may include targeting specific age groups or risk populations.
-- **Non-pharmaceutical interventions (NPIs)**: Actions, apart from getting vaccinated and taking medicine, that people and communities can take to help slow the spread of illnesses.
+- **Non-pharmaceutical interventions (NPIs)**: Actions, apart from vaccines and treaments, that people and communities can take to help slow the spread of illnesses.
 
 ## Direct and indirect effects of vaccination
 

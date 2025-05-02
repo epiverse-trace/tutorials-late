@@ -705,8 +705,3 @@ intervention_effect
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
-## References
-
-1. Ainslie, K. E., Walters, C. E., Fu, H., Bhatia, S., Wang, H., Xi, X., ... & Ferguson, N. M. (2022). Evidence of initial success for China exiting 'zero-COVID'? Modelling study. Eurosurveillance, 27(44), 2101090.
-2. Jarvis, C. I., Van Zandvoort, K., Gimma, A., Prem, K., Klepac, P., Rubin, G. J., & Edmunds, W. J. (2020). Quantifying the impact of physical distance measures on the transmission of COVID-19 in the UK. BMC medicine, 18(1), 1-10.
-3. Davies, N. G., Kucharski, A. J., Eggo, R. M., Gimma, A., Edmunds, W. J., & Centre for the Mathematical Modelling of Infectious Diseases COVID-19 Working Group. (2020). Effects of non-pharmaceutical interventions on COVID-19 cases, deaths, and demand for hospital services in the UK: a modelling study. The Lancet Public Health, 5(7), e375-e385.
