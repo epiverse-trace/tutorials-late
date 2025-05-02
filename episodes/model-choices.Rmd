@@ -72,6 +72,7 @@ Model structures differ depending on the scale and nature of the outbreak. When 
 ## What is the outcome of interest?
 
 The outcome of interest is typically a measurable quantity derived from the mathematical model. This could include:
+
 - The number of infections over time
 - The peak number of hospitalizations
 - The total number of severe disease cases
@@ -100,6 +101,7 @@ There can be subtle differences in model structures for the same infection or ou
 ## Will any interventions be modelled? 
 
 Finally, interventions such as vaccination, social distancing, or treatment programs may be of interest. Different models have varying capabilities to incorporate interventions:
+
 - Some models can simulate continuous interventions (e.g., ongoing vaccination programs)
 - Others handle discrete interventions (e.g., one-time school closures)
 - Some models may not include intervention capabilities at all

@@ -110,10 +110,12 @@ Learners should familiarise themselves with following concept dependencies befor
 ## Introduction
 
 In this tutorial, we will compare intervention scenarios against each other. To quantify the effect of an intervention, we need to compare our intervention scenario to a counterfactual (baseline) scenario. The *counterfactual* here is the scenario in which nothing changes, often referred to as the "do-nothing" scenario. The counterfactual scenario may feature:
+
 - No interventions at all, or
 - Existing interventions in place (if we are investigating the potential impact of an additional intervention)
 
 We must also define our *outcome of interest* to make comparisons between intervention and counterfactual scenarios. The outcome of interest can be:
+
 - Direct model outputs (e.g., number of infections, hospitalizations)
 - Epidemiological metrics (e.g., epidemic peak time, final outbreak size)
 - Health impact measures (e.g., Quality-Adjusted Life Years [QALYs] or Disability-Adjusted Life Years [DALYs])

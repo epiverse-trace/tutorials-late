@@ -27,15 +27,18 @@ exercises: 10 # exercise time in minutes
 ## Introduction
 
 In previous tutorials we have used mathematical models to generate trajectories of infections, but we may also be interested in measures of disease burden. These measures could include:
+
 - Health outcomes in the population (e.g., mild vs. severe infections)
 - Healthcare system impacts (e.g., hospitalizations, ICU admissions)
 - Economic impacts (e.g., productivity loss, healthcare costs)
 
 In mathematical models, we can track disease burden in different ways:
+
 1. **Integrated approach**: Include burden compartments directly in the transmission model (e.g., hospital compartments in ODE models)
 2. **Separated approach**: First simulate transmission, then use the results to estimate burden
 
 The choice between these approaches depends on whether burden affects transmission. For example:
+
 - For Ebola, hospitalizations are important for transmission due to high-risk healthcare settings
 - For many respiratory infections, severe illness typically occurs after the infectious period, so burden can be modeled separately
 
@@ -66,11 +69,13 @@ We will extend the influenza example from the [Simulating transmission](../episo
 2. **Burden model**: Converts new infections to hospitalizations by accounting for delays between infection and hospitalization
 
 To convert infections to hospitalizations, we need to consider:
+
 - The probability that an infection leads to hospitalization (infection-hospitalization ratio, IHR)
 - The time delay from infection to hospital admission
 - The time spent in hospital before discharge
 
 We'll use the `{epiparameter}` package to define these delay distributions. The Gamma distribution is commonly used for these delays because:
+
 - It's flexible and can model various shapes
 - It's bounded at zero (negative delays don't make sense)
 - It's supported by empirical data for many infectious diseases
@@ -322,12 +327,14 @@ ggplot(data = hosp_df_long) +
 ## Summary
 
 In this tutorial, we learned how to estimate hospitalizations based on daily new infections from a transmission model. This approach can be extended to other measures of disease burden, such as:
+
 - ICU admissions
 - Deaths
 - Disability-Adjusted Life-Years (DALYs)
 - Healthcare costs
 
 These burden estimates are valuable for:
+
 - Healthcare system planning
 - Health economic analyses
 - Policy decision-making
