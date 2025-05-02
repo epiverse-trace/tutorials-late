@@ -42,7 +42,7 @@ The choice between these approaches depends on whether burden affects transmissi
 - For Ebola, hospitalizations are important for transmission due to high-risk healthcare settings
 - For many respiratory infections, severe illness typically occurs after the infectious period, so burden can be modeled separately
 
-In this tutorial, we'll focus on the separated approach, where we first run an epidemic model to simulate infections, then use these values to estimate disease burden as a follow-on analysis. We'll use the `{epidemics}` package to simulate disease trajectories, `{socialmixr}` for social contact data, and `{tidyverse}` for data manipulation and plotting. 
+In this tutorial, we'll focus on the separated approach, where we first run an epidemic model to simulate infections, then use these values to estimate disease burden as a follow-on analysis. We'll use `{epidemics}` to simulate disease trajectories, `{socialmixr}` for social contact data, and `{tidyverse}` for data manipulation and plotting. 
 
 ```{r, warning = FALSE, message = FALSE}
 library(epiparameter)
@@ -74,7 +74,7 @@ To convert infections to hospitalizations, we need to consider:
 - The time delay from infection to hospital admission
 - The time spent in hospital before discharge
 
-We'll use the `{epiparameter}` package to define these delay distributions. The Gamma distribution is commonly used for these delays because:
+We'll use `{epiparameter}` to define these delay distributions. The Gamma distribution is commonly used for these delays because:
 
 - It's flexible and can model various shapes
 - It's bounded at zero (negative delays don't make sense)

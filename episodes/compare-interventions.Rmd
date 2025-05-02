@@ -121,7 +121,7 @@ We must also define our *outcome of interest* to make comparisons between interv
 - Health impact measures (e.g., Quality-Adjusted Life Years [QALYs] or Disability-Adjusted Life Years [DALYs])
 - Economic measures (e.g., healthcare costs, productivity losses)
 
-In this tutorial, we will learn how to use the `{epidemics}` package to compare the effect of different interventions on simulated disease trajectories. We will use:
+In this tutorial, we will learn how to use the R package `{epidemics}` to compare the effect of different interventions on simulated disease trajectories. We will use:
 - `{socialmixr}` for social contact data
 - `{tidyverse}` (including `{dplyr}` and `{ggplot2}`) for data manipulation and visualization
 
@@ -485,7 +485,7 @@ output_vacamole %>%
 
 While visualizations are useful for comparing intervention scenarios over time, we also need quantitative measures of intervention impact. One such measure is the number of infections averted, which helps us understand the difference between intervention scenarios.
 
-The `{epidemics}` package provides the `outcomes_averted()` function to calculate infections averted while accounting for parameter uncertainty. Let's extend our COVID-19 example from [Modelling interventions](../episodes/modelling-interventions.md) to account for uncertainty in the basic reproduction number ($R_0$).
+The R package `{epidemics}` provides the `outcomes_averted()` function to calculate infections averted while accounting for parameter uncertainty. Let's extend our COVID-19 example from [Modelling interventions](../episodes/modelling-interventions.md) to account for uncertainty in the basic reproduction number ($R_0$).
 
 We use these parameter values alongside the population structure and contact matrix used in [Modelling interventions](../episodes/modelling-interventions.md) to run the model for the baseline scenario:
 
