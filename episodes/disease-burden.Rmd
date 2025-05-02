@@ -343,8 +343,3 @@ As a follow-up, you might be interested in [this how-to guide](https://epiverse-
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
-## References
-
-1. Mossong, J., Hens, N., Jit, M., Beutels, P., Auranen, K., Mikolajczyk, R., ... & Edmunds, W. J. (2008). Social contacts and mixing patterns relevant to the spread of infectious diseases. PLoS medicine, 5(3), e74.
-2. Li, Q., Guan, X., Wu, P., Wang, X., Zhou, L., Tong, Y., ... & Feng, Z. (2020). Early transmission dynamics in Wuhan, China, of novel coronavirus–infected pneumonia. New England Journal of Medicine, 382(13), 1199-1207.
-3. Davies, N. G., Kucharski, A. J., Eggo, R. M., Gimma, A., Edmunds, W. J., & Centre for the Mathematical Modelling of Infectious Diseases COVID-19 Working Group. (2020). Effects of non-pharmaceutical interventions on COVID-19 cases, deaths, and demand for hospital services in the UK: a modelling study. The Lancet Public Health, 5(7), e375-e385.
