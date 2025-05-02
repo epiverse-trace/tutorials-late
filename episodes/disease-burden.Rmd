@@ -164,9 +164,9 @@ infection_to_admission <- epiparameter(
   )
 )
 
-# The shape and scale parameters were chosen based on empirical data from COVID-19 studies
-# showing a median time from infection to hospitalization of approximately 10 days
-# with a right-skewed distribution reflecting the variability in disease progression
+# The shape and scale parameters were chosen based on data from COVID-19 studies
+# showing a median time from infection to hospitalization of around 10 days
+# with right-skewed distribution reflecting variability in disease progression
 ```
 
 To visualise this distribution we can create a density plot :
