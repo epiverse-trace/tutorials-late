@@ -38,7 +38,7 @@ Mathematical models can be used to generate trajectories of disease spread under
 
 Interventions are usually incorporated into mathematical models via manipulating values of relevant parameters, e.g., reduce transmission, or via introducing a new disease state, e.g., vaccinated class where we assume that individuals who belong to this class are no longer susceptible to infection.
 
-In this tutorial, we will learn how to use the `{epidemics}` package to model interventions and access to social contact data with `{socialmixr}`. We'll use `{dplyr}`, `{ggplot2}` and the pipe `%>%` to connect some of their functions, so let's also call to the `{tidyverse}` package:
+In this tutorial, we will learn how to use `{epidemics}` to model interventions and access to social contact data with `{socialmixr}`. We'll use `{dplyr}`, `{ggplot2}` and the pipe `%>%` to connect some of their functions, so let's also call `{tidyverse}`:
 
 ```{r,message=FALSE,warning=FALSE}
 library(epidemics)
