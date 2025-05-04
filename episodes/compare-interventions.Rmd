@@ -250,7 +250,7 @@ The Vacamole model is a deterministic model based on a system of Ordinary Differ
 
 The diagram below describes the flow of individuals through the different compartments.
 
-```{r, echo = FALSE, message = FALSE}
+```{r, echo = FALSE, message = FALSE, out.width="80%"}
 DiagrammeR::grViz("digraph{
   # graph statement
   #################
@@ -281,9 +281,9 @@ DiagrammeR::grViz("digraph{
   # edges
   #######
   S -> E [label = ' infection (&beta;) ']
-  S -> V1 [label = ' vaccination (&nu;1)']
-  V1 -> E [label = ' infection (&beta;)']
-  V1 -> V2 [label = ' vaccination\n(second dose) (&nu;2)']
+  S -> V1 [xlabel = ' vaccination \n(&nu;1)']
+  V1 -> E [xlabel = ' infection (&beta;)']
+  V1 -> V2 [xlabel = ' vaccination\n(second dose) (&nu;2)']
   V2 -> Ev [label = ' infection (&beta;)']
   Ev -> Iv [label = ' onset of \ninfectiousness (&alpha;) ']
   E -> I [label = ' onset of \ninfectiousness (&alpha;) ']
