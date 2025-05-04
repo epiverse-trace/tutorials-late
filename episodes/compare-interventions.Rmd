@@ -432,12 +432,13 @@ mask_mandate <- epidemics::intervention(
 
 # run intervention model
 output_intervention_vc <- epidemics::model_vacamole(
-                                         population = uk_population_vacamole,
-                                         vaccination = double_vaccination,
-                                         intervention = list(
-                                                             transmission_rate =
-                                                               mask_mandate),
-                                         time_end = 300)
+  population = uk_population_vacamole,
+  vaccination = double_vaccination,
+  intervention = list(
+    transmission_rate = mask_mandate
+  ),
+  time_end = 300
+)
 
 ```
 
