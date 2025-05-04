@@ -268,6 +268,7 @@
     <div id="flush-collapsecurrent" class="accordion-collapse collapse show" aria-labelledby="flush-headingcurrent" data-bs-parent="#accordionFlushcurrent">
       <div class="accordion-body">
         <ul><li><a href="#introduction">Introduction</a></li>
+<li><a href="#key-terms">Key Terms</a></li>
 <li><a href="#direct-and-indirect-effects-of-vaccination">Direct and indirect effects of vaccination</a></li>
 <li><a href="#targeted-vaccination">Targeted vaccination</a></li>
 <li><a href="#vaccination-versus-npis">Vaccination versus NPIs</a></li>
@@ -345,7 +346,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Comparing vaccination strategies</h1>
-        <p>Last updated on 2025-04-22 |
+        <p>Last updated on 2025-05-04 |
 
         <a href="https://github.com/epiverse-trace/tutorials-late/edit/main/episodes/vaccine-comparisons.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -413,8 +414,8 @@ for vaccination may be a more effective strategy than vaccinating
 everyone. When vaccine programs are not immediately available to be
 rolled out, either from a capacity or development perspective, we may
 also want to know how non-pharmaceutical interventions (NPIs) can be
-used to control the epidemic in the mean time, as well as after a
-vaccine program has started.</p>
+used to control the epidemic in the meantime, as well as after a vaccine
+program has started.</p>
 <p>In this tutorial we will compare different vaccination strategies
 using models from <code>{epidemics}</code>. We will use the following R
 packages:</p>
@@ -424,35 +425,25 @@ packages:</p>
 <pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">ggplot2</span><span class="op">)</span></span>
 <span><span class="kw">library</span><span class="op">(</span><span class="va">epidemics</span><span class="op">)</span></span>
-<span><span class="kw">library</span><span class="op">(</span><span class="va">tidyverse</span><span class="op">)</span></span>
-<span><span class="kw">library</span><span class="op">(</span><span class="va">dplyr</span><span class="op">)</span></span></code></pre>
+<span><span class="kw">library</span><span class="op">(</span><span class="va">dplyr</span><span class="op">)</span></span>
+<span><span class="kw">library</span><span class="op">(</span><span class="va">purrr</span><span class="op">)</span></span></code></pre>
 </div>
-<div id="accordionInstructor1" class="accordion instructor-note accordion-flush">
-<div class="accordion-item">
-<button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
-  <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
-</button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
-<div class="accordion-body">
-<p>Inline instructor notes can help inform instructors of timing
-challenges associated with the lessons. They appear in the “Instructor
-View”.</p>
-<p>READ THESE LINES AND ERASE:</p>
-<p>The Workbench-related sections that the developer must keep are:</p>
-<ul><li>YAML on top</li>
-<li>Questions</li>
-<li>Objectives</li>
-<li>Keypoints</li>
-</ul><p>The Epiverse-TRACE sections that we encourage to keep are:</p>
-<ul><li>Prerequisites</li>
-<li>Introduction</li>
-</ul><p>Take a look to the Contributing.md file for more writing
-guidelines.</p>
-</div>
-</div>
-</div>
-</div>
-</section><section><h2 class="section-heading" id="direct-and-indirect-effects-of-vaccination">Direct and indirect effects of vaccination<a class="anchor" aria-label="anchor" href="#direct-and-indirect-effects-of-vaccination"></a></h2>
+</section><section><h2 class="section-heading" id="key-terms">Key Terms<a class="anchor" aria-label="anchor" href="#key-terms"></a></h2>
+<hr class="half-width"><p>Before proceeding, let’s define some important terms:</p>
+<ul><li>
+<strong>Herd immunity</strong>: A form of indirect protection from
+infectious disease that occurs when a sufficient proportion of a
+population has become immune to an infection, thereby reducing the
+likelihood of infection for individuals who lack immunity.</li>
+<li>
+<strong>Vaccination strategies</strong>: Different approaches to
+administering vaccines, which may include targeting specific age groups
+or risk populations.</li>
+<li>
+<strong>Non-pharmaceutical interventions (NPIs)</strong>: Actions,
+apart from vaccines and treaments, that people and communities can take
+to help slow the spread of illnesses.</li>
+</ul></section><section><h2 class="section-heading" id="direct-and-indirect-effects-of-vaccination">Direct and indirect effects of vaccination<a class="anchor" aria-label="anchor" href="#direct-and-indirect-effects-of-vaccination"></a></h2>
 <hr class="half-width"><p>Vaccination programs using infection-blocking vaccines have two
 benefits:</p>
 <ol style="list-style-type: decimal"><li>Reducing individual risk of infection (<strong>direct</strong>
@@ -460,27 +451,31 @@ effect of vaccination)</li>
 <li>Reducing onward contribution to transmission
 (<strong>indirect</strong> effect of vaccination).</li>
 </ol><p>We will illustrate this using results from
-<code>model_default()</code> in <code>{epidemics}</code>. Using the
-contact matrix and parameters from the COVID-19 outbreak example in <a href="modelling-interventions.html">Modelling interventions</a> we will
-investigate the impact of two vaccination programs on the number of
-infections. We will assume that vaccination programs start on day 0 and
-continue to be in place for 150 days. We will assume all age groups are
-vaccinated at the same rate in each program as follows :</p>
-<ul><li>vaccination program 01 : vaccination rate 0.001</li>
-<li>vaccination program 02 : vaccination rate 0.01.</li>
+<code>model_default()</code> in <code>{epidemics}</code>. The
+<code>model_default()</code> function implements a standard SEIR
+(Susceptible-Exposed-Infected-Recovered) model with vaccination
+compartments. Using the contact matrix and parameters from the COVID-19
+outbreak example in <a href="modelling-interventions.html">Modelling
+interventions</a> we will investigate the impact of two vaccination
+programs on the number of infections. For this hypothetical scenario, we
+will assume that vaccination programs start on day 0 and continue to be
+in place for 150 days. We will assume all age groups are vaccinated at
+the same rate in each program as follows:</p>
+<ul><li>vaccination program 01: vaccination rate 0.001</li>
+<li>vaccination program 02: vaccination rate 0.01.</li>
 </ul><div class="codewrapper sourceCode" id="cb2">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># prepare vaccination objects</span></span>
-<span><span class="va">vaccinate_01</span> <span class="op">&lt;-</span> <span class="fu">vaccination</span><span class="op">(</span></span>
+<span><span class="va">vaccinate_01</span> <span class="op">&lt;-</span> <span class="fu">epidemics</span><span class="fu">::</span><span class="fu">vaccination</span><span class="op">(</span></span>
 <span>  name <span class="op">=</span> <span class="st">"vaccinate all"</span>,</span>
 <span>  time_begin <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="fl">0</span>, <span class="fu">nrow</span><span class="op">(</span><span class="va">contact_matrix</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  time_end <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="fl">150</span>, <span class="fu">nrow</span><span class="op">(</span><span class="va">contact_matrix</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  nu <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="fu">c</span><span class="op">(</span><span class="fl">0.001</span>, <span class="fl">0.001</span>, <span class="fl">0.001</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">vaccinate_02</span> <span class="op">&lt;-</span> <span class="fu">vaccination</span><span class="op">(</span></span>
+<span><span class="va">vaccinate_02</span> <span class="op">&lt;-</span> <span class="fu">epidemics</span><span class="fu">::</span><span class="fu">vaccination</span><span class="op">(</span></span>
 <span>  name <span class="op">=</span> <span class="st">"vaccinate all"</span>,</span>
 <span>  time_begin <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="fl">0</span>, <span class="fu">nrow</span><span class="op">(</span><span class="va">contact_matrix</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  time_end <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="fl">150</span>, <span class="fu">nrow</span><span class="op">(</span><span class="va">contact_matrix</span><span class="op">)</span><span class="op">)</span>,</span>
@@ -503,14 +498,14 @@ more people that are vaccinated.</p>
 </button>
 </div>
 </nav><div id="nav-tabContent-1" class="tab-content">
-<div id="nav-tabpanel-1-1" class="tab-pane show active" aria-labelledby="nav-tab-1-1" role="tabpanel">
+<div id="nav-tabpanel-1-1" class="tab-pane show active" role="tabpanel" aria-labelledby="nav-tab-1-1">
 <figure><img src="../fig/vaccine-comparisons-rendered-unnamed-chunk-4-1.png" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure></div>
-<div id="nav-tabpanel-1-2" class="tab-pane" aria-labelledby="nav-tab-1-2" role="tabpanel">
+<div id="nav-tabpanel-1-2" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-1-2">
 <div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">output_baseline</span> <span class="op">&lt;-</span> <span class="fu">model_default</span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">output_baseline</span> <span class="op">&lt;-</span> <span class="fu">epidemics</span><span class="fu">::</span><span class="fu">model_default</span><span class="op">(</span></span>
 <span>  <span class="co"># population</span></span>
 <span>  population <span class="op">=</span> <span class="va">uk_population</span>,</span>
 <span>  <span class="co"># rate</span></span>
@@ -521,7 +516,7 @@ more people that are vaccinated.</p>
 <span>  time_end <span class="op">=</span> <span class="fl">200</span>, increment <span class="op">=</span> <span class="fl">1.0</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">output_vaccinate_01</span> <span class="op">&lt;-</span> <span class="fu">model_default</span><span class="op">(</span></span>
+<span><span class="va">output_vaccinate_01</span> <span class="op">&lt;-</span> <span class="fu">epidemics</span><span class="fu">::</span><span class="fu">model_default</span><span class="op">(</span></span>
 <span>  <span class="co"># population</span></span>
 <span>  population <span class="op">=</span> <span class="va">uk_population</span>,</span>
 <span>  <span class="co"># rate</span></span>
@@ -534,7 +529,7 @@ more people that are vaccinated.</p>
 <span>  time_end <span class="op">=</span> <span class="fl">200</span>, increment <span class="op">=</span> <span class="fl">1.0</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">output_vaccinate_02</span> <span class="op">&lt;-</span> <span class="fu">model_default</span><span class="op">(</span></span>
+<span><span class="va">output_vaccinate_02</span> <span class="op">&lt;-</span> <span class="fu">epidemics</span><span class="fu">::</span><span class="fu">model_default</span><span class="op">(</span></span>
 <span>  <span class="co"># population</span></span>
 <span>  population <span class="op">=</span> <span class="va">uk_population</span>,</span>
 <span>  <span class="co"># rate</span></span>
@@ -610,10 +605,11 @@ demographic group separately.</li>
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">vaccinate_01_infections</span> <span class="op">&lt;-</span> <span class="fu">new_infections</span><span class="op">(</span><span class="va">output_vaccinate_01</span>,</span>
-<span>                                          compartments_from_susceptible <span class="op">=</span></span>
-<span>                                            <span class="st">"vaccinated"</span>,</span>
-<span>                                          by_group <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre>
+<code class="sourceCode R"><span><span class="va">vaccinate_01_infections</span> <span class="op">&lt;-</span> <span class="fu">epidemics</span><span class="fu">::</span><span class="fu">new_infections</span><span class="op">(</span></span>
+<span>  <span class="va">output_vaccinate_01</span>,</span>
+<span>  compartments_from_susceptible <span class="op">=</span> <span class="st">"vaccinated"</span>,</span>
+<span>  by_group <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre>
 </div>
 <div class="tabs">
 <nav><div id="nav-tab-2" class="nav nav-tabs" role="tablist">
@@ -629,44 +625,53 @@ demographic group separately.</li>
 </button>
 </div>
 </nav><div id="nav-tabContent-2" class="tab-content">
-<div id="nav-tabpanel-2-1" class="tab-pane show active" aria-labelledby="nav-tab-2-1" role="tabpanel">
+<div id="nav-tabpanel-2-1" class="tab-pane show active" role="tabpanel" aria-labelledby="nav-tab-2-1">
 <figure><img src="../fig/vaccine-comparisons-rendered-unnamed-chunk-7-1.png" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure></div>
-<div id="nav-tabpanel-2-2" class="tab-pane" aria-labelledby="nav-tab-2-2" role="tabpanel">
+<div id="nav-tabpanel-2-2" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-2-2">
 <div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># calculate new infections</span></span>
-<span><span class="va">baseline_infections</span> <span class="op">&lt;-</span> <span class="fu">new_infections</span><span class="op">(</span><span class="va">output_baseline</span>,</span>
-<span>                                      compartments_from_susceptible <span class="op">=</span></span>
-<span>                                        <span class="st">"vaccinated"</span>,</span>
-<span>                                      by_group <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="va">vaccinate_01_infections</span> <span class="op">&lt;-</span> <span class="fu">new_infections</span><span class="op">(</span><span class="va">output_vaccinate_01</span>,</span>
-<span>                                          compartments_from_susceptible <span class="op">=</span></span>
-<span>                                            <span class="st">"vaccinated"</span>,</span>
-<span>                                          by_group <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="va">vaccinate_02_infections</span> <span class="op">&lt;-</span> <span class="fu">new_infections</span><span class="op">(</span><span class="va">output_vaccinate_02</span>,</span>
-<span>                                          compartments_from_susceptible <span class="op">=</span></span>
-<span>                                            <span class="st">"vaccinated"</span>,</span>
-<span>                                          by_group <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">baseline_infections</span> <span class="op">&lt;-</span> <span class="fu">epidemics</span><span class="fu">::</span><span class="fu">new_infections</span><span class="op">(</span></span>
+<span>  <span class="va">output_baseline</span>,</span>
+<span>  compartments_from_susceptible <span class="op">=</span> <span class="st">"vaccinated"</span>,</span>
+<span>  by_group <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">vaccinate_01_infections</span> <span class="op">&lt;-</span> <span class="fu">epidemics</span><span class="fu">::</span><span class="fu">new_infections</span><span class="op">(</span></span>
+<span>  <span class="va">output_vaccinate_01</span>,</span>
+<span>  compartments_from_susceptible <span class="op">=</span> <span class="st">"vaccinated"</span>,</span>
+<span>  by_group <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">vaccinate_02_infections</span> <span class="op">&lt;-</span> <span class="fu">epidemics</span><span class="fu">::</span><span class="fu">new_infections</span><span class="op">(</span></span>
+<span>  <span class="va">output_vaccinate_02</span>,</span>
+<span>  compartments_from_susceptible <span class="op">=</span> <span class="st">"vaccinated"</span>,</span>
+<span>  by_group <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># create intervention_type column for plotting</span></span>
 <span><span class="va">baseline_infections</span><span class="op">$</span><span class="va">intervention_type</span> <span class="op">&lt;-</span> <span class="st">"baseline"</span></span>
-<span><span class="va">vaccinate_01_infections</span><span class="op">$</span><span class="va">intervention_type</span>  <span class="op">&lt;-</span> <span class="st">"vaccinate 0.001"</span></span>
-<span><span class="va">vaccinate_02_infections</span><span class="op">$</span><span class="va">intervention_type</span>  <span class="op">&lt;-</span> <span class="st">"vaccinate 0.01"</span></span>
-<span><span class="va">infections</span> <span class="op">&lt;-</span> <span class="fu">rbind</span><span class="op">(</span><span class="va">baseline_infections</span>,</span>
-<span>                    <span class="va">vaccinate_01_infections</span>,</span>
-<span>                    <span class="va">vaccinate_02_infections</span><span class="op">)</span></span>
+<span><span class="va">vaccinate_01_infections</span><span class="op">$</span><span class="va">intervention_type</span> <span class="op">&lt;-</span> <span class="st">"vaccinate 0.001"</span></span>
+<span><span class="va">vaccinate_02_infections</span><span class="op">$</span><span class="va">intervention_type</span> <span class="op">&lt;-</span> <span class="st">"vaccinate 0.01"</span></span>
+<span><span class="va">infections</span> <span class="op">&lt;-</span> <span class="fu">rbind</span><span class="op">(</span></span>
+<span>  <span class="va">baseline_infections</span>,</span>
+<span>  <span class="va">vaccinate_01_infections</span>,</span>
+<span>  <span class="va">vaccinate_02_infections</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span></span>
 <span><span class="va">infections</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"New infections"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_line</span><span class="op">(</span></span>
-<span>            <span class="fu">aes</span><span class="op">(</span><span class="va">time</span>, <span class="va">new_infections</span>, colour <span class="op">=</span> <span class="va">intervention_type</span>,</span>
-<span>              linetype <span class="op">=</span> <span class="va">intervention_type</span></span>
-<span>            <span class="op">)</span>,</span>
-<span>            linewidth <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">aes</span><span class="op">(</span></span>
+<span>      <span class="va">time</span>,</span>
+<span>      <span class="va">new_infections</span>,</span>
+<span>      colour <span class="op">=</span> <span class="va">intervention_type</span>,</span>
+<span>      linetype <span class="op">=</span> <span class="va">intervention_type</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    linewidth <span class="op">=</span> <span class="fl">1</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">scale_y_continuous</span><span class="op">(</span></span>
 <span>    labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va">comma</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
@@ -693,12 +698,12 @@ therefore fewer people who can become infected and contribute to onward
 infection.</p>
 <p>This <strong>indirect</strong> effect of vaccination programs is key
 to successfully controlling and eradicating infections.</p>
-<p>To evaluate the impact of the vaccination programs, we are often
-interested in both the peak size (i.e. healthcare pressure at single
-point in time) as well as overall epidemic size (i.e. cumulative number
-of infections).</p>
+<p>To evaluate the impact of vaccination programs, we often consider
+both the peak size, which indicates healthcare pressure at a single
+point in time, and the overall epidemic size, which refers to the
+cumulative number of infections.</p>
 <p>We can find the cumulative sum using the R function
-<code>cumsum()</code> and use <code>purr::map_dfr()</code> to loop over
+<code>cumsum()</code> and use <code>purrr::map_dfr()</code> to loop over
 a list of new infection data frames. We can see the difference in
 infection numbers is by several orders of magnitude.</p>
 <div class="codewrapper sourceCode" id="cb6">
@@ -708,18 +713,21 @@ infection numbers is by several orders of magnitude.</p>
 <code class="sourceCode R"><span><span class="co"># create function that returns the intervention type and cumulative sum for</span></span>
 <span><span class="co"># given infections</span></span>
 <span><span class="va">find_cumsum</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">infections</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="kw">return</span><span class="op">(</span><span class="fu">data.frame</span><span class="op">(</span>intervention_type <span class="op">=</span> <span class="fu">unique</span><span class="op">(</span><span class="va">infections</span><span class="op">$</span><span class="va">intervention_type</span><span class="op">)</span>,</span>
-<span>                    cumulative_sum <span class="op">=</span> <span class="fu">tail</span><span class="op">(</span><span class="fu">cumsum</span><span class="op">(</span><span class="va">infections</span><span class="op">$</span><span class="va">new_infections</span><span class="op">)</span>,</span>
-<span>                                          n <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="kw">return</span><span class="op">(</span><span class="fu">data.frame</span><span class="op">(</span></span>
+<span>    intervention_type <span class="op">=</span> <span class="fu">unique</span><span class="op">(</span><span class="va">infections</span><span class="op">$</span><span class="va">intervention_type</span><span class="op">)</span>,</span>
+<span>    cumulative_sum <span class="op">=</span> <span class="fu">tail</span><span class="op">(</span><span class="fu">cumsum</span><span class="op">(</span><span class="va">infections</span><span class="op">$</span><span class="va">new_infections</span><span class="op">)</span>, n <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span>  <span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="co"># create list of interventions</span></span>
-<span><span class="va">interventions</span> <span class="op">&lt;-</span> <span class="fu">lst</span><span class="op">(</span><span class="va">baseline_infections</span>,</span>
-<span>                     <span class="va">vaccinate_01_infections</span>,</span>
-<span>                     <span class="va">vaccinate_02_infections</span><span class="op">)</span></span>
+<span><span class="va">interventions</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu">lst</span><span class="op">(</span></span>
+<span>  <span class="va">baseline_infections</span>,</span>
+<span>  <span class="va">vaccinate_01_infections</span>,</span>
+<span>  <span class="va">vaccinate_02_infections</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># apply function to each data frame in the list</span></span>
-<span><span class="fu">map_dfr</span><span class="op">(</span><span class="va">interventions</span>, <span class="va">find_cumsum</span><span class="op">)</span></span></code></pre>
+<span><span class="fu">purrr</span><span class="fu">::</span><span class="fu">map_dfr</span><span class="op">(</span><span class="va">interventions</span>, <span class="va">find_cumsum</span><span class="op">)</span></span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -738,11 +746,15 @@ infection numbers is by several orders of magnitude.</p>
 <div class="callout-content">
 <p>There exists a target threshold of vaccination based on the basic
 reproduction number <span class="math inline">\(R_0\)</span> to achieve
-<a href="reference.html#herdimmunity">herd immunity</a> .</p>
+<a href="reference.html#herdimmunity">herd immunity</a>.</p>
 <p>The proportion of the population (<span class="math inline">\(p\)</span>) that needs to be immune to achieve
 herd immunity is:</p>
 <p><span class="math display">\[p = 1- \frac{1}{R_0}. \]</span></p>
-<p>For details of the mathematical derivation check out this <a href="https://plus.maths.org/content/maths-minute-r0-and-herd-immunity" class="external-link">Plus
+<p>This formula is derived from the concept that when a sufficient
+proportion of the population is immune, each infected person will
+transmit the infection to fewer than one other person on average,
+leading to a decline in cases. For details of the mathematical
+derivation check out this <a href="https://plus.maths.org/content/maths-minute-r0-and-herd-immunity" class="external-link">Plus
 Magazine article</a>.</p>
 </div>
 </div>
@@ -753,7 +765,7 @@ targeted vaccination programs can be utilised to control infection. For
 example, if there is heterogeneity in contacts by age, targeting
 different age groups for vaccination will result in different disease
 trajectories.</p>
-<p>We will use the same contact matrix as above from <a href="modelling-interventions.html">Modelling interventions</a> :</p>
+<p>We will use the same contact matrix as above from <a href="modelling-interventions.html">Modelling interventions</a>:</p>
 <div class="codewrapper sourceCode" id="cb8">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -769,8 +781,8 @@ contact.age.group    [0,15)  [15,65)       65+
           [15,65) 6.0737213 9.169207 4.1223575
           65+     0.5258855 1.002545 1.7142857</code></pre>
 </div>
-<p>There is higher levels of mixing within the 0-15 and 15-65 age group,
-than in the 65+ age a group so we expect that targeting different age
+<p>There is higher levels of mixing within the 0-15 and 15-65 age groups
+than in the 65+ age group, so we expect that targeting different age
 groups will result in different disease trajectories.</p>
 <p>To show the effect of targeted vaccination, we will compare the
 following scenarios:</p>
@@ -792,35 +804,35 @@ following scenarios:</p>
 </button>
 </div>
 </nav><div id="nav-tabContent-3" class="tab-content">
-<div id="nav-tabpanel-3-1" class="tab-pane show active" aria-labelledby="nav-tab-3-1" role="tabpanel">
+<div id="nav-tabpanel-3-1" class="tab-pane show active" role="tabpanel" aria-labelledby="nav-tab-3-1">
 <figure><img src="../fig/vaccine-comparisons-rendered-unnamed-chunk-11-1.png" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure></div>
-<div id="nav-tabpanel-3-2" class="tab-pane" aria-labelledby="nav-tab-3-2" role="tabpanel">
+<div id="nav-tabpanel-3-2" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-3-2">
 <div class="codewrapper sourceCode" id="cb10">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">vaccinate_group_1</span> <span class="op">&lt;-</span> <span class="fu">vaccination</span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">vaccinate_group_1</span> <span class="op">&lt;-</span> <span class="fu">epidemics</span><span class="fu">::</span><span class="fu">vaccination</span><span class="op">(</span></span>
 <span>  name <span class="op">=</span> <span class="st">"vaccinate all"</span>,</span>
 <span>  time_begin <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="fl">40</span>, <span class="fu">nrow</span><span class="op">(</span><span class="va">contact_matrix</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  time_end <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="fl">40</span> <span class="op">+</span> <span class="fl">150</span>, <span class="fu">nrow</span><span class="op">(</span><span class="va">contact_matrix</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  nu <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="fu">c</span><span class="op">(</span><span class="fl">0.001</span> <span class="op">*</span> <span class="fl">3</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">vaccinate_group_2</span> <span class="op">&lt;-</span> <span class="fu">vaccination</span><span class="op">(</span></span>
+<span><span class="va">vaccinate_group_2</span> <span class="op">&lt;-</span> <span class="fu">epidemics</span><span class="fu">::</span><span class="fu">vaccination</span><span class="op">(</span></span>
 <span>  name <span class="op">=</span> <span class="st">"vaccinate all"</span>,</span>
 <span>  time_begin <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="fl">40</span>, <span class="fu">nrow</span><span class="op">(</span><span class="va">contact_matrix</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  time_end <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="fl">40</span> <span class="op">+</span> <span class="fl">150</span>, <span class="fu">nrow</span><span class="op">(</span><span class="va">contact_matrix</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  nu <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="fu">c</span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.001</span> <span class="op">*</span> <span class="fl">3</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">vaccinate_group_3</span> <span class="op">&lt;-</span> <span class="fu">vaccination</span><span class="op">(</span></span>
+<span><span class="va">vaccinate_group_3</span> <span class="op">&lt;-</span> <span class="fu">epidemics</span><span class="fu">::</span><span class="fu">vaccination</span><span class="op">(</span></span>
 <span>  name <span class="op">=</span> <span class="st">"vaccinate all"</span>,</span>
 <span>  time_begin <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="fl">40</span>, <span class="fu">nrow</span><span class="op">(</span><span class="va">contact_matrix</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  time_end <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="fl">40</span> <span class="op">+</span> <span class="fl">150</span>, <span class="fu">nrow</span><span class="op">(</span><span class="va">contact_matrix</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  nu <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="fu">c</span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0.001</span> <span class="op">*</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">output_vaccinate_group_1</span> <span class="op">&lt;-</span> <span class="fu">model_default</span><span class="op">(</span></span>
+<span><span class="va">output_vaccinate_group_1</span> <span class="op">&lt;-</span> <span class="fu">epidemics</span><span class="fu">::</span><span class="fu">model_default</span><span class="op">(</span></span>
 <span>  <span class="co"># population</span></span>
 <span>  population <span class="op">=</span> <span class="va">uk_population</span>,</span>
 <span>  <span class="co"># rate</span></span>
@@ -830,10 +842,11 @@ following scenarios:</p>
 <span>  <span class="co"># intervention</span></span>
 <span>  vaccination <span class="op">=</span> <span class="va">vaccinate_group_1</span>,</span>
 <span>  <span class="co"># time</span></span>
-<span>  time_end <span class="op">=</span> <span class="fl">200</span>, increment <span class="op">=</span> <span class="fl">1.0</span></span>
+<span>  time_end <span class="op">=</span> <span class="fl">200</span>,</span>
+<span>  increment <span class="op">=</span> <span class="fl">1.0</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">output_vaccinate_group_2</span> <span class="op">&lt;-</span> <span class="fu">model_default</span><span class="op">(</span></span>
+<span><span class="va">output_vaccinate_group_2</span> <span class="op">&lt;-</span> <span class="fu">epidemics</span><span class="fu">::</span><span class="fu">model_default</span><span class="op">(</span></span>
 <span>  <span class="co"># population</span></span>
 <span>  population <span class="op">=</span> <span class="va">uk_population</span>,</span>
 <span>  <span class="co"># rate</span></span>
@@ -843,11 +856,12 @@ following scenarios:</p>
 <span>  <span class="co"># intervention</span></span>
 <span>  vaccination <span class="op">=</span> <span class="va">vaccinate_group_2</span>,</span>
 <span>  <span class="co"># time</span></span>
-<span>  time_end <span class="op">=</span> <span class="fl">200</span>, increment <span class="op">=</span> <span class="fl">1.0</span></span>
+<span>  time_end <span class="op">=</span> <span class="fl">200</span>,</span>
+<span>  increment <span class="op">=</span> <span class="fl">1.0</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span></span>
-<span><span class="va">output_vaccinate_group_3</span> <span class="op">&lt;-</span> <span class="fu">model_default</span><span class="op">(</span></span>
+<span><span class="va">output_vaccinate_group_3</span> <span class="op">&lt;-</span> <span class="fu">epidemics</span><span class="fu">::</span><span class="fu">model_default</span><span class="op">(</span></span>
 <span>  <span class="co"># population</span></span>
 <span>  population <span class="op">=</span> <span class="va">uk_population</span>,</span>
 <span>  <span class="co"># rate</span></span>
@@ -857,37 +871,50 @@ following scenarios:</p>
 <span>  <span class="co"># intervention</span></span>
 <span>  vaccination <span class="op">=</span> <span class="va">vaccinate_group_3</span>,</span>
 <span>  <span class="co"># time</span></span>
-<span>  time_end <span class="op">=</span> <span class="fl">200</span>, increment <span class="op">=</span> <span class="fl">1.0</span></span>
+<span>  time_end <span class="op">=</span> <span class="fl">200</span>,</span>
+<span>  increment <span class="op">=</span> <span class="fl">1.0</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">vaccinate_group_1_infections</span> <span class="op">&lt;-</span> <span class="fu">new_infections</span><span class="op">(</span><span class="va">output_vaccinate_group_1</span>,</span>
-<span>                                               compartments_from_susceptible <span class="op">=</span></span>
-<span>                                                 <span class="st">"vaccinated"</span>, by_group <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="va">vaccinate_group_2_infections</span> <span class="op">&lt;-</span> <span class="fu">new_infections</span><span class="op">(</span><span class="va">output_vaccinate_group_2</span>,</span>
-<span>                                               compartments_from_susceptible <span class="op">=</span></span>
-<span>                                                 <span class="st">"vaccinated"</span>, by_group <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="va">vaccinate_group_3_infections</span> <span class="op">&lt;-</span> <span class="fu">new_infections</span><span class="op">(</span><span class="va">output_vaccinate_group_3</span>,</span>
-<span>                                               compartments_from_susceptible <span class="op">=</span></span>
-<span>                                                 <span class="st">"vaccinated"</span>, by_group <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">vaccinate_group_1_infections</span> <span class="op">&lt;-</span> <span class="fu">epidemics</span><span class="fu">::</span><span class="fu">new_infections</span><span class="op">(</span></span>
+<span>  <span class="va">output_vaccinate_group_1</span>,</span>
+<span>  compartments_from_susceptible <span class="op">=</span> <span class="st">"vaccinated"</span>,</span>
+<span>  by_group <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">vaccinate_group_2_infections</span> <span class="op">&lt;-</span> <span class="fu">epidemics</span><span class="fu">::</span><span class="fu">new_infections</span><span class="op">(</span></span>
+<span>  <span class="va">output_vaccinate_group_2</span>,</span>
+<span>  compartments_from_susceptible <span class="op">=</span> <span class="st">"vaccinated"</span>,</span>
+<span>  by_group <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">vaccinate_group_3_infections</span> <span class="op">&lt;-</span> <span class="fu">epidemics</span><span class="fu">::</span><span class="fu">new_infections</span><span class="op">(</span></span>
+<span>  <span class="va">output_vaccinate_group_3</span>,</span>
+<span>  compartments_from_susceptible <span class="op">=</span> <span class="st">"vaccinated"</span>,</span>
+<span>  by_group <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">vaccinate_group_1_infections</span><span class="op">$</span><span class="va">intervention_type</span>  <span class="op">&lt;-</span> <span class="st">"vaccinate group 1"</span></span>
-<span><span class="va">vaccinate_group_2_infections</span><span class="op">$</span><span class="va">intervention_type</span>  <span class="op">&lt;-</span> <span class="st">"vaccinate group 2"</span></span>
-<span><span class="va">vaccinate_group_3_infections</span><span class="op">$</span><span class="va">intervention_type</span>  <span class="op">&lt;-</span> <span class="st">"vaccinate group 3"</span></span>
+<span><span class="va">vaccinate_group_1_infections</span><span class="op">$</span><span class="va">intervention_type</span> <span class="op">&lt;-</span> <span class="st">"vaccinate group 1"</span></span>
+<span><span class="va">vaccinate_group_2_infections</span><span class="op">$</span><span class="va">intervention_type</span> <span class="op">&lt;-</span> <span class="st">"vaccinate group 2"</span></span>
+<span><span class="va">vaccinate_group_3_infections</span><span class="op">$</span><span class="va">intervention_type</span> <span class="op">&lt;-</span> <span class="st">"vaccinate group 3"</span></span>
 <span></span>
-<span><span class="va">output_infections</span> <span class="op">&lt;-</span> <span class="fu">rbind</span><span class="op">(</span><span class="va">baseline_infections</span>,</span>
-<span>                           <span class="va">vaccinate_01_infections</span>,</span>
-<span>                           <span class="va">vaccinate_group_1_infections</span>,</span>
-<span>                           <span class="va">vaccinate_group_2_infections</span>,</span>
-<span>                           <span class="va">vaccinate_group_3_infections</span><span class="op">)</span></span>
+<span><span class="va">output_infections</span> <span class="op">&lt;-</span> <span class="fu">rbind</span><span class="op">(</span></span>
+<span>  <span class="va">baseline_infections</span>,</span>
+<span>  <span class="va">vaccinate_01_infections</span>,</span>
+<span>  <span class="va">vaccinate_group_1_infections</span>,</span>
+<span>  <span class="va">vaccinate_group_2_infections</span>,</span>
+<span>  <span class="va">vaccinate_group_3_infections</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span></span>
 <span><span class="va">output_infections</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_line</span><span class="op">(</span></span>
-<span>            <span class="fu">aes</span><span class="op">(</span><span class="va">time</span>, <span class="va">new_infections</span>, colour <span class="op">=</span> <span class="va">intervention_type</span>,</span>
-<span>              linetype <span class="op">=</span> <span class="va">intervention_type</span></span>
-<span>            <span class="op">)</span>,</span>
-<span>            linewidth <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">aes</span><span class="op">(</span></span>
+<span>      <span class="va">time</span>,</span>
+<span>      <span class="va">new_infections</span>,</span>
+<span>      colour <span class="op">=</span> <span class="va">intervention_type</span>,</span>
+<span>      linetype <span class="op">=</span> <span class="va">intervention_type</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    linewidth <span class="op">=</span> <span class="fl">1</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">scale_y_continuous</span><span class="op">(</span></span>
 <span>    labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va">comma</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
@@ -916,14 +943,16 @@ interventions:</p>
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">interventions_targetted</span> <span class="op">&lt;-</span> <span class="fu">lst</span><span class="op">(</span><span class="va">baseline_infections</span>,</span>
-<span>                               <span class="va">vaccinate_01_infections</span>,</span>
-<span>                               <span class="va">vaccinate_group_1_infections</span>,</span>
-<span>                               <span class="va">vaccinate_group_2_infections</span>,</span>
-<span>                               <span class="va">vaccinate_group_3_infections</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">interventions_targetted</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu">lst</span><span class="op">(</span></span>
+<span>  <span class="va">baseline_infections</span>,</span>
+<span>  <span class="va">vaccinate_01_infections</span>,</span>
+<span>  <span class="va">vaccinate_group_1_infections</span>,</span>
+<span>  <span class="va">vaccinate_group_2_infections</span>,</span>
+<span>  <span class="va">vaccinate_group_3_infections</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># apply function to each data frame in the list</span></span>
-<span><span class="fu">map_dfr</span><span class="op">(</span><span class="va">interventions_targetted</span>, <span class="va">find_cumsum</span><span class="op">)</span></span></code></pre>
+<span><span class="fu">purrr</span><span class="fu">::</span><span class="fu">map_dfr</span><span class="op">(</span><span class="va">interventions_targetted</span>, <span class="va">find_cumsum</span><span class="op">)</span></span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -936,10 +965,10 @@ interventions:</p>
 5 vaccinate group 3       51634221</code></pre>
 </div>
 <div class="section level3">
-<h3 id="age-specific-infection-fatality-risk">Age specific infection-fatality-risk<a class="anchor" aria-label="anchor" href="#age-specific-infection-fatality-risk"></a></h3>
-<p>Targeting specific age groups can reduce the impact of infections
-that have age specific risk of mortality. To illustrate this, we can
-define an age specific infection-fatality-risk (IFR) :</p>
+<h3 id="age-specific-infection-fatality-risk">Age-specific infection-fatality-risk<a class="anchor" aria-label="anchor" href="#age-specific-infection-fatality-risk"></a></h3>
+<p>Targeting specific age groups can reduce the number of deaths in the
+eldest age group. To illustrate this, we can define an age-specific
+infection-fatality-risk (IFR):</p>
 <div class="codewrapper sourceCode" id="cb13">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -949,21 +978,26 @@ define an age specific infection-fatality-risk (IFR) :</p>
 </div>
 <p>To convert infections to deaths, we will need new infections by age
 group, so we call <code>new_infections()</code> with
-<code>by_group = TRUE</code> and then multiple the new infections by the
+<code>by_group = TRUE</code> and then multiply the new infections by the
 IFR for that age group:</p>
 <div class="codewrapper sourceCode" id="cb14">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">vaccinate_group_1_age</span> <span class="op">&lt;-</span> <span class="fu">new_infections</span><span class="op">(</span><span class="va">output_vaccinate_group_1</span>,</span>
-<span>                                        compartments_from_susceptible <span class="op">=</span></span>
-<span>                                          <span class="st">"vaccinated"</span>, by_group <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">vaccinate_group_1_age</span> <span class="op">&lt;-</span> <span class="fu">epidemics</span><span class="fu">::</span><span class="fu">new_infections</span><span class="op">(</span></span>
+<span>  <span class="va">output_vaccinate_group_1</span>,</span>
+<span>  compartments_from_susceptible <span class="op">=</span> <span class="st">"vaccinated"</span>,</span>
+<span>  by_group <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">vaccinate_group_1_deaths</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fl">1</span><span class="op">:</span><span class="fl">3</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">map_dfr</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="va">vaccinate_group_1_age</span> <span class="op">%&gt;%</span></span>
-<span>            <span class="fu">filter</span><span class="op">(</span><span class="va">demography_group</span> <span class="op">==</span> <span class="fu">names</span><span class="op">(</span><span class="va">ifr</span><span class="op">)</span><span class="op">[</span><span class="va">x</span><span class="op">]</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>            <span class="fu">mutate</span><span class="op">(</span>deaths <span class="op">=</span> <span class="va">new_infections</span> <span class="op">*</span> <span class="va">ifr</span><span class="op">[</span><span class="va">x</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span></code></pre>
+<span>  <span class="fu">purrr</span><span class="fu">::</span><span class="fu">map_dfr</span><span class="op">(</span></span>
+<span>    <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span>      <span class="va">vaccinate_group_1_age</span> <span class="op">%&gt;%</span></span>
+<span>        <span class="fu">filter</span><span class="op">(</span><span class="va">demography_group</span> <span class="op">==</span> <span class="fu">names</span><span class="op">(</span><span class="va">ifr</span><span class="op">)</span><span class="op">[</span><span class="va">x</span><span class="op">]</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>        <span class="fu">mutate</span><span class="op">(</span>deaths <span class="op">=</span> <span class="va">new_infections</span> <span class="op">*</span> <span class="va">ifr</span><span class="op">[</span><span class="va">x</span><span class="op">]</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span></code></pre>
 </div>
 <p>Vaccinating all age groups has the greatest impact on deaths in the
 eldest age group (over 65 years of age), but we also see that
@@ -1045,7 +1079,7 @@ vaccine.</li>
 <span><span class="va">time_end</span> <span class="op">&lt;-</span> <span class="fl">200</span></span>
 <span></span>
 <span><span class="co"># close schools early</span></span>
-<span><span class="va">close_schools_early</span> <span class="op">&lt;-</span> <span class="fu">intervention</span><span class="op">(</span></span>
+<span><span class="va">close_schools_early</span> <span class="op">&lt;-</span> <span class="fu">epidemics</span><span class="fu">::</span><span class="fu">intervention</span><span class="op">(</span></span>
 <span>  name <span class="op">=</span> <span class="st">"School closure"</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"contacts"</span>,</span>
 <span>  time_begin <span class="op">=</span> <span class="va">early_start</span>,</span>
@@ -1054,7 +1088,7 @@ vaccine.</li>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># vaccination late</span></span>
-<span><span class="va">vacc_late</span> <span class="op">&lt;-</span> <span class="fu">vaccination</span><span class="op">(</span></span>
+<span><span class="va">vacc_late</span> <span class="op">&lt;-</span> <span class="fu">epidemics</span><span class="fu">::</span><span class="fu">vaccination</span><span class="op">(</span></span>
 <span>  name <span class="op">=</span> <span class="st">"vaccinate late"</span>,</span>
 <span>  time_begin <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="va">late_start</span>, <span class="fu">nrow</span><span class="op">(</span><span class="va">contact_matrix</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  time_end <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="va">late_start</span> <span class="op">+</span> <span class="va">duration</span>, <span class="fu">nrow</span><span class="op">(</span><span class="va">contact_matrix</span><span class="op">)</span><span class="op">)</span>,</span>
@@ -1062,7 +1096,7 @@ vaccine.</li>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># npis started early + vaccination late</span></span>
-<span><span class="va">output_npi_early_vacc_late</span> <span class="op">&lt;-</span> <span class="fu">model_default</span><span class="op">(</span></span>
+<span><span class="va">output_npi_early_vacc_late</span> <span class="op">&lt;-</span> <span class="fu">epidemics</span><span class="fu">::</span><span class="fu">model_default</span><span class="op">(</span></span>
 <span>  population <span class="op">=</span> <span class="va">uk_population</span>,</span>
 <span>  transmission_rate <span class="op">=</span> <span class="va">transmission_rate</span>,</span>
 <span>  infectiousness_rate <span class="op">=</span> <span class="va">infectiousness_rate</span>,</span>
@@ -1096,7 +1130,9 @@ Adapt the code below to lift the NPI after 20, 50 and 100 days</p>
 <div id="accordionSolution1" class="accordion challenge-accordion accordion-flush">
 <div class="accordion-item">
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
-  <h4 class="accordion-header" id="headingSolution1"> Output </h4>
+  <h4 class="accordion-header" id="headingSolution1">
+  Output
+  </h4>
 </button>
 <div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
@@ -1107,7 +1143,7 @@ Adapt the code below to lift the NPI after 20, 50 and 100 days</p>
 <code class="sourceCode R"><span><span class="va">duration_20</span> <span class="op">&lt;-</span> <span class="fl">20</span></span>
 <span><span class="va">duration_50</span> <span class="op">&lt;-</span> <span class="fl">50</span></span>
 <span></span>
-<span><span class="va">close_schools_early_20</span> <span class="op">&lt;-</span> <span class="fu">intervention</span><span class="op">(</span></span>
+<span><span class="va">close_schools_early_20</span> <span class="op">&lt;-</span> <span class="fu">epidemics</span><span class="fu">::</span><span class="fu">intervention</span><span class="op">(</span></span>
 <span>  name <span class="op">=</span> <span class="st">"School closure"</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"contacts"</span>,</span>
 <span>  time_begin <span class="op">=</span> <span class="va">early_start</span>,</span>
@@ -1115,7 +1151,7 @@ Adapt the code below to lift the NPI after 20, 50 and 100 days</p>
 <span>  reduction <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="fu">c</span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">0.01</span>, <span class="fl">0.01</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">close_schools_early_50</span> <span class="op">&lt;-</span> <span class="fu">intervention</span><span class="op">(</span></span>
+<span><span class="va">close_schools_early_50</span> <span class="op">&lt;-</span> <span class="fu">epidemics</span><span class="fu">::</span><span class="fu">intervention</span><span class="op">(</span></span>
 <span>  name <span class="op">=</span> <span class="st">"School closure"</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"contacts"</span>,</span>
 <span>  time_begin <span class="op">=</span> <span class="va">early_start</span>,</span>
@@ -1123,7 +1159,7 @@ Adapt the code below to lift the NPI after 20, 50 and 100 days</p>
 <span>  reduction <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="fu">c</span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">0.01</span>, <span class="fl">0.01</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">output_npi_early_vacc_late_20</span> <span class="op">&lt;-</span> <span class="fu">model_default</span><span class="op">(</span></span>
+<span><span class="va">output_npi_early_vacc_late_20</span> <span class="op">&lt;-</span> <span class="fu">epidemics</span><span class="fu">::</span><span class="fu">model_default</span><span class="op">(</span></span>
 <span>  population <span class="op">=</span> <span class="va">uk_population</span>,</span>
 <span>  transmission_rate <span class="op">=</span> <span class="va">transmission_rate</span>,</span>
 <span>  infectiousness_rate <span class="op">=</span> <span class="va">infectiousness_rate</span>,</span>
@@ -1133,7 +1169,7 @@ Adapt the code below to lift the NPI after 20, 50 and 100 days</p>
 <span>  time_end <span class="op">=</span> <span class="fl">300</span>, increment <span class="op">=</span> <span class="fl">1.0</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">output_npi_early_vacc_late_50</span> <span class="op">&lt;-</span> <span class="fu">model_default</span><span class="op">(</span></span>
+<span><span class="va">output_npi_early_vacc_late_50</span> <span class="op">&lt;-</span> <span class="fu">epidemics</span><span class="fu">::</span><span class="fu">model_default</span><span class="op">(</span></span>
 <span>  population <span class="op">=</span> <span class="va">uk_population</span>,</span>
 <span>  transmission_rate <span class="op">=</span> <span class="va">transmission_rate</span>,</span>
 <span>  infectiousness_rate <span class="op">=</span> <span class="va">infectiousness_rate</span>,</span>
@@ -1287,9 +1323,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://epiverse-trace.github.io/tutorials-late/instructor/vaccine-comparisons.html",
   "identifier": "https://epiverse-trace.github.io/tutorials-late/instructor/vaccine-comparisons.html",
-  "dateCreated": "2025-05-01",
-  "dateModified": "2025-04-22",
-  "datePublished": "2025-05-01"
+  "dateCreated": "2025-05-04",
+  "dateModified": "2025-05-04",
+  "datePublished": "2025-05-04"
 }
 
   </script><script>

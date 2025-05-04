@@ -389,10 +389,16 @@
 <section id="contact-matrices"><h2 class="section-heading"><a href="contact-matrices.html">Contact matrices</a></h2>
 <hr class="half-width">
 <ul>
+<li>Contact matrices quantify the mixing patterns between different
+population groups</li>
 <li>
-<code>socialmixr</code> can be used to estimate contact matrices
+<code>socialmixr</code> provides tools to estimate contact matrices
 from survey data</li>
-<li>Contact matrices can be used in different types of analyses</li>
+<li>Contact matrices can be used in various epidemiological analyses,
+from calculating <span class="math inline">\(R_0\)</span> to modeling
+interventions</li>
+<li>Proper normalization is crucial when using contact matrices in
+transmission models</li>
 </ul></section><section id="simulating-transmission"><h2 class="section-heading"><a href="simulating-transmission.html">Simulating transmission</a></h2>
 <hr class="half-width">
 <ul>
@@ -419,10 +425,14 @@ different disease state <span class="math inline">\(V\)</span>
 </ul></section><section id="compare-interventions"><h2 class="section-heading"><a href="compare-interventions.html">Comparing public health outcomes of interventions</a></h2>
 <hr class="half-width">
 <ul>
-<li>The counter factual scenario must be defined to make
-comparisons</li>
-<li>Scenarios can be compared using visualisations and by calculating
-outcomes averted</li>
+<li>A counterfactual (baseline) scenario must be clearly defined for
+meaningful comparisons</li>
+<li>Scenarios can be compared using both visualizations and quantitative
+measures</li>
+<li>The outcomes_averted() function helps quantify intervention
+effects</li>
+<li>Parameter uncertainty should be considered in intervention
+analysis</li>
 </ul></section><section id="vaccine-comparisons"><h2 class="section-heading"><a href="vaccine-comparisons.html">Comparing vaccination strategies</a></h2>
 <hr class="half-width">
 <ul>
@@ -434,10 +444,14 @@ result in very different disease trajectories</li>
 </ul></section><section id="disease-burden"><h2 class="section-heading"><a href="disease-burden.html">Modelling disease burden</a></h2>
 <hr class="half-width">
 <ul>
-<li>Transmission models should include disease burden when it is
-important for onward transmission</li>
+<li>Transmission models should include disease burden when it affects
+onward transmission</li>
 <li>Outputs of transmission models can be used as inputs to models of
 burden</li>
+<li>The Gamma distribution is commonly used to model delays in disease
+progression</li>
+<li>Convolution is a powerful tool for estimating disease burden from
+transmission model outputs</li>
 </ul></section>
 </div>
     </main>
@@ -485,9 +499,9 @@ burden</li>
   "creativeWorkStatus": "active",
   "url": "https://epiverse-trace.github.io/tutorials-late/key-points.html",
   "identifier": "https://epiverse-trace.github.io/tutorials-late/key-points.html",
-  "dateCreated": "2025-05-01",
-  "dateModified": "2025-05-01",
-  "datePublished": "2025-05-01"
+  "dateCreated": "2025-05-04",
+  "dateModified": "2025-05-04",
+  "datePublished": "2025-05-04"
 }
 
   </script><script>

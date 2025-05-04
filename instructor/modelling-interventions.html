@@ -253,6 +253,7 @@
 <li><a href="#non-pharmaceutical-interventions">Non-pharmaceutical interventions</a></li>
 <li><a href="#pharmaceutical-interventions">Pharmaceutical interventions</a></li>
 <li><a href="#summary">Summary</a></li>
+<li><a href="#references">References</a></li>
         </ul></div><!--/div.accordion-body-->
     </div><!--/div.accordion-collapse-->
 
@@ -344,7 +345,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Modelling interventions</h1>
-        <p>Last updated on 2025-04-22 |
+        <p>Last updated on 2025-05-04 |
 
         <a href="https://github.com/epiverse-trace/tutorials-late/edit/main/episodes/modelling-interventions.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -405,14 +406,13 @@ diseases.</p>
 <p>Interventions are usually incorporated into mathematical models via
 manipulating values of relevant parameters, e.g., reduce transmission,
 or via introducing a new disease state, e.g., vaccinated class where we
-assume individuals belong to this class are no longer susceptible to
-infection.</p>
-<p>In this tutorial we are going to learn how to use the
-<code>{epidemics}</code> package to model interventions and access to
-social contact data with <a href="https://github.com/epiforecasts/socialmixr" class="external-link">socialmixr</a>. We’ll use
-<a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a>, <a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a> and the pipe
-<code>%&gt;%</code> to connect some of their functions, so let’s also
-call to the <a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a> package:</p>
+assume that individuals who belong to this class are no longer
+susceptible to infection.</p>
+<p>In this tutorial, we will learn how to use <code>{epidemics}</code>
+to model interventions and access to social contact data with
+<a href="https://github.com/epiforecasts/socialmixr" class="external-link">socialmixr</a>. We’ll use <a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a>,
+<a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a> and the pipe <code>%&gt;%</code> to connect some
+of their functions, so let’s also call <a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a>:</p>
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -445,14 +445,15 @@ closure of schools and workplaces, and other measures to prevent the
 spread of the disease, for example, washing hands and wearing masks.</p>
 <p>We will investigate the effect of interventions on a COVID-19
 outbreak using an SEIR model (<code>model_default()</code> in the R
-package <code>{epidemics}</code>). We will set <span class="math inline">\(R_0 = 2.7\)</span>, latent period or
-pre-infectious period <span class="math inline">\(= 4\)</span> and the
-infectious period <span class="math inline">\(= 5.5\)</span> (parameters
-adapted from <a href="https://doi.org/10.1016/S2468-2667(20)30133-X" class="external-link">Davies et
+package <code>{epidemics}</code>). The SEIR model divides the population
+into four compartments: Susceptible (S), Exposed (E), Infectious (I),
+and Recovered (R). We will set the following parameters for our model:
+<span class="math inline">\(R_0 = 2.7\)</span> (basic reproduction
+number), latent period or pre-infectious period <span class="math inline">\(= 4\)</span> days, and the infectious period <span class="math inline">\(= 5.5\)</span> days (parameters adapted from <a href="https://doi.org/10.1016/S2468-2667(20)30133-X" class="external-link">Davies et
 al. (2020)</a>). We adopt a contact matrix with age bins 0-18, 18-65, 65
 years and older using <a href="https://github.com/epiforecasts/socialmixr" class="external-link">socialmixr</a>, and assume that one in
-every 1 million in each age group is infectious at the start of the
-epidemic.</p>
+every 1 million individuals in each age group is infectious at the start
+of the epidemic.</p>
 <div class="codewrapper sourceCode" id="cb2">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -496,12 +497,12 @@ epidemic.</p>
 <div class="section level4">
 <h4 id="effect-of-school-closures-on-covid-19-spread">Effect of school closures on COVID-19 spread<a class="anchor" aria-label="anchor" href="#effect-of-school-closures-on-covid-19-spread"></a></h4>
 <p>The first NPI we will consider is the effect of school closures on
-reducing the number of individuals infectious with COVID-19 through
-time. We assume that a school closure will reduce the frequency of
-contacts within and between different age groups. We assume that school
-closures will reduce the contacts between school aged children (aged
-0-15) by 0.5, and will cause a small reduction (0.01) in the contacts
-between adults (aged 15 and over).</p>
+reducing the number of individuals infected with COVID-19 over time. We
+assume that a school closure will reduce the frequency of contacts
+within and between different age groups. Based on empirical studies, we
+assume that school closures will reduce the contacts between school-aged
+children (aged 0-15) by 50%, and will cause a small reduction (1%) in
+the contacts between adults (aged 15 and over).</p>
 <p>To include an intervention in our model we must create an
 <code>intervention</code> object. The inputs are the name of the
 intervention (<code>name</code>), the type of intervention
@@ -672,21 +673,24 @@ We can see that with the intervention in place, the infection still
 spreads through the population and hence accumulation of immunity
 contributes to the eventual peak-and-decline. However, the peak number
 of infectious individuals is smaller (green dashed line) than the
-baseline with no intervention in place (red solid line).</p>
+baseline with no intervention in place (red solid line), showing a
+reduction in the absolute number of cases.</p>
 </div>
 <div class="section level4">
 <h4 id="effect-of-mask-wearing-on-covid-19-spread">Effect of mask wearing on COVID-19 spread<a class="anchor" aria-label="anchor" href="#effect-of-mask-wearing-on-covid-19-spread"></a></h4>
 <p>We can also model the effect of other NPIs by reducing the value of
 the relevant parameters. For example, investigating the effect of mask
-wearing on the number of individuals infectious with COVID-19 through
+wearing on the number of individuals infected with COVID-19 over
 time.</p>
 <p>We expect that mask wearing will reduce an individual’s
-infectiousness. As we are using a population based model, we cannot make
-changes to individual behaviour and so assume that the transmission rate
-<span class="math inline">\(\beta\)</span> is reduced by a proportion
-due to mask wearing in the population. We specify this proportion, <span class="math inline">\(\theta\)</span> as product of the proportion
-wearing masks multiplied by the proportion reduction in transmission
-rate (adapted from <a href="https://doi.org/10.1371/journal.pone.0237691" class="external-link">Li et
+infectiousness, based on multiple studies showing the effectiveness of
+masks in reducing transmission. As we are using a population-based
+model, we cannot make changes to individual behavior and so assume that
+the transmission rate <span class="math inline">\(\beta\)</span> is
+reduced by a proportion due to mask wearing in the population. We
+specify this proportion, <span class="math inline">\(\theta\)</span> as
+product of the proportion wearing masks multiplied by the proportion
+reduction in transmission rate (adapted from <a href="https://doi.org/10.1371/journal.pone.0237691" class="external-link">Li et
 al. 2020</a>).</p>
 <p>We create an intervention object with <code>type = rate</code> and
 <code>reduction = 0.161</code>. Using parameters adapted from <a href="https://doi.org/10.1371/journal.pone.0237691" class="external-link">Li et al. 2020</a>
@@ -792,11 +796,11 @@ on modelling overlapping interventions</a> for more detail.</p>
 and mass treatment programs. In the previous section, we integrated the
 interventions into the model by reducing parameter values during
 specific period of time window in which these intervention set to take
-place. In the case of vaccination, we assume that after the intervention
-individuals are no longer susceptible and should be classified into a
-different disease state. Therefore, we specify the rate at which
-individuals are vaccinated and track the number of vaccinated
-individuals over time.</p>
+place. In the case of vaccination, we assume that after the
+intervention, individuals are no longer susceptible and should be
+classified into a different disease state. Therefore, we specify the
+rate at which individuals are vaccinated and track the number of
+vaccinated individuals over time.</p>
 <p>The diagram below shows the SEIRV model implemented using
 <code>model_default()</code> where susceptible individuals are
 vaccinated and then move to the <span class="math inline">\(V\)</span>
@@ -935,11 +939,22 @@ different disease state <span class="math inline">\(V\)</span>
 </ul></div>
 </div>
 </div>
-<!--
+</section><section><h2 class="section-heading" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
+<hr class="half-width"><ol style="list-style-type: decimal"><li><p>Davies, N. G., Klepac, P., Liu, Y., Prem, K., Jit, M., &amp;
+Eggo, R. M. (2020). Age-dependent effects in the transmission and
+control of COVID-19 epidemics. Nature Medicine, 26(8), 1205-1211. <a href="https://doi.org/10.1016/S2468-2667(20)30133-X" class="external-link uri">https://doi.org/10.1016/S2468-2667(20)30133-X</a></p></li>
+<li><p>Li, Y., Liang, M., Gao, L., Ahmed, M. A., Uy, J. P., Cheng, C., …
+&amp; Sun, C. (2020). Face masks to prevent transmission of COVID-19: A
+systematic review and meta-analysis. American Journal of Infection
+Control, 49(7), 900-906. <a href="https://doi.org/10.1371/journal.pone.0237691" class="external-link uri">https://doi.org/10.1371/journal.pone.0237691</a></p></li>
+<li><p>Mossong, J., Hens, N., Jit, M., Beutels, P., Auranen, K.,
+Mikolajczyk, R., … &amp; Edmunds, W. J. (2008). Social contacts and
+mixing patterns relevant to the spread of infectious diseases. PLoS
+medicine, 5(3), e74. <a href="https://doi.org/10.1371/journal.pmed.0050074" class="external-link uri">https://doi.org/10.1371/journal.pmed.0050074</a></p></li>
+</ol><!--
 Place links that you need to refer to multiple times across pages here. Delete
 any links that you are not going to use.
- -->
-</section></div> <!-- / div.lesson-content -->
+ --></section></div> <!-- / div.lesson-content -->
     </main><!-- / main#main-content.main-content --><nav class="bottom-pagination mx-md-4" aria-label="Previous and Next Chapter"><div class="d-block d-sm-block d-md-none">
         <a class="chapter-link" href="../instructor/model-choices.html"><i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>Previous</a>
         <a class="chapter-link float-end" href="../instructor/compare-interventions.html">Next<i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
@@ -996,9 +1011,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://epiverse-trace.github.io/tutorials-late/instructor/modelling-interventions.html",
   "identifier": "https://epiverse-trace.github.io/tutorials-late/instructor/modelling-interventions.html",
-  "dateCreated": "2025-05-01",
-  "dateModified": "2025-04-22",
-  "datePublished": "2025-05-01"
+  "dateCreated": "2025-05-04",
+  "dateModified": "2025-05-04",
+  "datePublished": "2025-05-04"
 }
 
   </script><script>

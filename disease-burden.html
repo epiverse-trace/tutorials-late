@@ -343,7 +343,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Modelling disease burden</h1>
-        <p>Last updated on 2025-04-22 |
+        <p>Last updated on 2025-05-04 |
 
         <a href="https://github.com/epiverse-trace/tutorials-late/edit/main/episodes/disease-burden.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -394,27 +394,33 @@ burden model</li>
 <section><h2 class="section-heading" id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a></h2>
 <hr class="half-width"><p>In previous tutorials we have used mathematical models to generate
 trajectories of infections, but we may also be interested in measures of
-disease. That could be measures of health in the population such as mild
-versus severe infections, or measures important to contingency planning
-of services being overwhelmed such as hospitalisations.</p>
-<p>In the case of hospitalisations, mathematical models comprised of
-ODEs may include a compartment for individuals in hospital (see for
-example the <a href="compare-interventions.html#vacamole-model">Vacamole
-model</a>). For diseases like Ebola, hospitalised cases contribute to
-new infections and therefore it is necessary to keep track of
-hospitalised individuals so their contribution to infection can be
-modelled. When hospitalised cases contribute little to transmission
-(i.e. if most transmission happens early in the infection and severe
-illness typically occurs later on) we can separate out models of
-transmission from models of burden. In other wrods, we can first run an
-epidemic model to simulate infections, then use these values to simulate
-disease burden as a follow-on analysis.</p>
-<p>In this tutorial we will translate new infections generated from a
-transmission model to hospital admissions and number of hospitalised
-cases over time. We will use the in <code>{epidemics}</code> package to
-simulate disease trajectories, access to social contact data with
-<a href="https://github.com/epiforecasts/socialmixr" class="external-link">socialmixr</a> and <a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a> for data
-manipulation and plotting.</p>
+disease burden. These measures could include:</p>
+<ul><li>Health outcomes in the population (e.g., mild vs. severe
+infections)</li>
+<li>Healthcare system impacts (e.g., hospitalizations, ICU
+admissions)</li>
+<li>Economic impacts (e.g., productivity loss, healthcare costs)</li>
+</ul><p>In mathematical models, we can track disease burden in different
+ways:</p>
+<ol style="list-style-type: decimal"><li>
+<strong>Integrated approach</strong>: Include burden compartments
+directly in the transmission model (e.g., hospital compartments in ODE
+models)</li>
+<li>
+<strong>Separated approach</strong>: First simulate transmission,
+then use the results to estimate burden</li>
+</ol><p>The choice between these approaches depends on whether burden affects
+transmission. For example:</p>
+<ul><li>For Ebola, hospitalizations are important for transmission due to
+high-risk healthcare settings</li>
+<li>For many respiratory infections, severe illness typically occurs
+after the infectious period, so burden can be modeled separately</li>
+</ul><p>In this tutorial, we’ll focus on the separated approach, where we
+first run an epidemic model to simulate infections, then use these
+values to estimate disease burden as a follow-on analysis. We’ll use
+<code>{epidemics}</code> to simulate disease trajectories,
+<a href="https://github.com/epiforecasts/socialmixr" class="external-link">socialmixr</a> for social contact data, and
+<a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a> for data manipulation and plotting.</p>
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -426,19 +432,28 @@ manipulation and plotting.</p>
 </div>
 
 </section><section><h2 class="section-heading" id="a-burden-model">A burden model<a class="anchor" aria-label="anchor" href="#a-burden-model"></a></h2>
-<hr class="half-width"><p>We will extend the influenza example in the tutorial <a href="simulating-transmission.html">Simulating transmission</a> to
-calculate hospitalisations over time. In this example our
-<strong>transmission model</strong> is an SEIR model comprised of ODEs.
-Our <strong>burden model</strong> will convert new infections to
-hospitalisations over time by summing up all the new hospitalisations we
-expect to occur on each day according to the delay from infection to
-hospitalisation. We can do this summation using a calculation known as a
-convolution.</p>
-<p>We will first obtain the new infections through time from our
-influenza example (see tutorial on <a href="simulating-transmission.html">Simulating transmission</a> for code
-to generate <code>output_plot</code>) using
-<code>new_infections()</code> in <code>{epidemics}</code></p>
-<div class="codewrapper sourceCode" id="cb2">
+<hr class="half-width"><p>We will extend the influenza example from the <a href="simulating-transmission.html">Simulating transmission</a> tutorial
+to calculate hospitalizations over time. Our approach has two main
+components:</p>
+<ol style="list-style-type: decimal"><li>
+<strong>Transmission model</strong>: An SEIR model that generates
+new infections over time</li>
+<li>
+<strong>Burden model</strong>: Converts new infections to
+hospitalizations by accounting for delays between infection and
+hospitalization</li>
+</ol><p>To convert infections to hospitalizations, we need to consider:</p>
+<ul><li>The probability that an infection leads to hospitalization
+(infection-hospitalization ratio, IHR)</li>
+<li>The time delay from infection to hospital admission</li>
+<li>The time spent in hospital before discharge</li>
+</ul><p>We’ll use <a href="https://github.com/epiverse-trace/epiparameter/" class="external-link">epiparameter</a> to define these delay
+distributions. The Gamma distribution is commonly used for these delays
+because:</p>
+<ul><li>It’s flexible and can model various shapes</li>
+<li>It’s bounded at zero (negative delays don’t make sense)</li>
+<li>It’s supported by empirical data for many infectious diseases</li>
+</ul><div class="codewrapper sourceCode" id="cb2">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -478,7 +493,11 @@ distributions for these processes.</p>
 <span>    prob_distribution_params <span class="op">=</span> <span class="fu">c</span><span class="op">(</span>shape <span class="op">=</span> <span class="fl">5</span>, scale <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>,</span>
 <span>    discretise <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="op">)</span></span></code></pre>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># The shape and scale parameters were chosen based on data from COVID-19 studies</span></span>
+<span><span class="co"># showing a median time from infection to hospitalization of around 10 days</span></span>
+<span><span class="co"># with right-skewed distribution reflecting variability in disease progression</span></span></code></pre>
 </div>
 <p>To visualise this distribution we can create a density plot :</p>
 <div class="codewrapper sourceCode" id="cb5">
@@ -516,7 +535,7 @@ shape = 10 and scale = 2 and plot the density of this distribution.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb6">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -569,6 +588,8 @@ infection hospitalisation ratio (IHR)<a class="anchor" aria-label="anchor" href=
 </h3>
 <pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ihr</span> <span class="op">&lt;-</span> <span class="fl">0.1</span> <span class="co"># infection-hospitalisation ratio</span></span>
+<span><span class="co"># This value is based on estimates from early COVID-19 data</span></span>
+<span><span class="co"># and represents the proportion of infections that require hospitalization</span></span>
 <span></span>
 <span><span class="co"># calculate expected numbers with convolution:</span></span>
 <span><span class="va">hosp</span> <span class="op">&lt;-</span> <span class="va">new_cases</span><span class="op">$</span><span class="va">new_infections</span> <span class="op">*</span> <span class="va">ihr</span></span></code></pre>
@@ -648,13 +669,13 @@ estimated number of new discharges.</p>
 </div>
 </div>
 <div class="section level4">
-<h4 id="calculate-the-number-in-hospital-as-the-difference-between-the-cumulative-sumo-of-hospitalisation-and-the-cumulative-sum-of-discharges">4. Calculate the number in hospital as the difference between the
-cumulative sumo of hospitalisation and the cumulative sum of
-discharges<a class="anchor" aria-label="anchor" href="#calculate-the-number-in-hospital-as-the-difference-between-the-cumulative-sumo-of-hospitalisation-and-the-cumulative-sum-of-discharges"></a></h4>
+<h4 id="calculate-the-number-in-hospital-as-the-difference-between-the-cumulative-sum-of-hospitalisations-and-the-cumulative-sum-of-discharges">4. Calculate the number in hospital as the difference between the
+cumulative sum of hospitalisations and the cumulative sum of
+discharges<a class="anchor" aria-label="anchor" href="#calculate-the-number-in-hospital-as-the-difference-between-the-cumulative-sum-of-hospitalisations-and-the-cumulative-sum-of-discharges"></a></h4>
 <p>We can use the R function <code>cumsum()</code> to calculate the
 cumulative number of hospitalisations and discharges. The difference
-between these two quantities gives is the current number of people in
-hospital.</p>
+between these two quantities gives us the current number of people in
+hospital at each time point.</p>
 <div class="codewrapper sourceCode" id="cb10">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -693,16 +714,20 @@ hospital.</p>
 </div>
 <figure><img src="fig/disease-burden-rendered-unnamed-chunk-11-1.png" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure></div>
 </section><section><h2 class="section-heading" id="summary">Summary<a class="anchor" aria-label="anchor" href="#summary"></a></h2>
-<hr class="half-width"><p>In this tutorial we estimated the number of people in hospital based
-on daily new infections from a transmission model. Other measures of
-disease burden can be calculated using outputs of transmission models,
-such as Disability-Adjusted Life-Years (DALYs). Calculating measures of
-burden from transmission models is one way we can utilise mathematical
-modelling in health economic analyses. As a follow-up, you might also be
-interested in <a href="https://epiverse-trace.github.io/howto/analyses/reconstruct_transmission/estimate_infections.html" class="external-link">this
-how to guide</a>, which shows how we can take reported hospitalisations
-or deaths over time and ‘de-convolve’ them to get an estimate of the
-original infection events.</p>
+<hr class="half-width"><p>In this tutorial, we learned how to estimate hospitalizations based
+on daily new infections from a transmission model. This approach can be
+extended to other measures of disease burden, such as:</p>
+<ul><li>ICU admissions</li>
+<li>Deaths</li>
+<li>Disability-Adjusted Life-Years (DALYs)</li>
+<li>Healthcare costs</li>
+</ul><p>These burden estimates are valuable for:</p>
+<ul><li>Healthcare system planning</li>
+<li>Health economic analyses</li>
+<li>Policy decision-making</li>
+</ul><p>As a follow-up, you might be interested in <a href="https://epiverse-trace.github.io/howto/analyses/reconstruct_transmission/estimate_infections.html" class="external-link">this
+how-to guide</a>, which shows how to estimate original infection events
+from reported hospitalizations or deaths over time.</p>
 <div id="keypoints1" class="callout keypoints">
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
@@ -710,10 +735,14 @@ original infection events.</p>
 <div class="callout-inner">
 <h3 class="callout-title">Key Points</h3>
 <div class="callout-content">
-<ul><li>Transmission models should include disease burden when it is
-important for onward transmission</li>
+<ul><li>Transmission models should include disease burden when it affects
+onward transmission</li>
 <li>Outputs of transmission models can be used as inputs to models of
 burden</li>
+<li>The Gamma distribution is commonly used to model delays in disease
+progression</li>
+<li>Convolution is a powerful tool for estimating disease burden from
+transmission model outputs</li>
 </ul></div>
 </div>
 </div>
@@ -778,9 +807,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://epiverse-trace.github.io/tutorials-late/disease-burden.html",
   "identifier": "https://epiverse-trace.github.io/tutorials-late/disease-burden.html",
-  "dateCreated": "2025-05-01",
-  "dateModified": "2025-04-22",
-  "datePublished": "2025-05-01"
+  "dateCreated": "2025-05-04",
+  "dateModified": "2025-05-04",
+  "datePublished": "2025-05-04"
 }
 
   </script><script>

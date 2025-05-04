@@ -345,7 +345,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Simulating transmission</h1>
-        <p>Last updated on 2025-04-22 |
+        <p>Last updated on 2025-05-04 |
 
         <a href="https://github.com/epiverse-trace/tutorials-late/edit/main/episodes/simulating-transmission.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -434,9 +434,9 @@ in <code>{epidemics}</code>. These are prefixed with
 (e.g. <code>model_ebola</code> for Ebola) or a different identifier
 (e.g. <code>model_default</code>).</p>
 <p>In this tutorial, we will use the default model in
-<code>{epidemics}</code>, <code>model_default()</code> which is an
-age-structured model that categorises individuals based on their
-infection status. For each age group <span class="math inline">\(i\)</span>, individuals are categorized as either
+<code>{epidemics}</code>, called <code>model_default()</code>, which is
+designed to be an age-structured model that categorises individuals
+based on their infection status. For each age group <span class="math inline">\(i\)</span>, individuals are categorized as either
 susceptible <span class="math inline">\(S\)</span>, infected but not yet
 infectious <span class="math inline">\(E\)</span>, infectious <span class="math inline">\(I\)</span> or recovered <span class="math inline">\(R\)</span>. Next, we need to define the process by
 which individuals flow from one compartment to another. This can be done
@@ -476,14 +476,19 @@ describing the rate of change with respect to time.</p>
 \frac{dI_i}{dt} &amp;= \alpha E_i - \gamma I_i \\
 \frac{dR_i}{dt} &amp;=\gamma I_i \\
 \end{aligned}
-\]</span> Individuals in age group (<span class="math inline">\(i\)</span>) move from the susceptible state (<span class="math inline">\(S_i\)</span>) to the exposed state (<span class="math inline">\(E_i\)</span>) via age-specific contacts with
+\]</span></p>
+<p>Individuals in age group (<span class="math inline">\(i\)</span>)
+move from the susceptible state (<span class="math inline">\(S_i\)</span>) to the exposed state (<span class="math inline">\(E_i\)</span>) via age-specific contacts with
 infectious individuals in all groups <span class="math inline">\(\beta
 S_i \sum_j C_{i,j} I_j/N_j\)</span>. The contact matrix <span class="math inline">\(C\)</span> allows for heterogeneity in contacts
 between age groups. They then move to the infectious state at a rate
-<span class="math inline">\(\alpha\)</span> and recover at a rate <span class="math inline">\(\gamma\)</span>. There is no loss of immunity
-(there are no flows out of the recovered state).</p>
+<span class="math inline">\(\alpha\)</span> and recover at a rate <span class="math inline">\(\gamma\)</span>. Note that this model assumes no
+loss of immunity (there are no flows out of the recovered state), which
+may not be applicable for all diseases as some allow for
+reinfection.</p>
 <p>The model parameters are:</p>
-<ul><li>transmission rate <span class="math inline">\(\beta\)</span>,</li>
+<ul><li>transmission rate <span class="math inline">\(\beta\)</span>
+(derived from the basic reproduction number <span class="math inline">\(R_0\)</span> and the recovery rate <span class="math inline">\(\gamma\)</span>),</li>
 <li>
 <a href="reference.html#contact">contact matrix</a> <span class="math inline">\(C\)</span> containing the frequency of contacts
 between age groups (a square <span class="math inline">\(i \times
@@ -522,8 +527,12 @@ following inputs:</p>
 <li>Model parameters</li>
 </ol><div class="section level3">
 <h3 id="contact-matrix">1. Contact matrix<a class="anchor" aria-label="anchor" href="#contact-matrix"></a></h3>
-<p>We will use the R package <a href="https://github.com/epiforecasts/socialmixr" class="external-link">socialmixr</a> to load a contact
-matrix estimated from POLYMOD survey data <a href="https://doi.org/10.1371/journal.pmed.0050074" class="external-link">(Mossong et
+<p>A contact matrix represents the average number of contacts between
+individuals in different age groups. It is a crucial component in
+age-structured models as it captures how different age groups interact
+and potentially transmit infections. We will use the R package
+<a href="https://github.com/epiforecasts/socialmixr" class="external-link">socialmixr</a> to load a contact matrix estimated from
+POLYMOD survey data <a href="https://doi.org/10.1371/journal.pmed.0050074" class="external-link">(Mossong et
 al. 2008)</a>.</p>
 <div id="load-contact-and-population-data" class="callout challenge">
 <div class="callout-square">
@@ -849,7 +858,8 @@ specified on a daily time-scale and maximum number of time steps
 one day.</p>
 <p>The choice of increment will depend on the time scale of the
 parameters, and the rate at which events can occur. In general, the
-increment should be smaller than the fastest event. For example:</p>
+increment should be smaller than the fastest event that can occur. For
+example:</p>
 <ul><li>if parameters are on a daily time scale, and all events are reported
 on a daily basis, then the increment should be equal to one day;</li>
 <li>if parameters are on a monthly time scale, but some events will
@@ -861,7 +871,9 @@ month.</li>
 </section><section><h2 class="section-heading" id="accounting-for-uncertainty">Accounting for uncertainty<a class="anchor" aria-label="anchor" href="#accounting-for-uncertainty"></a></h2>
 <hr class="half-width"><p>The epidemic model is <a href="reference.html#deterministic">deterministic</a>, which means it
 runs like clockwork: the same parameters will always lead to the same
-trajectory. However, reality is not so predictable. There are two main
+trajectory. A deterministic model is one where the outcome is completely
+determined by the initial conditions and parameters, with no random
+variation. However, reality is not so predictable. There are two main
 reasons for this: the transmission process can involve randomness, and
 we may not know the exact epidemiological characteristics of the
 pathogen we’re interested in. In the next episode, we will consider
@@ -1029,9 +1041,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://epiverse-trace.github.io/tutorials-late/simulating-transmission.html",
   "identifier": "https://epiverse-trace.github.io/tutorials-late/simulating-transmission.html",
-  "dateCreated": "2025-05-01",
-  "dateModified": "2025-04-22",
-  "datePublished": "2025-05-01"
+  "dateCreated": "2025-05-04",
+  "dateModified": "2025-05-04",
+  "datePublished": "2025-05-04"
 }
 
   </script><script>
