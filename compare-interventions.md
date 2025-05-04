@@ -33,15 +33,19 @@ Learners should familiarise themselves with following concept dependencies befor
 
 ## Introduction
 
-In this tutorial we will compare intervention scenarios against each other. To quantify the effect of the intervention we need to compare our intervention scenario to a counter factual (baseline) scenario. The *counter factual* here is the scenario in which nothing changes, often referred to as the 'do nothing' scenario. The counter factual scenario may feature no interventions at all or, if we are investigating the potential impact of an additional intervention in the later stages of an outbreak, there may be existing interventions in place. 
+In this tutorial, we will compare intervention scenarios against each other. To quantify the effect of an intervention, we need to compare our intervention scenario to a counterfactual (baseline) scenario. The *counterfactual* here is the scenario in which nothing changes, often referred to as the "do-nothing" scenario. The counterfactual scenario may feature:
 
-We must also decide what our *outcome of interest* is to make comparisons between intervention and counter factual scenarios. The outcome of interest can be:
+- No interventions at all, or
+- Existing interventions in place (if we are investigating the potential impact of an additional intervention)
 
-+ a model outcome, e.g. number of infections or hospitalisations,
-+ a metric such as the epidemic peak time or size,
-+ a measure that uses the model outcomes, such as QALY/DALYs.
+We must also define our *outcome of interest* to make comparisons between intervention and counterfactual scenarios. The outcome of interest can be:
 
-In this tutorial we are going to learn how to use the `{epidemics}` package to compare the effect of different interventions on simulated disease trajectories. We will access social contact data with `{socialmixr}`. We'll use `{dplyr}`, `{ggplot2}` and the pipe `%>%` to connect some of their functions, so let's also call to the `{tidyverse}` package:
+- Direct model outputs (e.g., number of infections, hospitalizations)
+- Epidemiological metrics (e.g., epidemic peak time, final outbreak size)
+- Health impact measures (e.g., Quality-Adjusted Life Years [QALYs] or Disability-Adjusted Life Years [DALYs])
+- Economic measures (e.g., healthcare costs, productivity losses)
+
+In this tutorial, we will learn how to use the R package `{epidemics}` to compare the effect of different interventions on simulated disease trajectories. We will use `{socialmixr}` for social contact data and `{tidyverse}` (including `{dplyr}`, `{ggplot2}`, and the pipe `%>%`) for data manipulation and visualization.
 
 
 ``` r
@@ -49,7 +53,6 @@ library(epidemics)
 library(socialmixr)
 library(tidyverse)
 ```
-
 
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: instructor
 
@@ -64,7 +67,7 @@ To compare the baseline scenario against the intervention scenarios, we can make
 If we wanted to investigate the change in epidemic peak with an intervention applied, we could plot the model trajectories through time:
 
 ``` r
-output_baseline <- model_default(
+output_baseline <- epidemics::model_default(
   population = uk_population,
   transmission_rate = transmission_rate,
   infectiousness_rate = infectiousness_rate,
@@ -72,7 +75,7 @@ output_baseline <- model_default(
   time_end = 300, increment = 1.0
 )
 
-output_school <- model_default(
+output_school <- epidemics::model_default(
   # population
   population = uk_population,
   # rate
@@ -170,15 +173,16 @@ output %>%
 
 ### Vacamole model
 
-The Vacamole model is a deterministic model based on a system of ODEs in [Ainslie et al. 2022](https://doi.org/10.2807/1560-7917.ES.2022.27.44.2101090) to describe the effect of vaccination on COVID-19 dynamics. The model consists of 11 compartments, individuals are classed as one of the following:
+The Vacamole model is a deterministic model based on a system of Ordinary Differential Equations (ODEs) developed by [Ainslie et al. (2022)](https://doi.org/10.2807/1560-7917.ES.2022.27.44.2101090) to describe the effect of vaccination on COVID-19 dynamics. The model consists of 11 compartments, where individuals are classified as:
 
-+ susceptible, $S$,
-+ partial vaccination ($V_1$), fully vaccination ($V_2$),
-+ exposed, $E$ and exposed while vaccinated, $E_V$,
-+ infectious, $I$ and infectious while vaccinated, $I_V$,
-+ hospitalised, $H$ and hospitalised while vaccinated, $H_V$,
-+ dead, $D$,
-+ recovered, $R$.
++ Susceptible ($S$)
++ Partially vaccinated ($V_1$)
++ Fully vaccinated ($V_2$)
++ Exposed ($E$) and exposed while vaccinated ($E_V$)
++ Infectious ($I$) and infectious while vaccinated ($I_V$)
++ Hospitalized ($H$) and hospitalized while vaccinated ($H_V$)
++ Dead ($D$)
++ Recovered ($R$)
 
 The diagram below describes the flow of individuals through the different compartments.
 
@@ -189,17 +193,24 @@ The diagram below describes the flow of individuals through the different compar
 
 ## Running a counterfactual scenario using the Vacamole model
 
-1. Run the model with the default parameter values for the UK population assuming that :
+1. Run the model with the default parameter values for the UK population assuming that:
 
-+ 1 in a million individual are infectious (and not vaccinated) at the start of the simulation
-+ The contact matrix for the United Kingdom has age bins:
-  + age between 0 and 20 years,
-  + age between 20 and 40,
-  + 40 years and over.
++ One in every million individuals (0.0001%) is infectious (and not vaccinated) at the start of the simulation
++ The contact matrix for the United Kingdom has the following age bins:
+  + 0-20 years
+  + 20-40 years
+  + 40+ years
 
-For scenarios :
-+ baseline : two dose vaccination program. Dose 1 (vaccination rate 0.01) starts from day 30, dose 2 (vaccination rate 0.01) starts from day 60. Both programs run fro 300 days. 
-+ intervention :a mask mandate starting from time 60 for 100 days, assuming a reduction in the transmission rate of 0.163
+For the following scenarios:
+
++ Baseline: Two-dose vaccination program
+  - Dose 1 (vaccination rate 0.01) starts from day 30
+  - Dose 2 (vaccination rate 0.01) starts from day 60
+  - Both programs run for 300 days
++ Intervention: Mask mandate
+  - Starts from day 60
+  - Lasts for 100 days
+  - Reduces transmission rate by 16.3% (based on empirical studies of mask effectiveness)
 
 There is no vaccination scheme in place
 
@@ -214,7 +225,7 @@ We can run the Vacamole model with [default parameter values](https://epiverse-t
 
 
 ``` r
-output <- model_vacamole(
+output <- epidemics::model_vacamole(
   population = uk_population,
   time_end = 300
 )
@@ -270,7 +281,7 @@ initial_conditions_vacamole <- rbind(
 rownames(initial_conditions_vacamole) <- rownames(contact_matrix)
 
 # prepare population object
-uk_population_vacamole <- population(
+uk_population_vacamole <- epidemics::population(
   name = "UK",
   contact_matrix = contact_matrix,
   demography_vector = demography_vector,
@@ -279,7 +290,7 @@ uk_population_vacamole <- population(
 
 # prepare two vaccination objects
 # dose 1 vaccination
-dose_1 <- vaccination(
+dose_1 <- epidemics::vaccination(
   name = "two-dose vaccination", # name given to first dose
   nu = matrix(0.01, nrow = 3),
   time_begin = matrix(30, nrow = 3),
@@ -287,7 +298,7 @@ dose_1 <- vaccination(
 )
 
 # prepare the second dose with a 30 day interval in start date
-dose_2 <- vaccination(
+dose_2 <- epidemics::vaccination(
   name = "two-dose vaccination", # name given to first dose
   nu = matrix(0.01, nrow = 3),
   time_begin = matrix(30 + 30, nrow = 3),
@@ -298,14 +309,14 @@ dose_2 <- vaccination(
 double_vaccination <- c(dose_1, dose_2)
 
 # run baseline model
-output_baseline_vc <- model_vacamole(
+output_baseline_vc <- epidemics::model_vacamole(
   population = uk_population_vacamole,
   vaccination = double_vaccination,
   time_end = 300
 )
 
 # create mask intervention
-mask_mandate <- intervention(
+mask_mandate <- epidemics::intervention(
   name = "mask mandate",
   type = "rate",
   time_begin = 60,
@@ -314,13 +325,14 @@ mask_mandate <- intervention(
 )
 
 # run intervention model
-output_intervention_vc <- model_vacamole(
-                                         population = uk_population_vacamole,
-                                         vaccination = double_vaccination,
-                                         intervention = list(
-                                                             transmission_rate =
-                                                               mask_mandate),
-                                         time_end = 300)
+output_intervention_vc <- epidemics::model_vacamole(
+  population = uk_population_vacamole,
+  vaccination = double_vaccination,
+  intervention = list(
+    transmission_rate = mask_mandate
+  ),
+  time_end = 300
+)
 ```
 
 2. Plot the cumulative number of deaths through time
@@ -375,9 +387,9 @@ output_vacamole %>%
 
 ## Calculating outcomes averted
 
-Visualisations are a useful tool to compare intervention scenario model predictions through time. In addition to visualisations, we also want to quantify the impact of interventions. An outcome of interest we can use is the number of infections averted. This measure allows us to quantify the difference between different intervention scenarios.
+While visualizations are useful for comparing intervention scenarios over time, we also need quantitative measures of intervention impact. One such measure is the number of infections averted, which helps us understand the difference between intervention scenarios.
 
-In `{epidemics}`, we can use the function `outcomes_averted()` to calculate the number of infections averted while accounting for uncertainty in key parameter values. We will extend the COVID-19 example in [Modelling interventions](../episodes/modelling-interventions.md) to account for some uncertainty in the parameter values, specifically in the basic reproduction $R_0$. We do this as follows: 
+The R package `{epidemics}` provides the `outcomes_averted()` function to calculate infections averted while accounting for parameter uncertainty. Let's extend our COVID-19 example from [Modelling interventions](../episodes/modelling-interventions.md) to account for uncertainty in the basic reproduction number ($R_0$).
 
 
 ``` r
@@ -408,7 +420,7 @@ We use these parameter values alongside the population structure and contact mat
 
 
 ``` r
-output_baseline <- model_default(
+output_baseline <- epidemics::model_default(
   population = uk_population,
   transmission_rate = beta,
   infectiousness_rate = infectiousness_rate,
@@ -445,7 +457,7 @@ We use this list as our input to `intervention` in `model_default`
 
 
 ``` r
-output <- model_default(
+output <- epidemics::model_default(
   uk_population,
   transmission_rate = beta,
   infectiousness_rate = infectiousness_rate,
@@ -492,7 +504,7 @@ We can do this using `outcomes_averted()` in `{epidemics}`. This function calcul
 
 
 ``` r
-intervention_effect <- outcomes_averted(
+intervention_effect <- epidemics::outcomes_averted(
   baseline = output_baseline, scenarios = output
 )
 intervention_effect
@@ -516,7 +528,7 @@ The output gives us the infections averted in each scenario compared to the base
 
 
 ``` r
-intervention_effect <- outcomes_averted(
+intervention_effect <- epidemics::outcomes_averted(
   baseline = output_baseline, scenarios = output,
   by_group = FALSE
 )
@@ -604,7 +616,7 @@ beta <- withr::with_seed(
 )
 
 # run the baseline
-output_baseline <- model_ebola(
+output_baseline <- epidemics::model_ebola(
   population = guinea_population,
   transmission_rate = beta,
   infectiousness_rate = 2.0 / 5,
@@ -617,12 +629,12 @@ output_baseline <- model_ebola(
 )
 
 # create intervention objects
-reduce_transmission_1 <- intervention(
+reduce_transmission_1 <- epidemics::intervention(
   type = "rate",
   time_begin = 60, time_end = 100, reduction = 0.5
 )
 
-reduce_transmission_2 <- intervention(
+reduce_transmission_2 <- epidemics::intervention(
   type = "rate",
   time_begin = 30, time_end = 100, reduction = 0.1
 )
@@ -638,7 +650,7 @@ intervention_scenarios <- list(
 )
 
 # run model
-output_intervention <- model_ebola(
+output_intervention <- epidemics::model_ebola(
   population = guinea_population,
   transmission_rate = beta,
   infectiousness_rate = 2.0 / 5,
@@ -659,7 +671,7 @@ total of 20000 model runs.
 
 ``` r
 # calculate outcomes averted
-intervention_effect <- outcomes_averted(
+intervention_effect <- epidemics::outcomes_averted(
   baseline = output_baseline, scenarios = output_intervention,
   by_group = FALSE
 )
@@ -686,7 +698,10 @@ intervention_effect
 
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
-- The counter factual scenario must be defined to make comparisons
-- Scenarios can be compared using visualisations and by calculating outcomes averted
+- A counterfactual (baseline) scenario must be clearly defined for meaningful comparisons
+- Scenarios can be compared using both visualizations and quantitative measures
+- The outcomes_averted() function helps quantify intervention effects
+- Parameter uncertainty should be considered in intervention analysis
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
+

@@ -64,7 +64,7 @@ By the end of this tutorial, learners should be able to replicate the above imag
 To simulate infectious disease trajectories, we must first select a mathematical model to use.
 There is a library of models to choose from in `{epidemics}`. These are prefixed with `model_*` and suffixed by the name of infection (e.g. `model_ebola` for Ebola) or a different identifier (e.g. `model_default`).
 
-In this tutorial, we will use the default model in `{epidemics}`, `model_default()` which is an age-structured model that categorises individuals based on their infection status. For each age group $i$, individuals are categorized as either susceptible $S$, infected but not yet infectious $E$, infectious $I$ or recovered $R$. Next, we need to define the process by which individuals flow from one compartment to another. This can be done by defining a set of [differential equations](../learners/reference.md#ordinary) that specify how the number of individuals in each compartment changes over time.
+In this tutorial, we will use the default model in `{epidemics}`, called `model_default()`, which is designed to be an age-structured model that categorises individuals based on their infection status. For each age group $i$, individuals are categorized as either susceptible $S$, infected but not yet infectious $E$, infectious $I$ or recovered $R$. Next, we need to define the process by which individuals flow from one compartment to another. This can be done by defining a set of [differential equations](../learners/reference.md#ordinary) that specify how the number of individuals in each compartment changes over time.
 
 The schematic below shows the processes which describe the flow of individuals between the disease states $S$, $E$, $I$ and $R$ and the key parameters for each process.
 
@@ -93,11 +93,12 @@ $$
 \frac{dR_i}{dt} &=\gamma I_i \\
 \end{aligned}
 $$
-Individuals in age group ($i$) move from the susceptible state ($S_i$) to the exposed state ($E_i$) via age-specific contacts with infectious individuals in all groups $\beta S_i \sum_j C_{i,j} I_j/N_j$. The contact matrix $C$ allows for heterogeneity in contacts between age groups. They then move to the infectious state at a rate $\alpha$ and recover at a rate $\gamma$. There is no loss of immunity (there are no flows out of the recovered state).
+
+Individuals in age group ($i$) move from the susceptible state ($S_i$) to the exposed state ($E_i$) via age-specific contacts with infectious individuals in all groups $\beta S_i \sum_j C_{i,j} I_j/N_j$. The contact matrix $C$ allows for heterogeneity in contacts between age groups. They then move to the infectious state at a rate $\alpha$ and recover at a rate $\gamma$. Note that this model assumes no loss of immunity (there are no flows out of the recovered state), which may not be applicable for all diseases as some allow for reinfection.
 
 The model parameters are:
 
-- transmission rate $\beta$,
+- transmission rate $\beta$ (derived from the basic reproduction number $R_0$ and the recovery rate $\gamma$),
 - [contact matrix](../learners/reference.md#contact) $C$ containing the frequency of contacts between age groups (a square $i \times j$ matrix),
 - infectiousness rate  $\alpha$ (pre-infectious period, or [latent period](../learners/reference.md#latent) =$1/\alpha$), and
 - recovery rate $\gamma$ (infectious period = $1/\gamma$).
@@ -124,7 +125,7 @@ To generate trajectories using our model, we must prepare the following inputs:
 
 ### 1. Contact matrix
 
-We will use the R package `{socialmixr}` to load a contact matrix estimated from POLYMOD survey data [(Mossong et al. 2008)](https://doi.org/10.1371/journal.pmed.0050074).
+A contact matrix represents the average number of contacts between individuals in different age groups. It is a crucial component in age-structured models as it captures how different age groups interact and potentially transmit infections. We will use the R package `{socialmixr}` to load a contact matrix estimated from POLYMOD survey data [(Mossong et al. 2008)](https://doi.org/10.1371/journal.pmed.0050074).
 
 
 ::::::::::::::::::::::::::::::::::::: challenge 
@@ -381,7 +382,7 @@ output %>%
 
 Note that there is a default argument of `increment = 1`. This relates to the time step of the ODE solver. When the parameters are specified on a daily time-scale and maximum number of time steps (`time_end`) is days, the default time step of the ODE solver one day. 
 
-The choice of increment will depend on the time scale of the parameters, and the rate at which events can occur. In general, the increment should be smaller than the fastest event. For example: 
+The choice of increment will depend on the time scale of the parameters, and the rate at which events can occur. In general, the increment should be smaller than the fastest event that can occur. For example: 
 
 - if parameters are on a daily time scale, and all events are reported on a daily basis, then the increment should be equal to one day;
 - if parameters are on a monthly time scale, but some events will occur within a month, then the increment should be less than one month.
@@ -390,7 +391,7 @@ The choice of increment will depend on the time scale of the parameters, and the
 
 ## Accounting for uncertainty
 
-The epidemic model is [deterministic](../learners/reference.md#deterministic), which means it runs like clockwork: the same parameters will always lead to the same trajectory. However, reality is not so predictable. There are two main reasons for this: the transmission process can involve randomness, and we may not know the exact epidemiological characteristics of the pathogen we're interested in. In the next episode, we will consider 'stochastic' models (i.e. models where we can define the process that creates randomness in transmission). In the meantime, we can include uncertainty in the value of the parameters that go into the deterministic model. To account for this, we must run our model for different parameter combinations. 
+The epidemic model is [deterministic](../learners/reference.md#deterministic), which means it runs like clockwork: the same parameters will always lead to the same trajectory. A deterministic model is one where the outcome is completely determined by the initial conditions and parameters, with no random variation. However, reality is not so predictable. There are two main reasons for this: the transmission process can involve randomness, and we may not know the exact epidemiological characteristics of the pathogen we're interested in. In the next episode, we will consider 'stochastic' models (i.e. models where we can define the process that creates randomness in transmission). In the meantime, we can include uncertainty in the value of the parameters that go into the deterministic model. To account for this, we must run our model for different parameter combinations. 
 
 We ran our model with $R_0= 1.5$. However, we believe that $R_0$ follows a normal distribution with mean 1.5 and standard deviation 0.05. To account for uncertainty we will run the model for different values of $R_0$. The steps we will follow to do this are:
 

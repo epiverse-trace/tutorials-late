@@ -33,9 +33,9 @@ Learners should also familiarise themselves with following concept dependencies 
 
 Mathematical models can be used to generate trajectories of disease spread under the implementation of interventions at different stages of an outbreak. These trajectories can be used to make decisions on what interventions could be implemented to slow down the spread of diseases. 
 
-Interventions are usually incorporated into mathematical models via manipulating values of relevant parameters, e.g., reduce transmission, or via introducing a new disease state, e.g., vaccinated class where we assume individuals belong to this class are no longer susceptible to infection.
+Interventions are usually incorporated into mathematical models via manipulating values of relevant parameters, e.g., reduce transmission, or via introducing a new disease state, e.g., vaccinated class where we assume that individuals who belong to this class are no longer susceptible to infection.
 
-In this tutorial we are going to learn how to use the `{epidemics}` package to model interventions and access to social contact data with `{socialmixr}`. We'll use `{dplyr}`, `{ggplot2}` and the pipe `%>%` to connect some of their functions, so let's also call to the `{tidyverse}` package:
+In this tutorial, we will learn how to use `{epidemics}` to model interventions and access to social contact data with `{socialmixr}`. We'll use `{dplyr}`, `{ggplot2}` and the pipe `%>%` to connect some of their functions, so let's also call `{tidyverse}`:
 
 
 ``` r
@@ -55,7 +55,7 @@ In this tutorial different types of intervention and how they can be modelled ar
 
 [Non-pharmaceutical interventions](../learners/reference.md#NPIs) (NPIs) are measures put in place to reduce transmission that do not include the administration of drugs or vaccinations. NPIs aim at reducing contacts between infectious and susceptible individuals by closure of schools and workplaces, and other measures to prevent the spread of the disease,  for example, washing hands and wearing masks.
 
-We will investigate the effect of interventions on a COVID-19 outbreak using an SEIR model (`model_default()` in the R package `{epidemics}`). We will set $R_0 = 2.7$, latent period or pre-infectious period $= 4$ and the infectious period $= 5.5$ (parameters adapted from [Davies et al. (2020)](https://doi.org/10.1016/S2468-2667(20)30133-X)). We adopt a contact matrix with age bins 0-18, 18-65, 65 years and older using `{socialmixr}`, and assume that one in every 1 million in each age group is infectious at the start of the epidemic.
+We will investigate the effect of interventions on a COVID-19 outbreak using an SEIR model (`model_default()` in the R package `{epidemics}`). The SEIR model divides the population into four compartments: Susceptible (S), Exposed (E), Infectious (I), and Recovered (R). We will set the following parameters for our model: $R_0 = 2.7$ (basic reproduction number), latent period or pre-infectious period $= 4$ days, and the infectious period $= 5.5$ days (parameters adapted from [Davies et al. (2020)](https://doi.org/10.1016/S2468-2667(20)30133-X)). We adopt a contact matrix with age bins 0-18, 18-65, 65 years and older using `{socialmixr}`, and assume that one in every 1 million individuals in each age group is infectious at the start of the epidemic.
 
 
 ``` r
@@ -98,7 +98,7 @@ uk_population <- epidemics::population(
 
 #### Effect of school closures on COVID-19 spread
 
-The first NPI we will consider is the effect of school closures on reducing the number of individuals infectious with COVID-19 through time. We assume that a school closure will reduce the frequency of contacts within and between different age groups. We assume that school closures will reduce the contacts between school aged children (aged 0-15) by 0.5, and will cause a small reduction (0.01) in the contacts between adults (aged 15 and over). 
+The first NPI we will consider is the effect of school closures on reducing the number of individuals infected with COVID-19 over time. We assume that a school closure will reduce the frequency of contacts within and between different age groups. Based on empirical studies, we assume that school closures will reduce the contacts between school-aged children (aged 0-15) by 50%, and will cause a small reduction (1%) in the contacts between adults (aged 15 and over). 
 
 To include an intervention in our model we must create an `intervention` object. The inputs are the name of the intervention (`name`), the type of intervention (`contacts` or `rate`), the start time (`time_begin`), the end time (`time_end`) and the reduction (`reduction`). The values of the reduction matrix are specified in the same order as the age groups in the contact matrix. 
 
@@ -234,15 +234,15 @@ output %>%
 ```
 
 <img src="fig/modelling-interventions-rendered-baseline-1.png" style="display: block; margin: auto;" />
-We can see that with the intervention in place, the infection still spreads through the population and hence accumulation of immunity contributes to the eventual peak-and-decline. However, the peak number of infectious individuals is smaller (green dashed line) than the baseline with no intervention in place (red solid line).
+We can see that with the intervention in place, the infection still spreads through the population and hence accumulation of immunity contributes to the eventual peak-and-decline. However, the peak number of infectious individuals is smaller (green dashed line) than the baseline with no intervention in place (red solid line), showing a reduction in the absolute number of cases.
 
 
 
 #### Effect of mask wearing on COVID-19 spread
 
-We can also model the effect of other NPIs by reducing the value of the relevant parameters. For example,  investigating the effect of mask wearing on the number of individuals infectious with COVID-19 through time. 
+We can also model the effect of other NPIs by reducing the value of the relevant parameters. For example, investigating the effect of mask wearing on the number of individuals infected with COVID-19 over time. 
 
-We expect that mask wearing will reduce an individual's infectiousness. As we are using a population based model, we cannot make changes to individual behaviour and so assume that the transmission rate $\beta$ is reduced by a proportion due to mask wearing in the population. We specify this proportion, $\theta$ as product of the proportion wearing masks multiplied by the proportion reduction in transmission rate (adapted from [Li et al. 2020](https://doi.org/10.1371/journal.pone.0237691)).
+We expect that mask wearing will reduce an individual's infectiousness, based on multiple studies showing the effectiveness of masks in reducing transmission. As we are using a population-based model, we cannot make changes to individual behavior and so assume that the transmission rate $\beta$ is reduced by a proportion due to mask wearing in the population. We specify this proportion, $\theta$ as product of the proportion wearing masks multiplied by the proportion reduction in transmission rate (adapted from [Li et al. 2020](https://doi.org/10.1371/journal.pone.0237691)).
 
 We create an intervention object with `type = rate` and `reduction = 0.161`. Using parameters adapted from [Li et al. 2020](https://doi.org/10.1371/journal.pone.0237691) we have proportion wearing masks = coverage $\times$ availability = $0.54 \times 0.525 = 0.2835$ and proportion reduction in transmission rate = $0.575$. Therefore, $\theta = 0.2835 \times 0.575 = 0.163$. We assume that the mask wearing mandate starts at day 40 and continue to be in place for 200 days.
 
@@ -328,7 +328,7 @@ To implement both contact and rate interventions in the same simulation they mus
 
 ## Pharmaceutical interventions
 
-Pharmaceutical interventions (PIs) are measures such as vaccination and mass treatment programs. In the previous section, we integrated the interventions into the model by reducing  parameter values during specific period of time window in which these intervention set to take place. In the case of vaccination, we assume that after the intervention individuals are no longer susceptible and should be classified into a different disease state. Therefore, we specify the rate at which individuals are vaccinated and track the number of vaccinated individuals over time. 
+Pharmaceutical interventions (PIs) are measures such as vaccination and mass treatment programs. In the previous section, we integrated the interventions into the model by reducing parameter values during specific period of time window in which these intervention set to take place. In the case of vaccination, we assume that after the intervention, individuals are no longer susceptible and should be classified into a different disease state. Therefore, we specify the rate at which individuals are vaccinated and track the number of vaccinated individuals over time. 
 
 The diagram below shows the SEIRV model implemented using `model_default()` where susceptible individuals are vaccinated and then move to the $V$ class.
 
@@ -434,7 +434,7 @@ From the plot we see that the peak number of total number of infectious individu
 
 ## Summary
 
-Different types of intervention can be implemented using mathematical modelling. Modelling interventions requires assumptions of which model parameters are affected (e.g. contact matrices, transmission rate), and by what magnitude  and what times in the simulation of an outbreak. 
+Different types of intervention can be implemented using mathematical modelling. Modelling interventions requires assumptions of which model parameters are affected (e.g. contact matrices, transmission rate), and by what magnitude and what times in the simulation of an outbreak. 
 
 The next step is to quantify the effect of an interventions. If you are interested in learning how to compare interventions, please complete the tutorial [Comparing public health outcomes of interventions](../episodes/compare-interventions.md). 
 
@@ -444,3 +444,11 @@ The next step is to quantify the effect of an interventions. If you are interest
 - Vaccination can be modelled by assuming individuals move to a different disease state $V$
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
+
+## References
+
+1. Davies, N. G., Klepac, P., Liu, Y., Prem, K., Jit, M., & Eggo, R. M. (2020). Age-dependent effects in the transmission and control of COVID-19 epidemics. Nature Medicine, 26(8), 1205-1211. https://doi.org/10.1016/S2468-2667(20)30133-X
+
+2. Li, Y., Liang, M., Gao, L., Ahmed, M. A., Uy, J. P., Cheng, C., ... & Sun, C. (2020). Face masks to prevent transmission of COVID-19: A systematic review and meta-analysis. American Journal of Infection Control, 49(7), 900-906. https://doi.org/10.1371/journal.pone.0237691
+
+3. Mossong, J., Hens, N., Jit, M., Beutels, P., Auranen, K., Mikolajczyk, R., ... & Edmunds, W. J. (2008). Social contacts and mixing patterns relevant to the spread of infectious diseases. PLoS medicine, 5(3), e74. https://doi.org/10.1371/journal.pmed.0050074

@@ -26,11 +26,23 @@ exercises: 10 # exercise time in minutes
 
 ## Introduction
 
-In previous tutorials we have used mathematical models to generate trajectories of infections, but we may also be interested in measures of disease. That could be measures of health in the population such as mild versus severe infections, or measures important to contingency planning of services being overwhelmed such as hospitalisations. 
+In previous tutorials we have used mathematical models to generate trajectories of infections, but we may also be interested in measures of disease burden. These measures could include:
 
-In the case of hospitalisations, mathematical models comprised of ODEs may include a compartment for individuals in hospital (see for example the [Vacamole model](../episodes/compare-interventions.md#vacamole-model)). For diseases like Ebola, hospitalised cases contribute to new infections and therefore it is necessary to keep track of hospitalised individuals so their contribution to infection can be modelled. When hospitalised cases contribute little to transmission (i.e. if most transmission happens early in the infection and severe illness typically occurs later on) we can separate out models of transmission from models of burden. In other wrods, we can first run an epidemic model to simulate infections, then use these values to simulate disease burden as a follow-on analysis.
+- Health outcomes in the population (e.g., mild vs. severe infections)
+- Healthcare system impacts (e.g., hospitalizations, ICU admissions)
+- Economic impacts (e.g., productivity loss, healthcare costs)
 
-In this tutorial we will translate new infections generated from a transmission model to hospital admissions and number of hospitalised cases over time. We will use the in `{epidemics}` package to simulate disease trajectories, access to social contact data with `{socialmixr}` and `{tidyverse}` for data manipulation and plotting. 
+In mathematical models, we can track disease burden in different ways:
+
+1. **Integrated approach**: Include burden compartments directly in the transmission model (e.g., hospital compartments in ODE models)
+2. **Separated approach**: First simulate transmission, then use the results to estimate burden
+
+The choice between these approaches depends on whether burden affects transmission. For example:
+
+- For Ebola, hospitalizations are important for transmission due to high-risk healthcare settings
+- For many respiratory infections, severe illness typically occurs after the infectious period, so burden can be modeled separately
+
+In this tutorial, we'll focus on the separated approach, where we first run an epidemic model to simulate infections, then use these values to estimate disease burden as a follow-on analysis. We'll use `{epidemics}` to simulate disease trajectories, `{socialmixr}` for social contact data, and `{tidyverse}` for data manipulation and plotting. 
 
 
 ``` r
@@ -52,9 +64,22 @@ associated with the lessons. They appear in the "Instructor View".
 
 ## A burden model
 
-We will extend the influenza example in the tutorial [Simulating transmission](../episodes/simulating-transmission.md) to calculate hospitalisations over time. In this example our **transmission model** is an SEIR model comprised of ODEs. Our **burden model** will convert new infections to hospitalisations over time by summing up all the new hospitalisations we expect to occur on each day according to the delay from infection to hospitalisation. We can do this summation using a calculation known as a convolution.
+We will extend the influenza example from the [Simulating transmission](../episodes/simulating-transmission.md) tutorial to calculate hospitalizations over time. Our approach has two main components:
 
-We will first obtain the new infections through time from our influenza example (see tutorial on [Simulating transmission](../episodes/simulating-transmission.md) for code to generate `output_plot`) using `new_infections()` in `{epidemics}`
+1. **Transmission model**: An SEIR model that generates new infections over time
+2. **Burden model**: Converts new infections to hospitalizations by accounting for delays between infection and hospitalization
+
+To convert infections to hospitalizations, we need to consider:
+
+- The probability that an infection leads to hospitalization (infection-hospitalization ratio, IHR)
+- The time delay from infection to hospital admission
+- The time spent in hospital before discharge
+
+We'll use `{epiparameter}` to define these delay distributions. The Gamma distribution is commonly used for these delays because:
+
+- It's flexible and can model various shapes
+- It's bounded at zero (negative delays don't make sense)
+- It's supported by empirical data for many infectious diseases
 
 
 
@@ -96,6 +121,10 @@ infection_to_admission <- epiparameter(
     discretise = TRUE
   )
 )
+
+# The shape and scale parameters were chosen based on data from COVID-19 studies
+# showing a median time from infection to hospitalization of around 10 days
+# with right-skewed distribution reflecting variability in disease progression
 ```
 
 To visualise this distribution we can create a density plot :
@@ -171,6 +200,8 @@ To convert the new infections to number in hospital over time we will do the fol
 
 ``` r
 ihr <- 0.1 # infection-hospitalisation ratio
+# This value is based on estimates from early COVID-19 data
+# and represents the proportion of infections that require hospitalization
 
 # calculate expected numbers with convolution:
 hosp <- new_cases$new_infections * ihr
@@ -218,9 +249,9 @@ discharges <- convolve(hospitalisations, rev(density(admission_to_discharge,
                        type = "open")[seq_along(hospitalisations)]
 ```
 
-#### 4. Calculate the number in hospital as the difference between the cumulative sumo of hospitalisation and the cumulative sum of discharges
+#### 4. Calculate the number in hospital as the difference between the cumulative sum of hospitalisations and the cumulative sum of discharges
 
-We can use the R function `cumsum()` to calculate the cumulative number of hospitalisations and discharges. The difference between these two quantities gives is the current number of people in hospital. 
+We can use the R function `cumsum()` to calculate the cumulative number of hospitalisations and discharges. The difference between these two quantities gives us the current number of people in hospital at each time point.
 
 
 ``` r
@@ -259,12 +290,27 @@ ggplot(data = hosp_df_long) +
 
 ## Summary
 
-In this tutorial we estimated the number of people in hospital based on daily new infections from a transmission model. Other measures of disease burden can be calculated using outputs of transmission models, such as Disability-Adjusted Life-Years (DALYs). Calculating measures of burden from transmission models is one way we can utilise mathematical modelling in health economic analyses. As a follow-up, you might also be interested in [this how to guide](https://epiverse-trace.github.io/howto/analyses/reconstruct_transmission/estimate_infections.html), which shows how we can take reported hospitalisations or deaths over time and 'de-convolve' them to get an estimate of the original infection events.
+In this tutorial, we learned how to estimate hospitalizations based on daily new infections from a transmission model. This approach can be extended to other measures of disease burden, such as:
+
+- ICU admissions
+- Deaths
+- Disability-Adjusted Life-Years (DALYs)
+- Healthcare costs
+
+These burden estimates are valuable for:
+
+- Healthcare system planning
+- Health economic analyses
+- Policy decision-making
+
+As a follow-up, you might be interested in [this how-to guide](https://epiverse-trace.github.io/howto/analyses/reconstruct_transmission/estimate_infections.html), which shows how to estimate original infection events from reported hospitalizations or deaths over time.
 
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
-- Transmission models should include disease burden when it is important for onward transmission
+- Transmission models should include disease burden when it affects onward transmission
 - Outputs of transmission models can be used as inputs to models of burden
-
+- The Gamma distribution is commonly used to model delays in disease progression
+- Convolution is a powerful tool for estimating disease burden from transmission model outputs
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
+

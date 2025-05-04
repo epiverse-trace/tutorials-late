@@ -48,7 +48,13 @@ library(socialmixr)
 
 ## The contact matrix
 
-The basic contact matrix represents the amount of contact or mixing within and between different subgroups of a population. The subgroups are often age categories but can also be geographic areas or high/low risk groups. For example, a hypothetical contact matrix representing the average number of contacts per day between children and adults could be:
+The basic contact matrix represents the amount of contact or mixing within and between different subgroups of a population. The subgroups are often age categories but can also be:
+
+- Geographic areas (e.g., different regions or countries)
+- Risk groups (e.g., high/low risk occupations)
+- Social settings (e.g., household, workplace, school)
+
+For example, a hypothetical contact matrix representing the average number of contacts per day between children and adults could be:
 
 $$
 \begin{bmatrix}
@@ -61,7 +67,10 @@ In this example, we would use this to represent that children meet, on average, 
 ::::::::::::::::::::::::::::::::::::: callout
 
 ### A Note on Notation
-For a contact matrix with rows $i$ and columns $j$, we call $C[i,j]$ the average number of contacts of group $i$ with group $j$, calculated as the number of contacts between the two groups averaged across all individuals in group $i$.
+For a contact matrix with rows $i$ and columns $j$:
+
+- $C[i,j]$ represents the average number of contacts that individuals in group $i$ have with individuals in group $j$
+- This average is calculated as the total number of contacts between groups $i$ and $j$, divided by the number of individuals in group $i$
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ## Using `socialmixr`
@@ -129,7 +138,16 @@ For the mathematical explanation see [the corresponding section in the socialmix
 ::::::::::::::::::::::::::::::::::::: callout
 ### Why would a contact matrix be non-symmetric?
 
-One of the arguments we gave the function `contact_matrix()` is `symmetric=TRUE`. This ensures that the total number of contacts of age group 1 with age group 2 is the same as the total number of contacts of age group 2 and age group 1 (see the `socialmixr` [vignette](https://cran.r-project.org/web/packages/socialmixr/vignettes/socialmixr.html) for more detail). However, when contact matrices are estimated from surveys or other sources, the *reported* number of contacts may differ by age group resulting in a non-symmetric contact matrix because of biases in recall or reporting across different groups and/or uncertainty from using a limited sample of participants [(Prem et al 2021)](https://doi.org/10.1371/journal.pcbi.1009098). If `symmetric` is set to TRUE, the `contact_matrix()` function will internally use an average of reported contacts to ensure resulting total number of contacts are symmetric.
+One of the arguments we gave the function `contact_matrix()` is `symmetric=TRUE`. This ensures that the total number of contacts from one group to another is equal to the total from the second group back to the first (see the `socialmixr` [vignette](https://cran.r-project.org/web/packages/socialmixr/vignettes/socialmixr.html) for more detail). 
+
+However, when contact matrices are estimated from surveys or other sources, the *reported* number of contacts may differ by age group for several reasons:
+
+- Recall bias: Different age groups may have different abilities to remember and report contacts accurately
+- Reporting bias: Some groups may systematically over- or under-report their contacts
+- Sampling uncertainty: Limited sample sizes can lead to statistical variations
+[(Prem et al 2021)](https://doi.org/10.1371/journal.pcbi.1009098)
+
+If `symmetric` is set to TRUE, the `contact_matrix()` function will internally use an average of reported contacts to ensure the resulting total number of contacts are symmetric.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -344,7 +362,9 @@ In this tutorial, we have learnt the definition of the contact matrix, how they 
 
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
-- `socialmixr` can be used to estimate contact matrices from survey data
-- Contact matrices can be used in different types of analyses
+- Contact matrices quantify the mixing patterns between different population groups
+- `socialmixr` provides tools to estimate contact matrices from survey data
+- Contact matrices can be used in various epidemiological analyses, from calculating $R_0$ to modeling interventions
+- Proper normalization is crucial when using contact matrices in transmission models
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
