@@ -318,6 +318,7 @@ DiagrammeR::grViz("digraph{
   + 40+ years
 
 For the following scenarios:
+
 + Baseline: Two-dose vaccination program
   - Dose 1 (vaccination rate 0.01) starts from day 30
   - Dose 2 (vaccination rate 0.01) starts from day 60
