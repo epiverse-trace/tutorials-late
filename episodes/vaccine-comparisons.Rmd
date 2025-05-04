@@ -41,6 +41,7 @@ In this tutorial we will compare different vaccination strategies using models f
 library(ggplot2)
 library(epidemics)
 library(dplyr)
+library(purrr)
 ```
 
 ## Key Terms
@@ -432,7 +433,7 @@ This **indirect** effect of vaccination programs is key to successfully controll
 
 To evaluate the impact of vaccination programs, we often consider both the peak size, which indicates healthcare pressure at a single point in time, and the overall epidemic size, which refers to the cumulative number of infections.
 
-We can find the cumulative sum using the R function `cumsum()` and use `purr::map_dfr()` to loop over a list of new infection data frames. We can see the difference in infection numbers is by several orders of magnitude.
+We can find the cumulative sum using the R function `cumsum()` and use `purrr::map_dfr()` to loop over a list of new infection data frames. We can see the difference in infection numbers is by several orders of magnitude.
 
 ```{r}
 # create function that returns the intervention type and cumulative sum for
@@ -449,7 +450,7 @@ interventions <- lst(baseline_infections,
                      vaccinate_02_infections)
 
 # apply function to each data frame in the list
-map_dfr(interventions, find_cumsum)
+purrr::map_dfr(interventions, find_cumsum)
 ```
 
 
@@ -720,7 +721,7 @@ interventions_targetted <- lst(baseline_infections,
                                vaccinate_group_3_infections)
 
 # apply function to each data frame in the list
-map_dfr(interventions_targetted, find_cumsum)
+purrr::map_dfr(interventions_targetted, find_cumsum)
 ```
 
 ### Age-specific infection-fatality-risk 
@@ -741,7 +742,7 @@ vaccinate_group_1_age <- new_infections(output_vaccinate_group_1,
 
 vaccinate_group_1_deaths <-
   1:3 %>%
-  map_dfr(function(x) vaccinate_group_1_age %>%
+  purrr::map_dfr(function(x) vaccinate_group_1_age %>%
             filter(demography_group == names(ifr)[x]) %>%
             mutate(deaths = new_infections * ifr[x]))
 ```
@@ -754,7 +755,7 @@ vaccinate_01_age <- new_infections(output_vaccinate_01,
 
 vaccinate_01_deaths <-
   1:3 %>%
-  map_dfr(function(x) vaccinate_01_age %>%
+  purrr::map_dfr(function(x) vaccinate_01_age %>%
             filter(demography_group == names(ifr)[x]) %>%
             mutate(deaths = new_infections * ifr[x]))
 
@@ -764,7 +765,7 @@ vaccinate_group_2_age <- new_infections(output_vaccinate_group_2,
 
 vaccinate_group_2_deaths <-
   1:3 %>%
-  map_dfr(function(x) vaccinate_group_2_age %>%
+  purrr::map_dfr(function(x) vaccinate_group_2_age %>%
             filter(demography_group == names(ifr)[x]) %>%
             mutate(deaths = new_infections * ifr[x]))
 
@@ -774,7 +775,7 @@ vaccinate_group_3_age <- new_infections(output_vaccinate_group_3,
 
 vaccinate_group_3_deaths <-
   1:3 %>%
-  map_dfr(function(x) vaccinate_group_3_age %>%
+  purrr::map_dfr(function(x) vaccinate_group_3_age %>%
             filter(demography_group == names(ifr)[x]) %>%
             mutate(deaths = new_infections * ifr[x]))
 
@@ -785,7 +786,7 @@ baseline_age <- new_infections(output_baseline,
 
 baseline_deaths <-
   1:3 %>%
-  map_dfr(function(x) baseline_age %>%
+  purrr::map_dfr(function(x) baseline_age %>%
             filter(demography_group == names(ifr)[x]) %>%
             mutate(deaths = new_infections * ifr[x]))
 ```
