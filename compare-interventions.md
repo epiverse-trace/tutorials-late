@@ -186,7 +186,7 @@ The Vacamole model is a deterministic model based on a system of Ordinary Differ
 
 The diagram below describes the flow of individuals through the different compartments.
 
-<img src="fig/compare-interventions-rendered-unnamed-chunk-4-1.png" style="display: block; margin: auto;" />
+<img src="fig/compare-interventions-rendered-unnamed-chunk-4-1.png" width="80%" style="display: block; margin: auto;" />
 
 
 ::::::::::::::::::::::::::::::::::::: challenge
