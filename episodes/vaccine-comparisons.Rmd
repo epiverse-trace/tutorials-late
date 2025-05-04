@@ -117,14 +117,14 @@ transmission_rate <- basic_reproduction / infectious_period
 
 ```{r}
 # prepare vaccination objects
-vaccinate_01 <- vaccination(
+vaccinate_01 <- epidemics::vaccination(
   name = "vaccinate all",
   time_begin = matrix(0, nrow(contact_matrix)),
   time_end = matrix(150, nrow(contact_matrix)),
   nu = matrix(c(0.001, 0.001, 0.001))
 )
 
-vaccinate_02 <- vaccination(
+vaccinate_02 <- epidemics::vaccination(
   name = "vaccinate all",
   time_begin = matrix(0, nrow(contact_matrix)),
   time_end = matrix(150, nrow(contact_matrix)),
@@ -141,7 +141,7 @@ We see the intuitive result that the higher the vaccination rate, the more peopl
 ### Output
 
 ```{r, echo = FALSE, eval = TRUE}
-output_baseline <- model_default(
+output_baseline <- epidemics::model_default(
   # population
   population = uk_population,
   # rate
@@ -152,7 +152,7 @@ output_baseline <- model_default(
   time_end = 200, increment = 1.0
 )
 
-output_vaccinate_01 <- model_default(
+output_vaccinate_01 <- epidemics::model_default(
   # population
   population = uk_population,
   # rate
@@ -165,7 +165,7 @@ output_vaccinate_01 <- model_default(
   time_end = 200, increment = 1.0
 )
 
-output_vaccinate_02 <- model_default(
+output_vaccinate_02 <- epidemics::model_default(
   # population
   population = uk_population,
   # rate
@@ -220,7 +220,7 @@ output %>%
 ### R Code
 
 ```{r, echo = TRUE, eval = FALSE}
-output_baseline <- model_default(
+output_baseline <- epidemics::model_default(
   # population
   population = uk_population,
   # rate
@@ -231,7 +231,7 @@ output_baseline <- model_default(
   time_end = 200, increment = 1.0
 )
 
-output_vaccinate_01 <- model_default(
+output_vaccinate_01 <- epidemics::model_default(
   # population
   population = uk_population,
   # rate
@@ -244,7 +244,7 @@ output_vaccinate_01 <- model_default(
   time_end = 200, increment = 1.0
 )
 
-output_vaccinate_02 <- model_default(
+output_vaccinate_02 <- epidemics::model_default(
   # population
   population = uk_population,
   # rate
@@ -309,11 +309,11 @@ The inputs required are :
 
 
 ```{r}
-vaccinate_01_infections <- new_infections(output_vaccinate_01,
-                                          compartments_from_susceptible =
-                                            "vaccinated",
-                                          by_group = FALSE)
-
+vaccinate_01_infections <- epidemics::new_infections(
+  output_vaccinate_01,
+  compartments_from_susceptible = "vaccinated",
+  by_group = FALSE
+)
 ```
 
 
@@ -323,38 +323,45 @@ vaccinate_01_infections <- new_infections(output_vaccinate_01,
 
 ```{r, echo = FALSE, eval = TRUE}
 # calculate new infections
-baseline_infections <- new_infections(output_baseline,
-                                      compartments_from_susceptible =
-                                        "vaccinated",
-                                      by_group = FALSE)
-vaccinate_01_infections <- new_infections(output_vaccinate_01,
-                                          compartments_from_susceptible =
-                                            "vaccinated",
-                                          by_group = FALSE)
-vaccinate_02_infections <- new_infections(output_vaccinate_02,
-                                          compartments_from_susceptible =
-                                            "vaccinated",
-                                          by_group = FALSE)
+baseline_infections <- epidemics::new_infections(
+  output_baseline,
+  compartments_from_susceptible = "vaccinated",
+  by_group = FALSE
+)
+vaccinate_01_infections <- epidemics::new_infections(
+  output_vaccinate_01,
+  compartments_from_susceptible = "vaccinated",
+  by_group = FALSE
+)
+vaccinate_02_infections <- epidemics::new_infections(
+  output_vaccinate_02,
+  compartments_from_susceptible = "vaccinated",
+  by_group = FALSE
+)
 
 # create intervention_type column for plotting
 baseline_infections$intervention_type <- "baseline"
 vaccinate_01_infections$intervention_type <- "vaccinate 0.001"
 vaccinate_02_infections$intervention_type <- "vaccinate 0.01"
-infections <- rbind(baseline_infections,
-                    vaccinate_01_infections,
-                    vaccinate_02_infections)
+infections <- rbind(
+  baseline_infections,
+  vaccinate_01_infections,
+  vaccinate_02_infections
+)
 
 
 infections %>%
   ggplot() +
   ggtitle("New infections") +
   geom_line(
-            aes(time,
-              new_infections,
-              colour = intervention_type,
-              linetype = intervention_type
-            ),
-            linewidth = 1) +
+    aes(
+      time,
+      new_infections,
+      colour = intervention_type,
+      linetype = intervention_type
+    ),
+    linewidth = 1
+  ) +
   scale_y_continuous(
     labels = scales::comma
   ) +
@@ -376,36 +383,45 @@ infections %>%
 
 ```{r, echo = TRUE, eval = FALSE}
 # calculate new infections
-baseline_infections <- new_infections(output_baseline,
-                                      compartments_from_susceptible =
-                                        "vaccinated",
-                                      by_group = FALSE)
-vaccinate_01_infections <- new_infections(output_vaccinate_01,
-                                          compartments_from_susceptible =
-                                            "vaccinated",
-                                          by_group = FALSE)
-vaccinate_02_infections <- new_infections(output_vaccinate_02,
-                                          compartments_from_susceptible =
-                                            "vaccinated",
-                                          by_group = FALSE)
+baseline_infections <- epidemics::new_infections(
+  output_baseline,
+  compartments_from_susceptible = "vaccinated",
+  by_group = FALSE
+)
+vaccinate_01_infections <- epidemics::new_infections(
+  output_vaccinate_01,
+  compartments_from_susceptible = "vaccinated",
+  by_group = FALSE
+)
+vaccinate_02_infections <- epidemics::new_infections(
+  output_vaccinate_02,
+  compartments_from_susceptible = "vaccinated",
+  by_group = FALSE
+)
 
 # create intervention_type column for plotting
 baseline_infections$intervention_type <- "baseline"
-vaccinate_01_infections$intervention_type  <- "vaccinate 0.001"
-vaccinate_02_infections$intervention_type  <- "vaccinate 0.01"
-infections <- rbind(baseline_infections,
-                    vaccinate_01_infections,
-                    vaccinate_02_infections)
+vaccinate_01_infections$intervention_type <- "vaccinate 0.001"
+vaccinate_02_infections$intervention_type <- "vaccinate 0.01"
+infections <- rbind(
+  baseline_infections,
+  vaccinate_01_infections,
+  vaccinate_02_infections
+)
 
 
 infections %>%
   ggplot() +
   ggtitle("New infections") +
   geom_line(
-            aes(time, new_infections, colour = intervention_type,
-              linetype = intervention_type
-            ),
-            linewidth = 1) +
+    aes(
+      time,
+      new_infections,
+      colour = intervention_type,
+      linetype = intervention_type
+    ),
+    linewidth = 1
+  ) +
   scale_y_continuous(
     labels = scales::comma
   ) +
@@ -439,15 +455,18 @@ We can find the cumulative sum using the R function `cumsum()` and use `purrr::m
 # create function that returns the intervention type and cumulative sum for
 # given infections
 find_cumsum <- function(infections) {
-  return(data.frame(intervention_type = unique(infections$intervention_type),
-                    cumulative_sum = tail(cumsum(infections$new_infections),
-                                          n = 1)))
+  return(data.frame(
+    intervention_type = unique(infections$intervention_type),
+    cumulative_sum = tail(cumsum(infections$new_infections), n = 1)
+  ))
 }
 
 # create list of interventions
-interventions <- lst(baseline_infections,
-                     vaccinate_01_infections,
-                     vaccinate_02_infections)
+interventions <- tibble::lst(
+  baseline_infections,
+  vaccinate_01_infections,
+  vaccinate_02_infections
+)
 
 # apply function to each data frame in the list
 purrr::map_dfr(interventions, find_cumsum)
@@ -493,28 +512,28 @@ To show the effect of targeted vaccination, we will compare the following scenar
 ### Output
 
 ```{r, echo = FALSE}
-vaccinate_group_1 <- vaccination(
+vaccinate_group_1 <- epidemics::vaccination(
   name = "vaccinate all",
   time_begin = matrix(40, nrow(contact_matrix)),
   time_end = matrix(40 + 150, nrow(contact_matrix)),
   nu = matrix(c(0.001 * 3, 0, 0))
 )
 
-vaccinate_group_2 <- vaccination(
+vaccinate_group_2 <- epidemics::vaccination(
   name = "vaccinate all",
   time_begin = matrix(40, nrow(contact_matrix)),
   time_end = matrix(40 + 150, nrow(contact_matrix)),
   nu = matrix(c(0, 0.001 * 3, 0))
 )
 
-vaccinate_group_3 <- vaccination(
+vaccinate_group_3 <- epidemics::vaccination(
   name = "vaccinate all",
   time_begin = matrix(40, nrow(contact_matrix)),
   time_end = matrix(40 + 150, nrow(contact_matrix)),
   nu = matrix(c(0, 0, 0.001 * 3))
 )
 
-output_vaccinate_group_1 <- model_default(
+output_vaccinate_group_1 <- epidemics::model_default(
   # population
   population = uk_population,
   # rate
@@ -524,10 +543,11 @@ output_vaccinate_group_1 <- model_default(
   # intervention
   vaccination = vaccinate_group_1,
   # time
-  time_end = 200, increment = 1.0
+  time_end = 200,
+  increment = 1.0
 )
 
-output_vaccinate_group_2 <- model_default(
+output_vaccinate_group_2 <- epidemics::model_default(
   # population
   population = uk_population,
   # rate
@@ -537,11 +557,12 @@ output_vaccinate_group_2 <- model_default(
   # intervention
   vaccination = vaccinate_group_2,
   # time
-  time_end = 200, increment = 1.0
+  time_end = 200,
+  increment = 1.0
 )
 
 
-output_vaccinate_group_3 <- model_default(
+output_vaccinate_group_3 <- epidemics::model_default(
   # population
   population = uk_population,
   # rate
@@ -551,37 +572,50 @@ output_vaccinate_group_3 <- model_default(
   # intervention
   vaccination = vaccinate_group_3,
   # time
-  time_end = 200, increment = 1.0
+  time_end = 200,
+  increment = 1.0
 )
 
-vaccinate_group_1_infections <- new_infections(output_vaccinate_group_1,
-                                               compartments_from_susceptible =
-                                                 "vaccinated", by_group = FALSE)
-vaccinate_group_2_infections <- new_infections(output_vaccinate_group_2,
-                                               compartments_from_susceptible =
-                                                 "vaccinated", by_group = FALSE)
-vaccinate_group_3_infections <- new_infections(output_vaccinate_group_3,
-                                               compartments_from_susceptible =
-                                                 "vaccinated", by_group = FALSE)
+vaccinate_group_1_infections <- epidemics::new_infections(
+  output_vaccinate_group_1,
+  compartments_from_susceptible = "vaccinated",
+  by_group = FALSE
+)
+vaccinate_group_2_infections <- epidemics::new_infections(
+  output_vaccinate_group_2,
+  compartments_from_susceptible = "vaccinated",
+  by_group = FALSE
+)
+vaccinate_group_3_infections <- epidemics::new_infections(
+  output_vaccinate_group_3,
+  compartments_from_susceptible = "vaccinated",
+  by_group = FALSE
+)
 
-vaccinate_group_1_infections$intervention_type  <- "vaccinate group 1"
-vaccinate_group_2_infections$intervention_type  <- "vaccinate group 2"
-vaccinate_group_3_infections$intervention_type  <- "vaccinate group 3"
+vaccinate_group_1_infections$intervention_type <- "vaccinate group 1"
+vaccinate_group_2_infections$intervention_type <- "vaccinate group 2"
+vaccinate_group_3_infections$intervention_type <- "vaccinate group 3"
 
-output_infections <- rbind(baseline_infections,
-                           vaccinate_01_infections,
-                           vaccinate_group_1_infections,
-                           vaccinate_group_2_infections,
-                           vaccinate_group_3_infections)
+output_infections <- rbind(
+  baseline_infections,
+  vaccinate_01_infections,
+  vaccinate_group_1_infections,
+  vaccinate_group_2_infections,
+  vaccinate_group_3_infections
+)
 
 
 output_infections %>%
   ggplot() +
   geom_line(
-            aes(time, new_infections, colour = intervention_type,
-              linetype = intervention_type
-            ),
-            linewidth = 1) +
+    aes(
+      time,
+      new_infections,
+      colour = intervention_type,
+      linetype = intervention_type
+    ),
+    linewidth = 1
+  ) +
   scale_y_continuous(
     labels = scales::comma
   ) +
@@ -602,28 +636,28 @@ output_infections %>%
 ### R Code
 
 ```{r, echo = TRUE, eval = FALSE}
-vaccinate_group_1 <- vaccination(
+vaccinate_group_1 <- epidemics::vaccination(
   name = "vaccinate all",
   time_begin = matrix(40, nrow(contact_matrix)),
   time_end = matrix(40 + 150, nrow(contact_matrix)),
   nu = matrix(c(0.001 * 3, 0, 0))
 )
 
-vaccinate_group_2 <- vaccination(
+vaccinate_group_2 <- epidemics::vaccination(
   name = "vaccinate all",
   time_begin = matrix(40, nrow(contact_matrix)),
   time_end = matrix(40 + 150, nrow(contact_matrix)),
   nu = matrix(c(0, 0.001 * 3, 0))
 )
 
-vaccinate_group_3 <- vaccination(
+vaccinate_group_3 <- epidemics::vaccination(
   name = "vaccinate all",
   time_begin = matrix(40, nrow(contact_matrix)),
   time_end = matrix(40 + 150, nrow(contact_matrix)),
   nu = matrix(c(0, 0, 0.001 * 3))
 )
 
-output_vaccinate_group_1 <- model_default(
+output_vaccinate_group_1 <- epidemics::model_default(
   # population
   population = uk_population,
   # rate
@@ -633,10 +667,11 @@ output_vaccinate_group_1 <- model_default(
   # intervention
   vaccination = vaccinate_group_1,
   # time
-  time_end = 200, increment = 1.0
+  time_end = 200,
+  increment = 1.0
 )
 
-output_vaccinate_group_2 <- model_default(
+output_vaccinate_group_2 <- epidemics::model_default(
   # population
   population = uk_population,
   # rate
@@ -646,11 +681,12 @@ output_vaccinate_group_2 <- model_default(
   # intervention
   vaccination = vaccinate_group_2,
   # time
-  time_end = 200, increment = 1.0
+  time_end = 200,
+  increment = 1.0
 )
 
 
-output_vaccinate_group_3 <- model_default(
+output_vaccinate_group_3 <- epidemics::model_default(
   # population
   population = uk_population,
   # rate
@@ -660,37 +696,50 @@ output_vaccinate_group_3 <- model_default(
   # intervention
   vaccination = vaccinate_group_3,
   # time
-  time_end = 200, increment = 1.0
+  time_end = 200,
+  increment = 1.0
 )
 
-vaccinate_group_1_infections <- new_infections(output_vaccinate_group_1,
-                                               compartments_from_susceptible =
-                                                 "vaccinated", by_group = FALSE)
-vaccinate_group_2_infections <- new_infections(output_vaccinate_group_2,
-                                               compartments_from_susceptible =
-                                                 "vaccinated", by_group = FALSE)
-vaccinate_group_3_infections <- new_infections(output_vaccinate_group_3,
-                                               compartments_from_susceptible =
-                                                 "vaccinated", by_group = FALSE)
+vaccinate_group_1_infections <- epidemics::new_infections(
+  output_vaccinate_group_1,
+  compartments_from_susceptible = "vaccinated",
+  by_group = FALSE
+)
+vaccinate_group_2_infections <- epidemics::new_infections(
+  output_vaccinate_group_2,
+  compartments_from_susceptible = "vaccinated",
+  by_group = FALSE
+)
+vaccinate_group_3_infections <- epidemics::new_infections(
+  output_vaccinate_group_3,
+  compartments_from_susceptible = "vaccinated",
+  by_group = FALSE
+)
 
-vaccinate_group_1_infections$intervention_type  <- "vaccinate group 1"
-vaccinate_group_2_infections$intervention_type  <- "vaccinate group 2"
-vaccinate_group_3_infections$intervention_type  <- "vaccinate group 3"
+vaccinate_group_1_infections$intervention_type <- "vaccinate group 1"
+vaccinate_group_2_infections$intervention_type <- "vaccinate group 2"
+vaccinate_group_3_infections$intervention_type <- "vaccinate group 3"
 
-output_infections <- rbind(baseline_infections,
-                           vaccinate_01_infections,
-                           vaccinate_group_1_infections,
-                           vaccinate_group_2_infections,
-                           vaccinate_group_3_infections)
+output_infections <- rbind(
+  baseline_infections,
+  vaccinate_01_infections,
+  vaccinate_group_1_infections,
+  vaccinate_group_2_infections,
+  vaccinate_group_3_infections
+)
 
 
 output_infections %>%
   ggplot() +
   geom_line(
-            aes(time, new_infections, colour = intervention_type,
-              linetype = intervention_type
-            ),
-            linewidth = 1) +
+    aes(
+      time,
+      new_infections,
+      colour = intervention_type,
+      linetype = intervention_type
+    ),
+    linewidth = 1
+  ) +
   scale_y_continuous(
     labels = scales::comma
   ) +
@@ -714,11 +763,13 @@ output_infections %>%
 Vaccinating group 3 only results in the highest epidemic peak size. Targeting group 2 results in the smallest epidemic peak size. Whereas targeting all age groups pushes the epidemic peak time later. As before, let's compare the cumulative number of infections under the different interventions:
 
 ```{r}
-interventions_targetted <- lst(baseline_infections,
-                               vaccinate_01_infections,
-                               vaccinate_group_1_infections,
-                               vaccinate_group_2_infections,
-                               vaccinate_group_3_infections)
+interventions_targetted <- tibble::lst(
+  baseline_infections,
+  vaccinate_01_infections,
+  vaccinate_group_1_infections,
+  vaccinate_group_2_infections,
+  vaccinate_group_3_infections
+)
 
 # apply function to each data frame in the list
 purrr::map_dfr(interventions_targetted, find_cumsum)
@@ -736,59 +787,85 @@ names(ifr) <- rownames(contact_matrix)
 To convert infections to deaths, we will need new infections by age group, so we call `new_infections()` with `by_group = TRUE` and then multiply the new infections by the IFR for that age group:
 
 ```{r}
-vaccinate_group_1_age <- new_infections(output_vaccinate_group_1,
-                                        compartments_from_susceptible =
-                                          "vaccinated", by_group = TRUE)
+vaccinate_group_1_age <- epidemics::new_infections(
+  output_vaccinate_group_1,
+  compartments_from_susceptible = "vaccinated",
+  by_group = TRUE
+)
 
 vaccinate_group_1_deaths <-
   1:3 %>%
-  purrr::map_dfr(function(x) vaccinate_group_1_age %>%
-            filter(demography_group == names(ifr)[x]) %>%
-            mutate(deaths = new_infections * ifr[x]))
+  purrr::map_dfr(
+    function(x)
+      vaccinate_group_1_age %>%
+        filter(demography_group == names(ifr)[x]) %>%
+        mutate(deaths = new_infections * ifr[x])
+  )
 ```
 
 
 ```{r, echo = FALSE}
-vaccinate_01_age <- new_infections(output_vaccinate_01,
-                                   compartments_from_susceptible =
-                                     "vaccinated", by_group = TRUE)
+
+vaccinate_01_age <- epidemics::new_infections(
+  output_vaccinate_01,
+  compartments_from_susceptible = "vaccinated",
+  by_group = TRUE
+)
 
 vaccinate_01_deaths <-
   1:3 %>%
-  purrr::map_dfr(function(x) vaccinate_01_age %>%
-            filter(demography_group == names(ifr)[x]) %>%
-            mutate(deaths = new_infections * ifr[x]))
+  purrr::map_dfr(
+    function(x)
+      vaccinate_01_age %>%
+        filter(demography_group == names(ifr)[x]) %>%
+        mutate(deaths = new_infections * ifr[x])
+  )
 
-vaccinate_group_2_age <- new_infections(output_vaccinate_group_2,
-                                        compartments_from_susceptible =
-                                          "vaccinated", by_group = TRUE)
+vaccinate_group_2_age <- epidemics::new_infections(
+  output_vaccinate_group_2,
+  compartments_from_susceptible = "vaccinated",
+  by_group = TRUE
+)
 
 vaccinate_group_2_deaths <-
   1:3 %>%
-  purrr::map_dfr(function(x) vaccinate_group_2_age %>%
-            filter(demography_group == names(ifr)[x]) %>%
-            mutate(deaths = new_infections * ifr[x]))
+  purrr::map_dfr(
+    function(x)
+      vaccinate_group_2_age %>%
+        filter(demography_group == names(ifr)[x]) %>%
+        mutate(deaths = new_infections * ifr[x])
+  )
 
-vaccinate_group_3_age <- new_infections(output_vaccinate_group_3,
-                                        compartments_from_susceptible =
-                                          "vaccinated", by_group = TRUE)
+vaccinate_group_3_age <- epidemics::new_infections(
+  output_vaccinate_group_3,
+  compartments_from_susceptible = "vaccinated",
+  by_group = TRUE
+)
 
 vaccinate_group_3_deaths <-
   1:3 %>%
-  purrr::map_dfr(function(x) vaccinate_group_3_age %>%
-            filter(demography_group == names(ifr)[x]) %>%
-            mutate(deaths = new_infections * ifr[x]))
+  purrr::map_dfr(
+    function(x)
+      vaccinate_group_3_age %>%
+        filter(demography_group == names(ifr)[x]) %>%
+        mutate(deaths = new_infections * ifr[x])
+  )
 
 
-baseline_age <- new_infections(output_baseline,
-                               compartments_from_susceptible =
-                                 "vaccinated", by_group = TRUE)
+baseline_age <- epidemics::new_infections(
+  output_baseline,
+  compartments_from_susceptible = "vaccinated",
+  by_group = TRUE
+)
 
 baseline_deaths <-
   1:3 %>%
-  purrr::map_dfr(function(x) baseline_age %>%
-            filter(demography_group == names(ifr)[x]) %>%
-            mutate(deaths = new_infections * ifr[x]))
+  purrr::map_dfr(
+    function(x)
+      baseline_age %>%
+        filter(demography_group == names(ifr)[x]) %>%
+        mutate(deaths = new_infections * ifr[x])
+  )
 ```
 
 Vaccinating all age groups has the greatest impact on deaths in the eldest age group (over 65 years of age), but we also see that vaccinating group 2 reduces the deaths in the eldest age group. Targeting younger groups can the number of deaths in the eldest age group (over 65 years of age).
@@ -849,7 +926,7 @@ duration <- 100
 time_end <- 200
 
 # close schools early
-close_schools_early <- intervention(
+close_schools_early <- epidemics::intervention(
   name = "School closure",
   type = "contacts",
   time_begin = early_start,
@@ -858,7 +935,7 @@ close_schools_early <- intervention(
 )
 
 # vaccination late
-vacc_late <- vaccination(
+vacc_late <- epidemics::vaccination(
   name = "vaccinate late",
   time_begin = matrix(late_start, nrow(contact_matrix)),
   time_end = matrix(late_start + duration, nrow(contact_matrix)),
@@ -866,7 +943,7 @@ vacc_late <- vaccination(
 )
 
 # npis started early + vaccination late
-output_npi_early_vacc_late <- model_default(
+output_npi_early_vacc_late <- epidemics::model_default(
   population = uk_population,
   transmission_rate = transmission_rate,
   infectiousness_rate = infectiousness_rate,
@@ -881,7 +958,7 @@ output_npi_early_vacc_late <- model_default(
 
 ```{r, echo = FALSE}
 # vaccinate early
-vacc_early <- vaccination(
+vacc_early <- epidemics::vaccination(
   name = "vaccinate early",
   time_begin = matrix(early_start, nrow(contact_matrix)),
   time_end = matrix(early_start + duration, nrow(contact_matrix)),
@@ -889,7 +966,7 @@ vacc_early <- vaccination(
 )
 
 # npis only (early)
-output_npi_early <- model_default(
+output_npi_early <- epidemics::model_default(
   population = uk_population,
   transmission_rate = transmission_rate,
   infectiousness_rate = infectiousness_rate,
@@ -899,7 +976,7 @@ output_npi_early <- model_default(
 )
 
 # vaccination only (early)
-output_vacc_early <- model_default(
+output_vacc_early <- epidemics::model_default(
   population = uk_population,
   transmission_rate = transmission_rate,
   infectiousness_rate = infectiousness_rate,
@@ -909,7 +986,7 @@ output_vacc_early <- model_default(
 )
 
 # vaccination only (late)
-output_vacc_late <- model_default(
+output_vacc_late <- epidemics::model_default(
   population = uk_population,
   transmission_rate = transmission_rate,
   infectiousness_rate = infectiousness_rate,
@@ -986,7 +1063,7 @@ Investigate the impact lifting the  after implementing the vaccine. Adapt the co
 duration_20 <- 20
 duration_50 <- 50
 
-close_schools_early_20 <- intervention(
+close_schools_early_20 <- epidemics::intervention(
   name = "School closure",
   type = "contacts",
   time_begin = early_start,
@@ -994,7 +1071,7 @@ close_schools_early_20 <- intervention(
   reduction = matrix(c(0.5, 0.01, 0.01))
 )
 
-close_schools_early_50 <- intervention(
+close_schools_early_50 <- epidemics::intervention(
   name = "School closure",
   type = "contacts",
   time_begin = early_start,
@@ -1002,7 +1079,7 @@ close_schools_early_50 <- intervention(
   reduction = matrix(c(0.5, 0.01, 0.01))
 )
 
-output_npi_early_vacc_late_20 <- model_default(
+output_npi_early_vacc_late_20 <- epidemics::model_default(
   population = uk_population,
   transmission_rate = transmission_rate,
   infectiousness_rate = infectiousness_rate,
@@ -1012,7 +1089,7 @@ output_npi_early_vacc_late_20 <- model_default(
   time_end = 300, increment = 1.0
 )
 
-output_npi_early_vacc_late_50 <- model_default(
+output_npi_early_vacc_late_50 <- epidemics::model_default(
   population = uk_population,
   transmission_rate = transmission_rate,
   infectiousness_rate = infectiousness_rate,
