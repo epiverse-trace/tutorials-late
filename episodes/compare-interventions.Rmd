@@ -123,7 +123,7 @@ We must also define our *outcome of interest* to make comparisons between interv
 
 In this tutorial, we will learn how to use the R package `{epidemics}` to compare the effect of different interventions on simulated disease trajectories. We will use `{socialmixr}` for social contact data and `{tidyverse}` (including `{dplyr}`, `{ggplot2}`, and the pipe `%>%`) for data manipulation and visualization.
 
-```{r}
+```{r,message=FALSE,warning=FALSE}
 library(epidemics)
 library(socialmixr)
 library(tidyverse)
