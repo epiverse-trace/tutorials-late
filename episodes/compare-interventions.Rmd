@@ -257,7 +257,7 @@ DiagrammeR::grViz("digraph{
   graph [layout = dot,
          rankdir = LR,
          overlap = true,
-         fontsize = 10]
+         fontsize = 8]
 
   # nodes
   #######
