@@ -250,7 +250,7 @@ The Vacamole model is a deterministic model based on a system of Ordinary Differ
 
 The diagram below describes the flow of individuals through the different compartments.
 
-```{r, echo = FALSE, message = FALSE, out.width="80%"}
+```{r, echo = FALSE, message = FALSE, out.width="100%"}
 DiagrammeR::grViz("digraph{
   # graph statement
   #################
