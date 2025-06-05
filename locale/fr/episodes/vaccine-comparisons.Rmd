@@ -1,0 +1,1148 @@
+---
+title: Comparaison des stratégies de vaccination
+teaching: 50
+exercises: 20
+---
+
+:::::::::::::::::::::::::::::::::::::: questions
+
+- Quels sont les effets directs et indirects de la vaccination ?
+- Quels sont les avantages des programmes de vaccination ciblés ?
+- Que se passe-t-il si nous combinons la vaccination et les NPI ?
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::: objectives
+
+- Comprendre l'impact potentiel des programmes de vaccination
+- Mettre en œuvre simultanément des programmes de vaccination et des mesures NPI à l'aide de `{epidemics}`
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::: prereq
+
+- Des tutoriels complets [Simulation de la transmission](../episodes/simulating-transmission.md), [Modélisation des interventions](../episodes/modelling-interventions.md) et [Comparaison des résultats des interventions en matière de santé publique](../episodes/compare-interventions.md).
+
+Les apprenants doivent se familiariser avec les dépendances conceptuelles suivantes avant de travailler sur ce tutoriel :
+
+**Réponse à l'épidémie** : [Types d'intervention](https://www.cdc.gov/nonpharmaceutical-interventions/).
+:::::::::::::::::::::::::::::::::
+
+## Introduction
+
+Les programmes de vaccination peuvent être utilisés pour aider à contrôler les épidémies par le biais d'une protection directe et indirecte contre l'infection. Nous pouvons utiliser des modèles mathématiques pour prédire l'impact potentiel de différentes stratégies de vaccination.
+
+Selon le mode de propagation des infections, la vaccination de groupes à risque spécifiques peut s'avérer plus efficace que la vaccination de tous. Lorsque les programmes de vaccination ne sont pas immédiatement disponibles, que ce soit du point de vue des capacités ou du développement, nous pourrions également vouloir savoir comment les interventions non pharmaceutiques (INP) peuvent être utilisées pour contrôler l'épidémie dans l'intervalle, ainsi qu'après le lancement d'un programme de vaccination.
+
+Dans ce cours, nous comparerons différentes stratégies de vaccination en utilisant des modèles de `{epidemics}`. Nous utiliserons les paquets R suivants :
+
+```{r, message=FALSE}
+library(ggplot2)
+library(epidemics)
+library(dplyr)
+library(purrr)
+```
+
+## Termes clés
+
+Avant de poursuivre, définissons quelques termes importants :
+
+- **Immunité du troupeau** L'immunité collective est une forme de protection indirecte contre les maladies infectieuses qui se produit lorsqu'une proportion suffisante d'une population est immunisée contre une infection, réduisant ainsi la probabilité d'infection pour les individus qui n'ont pas d'immunité.
+- **Stratégies de vaccination** Différentes approches de l'administration des vaccins, qui peuvent inclure le ciblage de groupes d'âge ou de populations à risque spécifiques.
+- **Interventions non pharmaceutiques (NPI)** Les interventions non pharmaceutiques (INP) sont des actions, autres que les vaccins et les traitements, que les personnes et les communautés peuvent entreprendre pour ralentir la propagation des maladies.
+
+## Effets directs et indirects de la vaccination
+
+Les programmes de vaccination utilisant des vaccins bloquant les infections présentent deux avantages :
+
+1. Réduction du risque individuel d'infection (**direct** de la vaccination)
+2. Réduction de la contribution à la transmission (**indirecte** indirect de la vaccination).
+
+Nous illustrerons ceci en utilisant les résultats de `model_default()` en `{epidemics}`. Les `model_default()` met en œuvre un modèle SEIR (Susceptible-Exposé-Infecté-Récouvert) standard avec des compartiments de vaccination. En utilisant la matrice de contact et les paramètres de l'exemple d'épidémie COVID-19 dans la section [Modélisation des interventions](../episodes/modelling-interventions.md) nous étudierons l'impact de deux programmes de vaccination sur le nombre d'infections. Pour ce scénario hypothétique, nous supposerons que les programmes de vaccination commencent le jour 0 et se poursuivent pendant 150 jours. Nous supposerons que tous les groupes d'âge sont vaccinés au même taux dans chaque programme, comme suit :
+
+- programme de vaccination 01 : taux de vaccination 0,001
+- programme de vaccination 02 : taux de vaccination 0,01.
+
+```{r, echo=FALSE, message=FALSE}
+polymod <- socialmixr::polymod
+contact_data <- socialmixr::contact_matrix(
+  polymod,
+  countries = "United Kingdom",
+  age.limits = c(0, 15, 65),
+  symmetric = TRUE
+)
+
+
+# prepare contact matrix
+contact_matrix <- t(contact_data$matrix)
+
+# prepare the demography vector
+demography_vector <- contact_data$demography$population
+names(demography_vector) <- rownames(contact_matrix)
+
+# initial conditions: one in every 1 million is infected
+initial_i <- 1e-6
+initial_conditions <- c(
+  S = 1 - initial_i, E = 0, I = initial_i, R = 0, V = 0
+)
+
+# build for all age groups
+initial_conditions <- matrix(
+  rep(initial_conditions, dim(contact_matrix)[1]),
+  ncol = 5, byrow = TRUE
+)
+rownames(initial_conditions) <- rownames(contact_matrix)
+
+# prepare the population to model as affected by the epidemic
+uk_population <- epidemics::population(
+  name = "UK",
+  contact_matrix = contact_matrix,
+  demography_vector = demography_vector,
+  initial_conditions = initial_conditions
+)
+
+# time periods
+preinfectious_period <- 4.0
+infectious_period <- 5.5
+basic_reproduction <- 2.7
+
+# rates
+infectiousness_rate <- 1.0 / preinfectious_period
+recovery_rate <- 1.0 / infectious_period
+transmission_rate <- basic_reproduction / infectious_period
+```
+
+```{r}
+# prepare vaccination objects
+vaccinate_01 <- epidemics::vaccination(
+  name = "vaccinate all",
+  time_begin = matrix(0, nrow(contact_matrix)),
+  time_end = matrix(150, nrow(contact_matrix)),
+  nu = matrix(c(0.001, 0.001, 0.001))
+)
+
+vaccinate_02 <- epidemics::vaccination(
+  name = "vaccinate all",
+  time_begin = matrix(0, nrow(contact_matrix)),
+  time_end = matrix(150, nrow(contact_matrix)),
+  nu = matrix(c(0.01, 0.01, 0.01))
+)
+```
+
+Le résultat intuitif est que plus le taux de vaccination est élevé, plus le nombre de personnes vaccinées est important.
+
+::: tab
+
+### Sortie
+
+```{r, echo=FALSE, eval=TRUE}
+output_baseline <- epidemics::model_default(
+  # population
+  population = uk_population,
+  # rate
+  transmission_rate = transmission_rate,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
+  # time
+  time_end = 200, increment = 1.0
+)
+
+output_vaccinate_01 <- epidemics::model_default(
+  # population
+  population = uk_population,
+  # rate
+  transmission_rate = transmission_rate,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
+  # intervention
+  vaccination = vaccinate_01,
+  # time
+  time_end = 200, increment = 1.0
+)
+
+output_vaccinate_02 <- epidemics::model_default(
+  # population
+  population = uk_population,
+  # rate
+  transmission_rate = transmission_rate,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
+  # intervention
+  vaccination = vaccinate_02,
+  # time
+  time_end = 200, increment = 1.0
+)
+
+# create intervention_type column for plotting
+output_baseline$intervention_type  <- "baseline"
+output_vaccinate_01$intervention_type  <- "vaccinate 0.001"
+output_vaccinate_02$intervention_type  <- "vaccinate 0.01"
+output <- rbind(output_baseline, output_vaccinate_01, output_vaccinate_02)
+
+
+output %>%
+  filter(compartment == "vaccinated") %>%
+  ggplot() +
+  ggtitle("Number vaccinated") +
+  aes(
+    x = time,
+    y = value,
+    color = intervention_type,
+    linetype = intervention_type
+  ) +
+  stat_summary(
+    fun = "sum",
+    geom = "line",
+    linewidth = 1
+  ) +
+  scale_y_continuous(
+    labels = scales::comma
+  ) +
+  geom_vline(
+    xintercept = c(
+      vaccinate_01$time_begin,
+      vaccinate_01$time_end
+    ),
+    linetype = 2
+  ) +
+  theme_bw() +
+  labs(
+    x = "Simulation time (days)",
+    y = "Individuals"
+  )
+```
+
+### Code R
+
+```{r, echo=TRUE, eval=FALSE}
+output_baseline <- epidemics::model_default(
+  # population
+  population = uk_population,
+  # rate
+  transmission_rate = transmission_rate,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
+  # time
+  time_end = 200, increment = 1.0
+)
+
+output_vaccinate_01 <- epidemics::model_default(
+  # population
+  population = uk_population,
+  # rate
+  transmission_rate = transmission_rate,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
+  # intervention
+  vaccination = vaccinate_01,
+  # time
+  time_end = 200, increment = 1.0
+)
+
+output_vaccinate_02 <- epidemics::model_default(
+  # population
+  population = uk_population,
+  # rate
+  transmission_rate = transmission_rate,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
+  # intervention
+  vaccination = vaccinate_02,
+  # time
+  time_end = 200, increment = 1.0
+)
+
+# create intervention_type column for plotting
+output_baseline$intervention_type <- "baseline"
+output_vaccinate_01$intervention_type <- "vaccinate 0.001"
+output_vaccinate_02$intervention_type <- "vaccinate 0.01"
+output <- rbind(output_baseline, output_vaccinate_01, output_vaccinate_02)
+
+
+output %>%
+  filter(compartment == "vaccinated") %>%
+  ggplot() +
+  ggtitle("Number vaccinated") +
+  aes(
+    x = time,
+    y = value,
+    color = intervention_type,
+    linetype = intervention_type
+  ) +
+  stat_summary(
+    fun = "sum",
+    geom = "line",
+    linewidth = 1
+  ) +
+  scale_y_continuous(
+    labels = scales::comma
+  ) +
+  geom_vline(
+    xintercept = c(
+      vaccinate_01$time_begin,
+      vaccinate_01$time_end
+    ),
+    linetype = 2
+  ) +
+  theme_bw() +
+  labs(
+    x = "Simulation time (days)",
+    y = "Individuals"
+  )
+```
+
+:::
+
+Pour comprendre la **indirecte** des vaccinations, nous voulons connaître l'effet de la vaccination sur la transmission, et donc le taux d'apparition de nouvelles infections. Nous utiliserons la fonction `new_infections()` dans `{epidemics}` pour calculer le nombre de nouvelles infections au fil du temps pour les différents programmes de vaccination.
+
+Les données requises sont :
+
+- `data` : la sortie du modèle,
+- `compartments_from_susceptible` : il s'agit d'une entrée facultative, mais dans notre cas, elle est nécessaire. Nous ne voulons pas que le nombre de personnes vaccinées soit compté comme de nouvelles infections, c'est pourquoi nous devons spécifier le nom du compartiment du modèle dans lequel les individus passent de `susceptible` (dans cet exemple `vaccinated`),
+- `by_group` Les résultats doivent être calculés pour chaque groupe démographique séparément.
+
+```{r}
+vaccinate_01_infections <- epidemics::new_infections(
+  output_vaccinate_01,
+  compartments_from_susceptible = "vaccinated",
+  by_group = FALSE
+)
+```
+
+::: tab
+
+### Résultats
+
+```{r, echo=FALSE, eval=TRUE}
+# calculate new infections
+baseline_infections <- epidemics::new_infections(
+  output_baseline,
+  compartments_from_susceptible = "vaccinated",
+  by_group = FALSE
+)
+vaccinate_01_infections <- epidemics::new_infections(
+  output_vaccinate_01,
+  compartments_from_susceptible = "vaccinated",
+  by_group = FALSE
+)
+vaccinate_02_infections <- epidemics::new_infections(
+  output_vaccinate_02,
+  compartments_from_susceptible = "vaccinated",
+  by_group = FALSE
+)
+
+# create intervention_type column for plotting
+baseline_infections$intervention_type <- "baseline"
+vaccinate_01_infections$intervention_type <- "vaccinate 0.001"
+vaccinate_02_infections$intervention_type <- "vaccinate 0.01"
+infections <- rbind(
+  baseline_infections,
+  vaccinate_01_infections,
+  vaccinate_02_infections
+)
+
+
+infections %>%
+  ggplot() +
+  ggtitle("New infections") +
+  geom_line(
+    aes(
+      time,
+      new_infections,
+      colour = intervention_type,
+      linetype = intervention_type
+    ),
+    linewidth = 1
+  ) +
+  scale_y_continuous(
+    labels = scales::comma
+  ) +
+  geom_vline(
+    xintercept = c(
+      vaccinate_01$time_begin,
+      vaccinate_01$time_end
+    ),
+    linetype = 2
+  ) +
+  theme_bw() +
+  labs(
+    x = "Simulation time (days)",
+    y = "Individuals"
+  )
+```
+
+### Code R
+
+```{r, echo=TRUE, eval=FALSE}
+# calculate new infections
+baseline_infections <- epidemics::new_infections(
+  output_baseline,
+  compartments_from_susceptible = "vaccinated",
+  by_group = FALSE
+)
+vaccinate_01_infections <- epidemics::new_infections(
+  output_vaccinate_01,
+  compartments_from_susceptible = "vaccinated",
+  by_group = FALSE
+)
+vaccinate_02_infections <- epidemics::new_infections(
+  output_vaccinate_02,
+  compartments_from_susceptible = "vaccinated",
+  by_group = FALSE
+)
+
+# create intervention_type column for plotting
+baseline_infections$intervention_type <- "baseline"
+vaccinate_01_infections$intervention_type <- "vaccinate 0.001"
+vaccinate_02_infections$intervention_type <- "vaccinate 0.01"
+infections <- rbind(
+  baseline_infections,
+  vaccinate_01_infections,
+  vaccinate_02_infections
+)
+
+
+infections %>%
+  ggplot() +
+  ggtitle("New infections") +
+  geom_line(
+    aes(
+      time,
+      new_infections,
+      colour = intervention_type,
+      linetype = intervention_type
+    ),
+    linewidth = 1
+  ) +
+  scale_y_continuous(
+    labels = scales::comma
+  ) +
+  geom_vline(
+    xintercept = c(
+      vaccinate_01$time_begin,
+      vaccinate_01$time_end
+    ),
+    linetype = 2
+  ) +
+  theme_bw() +
+  labs(
+    x = "Simulation time (days)",
+    y = "Individuals"
+  )
+```
+
+:::
+
+Nous constatons qu'après avoir pris en compte le nombre de personnes vaccinées, il y a moins de nouvelles infections lorsque le taux de vaccination est plus élevé. Cela s'explique par le fait qu'il y a moins de personnes susceptibles d'être infectées, et donc moins de personnes susceptibles d'être infectées et de contribuer à la propagation de l'infection.
+
+Le taux de vaccination est plus élevé que le nombre de personnes susceptibles d'être infectées. **indirecte** des programmes de vaccination est essentiel pour contrôler et éradiquer avec succès les infections.
+
+Pour évaluer l'impact des programmes de vaccination, nous prenons souvent en compte à la fois l'ampleur du pic, qui indique la pression exercée sur les soins de santé à un moment donné, et l'ampleur globale de l'épidémie, qui correspond au nombre cumulé d'infections.
+
+Nous pouvons trouver la somme cumulée à l'aide de la fonction R `cumsum()` et utiliser `purrr::map_dfr()` pour parcourir en boucle une liste de nouvelles données sur les infections. Nous pouvons constater que la différence entre les nombres d'infections est de plusieurs ordres de grandeur.
+
+```{r}
+# create function that returns the intervention type and cumulative sum for
+# given infections
+find_cumsum <- function(infections) {
+  return(data.frame(
+    intervention_type = unique(infections$intervention_type),
+    cumulative_sum = tail(cumsum(infections$new_infections), n = 1)
+  ))
+}
+
+# create list of interventions
+interventions <- tibble::lst(
+  baseline_infections,
+  vaccinate_01_infections,
+  vaccinate_02_infections
+)
+
+# apply function to each data frame in the list
+purrr::map_dfr(interventions, find_cumsum)
+```
+
+::::::::::::::::::::::::::::::::::::: callout
+
+## Seuil d'immunité collective
+
+Il existe un seuil cible de vaccination basé sur le nombre de reproduction de base $R_0$ pour atteindre [l'immunité collective](../learners/reference.md#herdimmunity).
+
+La proportion de la population ($p$) qui doit être immunisée pour atteindre l'immunité de groupe est :
+
+$$p = 1- \frac{1}{R_0}. $$
+
+Cette formule est dérivée du concept selon lequel, lorsqu'une proportion suffisante de la population est immunisée, chaque personne infectée transmettra l'infection à moins d'une autre personne en moyenne, ce qui entraînera une diminution du nombre de cas. Pour plus de détails sur la dérivation mathématique, consultez le site suivant [Plus Magazine](https://plus.maths.org/content/maths-minute-r0-and-herd-immunity).
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+## Vaccination ciblée
+
+Pour les infections dont la charge est plus élevée dans les différents groupes à risque, des programmes de vaccination ciblés peuvent être utilisés pour contrôler l'infection. Par exemple, s'il existe une hétérogénéité des contacts en fonction de l'âge, la vaccination ciblée de différents groupes d'âge se traduira par des trajectoires différentes de la maladie.
+
+Nous utiliserons la même matrice de contacts que ci-dessus à partir de [Modélisation des interventions](../episodes/modelling-interventions.md):
+
+```{r}
+contact_matrix
+```
+
+Les niveaux de mixité sont plus élevés dans les groupes d'âge 0-15 ans et 15-65 ans que dans le groupe d'âge 65+, de sorte que nous nous attendons à ce que le ciblage des différents groupes d'âge entraîne des trajectoires de maladie différentes.
+
+Pour montrer l'effet d'une vaccination ciblée, nous comparerons les scénarios suivants :
+
+- la vaccination de tous les groupes d'âge à un taux de 0,001,
+- la vaccination des 0-15 ans uniquement (groupe 1) à un taux de 0,003,
+- la vaccination des 15-65 ans uniquement (groupe 2) à un taux de 0,003,
+- la vaccination des personnes âgées de 65 ans et plus uniquement (groupe 3) à un taux de 0,003.
+
+::: tab
+
+### Résultats
+
+```{r, echo=FALSE}
+vaccinate_group_1 <- epidemics::vaccination(
+  name = "vaccinate all",
+  time_begin = matrix(40, nrow(contact_matrix)),
+  time_end = matrix(40 + 150, nrow(contact_matrix)),
+  nu = matrix(c(0.001 * 3, 0, 0))
+)
+
+vaccinate_group_2 <- epidemics::vaccination(
+  name = "vaccinate all",
+  time_begin = matrix(40, nrow(contact_matrix)),
+  time_end = matrix(40 + 150, nrow(contact_matrix)),
+  nu = matrix(c(0, 0.001 * 3, 0))
+)
+
+vaccinate_group_3 <- epidemics::vaccination(
+  name = "vaccinate all",
+  time_begin = matrix(40, nrow(contact_matrix)),
+  time_end = matrix(40 + 150, nrow(contact_matrix)),
+  nu = matrix(c(0, 0, 0.001 * 3))
+)
+
+output_vaccinate_group_1 <- epidemics::model_default(
+  # population
+  population = uk_population,
+  # rate
+  transmission_rate = transmission_rate,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
+  # intervention
+  vaccination = vaccinate_group_1,
+  # time
+  time_end = 200,
+  increment = 1.0
+)
+
+output_vaccinate_group_2 <- epidemics::model_default(
+  # population
+  population = uk_population,
+  # rate
+  transmission_rate = transmission_rate,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
+  # intervention
+  vaccination = vaccinate_group_2,
+  # time
+  time_end = 200,
+  increment = 1.0
+)
+
+
+output_vaccinate_group_3 <- epidemics::model_default(
+  # population
+  population = uk_population,
+  # rate
+  transmission_rate = transmission_rate,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
+  # intervention
+  vaccination = vaccinate_group_3,
+  # time
+  time_end = 200,
+  increment = 1.0
+)
+
+vaccinate_group_1_infections <- epidemics::new_infections(
+  output_vaccinate_group_1,
+  compartments_from_susceptible = "vaccinated",
+  by_group = FALSE
+)
+vaccinate_group_2_infections <- epidemics::new_infections(
+  output_vaccinate_group_2,
+  compartments_from_susceptible = "vaccinated",
+  by_group = FALSE
+)
+vaccinate_group_3_infections <- epidemics::new_infections(
+  output_vaccinate_group_3,
+  compartments_from_susceptible = "vaccinated",
+  by_group = FALSE
+)
+
+vaccinate_group_1_infections$intervention_type <- "vaccinate group 1"
+vaccinate_group_2_infections$intervention_type <- "vaccinate group 2"
+vaccinate_group_3_infections$intervention_type <- "vaccinate group 3"
+
+output_infections <- rbind(
+  baseline_infections,
+  vaccinate_01_infections,
+  vaccinate_group_1_infections,
+  vaccinate_group_2_infections,
+  vaccinate_group_3_infections
+)
+
+
+output_infections %>%
+  ggplot() +
+  geom_line(
+    aes(
+      time,
+      new_infections,
+      colour = intervention_type,
+      linetype = intervention_type
+    ),
+    linewidth = 1
+  ) +
+  scale_y_continuous(
+    labels = scales::comma
+  ) +
+  geom_vline(
+    xintercept = c(
+      vaccinate_01$time_begin,
+      vaccinate_01$time_end
+    ),
+    linetype = 2
+  ) +
+  theme_bw() +
+  labs(
+    x = "Simulation time (days)",
+    y = "Individuals"
+  )
+```
+
+### Code R
+
+```{r, echo=TRUE, eval=FALSE}
+vaccinate_group_1 <- epidemics::vaccination(
+  name = "vaccinate all",
+  time_begin = matrix(40, nrow(contact_matrix)),
+  time_end = matrix(40 + 150, nrow(contact_matrix)),
+  nu = matrix(c(0.001 * 3, 0, 0))
+)
+
+vaccinate_group_2 <- epidemics::vaccination(
+  name = "vaccinate all",
+  time_begin = matrix(40, nrow(contact_matrix)),
+  time_end = matrix(40 + 150, nrow(contact_matrix)),
+  nu = matrix(c(0, 0.001 * 3, 0))
+)
+
+vaccinate_group_3 <- epidemics::vaccination(
+  name = "vaccinate all",
+  time_begin = matrix(40, nrow(contact_matrix)),
+  time_end = matrix(40 + 150, nrow(contact_matrix)),
+  nu = matrix(c(0, 0, 0.001 * 3))
+)
+
+output_vaccinate_group_1 <- epidemics::model_default(
+  # population
+  population = uk_population,
+  # rate
+  transmission_rate = transmission_rate,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
+  # intervention
+  vaccination = vaccinate_group_1,
+  # time
+  time_end = 200,
+  increment = 1.0
+)
+
+output_vaccinate_group_2 <- epidemics::model_default(
+  # population
+  population = uk_population,
+  # rate
+  transmission_rate = transmission_rate,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
+  # intervention
+  vaccination = vaccinate_group_2,
+  # time
+  time_end = 200,
+  increment = 1.0
+)
+
+
+output_vaccinate_group_3 <- epidemics::model_default(
+  # population
+  population = uk_population,
+  # rate
+  transmission_rate = transmission_rate,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
+  # intervention
+  vaccination = vaccinate_group_3,
+  # time
+  time_end = 200,
+  increment = 1.0
+)
+
+vaccinate_group_1_infections <- epidemics::new_infections(
+  output_vaccinate_group_1,
+  compartments_from_susceptible = "vaccinated",
+  by_group = FALSE
+)
+vaccinate_group_2_infections <- epidemics::new_infections(
+  output_vaccinate_group_2,
+  compartments_from_susceptible = "vaccinated",
+  by_group = FALSE
+)
+vaccinate_group_3_infections <- epidemics::new_infections(
+  output_vaccinate_group_3,
+  compartments_from_susceptible = "vaccinated",
+  by_group = FALSE
+)
+
+vaccinate_group_1_infections$intervention_type <- "vaccinate group 1"
+vaccinate_group_2_infections$intervention_type <- "vaccinate group 2"
+vaccinate_group_3_infections$intervention_type <- "vaccinate group 3"
+
+output_infections <- rbind(
+  baseline_infections,
+  vaccinate_01_infections,
+  vaccinate_group_1_infections,
+  vaccinate_group_2_infections,
+  vaccinate_group_3_infections
+)
+
+
+output_infections %>%
+  ggplot() +
+  geom_line(
+    aes(
+      time,
+      new_infections,
+      colour = intervention_type,
+      linetype = intervention_type
+    ),
+    linewidth = 1
+  ) +
+  scale_y_continuous(
+    labels = scales::comma
+  ) +
+  geom_vline(
+    xintercept = c(
+      vaccinate_01$time_begin,
+      vaccinate_01$time_end
+    ),
+    linetype = 2
+  ) +
+  theme_bw() +
+  labs(
+    x = "Simulation time (days)",
+    y = "Individuals"
+  )
+```
+
+:::
+
+La vaccination du seul groupe 3 entraîne le pic épidémique le plus élevé. Le ciblage du groupe 2 entraîne le pic épidémique le plus faible. En revanche, le fait de cibler tous les groupes d'âge repousse l'heure du pic épidémique. Comme précédemment, comparons le nombre cumulé d'infections dans le cadre des différentes interventions :
+
+```{r}
+interventions_targetted <- tibble::lst(
+  baseline_infections,
+  vaccinate_01_infections,
+  vaccinate_group_1_infections,
+  vaccinate_group_2_infections,
+  vaccinate_group_3_infections
+)
+
+# apply function to each data frame in the list
+purrr::map_dfr(interventions_targetted, find_cumsum)
+```
+
+### Risque d'infection et de mortalité par âge
+
+En ciblant des groupes d'âge spécifiques, on peut réduire le nombre de décès dans le groupe le plus âgé. Pour illustrer cela, nous pouvons définir un risque d'infection et de mortalité (RIF) spécifique à l'âge :
+
+```{r}
+ifr <- c(0.00001, 0.001, 0.4)
+names(ifr) <- rownames(contact_matrix)
+```
+
+Pour convertir les infections en décès, nous avons besoin de nouvelles infections par groupe d'âge. `new_infections()` avec `by_group = TRUE` puis nous multiplions les nouvelles infections par le TIF pour ce groupe d'âge :
+
+```{r}
+vaccinate_group_1_age <- epidemics::new_infections(
+  output_vaccinate_group_1,
+  compartments_from_susceptible = "vaccinated",
+  by_group = TRUE
+)
+
+vaccinate_group_1_deaths <-
+  1:3 %>%
+  purrr::map_dfr(
+    function(x)
+      vaccinate_group_1_age %>%
+        filter(demography_group == names(ifr)[x]) %>%
+        mutate(deaths = new_infections * ifr[x])
+  )
+```
+
+```{r, echo=FALSE}
+
+vaccinate_01_age <- epidemics::new_infections(
+  output_vaccinate_01,
+  compartments_from_susceptible = "vaccinated",
+  by_group = TRUE
+)
+
+vaccinate_01_deaths <-
+  1:3 %>%
+  purrr::map_dfr(
+    function(x)
+      vaccinate_01_age %>%
+        filter(demography_group == names(ifr)[x]) %>%
+        mutate(deaths = new_infections * ifr[x])
+  )
+
+vaccinate_group_2_age <- epidemics::new_infections(
+  output_vaccinate_group_2,
+  compartments_from_susceptible = "vaccinated",
+  by_group = TRUE
+)
+
+vaccinate_group_2_deaths <-
+  1:3 %>%
+  purrr::map_dfr(
+    function(x)
+      vaccinate_group_2_age %>%
+        filter(demography_group == names(ifr)[x]) %>%
+        mutate(deaths = new_infections * ifr[x])
+  )
+
+vaccinate_group_3_age <- epidemics::new_infections(
+  output_vaccinate_group_3,
+  compartments_from_susceptible = "vaccinated",
+  by_group = TRUE
+)
+
+vaccinate_group_3_deaths <-
+  1:3 %>%
+  purrr::map_dfr(
+    function(x)
+      vaccinate_group_3_age %>%
+        filter(demography_group == names(ifr)[x]) %>%
+        mutate(deaths = new_infections * ifr[x])
+  )
+
+
+baseline_age <- epidemics::new_infections(
+  output_baseline,
+  compartments_from_susceptible = "vaccinated",
+  by_group = TRUE
+)
+
+baseline_deaths <-
+  1:3 %>%
+  purrr::map_dfr(
+    function(x)
+      baseline_age %>%
+        filter(demography_group == names(ifr)[x]) %>%
+        mutate(deaths = new_infections * ifr[x])
+  )
+```
+
+La vaccination de tous les groupes d'âge a le plus grand impact sur les décès dans le groupe d'âge le plus élevé (plus de 65 ans), mais nous constatons également que la vaccination du groupe 2 réduit les décès dans le groupe d'âge le plus élevé. Le fait de cibler des groupes plus jeunes permet de réduire le nombre de décès dans le groupe d'âge le plus élevé (plus de 65 ans).
+
+```{r}
+baseline_deaths$intervention_type  <- "baseline"
+vaccinate_01_deaths$intervention_type  <- "vaccinate 0.001"
+vaccinate_group_1_deaths$intervention_type  <- "vaccinate group 1"
+vaccinate_group_2_deaths$intervention_type  <- "vaccinate group 2"
+vaccinate_group_3_deaths$intervention_type  <- "vaccinate group 3"
+
+output_deaths <- rbind(baseline_deaths,
+                       vaccinate_01_deaths,
+                       vaccinate_group_1_deaths,
+                       vaccinate_group_2_deaths,
+                       vaccinate_group_3_deaths)
+
+output_deaths %>%
+  filter(demography_group == "65+") %>%
+  ggplot() +
+  ggtitle("Deaths") +
+  geom_line(
+            aes(time,
+              deaths,
+              colour = intervention_type,
+              linetype = demography_group
+            ),
+            linewidth = 1) +
+  theme_bw() +
+  labs(
+    x = "Simulation time (days)",
+    y = "Individuals"
+  )
+```
+
+## Vaccination contre NPI
+
+La modélisation est un outil utile pour comprendre l'impact potentiel du calendrier et des différentes combinaisons de mesures de contrôle. Dans un scénario d'épidémie, les vaccins peuvent être utilisés parallèlement à d'autres mesures de lutte. Une étude récente réalisée par [Barnsley et al. (2024)](https://doi.org/10.1016/S2214-109X\(24\)00286-9) a utilisé la modélisation pour montrer l'impact que le vaccin COVID-19 aurait pu avoir avec les IPV si le vaccin avait été développé dans les 100 jours suivant la reconnaissance de la menace pathogène. Nous nous inspirerons de cette étude pour montrer l'impact d'un vaccin par rapport à des IPV mises en œuvre à des moments différents.
+
+L'IPN que nous examinerons est la fermeture temporaire des écoles, une intervention qui a été utilisée comme mesure de contrôle de la grippe saisonnière [(Cowling et al. 2008)](https://doi.org/10.3201/eid1410.080646). Plus précisément, nous modéliserons une fermeture d'école qui réduira de 0,5 les contacts entre les enfants d'âge scolaire (0-15 ans) et entraînera une légère réduction (0,01) des contacts entre les adultes (15 ans et plus). Pour le programme de vaccination, nous supposons un taux de vaccination égal à 0,01 dans chaque groupe d'âge.
+
+Nous définissons **la mise en œuvre anticipée** comme le premier jour de la simulation (c'est-à-dire lorsqu'il y a moins de 100 infections au total), et **mise en œuvre tardive** 50 jours après le début de la simulation (c'est-à-dire lorsqu'il y a environ 50 000 infections au total). Nous supposons que les mesures de contrôle sont en place pendant 100 jours après le début de la simulation.
+
+Les combinaisons que nous examinerons sont les suivantes :
+
+- la mise en œuvre anticipée de la fermeture des écoles,
+- la mise en œuvre anticipée d'un vaccin,
+- la mise en œuvre tardive d'un vaccin,
+- la mise en œuvre précoce de la fermeture des écoles et la mise en œuvre tardive d'un vaccin.
+
+Le code ci-dessous détaille la façon dont les interventions sont simulées :
+
+```{r}
+early_start <- 0
+late_start <- 50
+duration <- 100
+time_end <- 200
+
+# close schools early
+close_schools_early <- epidemics::intervention(
+  name = "School closure",
+  type = "contacts",
+  time_begin = early_start,
+  time_end = early_start + duration,
+  reduction = matrix(c(0.5, 0.01, 0.01))
+)
+
+# vaccination late
+vacc_late <- epidemics::vaccination(
+  name = "vaccinate late",
+  time_begin = matrix(late_start, nrow(contact_matrix)),
+  time_end = matrix(late_start + duration, nrow(contact_matrix)),
+  nu = matrix(c(0.01, 0.01, 0.01))
+)
+
+# npis started early + vaccination late
+output_npi_early_vacc_late <- epidemics::model_default(
+  population = uk_population,
+  transmission_rate = transmission_rate,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
+  vaccination = vacc_late,
+  intervention = list(contacts = close_schools_early),
+  time_end = time_end, increment = 1.0
+)
+```
+
+```{r, echo=FALSE}
+# vaccinate early
+vacc_early <- epidemics::vaccination(
+  name = "vaccinate early",
+  time_begin = matrix(early_start, nrow(contact_matrix)),
+  time_end = matrix(early_start + duration, nrow(contact_matrix)),
+  nu = matrix(c(0.01, 0.01, 0.01))
+)
+
+# npis only (early)
+output_npi_early <- epidemics::model_default(
+  population = uk_population,
+  transmission_rate = transmission_rate,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
+  intervention = list(contacts = close_schools_early),
+  time_end = time_end, increment = 1.0
+)
+
+# vaccination only (early)
+output_vacc_early <- epidemics::model_default(
+  population = uk_population,
+  transmission_rate = transmission_rate,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
+  vaccination = vacc_early,
+  time_end = time_end, increment = 1.0
+)
+
+# vaccination only (late)
+output_vacc_late <- epidemics::model_default(
+  population = uk_population,
+  transmission_rate = transmission_rate,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
+  vaccination = vacc_late,
+  time_end = time_end, increment = 1.0
+)
+
+output_npi_early_vacc_late$intervention_type <- "early npi, late vacc"
+output_npi_early$intervention_type <- "early npi"
+output_vacc_early$intervention_type <- "early vacc"
+output_vacc_late$intervention_type <- "late vacc"
+
+output <- rbind(output_baseline, output_vacc_late,
+                output_vacc_early, output_npi_early,
+                output_npi_early_vacc_late)
+```
+
+Mise en œuvre précoce des NPI (`early npi`) retarde le moment du pic de personnes infectieuses mais ne diminue pas beaucoup l'ampleur de la maladie une fois que la mesure est levée. La mise en œuvre précoce du vaccin (`early vacc`) est la mesure la plus efficace pour réduire le nombre maximal de personnes infectées, car elle réduit la taille du groupe sensible au lieu d'éloigner temporairement les infections de ce groupe. La mise en place d'une IPV avant la mise en œuvre du vaccin (`early npi, late vacc`) est plus efficace que la mise en œuvre tardive du vaccin (`late vacc`).
+
+```{r, echo=FALSE}
+output %>%
+  filter(compartment == "infectious") %>%
+  ggplot() +
+  aes(
+    x = time,
+    y = value,
+    color = intervention_type,
+    linetype = intervention_type
+  ) +
+  stat_summary(
+    fun = "sum",
+    geom = "line",
+    linewidth = 1
+  ) +
+  scale_y_continuous(
+    labels = scales::comma
+  ) +
+  geom_vline(
+    xintercept = c(
+      early_start,
+      early_start + duration
+    ),
+    linetype = 2
+  ) +
+  geom_vline(
+    xintercept = c(
+      late_start,
+      late_start + duration
+    ),
+    linetype = 3
+  ) +
+  theme_bw() +
+  labs(
+    x = "Simulation time (days)",
+    y = "Individuals"
+  )
+```
+
+::::::::::::::::::::::::::::::::::::: challenge
+
+## Lever les mesures NPI
+
+Étudiez l'impact de la levée de l'IPN après la mise en œuvre du vaccin. Adaptez le code ci-dessous pour relever le NPI après 20, 50 et 100 jours.
+
+:::::::::::::::::::::::: solution
+
+## Sortie
+
+```{r}
+duration_20 <- 20
+duration_50 <- 50
+
+close_schools_early_20 <- epidemics::intervention(
+  name = "School closure",
+  type = "contacts",
+  time_begin = early_start,
+  time_end = early_start + duration_20,
+  reduction = matrix(c(0.5, 0.01, 0.01))
+)
+
+close_schools_early_50 <- epidemics::intervention(
+  name = "School closure",
+  type = "contacts",
+  time_begin = early_start,
+  time_end = early_start + duration_50,
+  reduction = matrix(c(0.5, 0.01, 0.01))
+)
+
+output_npi_early_vacc_late_20 <- epidemics::model_default(
+  population = uk_population,
+  transmission_rate = transmission_rate,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
+  vaccination = vacc_late,
+  intervention = list(contacts = close_schools_early_20),
+  time_end = 300, increment = 1.0
+)
+
+output_npi_early_vacc_late_50 <- epidemics::model_default(
+  population = uk_population,
+  transmission_rate = transmission_rate,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
+  vaccination = vacc_late,
+  intervention = list(contacts = close_schools_early_50),
+  time_end = 300, increment = 1.0
+)
+
+output_npi_early_vacc_late_20$intervention_type <- "20 days"
+output_npi_early_vacc_late_50$intervention_type <- "50 days"
+output_npi_early_vacc_late$intervention_type <- "100 days"
+
+output_npis <- rbind(output_npi_early_vacc_late_20,
+                     output_npi_early_vacc_late_50,
+                     output_npi_early_vacc_late)
+
+output_npis %>%
+  filter(compartment == "infectious") %>%
+  ggplot() +
+  aes(
+    x = time,
+    y = value,
+    color = intervention_type,
+    linetype = intervention_type
+  ) +
+  stat_summary(
+    fun = "sum",
+    geom = "line",
+    linewidth = 1
+  ) +
+  scale_y_continuous(
+    labels = scales::comma
+  ) +
+  geom_vline(
+    xintercept = c(
+      early_start,
+      early_start + duration
+    ),
+    linetype = 2
+  ) +
+  geom_vline(
+    xintercept = c(
+      late_start,
+      late_start + duration
+    ),
+    linetype = 3
+  ) +
+  theme_bw() +
+  labs(
+    x = "Simulation time (days)",
+    y = "Individuals"
+  )
+```
+
+:::::::::::::::::::::::::::::::::
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+## Résumé
+
+En utilisant des trajectoires de maladies générées par des modèles, nous avons étudié l'impact potentiel de différentes stratégies de vaccination. Lorsque l'infection présente un risque spécifique à un groupe, les programmes de vaccination ciblés peuvent être plus efficaces pour réduire le pic épidémique. Les IPV peuvent être utilisés parallèlement au développement de vaccins pour retarder les pics épidémiques avant que les vaccins ne soient facilement disponibles.
+
+Nous avons utilisé un modèle SEIR avec une classe de vaccination, mais si nous modélisions l'immunité à l'infection
+nous pourrions étudier l'impact d'un programme de vaccination s'il était mis en œuvre très tard dans l'épidémie (c'est-à-dire après que l'immunité post-infectieuse se soit accumulée). Voir par exemple, [Baguelin et al. 2010](https://doi.org/10.1016/j.vaccine.2010.01.002)
+
+Dans ce tutoriel, nous avons étudié l'effet potentiel des vaccins bloquant l'infection, mais nous pouvons utiliser des modèles pour explorer d'autres effets des vaccins, y compris les vaccins imparfaits. Les trajectoires de la maladie générées dans ce tutoriel peuvent être utilisées pour calculer des mesures telles que [les AVCI](../learners/reference.md#dalys) évitées dans le cadre d'analyses économiques de la santé.
+
+::::::::::::::::::::::::::::::::::::: keypoints
+
+- L'immunité du troupeau est un effet indirect des programmes de vaccination
+- Les programmes de vaccination ciblés présentent des avantages en cas d'hétérogénéité des contacts.
+- Le calendrier de mise en œuvre des programmes de vaccination et des IPV peut entraîner des trajectoires très différentes de la maladie.
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+
