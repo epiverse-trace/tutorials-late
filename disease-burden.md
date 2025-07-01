@@ -94,11 +94,11 @@ Key: <time>
     time new_infections
    <num>          <num>
 1:     0       0.000000
-2:     1       3.467732
-3:     2       3.205905
-4:     3       3.110635
-5:     4       3.116127
-6:     5       3.183494
+2:     1       3.468452
+3:     2       3.206039
+4:     3       3.110541
+5:     4       3.115967
+6:     5       3.183338
 ```
 
 To convert the new infections to hospitalisations we need to parameter distributions to describe the following processes :
