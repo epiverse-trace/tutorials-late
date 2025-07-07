@@ -302,9 +302,9 @@ purrr::map_dfr(interventions, find_cumsum)
 
 ``` output
   intervention_type cumulative_sum
-1          baseline    53478985.93
-2   vaccinate 0.001    44803253.91
-3    vaccinate 0.01       34550.48
+1          baseline    53478987.43
+2   vaccinate 0.001    44803629.65
+3    vaccinate 0.01       34550.52
 ```
 
 
@@ -503,11 +503,11 @@ purrr::map_dfr(interventions_targetted, find_cumsum)
 
 ``` output
   intervention_type cumulative_sum
-1          baseline       53478986
-2   vaccinate 0.001       44803254
-3 vaccinate group 1       50429226
-4 vaccinate group 2       42035053
-5 vaccinate group 3       51634221
+1          baseline       53478987
+2   vaccinate 0.001       44803630
+3 vaccinate group 1       50436402
+4 vaccinate group 2       42064335
+5 vaccinate group 3       51638432
 ```
 
 ### Age-specific infection-fatality-risk 
