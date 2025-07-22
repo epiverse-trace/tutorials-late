@@ -319,7 +319,7 @@
     },
     "V8": {
       "Package": "V8",
-      "Version": "6.0.3",
+      "Version": "6.0.4",
       "Source": "Repository",
       "Type": "Package",
       "Title": "Embedded JavaScript and WebAssembly Engine for R",
@@ -349,7 +349,7 @@
       "Language": "en-US",
       "Encoding": "UTF-8",
       "Biarch": "true",
-      "Author": "Jeroen Ooms [aut, cre] (<https://orcid.org/0000-0002-4035-0289>), Jan Marvin Garbuszus [ctb]",
+      "Author": "Jeroen Ooms [aut, cre] (ORCID: <https://orcid.org/0000-0002-4035-0289>), Jan Marvin Garbuszus [ctb]",
       "Maintainer": "Jeroen Ooms <jeroenooms@gmail.com>",
       "Repository": "CRAN"
     },
@@ -877,6 +877,30 @@
       "Maintainer": "Michel Lang <michellang@gmail.com>",
       "Repository": "RSPM"
     },
+    "cinterpolate": {
+      "Package": "cinterpolate",
+      "Version": "1.0.2",
+      "Source": "Repository",
+      "Title": "Interpolation From C",
+      "Description": "Simple interpolation methods designed to be used from C code. Supports constant, linear and spline interpolation. An R wrapper is included but this package is primarily designed to be used from C code using 'LinkingTo'.  The spline calculations are classical cubic interpolation, e.g., Forsythe, Malcolm and Moler (1977) <ISBN: 9780131653320>.",
+      "License": "MIT + file LICENSE",
+      "Encoding": "UTF-8",
+      "Authors@R": "c(person(\"Rich\", \"FitzJohn\", role = c(\"aut\", \"cre\"), email = \"rich.fitzjohn@gmail.com\"), person(\"Imperial College of Science, Technology and Medicine\", role = \"cph\"))",
+      "URL": "https://github.com/mrc-ide/cinterpolate",
+      "BugReports": "https://github.com/mrc-ide/cinterpolate/issues",
+      "RoxygenNote": "7.2.3",
+      "Suggests": [
+        "knitr",
+        "rmarkdown",
+        "testthat"
+      ],
+      "VignetteBuilder": "knitr",
+      "Language": "en-GB",
+      "NeedsCompilation": "yes",
+      "Author": "Rich FitzJohn [aut, cre], Imperial College of Science, Technology and Medicine [cph]",
+      "Maintainer": "Rich FitzJohn <rich.fitzjohn@gmail.com>",
+      "Repository": "RSPM"
+    },
     "cli": {
       "Package": "cli",
       "Version": "3.6.5",
@@ -1102,14 +1126,14 @@
     },
     "curl": {
       "Package": "curl",
-      "Version": "6.2.3",
+      "Version": "6.4.0",
       "Source": "Repository",
       "Type": "Package",
       "Title": "A Modern and Flexible Web Client for R",
       "Authors@R": "c( person(\"Jeroen\", \"Ooms\", role = c(\"aut\", \"cre\"), email = \"jeroenooms@gmail.com\", comment = c(ORCID = \"0000-0002-4035-0289\")), person(\"Hadley\", \"Wickham\", role = \"ctb\"), person(\"Posit Software, PBC\", role = \"cph\"))",
       "Description": "Bindings to 'libcurl' <https://curl.se/libcurl/> for performing fully configurable HTTP/FTP requests where responses can be processed in memory, on disk, or streaming via the callback or connection interfaces. Some knowledge of 'libcurl' is recommended; for a more-user-friendly web client see the  'httr2' package which builds on this package with http specific tools and logic.",
       "License": "MIT + file LICENSE",
-      "SystemRequirements": "libcurl (>= 7.62): libcurl-devel (rpm) or libcurl4-openssl-dev (deb)",
+      "SystemRequirements": "libcurl (>= 7.73): libcurl-devel (rpm) or libcurl4-openssl-dev (deb)",
       "URL": "https://jeroen.r-universe.dev/curl",
       "BugReports": "https://github.com/jeroen/curl/issues",
       "Suggests": [
@@ -1136,7 +1160,7 @@
     },
     "data.table": {
       "Package": "data.table",
-      "Version": "1.17.4",
+      "Version": "1.17.6",
       "Source": "Repository",
       "Title": "Extension of `data.frame`",
       "Depends": [
@@ -1228,6 +1252,35 @@
       "Author": "Hadley Wickham [aut, cre], Maximilian Girlich [aut], Edgar Ruiz [aut], Posit Software, PBC [cph, fnd]",
       "Maintainer": "Hadley Wickham <hadley@posit.co>",
       "Repository": "RSPM"
+    },
+    "deSolve": {
+      "Package": "deSolve",
+      "Version": "1.40",
+      "Source": "Repository",
+      "Title": "Solvers for Initial Value Problems of Differential Equations ('ODE', 'DAE', 'DDE')",
+      "Authors@R": "c(person(\"Karline\",\"Soetaert\", role = c(\"aut\"),  email = \"karline.soetaert@nioz.nl\", comment = c(ORCID = \"0000-0003-4603-7100\")), person(\"Thomas\",\"Petzoldt\", role = c(\"aut\", \"cre\"), email = \"thomas.petzoldt@tu-dresden.de\", comment = c(ORCID = \"0000-0002-4951-6468\")), person(\"R. Woodrow\",\"Setzer\", role = c(\"aut\"), email = \"setzer.woodrow@epa.gov\", comment = c(ORCID = \"0000-0002-6709-9186\")), person(\"Peter N.\",\"Brown\", role = \"ctb\",  comment = \"files ddaspk.f, dvode.f, zvode.f\"), person(\"George D.\",\"Byrne\", role = \"ctb\",  comment = \"files dvode.f, zvode.f\"), person(\"Ernst\",\"Hairer\", role = \"ctb\",  comment = \"files radau5.f, radau5a\"), person(\"Alan C.\",\"Hindmarsh\", role = \"ctb\",  comment = \"files ddaspk.f, dlsode.f, dvode.f, zvode.f, opdkmain.f, opdka1.f\"), person(\"Cleve\",\"Moler\", role = \"ctb\",  comment = \"file dlinpck.f\"), person(\"Linda R.\",\"Petzold\", role = \"ctb\",  comment = \"files ddaspk.f, dlsoda.f\"), person(\"Youcef\", \"Saad\", role = \"ctb\",  comment = \"file dsparsk.f\"), person(\"Clement W.\",\"Ulrich\", role = \"ctb\",  comment = \"file ddaspk.f\") )",
+      "Author": "Karline Soetaert [aut] (<https://orcid.org/0000-0003-4603-7100>), Thomas Petzoldt [aut, cre] (<https://orcid.org/0000-0002-4951-6468>), R. Woodrow Setzer [aut] (<https://orcid.org/0000-0002-6709-9186>), Peter N. Brown [ctb] (files ddaspk.f, dvode.f, zvode.f), George D. Byrne [ctb] (files dvode.f, zvode.f), Ernst Hairer [ctb] (files radau5.f, radau5a), Alan C. Hindmarsh [ctb] (files ddaspk.f, dlsode.f, dvode.f, zvode.f, opdkmain.f, opdka1.f), Cleve Moler [ctb] (file dlinpck.f), Linda R. Petzold [ctb] (files ddaspk.f, dlsoda.f), Youcef Saad [ctb] (file dsparsk.f), Clement W. Ulrich [ctb] (file ddaspk.f)",
+      "Maintainer": "Thomas Petzoldt <thomas.petzoldt@tu-dresden.de>",
+      "Depends": [
+        "R (>= 3.3.0)"
+      ],
+      "Imports": [
+        "methods",
+        "graphics",
+        "grDevices",
+        "stats"
+      ],
+      "Suggests": [
+        "scatterplot3d",
+        "FME"
+      ],
+      "Description": "Functions that solve initial value problems of a system of first-order ordinary differential equations ('ODE'), of partial differential equations ('PDE'), of differential algebraic equations ('DAE'), and of delay differential equations.  The functions provide an interface to the FORTRAN functions 'lsoda', 'lsodar', 'lsode', 'lsodes' of the 'ODEPACK' collection, to the FORTRAN functions 'dvode', 'zvode' and 'daspk' and a C-implementation of solvers of the 'Runge-Kutta' family with fixed or variable time steps.  The package contains routines designed for solving 'ODEs' resulting from 1-D, 2-D and 3-D partial differential equations ('PDE') that have been converted to 'ODEs' by numerical differencing.",
+      "License": "GPL (>= 2)",
+      "URL": "http://desolve.r-forge.r-project.org/",
+      "LazyData": "yes",
+      "NeedsCompilation": "yes",
+      "Repository": "RSPM",
+      "Encoding": "UTF-8"
     },
     "desc": {
       "Package": "desc",
@@ -1468,18 +1521,17 @@
       "Version": "0.4.0.9000",
       "Source": "GitHub",
       "Title": "Composable Epidemic Scenario Modelling",
-      "Authors@R": "c( person(\"Pratik\", \"Gupte\", , \"pratik.gupte@lshtm.ac.uk\", role = c(\"aut\", \"cph\"), comment = c(ORCID = \"0000-0001-5294-7819\")), person(\"Rosalind\", \"Eggo\", , \"rosalind.eggo@lshtm.ac.uk\", role = c(\"aut\", \"cph\", \"cre\"), comment = c(ORCID = \"0000-0002-0362-6717\")), person(\"Edwin\", \"Van Leeuwen\", , \"edwin.vanleeuwen@ukhsa.gov.uk\", role = c(\"aut\", \"cph\"), comment = c(ORCID = \"0000-0002-2383-5305\")), person(\"Adam\", \"Kucharski\", , \"adam.kucharski@lshtm.ac.uk\", role = c(\"ctb\", \"rev\"), comment = c(ORCID = \"0000-0001-8814-9421\")), person(\"Tim\", \"Taylor\", , \"tim.taylor@hiddenelephants.co.uk\", role = c(\"ctb\", \"rev\"), comment = c(ORCID = \"0000-0002-8587-7113\")), person(\"Banky\", \"Ahadzie\", , \"bahadzie@gmail.com\", role = \"ctb\"), person(\"Hugo\", \"Gruson\", , \"hugo.gruson@data.org\", role = \"rev\", comment = c(ORCID = \"0000-0002-4094-1476\")), person(\"Joshua W.\", \"Lambert\", , \"joshua.lambert@lshtm.ac.uk\", role = \"rev\", comment = c(ORCID = \"0000-0001-5218-3046\")), person(\"James M.\", \"Azam\", , \"james.azam@lshtm.ac.uk\", role = \"rev\", comment = c(ORCID = \"0000-0001-5782-7330\")), person(\"Alexis\", \"Robert\", , \"alexis.robert@lshtm.ac.uk\", role = \"rev\", comment = c(ORCID = \"0000-0002-4516-2965\")) )",
+      "Authors@R": "c( person(\"Pratik\", \"Gupte\", , \"pratik.gupte@lshtm.ac.uk\", role = c(\"aut\", \"cph\"), comment = c(ORCID = \"0000-0001-5294-7819\")), person(\"Rosalind\", \"Eggo\", , \"rosalind.eggo@lshtm.ac.uk\", role = c(\"aut\", \"cph\", \"cre\"), comment = c(ORCID = \"0000-0002-0362-6717\")), person(\"Edwin\", \"Van Leeuwen\", , \"edwin.vanleeuwen@ukhsa.gov.uk\", role = c(\"aut\", \"cph\"), comment = c(ORCID = \"0000-0002-2383-5305\")), person(\"Adam\", \"Kucharski\", , \"adam.kucharski@lshtm.ac.uk\", role = c(\"ctb\", \"rev\"), comment = c(ORCID = \"0000-0001-8814-9421\")), person(\"Tim\", \"Taylor\", , \"tim.taylor@hiddenelephants.co.uk\", role = c(\"ctb\", \"rev\"), comment = c(ORCID = \"0000-0002-8587-7113\")), person(\"Banky\", \"Ahadzie\", , \"bahadzie@gmail.com\", role = \"ctb\"), person(\"Alexis\", \"Robert\", , \"alexis.robert@lshtm.ac.uk\", role = \"ctb\", comment = c(ORCID = \"0000-0002-4516-2965\")), person(\"Hugo\", \"Gruson\", , \"hugo.gruson@data.org\", role = \"rev\", comment = c(ORCID = \"0000-0002-4094-1476\")), person(\"Joshua W.\", \"Lambert\", , \"joshua.lambert@lshtm.ac.uk\", role = \"rev\", comment = c(ORCID = \"0000-0001-5218-3046\")), person(\"James M.\", \"Azam\", , \"james.azam@lshtm.ac.uk\", role = \"rev\", comment = c(ORCID = \"0000-0001-5782-7330\")), person(\"Alexis\", \"Robert\", , \"alexis.robert@lshtm.ac.uk\", role = \"rev\", comment = c(ORCID = \"0000-0002-4516-2965\")) )",
       "Description": "A library of compartmental epidemic models taken from the published literature, and classes to represent affected populations, public health response measures including non-pharmaceutical interventions on social contacts, non-pharmaceutical and pharmaceutical interventions that affect disease transmissibility, vaccination regimes, and disease seasonality, which can be combined to compose epidemic scenario models.",
       "License": "MIT + file LICENSE",
       "URL": "https://github.com/epiverse-trace/epidemics, https://epiverse-trace.github.io/epidemics/",
       "BugReports": "https://github.com/epiverse-trace/epidemics/issues",
       "Imports": [
+        "odin",
         "checkmate",
         "cli",
         "data.table",
         "glue",
-        "Rcpp",
-        "RcppEigen",
         "stats",
         "utils",
         "withr"
@@ -1515,12 +1567,12 @@
       "Language": "en-GB",
       "Roxygen": "list(markdown = TRUE)",
       "RoxygenNote": "7.3.2",
-      "Author": "Pratik Gupte [aut, cph] (ORCID: <https://orcid.org/0000-0001-5294-7819>), Rosalind Eggo [aut, cph, cre] (ORCID: <https://orcid.org/0000-0002-0362-6717>), Edwin Van Leeuwen [aut, cph] (ORCID: <https://orcid.org/0000-0002-2383-5305>), Adam Kucharski [ctb, rev] (ORCID: <https://orcid.org/0000-0001-8814-9421>), Tim Taylor [ctb, rev] (ORCID: <https://orcid.org/0000-0002-8587-7113>), Banky Ahadzie [ctb], Hugo Gruson [rev] (ORCID: <https://orcid.org/0000-0002-4094-1476>), Joshua W. Lambert [rev] (ORCID: <https://orcid.org/0000-0001-5218-3046>), James M. Azam [rev] (ORCID: <https://orcid.org/0000-0001-5782-7330>), Alexis Robert [rev] (ORCID: <https://orcid.org/0000-0002-4516-2965>)",
+      "Author": "Pratik Gupte [aut, cph] (ORCID: <https://orcid.org/0000-0001-5294-7819>), Rosalind Eggo [aut, cph, cre] (ORCID: <https://orcid.org/0000-0002-0362-6717>), Edwin Van Leeuwen [aut, cph] (ORCID: <https://orcid.org/0000-0002-2383-5305>), Adam Kucharski [ctb, rev] (ORCID: <https://orcid.org/0000-0001-8814-9421>), Tim Taylor [ctb, rev] (ORCID: <https://orcid.org/0000-0002-8587-7113>), Banky Ahadzie [ctb], Alexis Robert [ctb] (ORCID: <https://orcid.org/0000-0002-4516-2965>), Hugo Gruson [rev] (ORCID: <https://orcid.org/0000-0002-4094-1476>), Joshua W. Lambert [rev] (ORCID: <https://orcid.org/0000-0001-5218-3046>), James M. Azam [rev] (ORCID: <https://orcid.org/0000-0001-5782-7330>), Alexis Robert [rev] (ORCID: <https://orcid.org/0000-0002-4516-2965>)",
       "Maintainer": "Rosalind Eggo <rosalind.eggo@lshtm.ac.uk>",
       "RemoteType": "github",
       "RemoteUsername": "epiverse-trace",
       "RemoteRepo": "epidemics",
-      "RemoteSha": "4cbabfb8803c837ce02bea626078bf0ba9a0f7fe",
+      "RemoteSha": "f064fc478bf96b75e7891b0583695d98a18a7a0f",
       "RemoteHost": "api.github.com"
     },
     "epiparameter": {
@@ -1612,7 +1664,7 @@
     },
     "evaluate": {
       "Package": "evaluate",
-      "Version": "1.0.3",
+      "Version": "1.0.4",
       "Source": "Repository",
       "Type": "Package",
       "Title": "Parsing and Evaluation Tools that Provide More Details than the Default",
@@ -1631,7 +1683,8 @@
         "lattice",
         "methods",
         "pkgload",
-        "rlang",
+        "ragg (>= 1.4.0)",
+        "rlang (>= 1.1.5)",
         "knitr",
         "testthat (>= 3.0.0)",
         "withr"
@@ -1641,40 +1694,9 @@
       "Encoding": "UTF-8",
       "RoxygenNote": "7.3.2",
       "NeedsCompilation": "no",
-      "Author": "Hadley Wickham [aut, cre], Yihui Xie [aut] (<https://orcid.org/0000-0003-0645-5666>), Michael Lawrence [ctb], Thomas Kluyver [ctb], Jeroen Ooms [ctb], Barret Schloerke [ctb], Adam Ryczkowski [ctb], Hiroaki Yutani [ctb], Michel Lang [ctb], Karolis Koncevičius [ctb], Posit Software, PBC [cph, fnd]",
+      "Author": "Hadley Wickham [aut, cre], Yihui Xie [aut] (ORCID: <https://orcid.org/0000-0003-0645-5666>), Michael Lawrence [ctb], Thomas Kluyver [ctb], Jeroen Ooms [ctb], Barret Schloerke [ctb], Adam Ryczkowski [ctb], Hiroaki Yutani [ctb], Michel Lang [ctb], Karolis Koncevičius [ctb], Posit Software, PBC [cph, fnd]",
       "Maintainer": "Hadley Wickham <hadley@posit.co>",
-      "Repository": "RSPM"
-    },
-    "fansi": {
-      "Package": "fansi",
-      "Version": "1.0.6",
-      "Source": "Repository",
-      "Title": "ANSI Control Sequence Aware String Functions",
-      "Description": "Counterparts to R string manipulation functions that account for the effects of ANSI text formatting control sequences.",
-      "Authors@R": "c( person(\"Brodie\", \"Gaslam\", email=\"brodie.gaslam@yahoo.com\", role=c(\"aut\", \"cre\")), person(\"Elliott\", \"Sales De Andrade\", role=\"ctb\"), person(family=\"R Core Team\", email=\"R-core@r-project.org\", role=\"cph\", comment=\"UTF8 byte length calcs from src/util.c\" ))",
-      "Depends": [
-        "R (>= 3.1.0)"
-      ],
-      "License": "GPL-2 | GPL-3",
-      "URL": "https://github.com/brodieG/fansi",
-      "BugReports": "https://github.com/brodieG/fansi/issues",
-      "VignetteBuilder": "knitr",
-      "Suggests": [
-        "unitizer",
-        "knitr",
-        "rmarkdown"
-      ],
-      "Imports": [
-        "grDevices",
-        "utils"
-      ],
-      "RoxygenNote": "7.2.3",
-      "Encoding": "UTF-8",
-      "Collate": "'constants.R' 'fansi-package.R' 'internal.R' 'load.R' 'misc.R' 'nchar.R' 'strwrap.R' 'strtrim.R' 'strsplit.R' 'substr2.R' 'trimws.R' 'tohtml.R' 'unhandled.R' 'normalize.R' 'sgr.R'",
-      "NeedsCompilation": "yes",
-      "Author": "Brodie Gaslam [aut, cre], Elliott Sales De Andrade [ctb], R Core Team [cph] (UTF8 byte length calcs from src/util.c)",
-      "Maintainer": "Brodie Gaslam <brodie.gaslam@yahoo.com>",
-      "Repository": "RSPM"
+      "Repository": "CRAN"
     },
     "farver": {
       "Package": "farver",
@@ -3110,6 +3132,46 @@
       "Maintainer": "Michal Bojanowski <michal2992@gmail.com>",
       "Repository": "RSPM"
     },
+    "odin": {
+      "Package": "odin",
+      "Version": "1.2.7",
+      "Source": "Repository",
+      "Title": "ODE Generation and Integration",
+      "Authors@R": "c(person(\"Rich\", \"FitzJohn\", role = c(\"aut\", \"cre\"), email = \"rich.fitzjohn@gmail.com\"), person(\"Thibaut\", \"Jombart\", role = \"ctb\"), person(\"Imperial College of Science, Technology and Medicine\", role = \"cph\"))",
+      "Description": "Generate systems of ordinary differential equations (ODE) and integrate them, using a domain specific language (DSL).  The DSL uses R's syntax, but compiles to C in order to efficiently solve the system.  A solver is not provided, but instead interfaces to the packages 'deSolve' and 'dde' are generated.  With these, while solving the differential equations, no allocations are done and the calculations remain entirely in compiled code.  Alternatively, a model can be transpiled to R for use in contexts where a C compiler is not present.  After compilation, models can be inspected to return information about parameters and outputs, or intermediate values after calculations. 'odin' is not targeted at any particular domain and is suitable for any system that can be expressed primarily as mathematical expressions.  Additional support is provided for working with delays (delay differential equations, DDE), using interpolated functions during interpolation, and for integrating quantities that represent arrays.",
+      "License": "MIT + file LICENSE",
+      "URL": "https://github.com/mrc-ide/odin",
+      "BugReports": "https://github.com/mrc-ide/odin/issues",
+      "Imports": [
+        "R6",
+        "cinterpolate (>= 1.0.0)",
+        "deSolve",
+        "digest",
+        "glue",
+        "jsonlite",
+        "ring",
+        "withr"
+      ],
+      "Suggests": [
+        "dde (>= 1.0.0)",
+        "jsonvalidate (>= 1.1.0)",
+        "knitr",
+        "mockery",
+        "pkgbuild",
+        "pkgload",
+        "rlang",
+        "rmarkdown",
+        "testthat"
+      ],
+      "VignetteBuilder": "knitr",
+      "RoxygenNote": "7.1.1",
+      "Encoding": "UTF-8",
+      "Language": "en-GB",
+      "NeedsCompilation": "no",
+      "Author": "Rich FitzJohn [aut, cre], Thibaut Jombart [ctb], Imperial College of Science, Technology and Medicine [cph]",
+      "Maintainer": "Rich FitzJohn <rich.fitzjohn@gmail.com>",
+      "Repository": "RSPM"
+    },
     "openssl": {
       "Package": "openssl",
       "Version": "2.3.3",
@@ -3756,6 +3818,33 @@
       "Maintainer": "Jennifer Bryan <jenny@posit.co>",
       "Repository": "RSPM"
     },
+    "ring": {
+      "Package": "ring",
+      "Version": "1.0.6",
+      "Source": "Repository",
+      "Title": "Circular / Ring Buffers",
+      "Authors@R": "c(person(\"Rich\", \"FitzJohn\", role = c(\"aut\", \"cre\"), email = \"rich.fitzjohn@gmail.com\"), person(\"Imperial College of Science, Technology and Medicine\", role = \"cph\"))",
+      "Description": "Circular / ring buffers in R and C.  There are a couple of different buffers here with different implementations that represent different trade-offs.",
+      "License": "MIT + file LICENSE",
+      "URL": "https://mrc-ide.gitub.io/ring, https://github.com/mrc-ide/ring",
+      "BugReports": "https://github.com/mrc-ide/ring/issues",
+      "Imports": [
+        "R6"
+      ],
+      "Suggests": [
+        "knitr",
+        "rmarkdown",
+        "testthat"
+      ],
+      "RoxygenNote": "7.2.3",
+      "VignetteBuilder": "knitr",
+      "Language": "en-GB",
+      "Encoding": "UTF-8",
+      "NeedsCompilation": "yes",
+      "Author": "Rich FitzJohn [aut, cre], Imperial College of Science, Technology and Medicine [cph]",
+      "Maintainer": "Rich FitzJohn <rich.fitzjohn@gmail.com>",
+      "Repository": "RSPM"
+    },
     "rlang": {
       "Package": "rlang",
       "Version": "1.1.6",
@@ -4281,7 +4370,7 @@
     },
     "tibble": {
       "Package": "tibble",
-      "Version": "3.2.1",
+      "Version": "3.3.0",
       "Source": "Repository",
       "Title": "Simple Data Frames",
       "Authors@R": "c(person(given = \"Kirill\", family = \"M\\u00fcller\", role = c(\"aut\", \"cre\"), email = \"kirill@cynkra.com\", comment = c(ORCID = \"0000-0002-1416-3412\")), person(given = \"Hadley\", family = \"Wickham\", role = \"aut\", email = \"hadley@rstudio.com\"), person(given = \"Romain\", family = \"Francois\", role = \"ctb\", email = \"romain@r-enthusiasts.com\"), person(given = \"Jennifer\", family = \"Bryan\", role = \"ctb\", email = \"jenny@rstudio.com\"), person(given = \"RStudio\", role = c(\"cph\", \"fnd\")))",
@@ -4293,7 +4382,7 @@
         "R (>= 3.4.0)"
       ],
       "Imports": [
-        "fansi (>= 0.4.0)",
+        "cli",
         "lifecycle (>= 1.0.0)",
         "magrittr",
         "methods",
@@ -4301,7 +4390,7 @@
         "pkgconfig",
         "rlang (>= 1.0.2)",
         "utils",
-        "vctrs (>= 0.4.2)"
+        "vctrs (>= 0.5.0)"
       ],
       "Suggests": [
         "bench",
@@ -4309,9 +4398,6 @@
         "blob",
         "brio",
         "callr",
-        "cli",
-        "covr",
-        "crayon (>= 1.3.4)",
         "DiagrammeR",
         "dplyr",
         "evaluate",
@@ -4322,9 +4408,7 @@
         "htmltools",
         "knitr",
         "lubridate",
-        "mockr",
         "nycflights13",
-        "pkgbuild",
         "pkgload",
         "purrr",
         "rmarkdown",
@@ -4335,7 +4419,7 @@
       ],
       "VignetteBuilder": "knitr",
       "Encoding": "UTF-8",
-      "RoxygenNote": "7.2.3",
+      "RoxygenNote": "7.3.2.9000",
       "Config/testthat/edition": "3",
       "Config/testthat/parallel": "true",
       "Config/testthat/start-first": "vignette-formats, as_tibble, add, invariants",
@@ -4344,9 +4428,9 @@
       "Config/autostyle/rmd": "false",
       "Config/Needs/website": "tidyverse/tidytemplate",
       "NeedsCompilation": "yes",
-      "Author": "Kirill Müller [aut, cre] (<https://orcid.org/0000-0002-1416-3412>), Hadley Wickham [aut], Romain Francois [ctb], Jennifer Bryan [ctb], RStudio [cph, fnd]",
+      "Author": "Kirill Müller [aut, cre] (ORCID: <https://orcid.org/0000-0002-1416-3412>), Hadley Wickham [aut], Romain Francois [ctb], Jennifer Bryan [ctb], RStudio [cph, fnd]",
       "Maintainer": "Kirill Müller <kirill@cynkra.com>",
-      "Repository": "RSPM"
+      "Repository": "CRAN"
     },
     "tidyr": {
       "Package": "tidyr",
@@ -4590,14 +4674,14 @@
     },
     "utf8": {
       "Package": "utf8",
-      "Version": "1.2.5",
+      "Version": "1.2.6",
       "Source": "Repository",
       "Title": "Unicode Text Processing",
-      "Authors@R": "c(person(given = c(\"Patrick\", \"O.\"), family = \"Perry\", role = c(\"aut\", \"cph\")), person(given = \"Kirill\", family = \"M\\u00fcller\", role = \"cre\", email = \"kirill@cynkra.com\"), person(given = \"Unicode, Inc.\", role = c(\"cph\", \"dtc\"), comment = \"Unicode Character Database\"))",
+      "Authors@R": "c(person(given = c(\"Patrick\", \"O.\"), family = \"Perry\", role = c(\"aut\", \"cph\")), person(given = \"Kirill\", family = \"M\\u00fcller\", role = \"cre\", email = \"kirill@cynkra.com\", comment = c(ORCID = \"0000-0002-1416-3412\")), person(given = \"Unicode, Inc.\", role = c(\"cph\", \"dtc\"), comment = \"Unicode Character Database\"))",
       "Description": "Process and print 'UTF-8' encoded international text (Unicode). Input, validate, normalize, encode, format, and display.",
       "License": "Apache License (== 2.0) | file LICENSE",
-      "URL": "https://ptrckprry.com/r-utf8/, https://github.com/patperry/r-utf8",
-      "BugReports": "https://github.com/patperry/r-utf8/issues",
+      "URL": "https://krlmlr.github.io/utf8/, https://github.com/krlmlr/utf8",
+      "BugReports": "https://github.com/krlmlr/utf8/issues",
       "Depends": [
         "R (>= 2.10)"
       ],
@@ -4615,7 +4699,7 @@
       "Encoding": "UTF-8",
       "RoxygenNote": "7.3.2.9000",
       "NeedsCompilation": "yes",
-      "Author": "Patrick O. Perry [aut, cph], Kirill Müller [cre], Unicode, Inc. [cph, dtc] (Unicode Character Database)",
+      "Author": "Patrick O. Perry [aut, cph], Kirill Müller [cre] (ORCID: <https://orcid.org/0000-0002-1416-3412>), Unicode, Inc. [cph, dtc] (Unicode Character Database)",
       "Maintainer": "Kirill Müller <kirill@cynkra.com>",
       "Repository": "CRAN"
     },
