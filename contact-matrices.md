@@ -169,7 +169,9 @@ After downloading the survey, generate a symmetric contact matrix for Zambia usi
 + [0,20)
 + 20+
 
-:::::::::::::::::::::::: solution 
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+:::::::::::::::::::::::: instructor 
 
 
 ``` r
@@ -212,8 +214,6 @@ $participants
 2:       20+         3129 0.92464539
 ```
 :::::::::::::::::::::::::::::::::
-::::::::::::::::::::::::::::::::::::::::::::::::
-
 
 ::::::::::::::::::::::::::::::::::::: callout
 ## Synthetic contact matrices
