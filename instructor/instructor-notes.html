@@ -402,6 +402,57 @@ any links that you are not going to use.
 <a href="contact-matrices.html#headingInstructor1">Instructor Note</a><a class="anchor" aria-label="anchor" href="#contact-matrices-headingInstructor1"></a>
 </h3>
 <hr>
+<br><h3 id="contact-matrices-headingInstructor2">
+<a href="contact-matrices.html#headingInstructor2">Instructor Note</a><a class="anchor" aria-label="anchor" href="#contact-matrices-headingInstructor2"></a>
+</h3>
+<div class="codewrapper sourceCode" id="cb8">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">contact_data_zambia</span> <span class="op">&lt;-</span> <span class="fu">contact_matrix</span><span class="op">(</span></span>
+<span>  survey <span class="op">=</span> <span class="va">zambia_sa_survey</span>,</span>
+<span>  age.limits <span class="op">=</span> <span class="fu">c</span><span class="op">(</span><span class="fl">0</span>, <span class="fl">20</span><span class="op">)</span>,</span>
+<span>  symmetric <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>Removing participants without age information. To change this behaviour, set the 'missing.participant.age' option</code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>Removing participants that have contacts without age information. To change this behaviour, set the 'missing.contact.age' option</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb11">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">contact_data_zambia</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>$matrix
+         contact.age.group
+age.group   [0,20)      20+
+   [0,20) 3.643137 2.282138
+   20+    1.795546 2.542346
+
+$demography
+   age.group population proportion  year
+      &lt;char&gt;      &lt;num&gt;      &lt;num&gt; &lt;int&gt;
+1:    [0,20)   28813173  0.4403347  2010
+2:       20+   36621532  0.5596653  2010
+
+$participants
+   age.group participants proportion
+      &lt;char&gt;        &lt;int&gt;      &lt;num&gt;
+1:    [0,20)          255 0.07535461
+2:       20+         3129 0.92464539</code></pre>
+</div>
+<hr>
 <br></section><section id="simulating-transmission"><h2 class="section-heading"><a href="simulating-transmission.html">Simulating transmission</a></h2>
 <hr class="half-width">
 <h3 id="simulating-transmission-headingInstructor1">
