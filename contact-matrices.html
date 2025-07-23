@@ -465,7 +465,7 @@ by specifying <code>age.limits</code>.</p>
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">contact_data</span> <span class="op">&lt;-</span> <span class="fu">contact_matrix</span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">contact_data</span> <span class="op">&lt;-</span> <span class="fu">socialmixr</span><span class="fu">::</span><span class="fu">contact_matrix</span><span class="op">(</span></span>
 <span>  survey <span class="op">=</span> <span class="va">polymod</span>,</span>
 <span>  countries <span class="op">=</span> <span class="st">"United Kingdom"</span>,</span>
 <span>  age.limits <span class="op">=</span> <span class="fu">c</span><span class="op">(</span><span class="fl">0</span>, <span class="fl">20</span>, <span class="fl">40</span><span class="op">)</span>,</span>
@@ -546,27 +546,96 @@ symmetric.</p>
 </div>
 </div>
 <p>The example above uses the POLYMOD survey. There are a number of
-surveys available in <code>socialmixr</code>, to list the available
-surveys use <code>list_surveys()</code>. To download a survey, we can
-use <code>get_survey()</code></p>
+surveys available in <code>socialmixr</code>. To list the available
+surveys, use <code>socialmixr::list_surveys()</code>. To download a
+survey, we can use <code>socialmixr::get_survey()</code></p>
 <div class="codewrapper sourceCode" id="cb7">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">zambia_sa_survey</span> <span class="op">&lt;-</span> <span class="fu">get_survey</span><span class="op">(</span><span class="st">"https://doi.org/10.5281/zenodo.3874675"</span><span class="op">)</span></span></code></pre>
+<code class="sourceCode R"><span><span class="co"># Access the contact survey data from Zenodo</span></span>
+<span><span class="va">zambia_sa_survey</span> <span class="op">&lt;-</span> <span class="fu">socialmixr</span><span class="fu">::</span><span class="fu">get_survey</span><span class="op">(</span></span>
+<span>  <span class="st">"https://doi.org/10.5281/zenodo.3874675"</span></span>
+<span><span class="op">)</span></span></code></pre>
 </div>
-<div id="zambia-contact-matrix" class="callout discussion">
+<div id="accordionSpoiler1" class="accordion spoiler-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler1" aria-expanded="false" aria-controls="collapseSpoiler1">
+  <h3 class="accordion-header" id="headingSpoiler1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
+</button>
+<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
+<div class="accordion-body">
+<p>You can explore all the available surveys from the Zenodo repository
+at <a href="https://zenodo.org/communities/social_contact_data/" class="external-link uri">https://zenodo.org/communities/social_contact_data/</a>. If
+you are interested in accessing to a specific URL within R, you can
+try:</p>
+<div class="codewrapper sourceCode" id="cb8">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">socialmixr</span><span class="op">)</span></span>
+<span><span class="kw">library</span><span class="op">(</span><span class="va">tidyverse</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Get URL for Zambia contact survey data from {socialmixr}</span></span>
+<span><span class="fu">socialmixr</span><span class="fu">::</span><span class="fu">list_surveys</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu">filter</span><span class="op">(</span><span class="fu">stringr</span><span class="fu">::</span><span class="fu">str_detect</span><span class="op">(</span><span class="va">title</span>, <span class="st">"Zambia"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu">pull</span><span class="op">(</span><span class="va">url</span><span class="op">)</span></span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="zambia-contact-matrix" class="callout challenge">
 <div class="callout-square">
-<i class="callout-icon" data-feather="message-circle"></i>
+<i class="callout-icon" data-feather="zap"></i>
 </div>
 <div id="zambia-contact-matrix" class="callout-inner">
 <h3 class="callout-title">Zambia contact matrix</h3>
 <div class="callout-content">
-<p>After downloading the survey, generate a symmetric contact matrix for
-Zambia using the following age bins:</p>
+<p>The R package {socialmixr} contains functions which can estimate
+contact matrices from POLYMOD and other surveys. Outputs include
+demographic information like population size and number of participants
+in the study. Using {socialmixr}:</p>
+<ul><li><p>Get access to the survey from Zambia.</p></li>
+<li>
+<p>Generate a symmetric contact matrix for Zambia using the
+following age bins:</p>
 <ul><li>[0,20)</li>
 <li>20+</li>
+</ul></li>
+<li><p>Get access to the vector of <code>population</code> size per age
+bin from the <code>demography</code> dataset inside the contact matrix
+output.</p></li>
 </ul></div>
+</div>
+</div>
+<div id="accordionHint1" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint1" aria-expanded="false" aria-controls="collapseHint1">
+  <h4 class="accordion-header" id="headingHint1"> Give me a hint </h4>
+</button>
+<div id="collapseHint1" class="accordion-collapse collapse" aria-labelledby="headingHint1" data-bs-parent="#accordionHint1">
+<div class="accordion-body">
+<p>The survey object <code>zambia_sa_survey</code> contains data from
+two countries. If you need to estimate the social contact matrix from
+data of the specific country of Zambia, identify what argument in
+<code>socialmixr::contact_matrix()</code> you need for this.</p>
+<div class="codewrapper sourceCode" id="cb9">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Inspect the countries within the survey object</span></span>
+<span><span class="fu">levels</span><span class="op">(</span><span class="va">zambia_sa_survey</span><span class="op">$</span><span class="va">participants</span><span class="op">$</span><span class="va">country</span><span class="op">)</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>[1] "South Africa" "Zambia"      </code></pre>
+</div>
+<p>Similar to the code above, to access vector values within a
+dataframe, you can use the dollar-sign operator: <code>$</code></p>
+</div>
+</div>
 </div>
 </div>
 
@@ -700,7 +769,7 @@ value of <span class="math inline">\(\gamma\)</span>
 (i.e. mathematically we use the fact that the dominant eigenvalue of the
 matrix <span class="math inline">\(R_0 \times C_{normalised}\)</span> is
 equal to <span class="math inline">\(\beta / \gamma\)</span>).</p>
-<div class="codewrapper sourceCode" id="cb13">
+<div class="codewrapper sourceCode" id="cb18">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -710,7 +779,7 @@ equal to <span class="math inline">\(\beta / \gamma\)</span>).</p>
 </div>
 <p>As a result, if we multiply the scaled matrix by <span class="math inline">\(R_0\)</span>, then converting to the number of
 expected secondary cases would give us <span class="math inline">\(R_0\)</span>, as required.</p>
-<div class="codewrapper sourceCode" id="cb14">
+<div class="codewrapper sourceCode" id="cb19">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -740,11 +809,11 @@ the normalised matrix we must specify that we want to split out the
 different components of the contact matrix using the argument
 <code>split = TRUE</code>. Then we can obtain the normalised matrix as
 follows:</p>
-<div class="codewrapper sourceCode" id="cb16">
+<div class="codewrapper sourceCode" id="cb21">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">contact_data_split</span> <span class="op">&lt;-</span> <span class="fu">contact_matrix</span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">contact_data_split</span> <span class="op">&lt;-</span> <span class="fu">socialmixr</span><span class="fu">::</span><span class="fu">contact_matrix</span><span class="op">(</span></span>
 <span>  survey <span class="op">=</span> <span class="va">polymod</span>,</span>
 <span>  countries <span class="op">=</span> <span class="st">"United Kingdom"</span>,</span>
 <span>  age.limits <span class="op">=</span> <span class="fu">c</span><span class="op">(</span><span class="fl">0</span>, <span class="fl">20</span>, <span class="fl">40</span><span class="op">)</span>,</span>
