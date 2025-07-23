@@ -89,7 +89,7 @@ Then we can obtain the contact matrix for the age categories we want by specifyi
 
 
 ``` r
-contact_data <- contact_matrix(
+contact_data <- socialmixr::contact_matrix(
   survey = polymod,
   countries = "United Kingdom",
   age.limits = c(0, 20, 40),
@@ -151,23 +151,64 @@ If `symmetric` is set to TRUE, the `contact_matrix()` function will internally u
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
-The example above uses the POLYMOD survey. There are a number of surveys available in `socialmixr`, to list the available surveys use `list_surveys()`. To download a survey, we can use `get_survey()`
+The example above uses the POLYMOD survey. There are a number of surveys available in `socialmixr`. To list the available surveys, use `socialmixr::list_surveys()`. To download a survey, we can use `socialmixr::get_survey()`
 
 
 ``` r
-zambia_sa_survey <- get_survey("https://doi.org/10.5281/zenodo.3874675")
+# Access the contact survey data from Zenodo
+zambia_sa_survey <- socialmixr::get_survey(
+  "https://doi.org/10.5281/zenodo.3874675"
+)
 ```
 
+:::::::::::::::::: spoiler
+
+You can explore all the available surveys from the Zenodo repository at <https://zenodo.org/communities/social_contact_data/>. If you are interested in accessing to a specific URL within R, you can try:
+
+```r
+library(socialmixr)
+library(tidyverse)
+
+# Get URL for Zambia contact survey data from {socialmixr}
+socialmixr::list_surveys() %>%
+  dplyr::filter(stringr::str_detect(title, "Zambia")) %>%
+  dplyr::pull(url)
+```
+
+::::::::::::::::::
 
 
 ::::::::::::::::::::::::::::::::::::: challenge 
 
 ## Zambia contact matrix
 
-After downloading the survey, generate a symmetric contact matrix for Zambia using the following age bins:
+The R package {socialmixr} contains functions which can estimate contact matrices from POLYMOD and other surveys. Outputs include demographic information like population size and number of participants in the study. Using {socialmixr}: 
 
-+ [0,20)
-+ 20+
++ Get access to the survey from Zambia. 
++ Generate a symmetric contact matrix for Zambia using the following age bins:
+
+    + [0,20)
+    + 20+
+
++ Get access to the vector of `population` size per age bin from the `demography` dataset inside the contact matrix output.
+
+::::::::::::::::::::: hint
+
+The survey object `zambia_sa_survey` contains data from two countries. If you need to estimate the social contact matrix from data of the specific country of Zambia, identify what argument in `socialmixr::contact_matrix()` you need for this.
+
+
+``` r
+# Inspect the countries within the survey object
+levels(zambia_sa_survey$participants$country)
+```
+
+``` output
+[1] "South Africa" "Zambia"      
+```
+
+Similar to the code above, to access vector values within a dataframe, you can use the dollar-sign operator: `$`
+
+:::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -175,8 +216,10 @@ After downloading the survey, generate a symmetric contact matrix for Zambia usi
 
 
 ``` r
-contact_data_zambia <- contact_matrix(
+# Generate the contact matrix for Zambia only
+contact_data_zambia <- socialmixr::contact_matrix(
   survey = zambia_sa_survey,
+  countries = "Zambia", # key argument
   age.limits = c(0, 20),
   symmetric = TRUE
 )
@@ -191,6 +234,7 @@ Removing participants that have contacts without age information. To change this
 ```
 
 ``` r
+# Print the contact matrix for Zambia only
 contact_data_zambia
 ```
 
@@ -198,20 +242,29 @@ contact_data_zambia
 $matrix
          contact.age.group
 age.group   [0,20)      20+
-   [0,20) 3.643137 2.282138
-   20+    1.795546 2.542346
+   [0,20) 3.650000 1.451168
+   20+    1.988136 2.461856
 
 $demography
    age.group population proportion  year
       <char>      <num>      <num> <int>
-1:    [0,20)   28813173  0.4403347  2010
-2:       20+   36621532  0.5596653  2010
+1:    [0,20)    8006201  0.5780636  2010
+2:       20+    5843835  0.4219364  2010
 
 $participants
    age.group participants proportion
       <char>        <int>      <num>
-1:    [0,20)          255 0.07535461
-2:       20+         3129 0.92464539
+1:    [0,20)          180 0.08490566
+2:       20+         1940 0.91509434
+```
+
+``` r
+# Print the vector of population size for {epidemics}
+contact_data_zambia$demography$population
+```
+
+``` output
+[1] 8006201 5843835
 ```
 :::::::::::::::::::::::::::::::::
 
@@ -315,7 +368,7 @@ Normalisation can be performed by the function `contact_matrix()` in `{socialmix
 
 
 ``` r
-contact_data_split <- contact_matrix(
+contact_data_split <- socialmixr::contact_matrix(
   survey = polymod,
   countries = "United Kingdom",
   age.limits = c(0, 20, 40),
