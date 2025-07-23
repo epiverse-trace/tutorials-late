@@ -298,7 +298,7 @@ The result is a square matrix with rows and columns for each age group. Contact 
 
 ### Normalisation
 
-In `{epidemics}` the contact matrix normalisation happens within the function call, so we don't need to normalise the contact matrix before we pass it to `population()` (see section 3. Population Structure). For details on normalisation, see the tutorial on [contact matrices]([Simulating transmission](../episodes/contact-matrices.md)) .
+In `{epidemics}` the contact matrix normalisation happens within the function call, so we don't need to normalise the contact matrix before we pass it to `population()` (see section 3. Population Structure). For details on normalisation, see the tutorial on [Contact matrices](../episodes/contact-matrices.md).
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
