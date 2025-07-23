@@ -125,7 +125,9 @@ The example above uses the POLYMOD survey. There are a number of surveys availab
 
 ```{r, message = FALSE, warning = FALSE}
 # Access the contact survey data from Zenodo
-zambia_sa_survey <- socialmixr::get_survey("https://doi.org/10.5281/zenodo.3874675")
+zambia_sa_survey <- socialmixr::get_survey(
+  "https://doi.org/10.5281/zenodo.3874675"
+)
 ```
 
 :::::::::::::::::: spoiler
