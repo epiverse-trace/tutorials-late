@@ -550,6 +550,28 @@ output_samples %>%
 
 Deciding which parameters to include uncertainty in depends on a few factors: how well informed a parameter value is e.g. consistency of estimates from the literature; how sensitive model outputs are to parameter value changes; and the purpose of the modelling task. See [McCabe et al. 2021](https://doi.org/10.1016%2Fj.epidem.2021.100520) to learn about different types of uncertainty in infectious disease modelling.
 
+:::::::::::::::::: challenge
+
+From the figure above: 
+
+- How does the **location** (in time) and **size** of the epidemic peak for infectious individuals in each age group change with respect to the uncertainty in the basic reproduction number? Describe.
+
+- Based on the definition of the basic reproduction number, are these changes expected? Explain briefly.
+
+:::::::::: hint
+
+To interpret the output based on location and size of the peak infection, **read** this two-page paper introduction to Infectious Disease Modelling:
+
+- Bjørnstad ON, Shea K, Krzywinski M, Altman N. 
+**Modeling infectious epidemics.** 
+Nat Methods. 2020 May;17(5):455-456. 
+doi: 10.1038/s41592-020-0822-z. PMID: 32313223.
+<https://www.nature.com/articles/s41592-020-0822-z>
+
+::::::::::
+
+::::::::::::::::::
+
 ## Summary 
 
 In this tutorial, we have learnt how to simulate disease spread using a mathematical model. Once a model has been chosen, the parameters and other inputs must be specified in the correct way to perform model simulations. In the next tutorial, we will consider how to choose the right model for different tasks. 
