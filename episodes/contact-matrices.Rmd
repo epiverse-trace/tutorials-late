@@ -138,7 +138,9 @@ After downloading the survey, generate a symmetric contact matrix for Zambia usi
 + [0,20)
 + 20+
 
-:::::::::::::::::::::::: solution 
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+:::::::::::::::::::::::: instructor 
 
 ```{r polymod_poland}
 contact_data_zambia <- contact_matrix(
@@ -149,8 +151,6 @@ contact_data_zambia <- contact_matrix(
 contact_data_zambia
 ```
 :::::::::::::::::::::::::::::::::
-::::::::::::::::::::::::::::::::::::::::::::::::
-
 
 ::::::::::::::::::::::::::::::::::::: callout
 ## Synthetic contact matrices
