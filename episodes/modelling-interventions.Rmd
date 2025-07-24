@@ -465,7 +465,10 @@ infections_baseline$scenario <- "Baseline"
 infections_intervention$scenario <- "Vaccination"
 
 # Combine the data from both scenarios
-infections_baseline_intervention <- dplyr::bind_rows(infections_baseline, infections_intervention)
+infections_baseline_intervention <- dplyr::bind_rows(
+  infections_baseline,
+  infections_intervention
+)
 
 infections_baseline_intervention %>%
   ggplot(aes(x = time, y = new_infections, colour = scenario)) +
@@ -475,7 +478,8 @@ infections_baseline_intervention %>%
     linetype = "dashed",
     linewidth = 0.2
   ) +
-  scale_y_continuous(labels = scales::comma)
+  scale_y_continuous(labels = scales::comma) +
+  theme_bw()
 ```
 
 :::::::::::::::::::::
