@@ -464,13 +464,13 @@ infections_intervention <- epidemics::new_infections(
 infections_baseline$scenario <- "Baseline"
 infections_intervention$scenario <- "Vaccination"
 
-# Combine data from both scenarios
-infections_baseline_intervention <- dplyr::bind_rows(
+# Combine the data from both scenarios
+infections_baseline_interv <- dplyr::bind_rows(
   infections_baseline,
   infections_intervention
 )
 
-infections_baseline_intervention %>%
+infections_baseline_interv %>%
   ggplot(aes(x = time, y = new_infections, colour = scenario)) +
   geom_line() +
   geom_vline(
