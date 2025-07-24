@@ -454,7 +454,8 @@ output %>%
     aes(
       x = time,
       y = value,
-      colour = demography_group
+      color = demography_group,
+      linetype = compartment
     )
   ) +
   scale_y_continuous(
@@ -472,22 +473,66 @@ output %>%
 ::::::::::::::::::::::::::::::::::::: callout
 ### Time increments
 
-Note that there is a default argument of `increment = 1`. This relates to the time step of the ODE solver. When the parameters are specified on a daily time-scale and maximum number of time steps (`time_end`) is days, the default time step of the ODE solver one day. 
+Note that there is a default argument of `increment = 1`. This relates to the time step of the ODE solver. When the parameters are specified on a daily time scale and the maximum number of time steps (`time_end`) is days, the default time step of the ODE solver is one day. 
 
-The choice of increment will depend on the time scale of the parameters, and the rate at which events can occur. In general, the increment should be smaller than the fastest event that can occur. For example: 
+The choice of increment will depend on the time scale of the parameters and the rate at which events can occur. In general, the increment should be smaller than the fastest event that can occur. For example: 
 
-- if parameters are on a daily time scale, and all events are reported on a daily basis, then the increment should be equal to one day;
-- if parameters are on a monthly time scale, but some events will occur within a month, then the increment should be less than one month.
+- If parameters are on a *daily* time scale, and all events are reported on a daily basis, then the increment should be equal to one day;
+- If parameters are on a *monthly* time scale, but some events will occur within a month, then the increment should be less than one month.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
+
+:::::::::::::::: testimonial
+
+**Two helper functions in `{epidemics}`**
+
+Use `epidemics::epidemic_peak()` to get the time and size of a compartment's highest peak for all demographic groups. By default, this will calculate for the infectious compartment.
+
+```{r}
+epidemics::epidemic_peak(data = output)
+```
+
+Use `epidemics::epidemic_size()` to get the size of the epidemic at any stage between the start and the end. This is calculated as the number of individuals *recovered* from infection at that stage of the epidemic.
+
+```{r}
+epidemics::epidemic_size(data = output)
+```
+
+These summary functions can help you get outputs relevant to scenario comparisons or any other downstream analysis.
+
+::::::::::::::::
+
+The figure above shows the total number or cumulative amount of individuals in the infectious compartment at each time.
+If you want to show the *total burden* of the disease, the `infectious` compartment is the most appropriate.
+On the other hand, if you want to show the *daily burden*, then you could use `epidemics::new_infections()` to get the daily incidence.
+
+::::::::::::::::::::::: spoiler
+
+Notice that the number of new infected individuals at each time (as in the figure below) is lower than the cumulative number of infectious individuals at each time (as in the figure above).
+
+```{r}
+# New infections
+newinfections_bygroup <- epidemics::new_infections(data = output)
+
+# Visualise the spread of the epidemic in terms of new infections
+newinfections_bygroup %>%
+  ggplot(aes(time, new_infections, colour = demography_group)) +
+  geom_line() +
+  scale_y_continuous(
+    breaks = scales::breaks_pretty(n = 10),
+    labels = scales::comma
+  )
+```
+
+:::::::::::::::::::::::
 
 ## Accounting for uncertainty
 
 The epidemic model is [deterministic](../learners/reference.md#deterministic), which means it runs like clockwork: the same parameters will always lead to the same trajectory. A deterministic model is one where the outcome is completely determined by the initial conditions and parameters, with no random variation. However, reality is not so predictable. There are two main reasons for this: the transmission process can involve randomness, and we may not know the exact epidemiological characteristics of the pathogen we're interested in. In the next episode, we will consider 'stochastic' models (i.e. models where we can define the process that creates randomness in transmission). In the meantime, we can include uncertainty in the value of the parameters that go into the deterministic model. To account for this, we must run our model for different parameter combinations. 
 
-We ran our model with $R_0= 1.5$. However, we believe that $R_0$ follows a normal distribution with mean 1.5 and standard deviation 0.05. To account for uncertainty we will run the model for different values of $R_0$. The steps we will follow to do this are:
+We ran our model with $R_0= 1.5$. However, we believe that $R_0$ follows a normal distribution with mean 1.5 and standard deviation 0.05. To account for uncertainty, we will run the model for different values of $R_0$. The steps we will follow to do this are:
 
-1. Obtain 100 samples from the from a normal distribution
+1. Obtain 100 samples from a normal distribution
 
 ```{r normal, echo = TRUE}
 # specify the mean and standard deviation of R0
@@ -518,7 +563,7 @@ output_samples <- model_default(
 )
 ```
 
-3. Calculate the mean and 95% quantiles of number of infectious individuals across each model simulation and visualise output
+3. Calculate the mean and 95% quantiles of the number of infectious individuals across each model simulation and visualise the output
 
 ```{r  plot, fig.width = 10}
 output_samples %>%
@@ -548,7 +593,7 @@ output_samples %>%
 ```
 
 
-Deciding which parameters to include uncertainty in depends on a few factors: how well informed a parameter value is e.g. consistency of estimates from the literature; how sensitive model outputs are to parameter value changes; and the purpose of the modelling task. See [McCabe et al. 2021](https://doi.org/10.1016%2Fj.epidem.2021.100520) to learn about different types of uncertainty in infectious disease modelling.
+Deciding which parameters to include uncertainty in depends on a few factors: how well informed a parameter value is, e.g. consistency of estimates from the literature; how sensitive model outputs are to parameter value changes; and the purpose of the modelling task. See [McCabe et al. 2021](https://doi.org/10.1016%2Fj.epidem.2021.100520) to learn about different types of uncertainty in infectious disease modelling.
 
 :::::::::::::::::: challenge
 
