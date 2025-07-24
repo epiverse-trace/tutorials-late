@@ -445,7 +445,7 @@ At `epidemics::new_infections()` specify `compartments_from_susceptible = "vacci
 ::::::::::::::::::::: spoiler
 
 Notice that if we use `by_group = FALSE` in `epidemics::new_infections()`, we get a summary of the new infections in all demographic groups.
-Try keeping the default `by_group = TRUE` and adding `linetype = demography_group` when declaring variables in `ggplot(aes(...))`.
+To get an age-stratified plot, keep the default `by_group = TRUE` and then add `linetype = demography_group` when declaring variables in `ggplot(aes(...))`.
 
 ```{r}
 infections_baseline <- epidemics::new_infections(
