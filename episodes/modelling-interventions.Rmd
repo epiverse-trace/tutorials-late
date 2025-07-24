@@ -464,7 +464,7 @@ infections_intervention <- epidemics::new_infections(
 infections_baseline$scenario <- "Baseline"
 infections_intervention$scenario <- "Vaccination"
 
-# Combine the data from both scenarios
+# Combine data from both scenarios
 infections_baseline_intervention <- dplyr::bind_rows(
   infections_baseline,
   infections_intervention
