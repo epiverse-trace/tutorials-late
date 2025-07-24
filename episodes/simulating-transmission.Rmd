@@ -516,12 +516,13 @@ newinfections_bygroup <- epidemics::new_infections(data = output)
 
 # Visualise the spread of the epidemic in terms of new infections
 newinfections_bygroup %>%
-  ggplot(aes(time, new_infections, colour = demography_group)) +
+  ggplot(aes(x = time, y = new_infections, colour = demography_group)) +
   geom_line() +
   scale_y_continuous(
-    breaks = scales::breaks_pretty(n = 10),
+    breaks = scales::breaks_pretty(n = 5),
     labels = scales::comma
-  )
+  ) +
+  theme_bw()
 ```
 
 :::::::::::::::::::::::
