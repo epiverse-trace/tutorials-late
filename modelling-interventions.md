@@ -332,7 +332,8 @@ Pharmaceutical interventions (PIs) are measures such as vaccination and mass tre
 
 The diagram below shows the SEIRV model implemented using `model_default()` where susceptible individuals are vaccinated and then move to the $V$ class.
 
-<img src="fig/modelling-interventions-rendered-diagram_SEIRV-1.png" style="display: block; margin: auto;" />
+<!--html_preserve--><div class="grViz html-widget html-fill-item" id="htmlwidget-e7a963affd1441233f29" style="width:504px;height:504px;"></div>
+<script type="application/json" data-for="htmlwidget-e7a963affd1441233f29">{"x":{"diagram":"digraph {\n\n  # graph statement\n  #################\n  graph [layout = dot,\n         rankdir = LR,\n         overlap = true,\n         fontsize = 10]\n\n  # nodes\n  #######\n  node [shape = square,\n       fixedsize = true\n       width = 1.3]\n\n       S\n       E\n       I\n       R\n       V\n\n  # edges\n  #######\n  S -> E [label = \" infection (&beta;)\"]\n  S -> V [label = \" vaccination (&nu;)\"]\n  E -> I [label = \" onset of \ninfectiousness (&alpha;)\"]\n  I -> R [label = \" recovery (&gamma;)\"]\n\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script><!--/html_preserve-->
 
 
 
@@ -429,13 +430,12 @@ From the plot, we see that the peak number of total number of infectious individ
 :::::::::::::::::::::::::::::::::
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
-Lastly, if you are interested in plotting the trajectory of new infections from an `epidemics::model_default()` with a `vaccination` intervention, you need to specify one additional argument.
-At `epidemics::new_infections()` specify `compartments_from_susceptible = "vaccinated"` to name the model compartments into which individuals transition from the "susceptible" compartment, and which are not related to infection. In the scenario above,  "vaccinated" individuals who are no longer susceptible should not be counted as infected.
+Lastly, if you want to plot new infections from an `epidemics::model_default()` that includes a `vaccination` intervention, you need to add one argument to `epidemics::new_infections()`:
+Set `compartments_from_susceptible = "vaccinated"` to tell the function that people moving from "susceptible" to "vaccinated" are not becoming infected. This ensures vaccinated individuals aren't counted as infections.
 
 ::::::::::::::::::::: spoiler
 
-Notice that if we use `by_group = FALSE` in `epidemics::new_infections()`, we get a summary of the new infections in all demographic groups.
-To get an age-stratified plot, keep the default `by_group = TRUE` and then add `linetype = demography_group` when declaring variables in `ggplot(aes(...))`.
+Note that if we add `by_group = FALSE` in `epidemics::new_infections()`, we get a summary of the new infections in the population.
 
 
 ``` r
@@ -474,6 +474,8 @@ infections_baseline_interv %>%
 ```
 
 <img src="fig/modelling-interventions-rendered-unnamed-chunk-6-1.png" style="display: block; margin: auto;" />
+
+To get an age-stratified plot, keep the default `by_group = TRUE` and then add `linetype = demography_group` when declaring variables in `ggplot(aes(...))`.
 
 :::::::::::::::::::::
 
