@@ -378,7 +378,7 @@ vaccinate <- vaccination(
 )
 ```
 
-We pass our vaccination object into the model using argument `vaccination = vaccinate`:
+We pass our vaccination object into the model using the argument `vaccination = vaccinate`:
 
 ```{r output_vaccinate}
 output_vaccinate <- model_default(
@@ -434,12 +434,51 @@ output %>%
   )
 ```
 
-From the plot we see that the peak number of total number of infectious individuals when vaccination is in place is much lower compared to school closures and mask wearing interventions. 
+From the plot, we see that the peak number of total number of infectious individuals when vaccination is in place is much lower compared to school closures and mask-wearing interventions. 
 
 :::::::::::::::::::::::::::::::::
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
+Lastly, if you are interested in plotting the trajectory of new infections from an `epidemics::model_default()` with a `vaccination` intervention, you need to specify one additional argument.
+At `epidemics::new_infections()` specify `compartments_from_susceptible = "vaccinated"` to name the model compartments into which individuals transition from the "susceptible" compartment, and which are not related to infection. In the scenario above,  "vaccinated" individuals who are no longer susceptible should not be counted as infected.
 
+::::::::::::::::::::: spoiler
+
+Notice that if we use `by_group = FALSE` in `epidemics::new_infections()`, we get a summary of the new infections in all demographic groups.
+Try keeping the default `by_group = TRUE` and adding `linetype = demography_group` when declaring variables in `ggplot(aes(...))`.
+
+```{r}
+infections_baseline <- epidemics::new_infections(
+  data = output_baseline,
+  compartments_from_susceptible = "vaccinated", # if vaccination
+  by_group = FALSE
+)
+
+infections_intervention <- epidemics::new_infections(
+  data = output_vaccinate,
+  compartments_from_susceptible = "vaccinated", # if vaccination
+  by_group = FALSE
+)
+
+# Assign scenario names
+infections_baseline$scenario <- "Baseline"
+infections_intervention$scenario <- "Vaccination"
+
+# Combine the data from both scenarios
+infections_baseline_intervention <- dplyr::bind_rows(infections_baseline, infections_intervention)
+
+infections_baseline_intervention %>%
+  ggplot(aes(x = time, y = new_infections, colour = scenario)) +
+  geom_line() +
+  geom_vline(
+    xintercept = c(vaccinate$time_begin, vaccinate$time_end),
+    linetype = "dashed",
+    linewidth = 0.2
+  ) +
+  scale_y_continuous(labels = scales::comma)
+```
+
+:::::::::::::::::::::
 
 
 ## Summary
