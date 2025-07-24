@@ -345,7 +345,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Modelling interventions</h1>
-        <p>Last updated on 2025-07-15 |
+        <p>Last updated on 2025-07-24 |
 
         <a href="https://github.com/epiverse-trace/tutorials-late/edit/main/episodes/modelling-interventions.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -426,7 +426,7 @@ of their functions, so let’s also call <a href="https://tidyverse.tidyverse.or
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
   <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
 <div class="accordion-body">
 <p>In this tutorial different types of intervention and how they can be
 modelled are introduced. Learners should be able to understand the
@@ -838,7 +838,7 @@ be in place for 150 days.</p>
 <span>  nu <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="fu">c</span><span class="op">(</span><span class="fl">0.01</span>, <span class="fl">0.01</span>, <span class="fl">0.01</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre>
 </div>
-<p>We pass our vaccination object into the model using argument
+<p>We pass our vaccination object into the model using the argument
 <code>vaccination = vaccinate</code>:</p>
 <div class="codewrapper sourceCode" id="cb15">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -875,7 +875,7 @@ reduces the peak number of infectious individuals the most?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb16">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -908,10 +908,73 @@ reduces the peak number of infectious individuals the most?</p>
 <span>    y <span class="op">=</span> <span class="st">"Individuals"</span></span>
 <span>  <span class="op">)</span></span></code></pre>
 </div>
-<figure><img src="../fig/modelling-interventions-rendered-plot_vaccinate-1.png" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure><p>From the plot we see that the peak number of total number of
+<figure><img src="../fig/modelling-interventions-rendered-plot_vaccinate-1.png" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure><p>From the plot, we see that the peak number of total number of
 infectious individuals when vaccination is in place is much lower
-compared to school closures and mask wearing interventions.</p>
+compared to school closures and mask-wearing interventions.</p>
 </div>
+</div>
+</div>
+</div>
+<p>Lastly, if you are interested in plotting the trajectory of new
+infections from an <code>epidemics::model_default()</code> with a
+<code>vaccination</code> intervention, you need to specify one
+additional argument. At <code>epidemics::new_infections()</code> specify
+<code>compartments_from_susceptible = "vaccinated"</code> to name the
+model compartments into which individuals transition from the
+“susceptible” compartment, and which are not related to infection. In
+the scenario above, “vaccinated” individuals who are no longer
+susceptible should not be counted as infected.</p>
+<div id="accordionSpoiler1" class="accordion spoiler-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler1" aria-expanded="false" aria-controls="collapseSpoiler1">
+  <h3 class="accordion-header" id="headingSpoiler1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
+</button>
+<div id="collapseSpoiler1" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler1" aria-labelledby="headingSpoiler1">
+<div class="accordion-body">
+<p>Notice that if we use <code>by_group = FALSE</code> in
+<code>epidemics::new_infections()</code>, we get a summary of the new
+infections in all demographic groups. To get an age-stratified plot,
+keep the default <code>by_group = TRUE</code> and then add
+<code>linetype = demography_group</code> when declaring variables in
+<code>ggplot(aes(...))</code>.</p>
+<div class="codewrapper sourceCode" id="cb17">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">infections_baseline</span> <span class="op">&lt;-</span> <span class="fu">epidemics</span><span class="fu">::</span><span class="fu">new_infections</span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">output_baseline</span>,</span>
+<span>  compartments_from_susceptible <span class="op">=</span> <span class="st">"vaccinated"</span>, <span class="co"># if vaccination</span></span>
+<span>  by_group <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">infections_intervention</span> <span class="op">&lt;-</span> <span class="fu">epidemics</span><span class="fu">::</span><span class="fu">new_infections</span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">output_vaccinate</span>,</span>
+<span>  compartments_from_susceptible <span class="op">=</span> <span class="st">"vaccinated"</span>, <span class="co"># if vaccination</span></span>
+<span>  by_group <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Assign scenario names</span></span>
+<span><span class="va">infections_baseline</span><span class="op">$</span><span class="va">scenario</span> <span class="op">&lt;-</span> <span class="st">"Baseline"</span></span>
+<span><span class="va">infections_intervention</span><span class="op">$</span><span class="va">scenario</span> <span class="op">&lt;-</span> <span class="st">"Vaccination"</span></span>
+<span></span>
+<span><span class="co"># Combine the data from both scenarios</span></span>
+<span><span class="va">infections_baseline_interv</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu">bind_rows</span><span class="op">(</span></span>
+<span>  <span class="va">infections_baseline</span>,</span>
+<span>  <span class="va">infections_intervention</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">infections_baseline_interv</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">time</span>, y <span class="op">=</span> <span class="va">new_infections</span>, colour <span class="op">=</span> <span class="va">scenario</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_vline</span><span class="op">(</span></span>
+<span>    xintercept <span class="op">=</span> <span class="fu">c</span><span class="op">(</span><span class="va">vaccinate</span><span class="op">$</span><span class="va">time_begin</span>, <span class="va">vaccinate</span><span class="op">$</span><span class="va">time_end</span><span class="op">)</span>,</span>
+<span>    linetype <span class="op">=</span> <span class="st">"dashed"</span>,</span>
+<span>    linewidth <span class="op">=</span> <span class="fl">0.2</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">scale_y_continuous</span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va">comma</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">theme_bw</span><span class="op">(</span><span class="op">)</span></span></code></pre>
+</div>
+<figure><img src="../fig/modelling-interventions-rendered-unnamed-chunk-6-1.png" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure></div>
 </div>
 </div>
 </div>
@@ -1011,9 +1074,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://epiverse-trace.github.io/tutorials-late/instructor/modelling-interventions.html",
   "identifier": "https://epiverse-trace.github.io/tutorials-late/instructor/modelling-interventions.html",
-  "dateCreated": "2025-07-23",
-  "dateModified": "2025-07-15",
-  "datePublished": "2025-07-23"
+  "dateCreated": "2025-07-24",
+  "dateModified": "2025-07-24",
+  "datePublished": "2025-07-24"
 }
 
   </script><script>
