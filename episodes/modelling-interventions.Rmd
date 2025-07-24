@@ -321,7 +321,7 @@ The diagram below shows the SEIRV model implemented using `model_default()` wher
 DiagrammeR::grViz("digraph {
 
   # graph statement
-  #################
+  ################
   graph [layout = dot,
          rankdir = LR,
          overlap = true,
