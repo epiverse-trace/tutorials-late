@@ -530,13 +530,13 @@ Deciding which parameters to include uncertainty in depends on a few factors: ho
 
 From the figure above: 
 
-- How does the **location** (in time) and **size** of the epidemic peak for infectious individuals in each age group change with respect to the uncertainty in the basic reproduction number? Describe.
+- How do the time and size of the epidemic peak for infectious individuals in each age group change as the basic reproduction number varies within its uncertainty range? Describe.
 
 - Based on the definition of the basic reproduction number, are these changes expected? Explain briefly.
 
 :::::::::: hint
 
-To interpret the output based on location and size of the peak infection, **read** this two-page paper introduction to Infectious Disease Modelling:
+To interpret the output based on location (time) and size of the peak infection, you can find a guide in this two-page paper introduction to Infectious Disease Modelling:
 
 - Bjørnstad ON, Shea K, Krzywinski M, Altman N. 
 **Modeling infectious epidemics.** 
