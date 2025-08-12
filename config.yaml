@@ -14,7 +14,7 @@ carpentry: 'epiverse-trace'
 title: 'Scenario modelling for outbreak analytics with R'
 
 # Date the lesson was created (YYYY-MM-DD, this is empty by default)
-created: 
+created:
 
 # Comma-separated list of keywords for the lesson
 keywords: 'epidemic models, interventions'
@@ -68,19 +68,16 @@ episodes:
 - disease-burden.Rmd
 
 # Information for Learners
-learners: 
+learners:
 
 # Information for Instructors
-instructors: 
+instructors:
 
 # Learner Profiles
-profiles: 
+profiles:
 
 # Customisation ---------------------------------------------
 #
 # This space below is where custom yaml items (e.g. pinning
 # sandpaper and varnish versions) should live
-
-
 varnish: epiverse-trace/varnish@epiversetheme
-sandpaper: epiverse-trace/sandpaper@patch-renv-github-bug
