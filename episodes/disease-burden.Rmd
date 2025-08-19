@@ -63,7 +63,7 @@ associated with the lessons. They appear in the "Instructor View".
 
 ## A burden model
 
-We will extend the influenza example from the [Simulating transmission](../episodes/simulating-transmission.md) tutorial to calculate hospitalizations over time. Our approach has two main components:
+We will extend the influenza example from the [Simulating transmission](../episodes/simulating-transmission.md) tutorial by using the `output` object to calculate hospitalizations over time. Our approach has two main components:
 
 1. **Transmission model**: An SEIR model that generates new infections over time
 2. **Burden model**: Converts new infections to hospitalizations by accounting for delays between infection and hospitalization
@@ -80,7 +80,9 @@ We'll use `{epiparameter}` to define these delay distributions. The Gamma distri
 - It's bounded at zero (negative delays don't make sense)
 - It's supported by empirical data for many infectious diseases
 
-```{r, echo = FALSE, message = FALSE}
+:::::::::::::::: instructor
+
+```{r, echo = TRUE, message = FALSE}
 # load contact and population data from socialmixr::polymod
 polymod <- socialmixr::polymod
 contact_data <- socialmixr::contact_matrix(
@@ -134,7 +136,7 @@ recovery_rate <- 1.0 / infectious_period
 transmission_rate <- basic_reproduction / infectious_period
 
 # run an epidemic model using `epidemic()`
-output_plot <- epidemics::model_default(
+output <- epidemics::model_default(
   population = uk_population,
   transmission_rate = transmission_rate,
   infectiousness_rate = infectiousness_rate,
@@ -144,8 +146,10 @@ output_plot <- epidemics::model_default(
 
 ```
 
+::::::::::::::::
+
 ```{r}
-new_cases <- new_infections(output_plot, by_group = FALSE)
+new_cases <- new_infections(output, by_group = FALSE)
 head(new_cases)
 ```
 
