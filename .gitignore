@@ -51,3 +51,6 @@ po/*~
 
 # renv detritus
 renv/sandbox/
+
+# extra output files
+*.pdf
