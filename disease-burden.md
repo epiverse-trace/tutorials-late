@@ -64,7 +64,7 @@ associated with the lessons. They appear in the "Instructor View".
 
 ## A burden model
 
-We will extend the influenza example from the [Simulating transmission](../episodes/simulating-transmission.md) tutorial to calculate hospitalizations over time. Our approach has two main components:
+We will extend the influenza example from the [Simulating transmission](../episodes/simulating-transmission.md) tutorial by using the `output` object to calculate hospitalizations over time. Our approach has two main components:
 
 1. **Transmission model**: An SEIR model that generates new infections over time
 2. **Burden model**: Converts new infections to hospitalizations by accounting for delays between infection and hospitalization
@@ -81,11 +81,77 @@ We'll use `{epiparameter}` to define these delay distributions. The Gamma distri
 - It's bounded at zero (negative delays don't make sense)
 - It's supported by empirical data for many infectious diseases
 
-
+:::::::::::::::: instructor
 
 
 ``` r
-new_cases <- new_infections(output_plot, by_group = FALSE)
+# load contact and population data from socialmixr::polymod
+polymod <- socialmixr::polymod
+contact_data <- socialmixr::contact_matrix(
+  polymod,
+  countries = "United Kingdom",
+  age.limits = c(0, 20, 40),
+  symmetric = TRUE
+)
+
+# prepare contact matrix
+contact_matrix <- t(contact_data$matrix)
+
+# prepare the demography vector
+demography_vector <- contact_data$demography$population
+names(demography_vector) <- rownames(contact_matrix)
+
+# initial conditions: one in every 1 million is infected
+initial_i <- 1e-6
+initial_conditions_inf <- c(
+  S = 1 - initial_i, E = 0, I = initial_i, R = 0, V = 0
+)
+
+initial_conditions_free <- c(
+  S = 1, E = 0, I = 0, R = 0, V = 0
+)
+
+# build for all age groups
+initial_conditions <- rbind(
+  initial_conditions_inf,
+  initial_conditions_free,
+  initial_conditions_free
+)
+rownames(initial_conditions) <- rownames(contact_matrix)
+
+# prepare the population to model as affected by the epidemic
+uk_population <- epidemics::population(
+  name = "UK",
+  contact_matrix = contact_matrix,
+  demography_vector = demography_vector,
+  initial_conditions = initial_conditions
+)
+
+# time periods
+preinfectious_period <- 3.0
+infectious_period <- 7.0
+basic_reproduction <- 1.46
+
+# rates
+infectiousness_rate <- 1.0 / preinfectious_period
+recovery_rate <- 1.0 / infectious_period
+transmission_rate <- basic_reproduction / infectious_period
+
+# run an epidemic model using `epidemic()`
+output <- epidemics::model_default(
+  population = uk_population,
+  transmission_rate = transmission_rate,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
+  time_end = 600, increment = 1.0
+)
+```
+
+::::::::::::::::
+
+
+``` r
+new_cases <- new_infections(output, by_group = FALSE)
 head(new_cases)
 ```
 
