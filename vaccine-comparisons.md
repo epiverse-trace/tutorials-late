@@ -185,7 +185,7 @@ To understand the **indirect** effect of vaccinations, we want to know the effec
 The inputs required are :
 
 + `data` : the model output,
-+ `compartments_from_susceptible` : this is an optional input, but in our case needed. We don't want the number of people vaccinated to be counted as new infections, so we need to specify the name of the model compartment where individuals transition out from `susceptible` (in this example `vaccinated`),
++ `exclude_compartments` : this is an optional input, but in our case needed. We don't want the number of people vaccinated to be counted as new infections, so we need to specify the name of the model compartment where individuals transition out from `susceptible` (in this example `vaccinated`),
 + `by_group` : should the results be calculated for each demographic group separately. 
 
 
@@ -193,7 +193,7 @@ The inputs required are :
 ``` r
 vaccinate_01_infections <- epidemics::new_infections(
   output_vaccinate_01,
-  compartments_from_susceptible = "vaccinated",
+  exclude_compartments = "vaccinated",
   by_group = FALSE
 )
 ```
@@ -212,17 +212,17 @@ vaccinate_01_infections <- epidemics::new_infections(
 # calculate new infections
 baseline_infections <- epidemics::new_infections(
   output_baseline,
-  compartments_from_susceptible = "vaccinated",
+  exclude_compartments = "vaccinated",
   by_group = FALSE
 )
 vaccinate_01_infections <- epidemics::new_infections(
   output_vaccinate_01,
-  compartments_from_susceptible = "vaccinated",
+  exclude_compartments = "vaccinated",
   by_group = FALSE
 )
 vaccinate_02_infections <- epidemics::new_infections(
   output_vaccinate_02,
-  compartments_from_susceptible = "vaccinated",
+  exclude_compartments = "vaccinated",
   by_group = FALSE
 )
 
@@ -427,17 +427,17 @@ output_vaccinate_group_3 <- epidemics::model_default(
 
 vaccinate_group_1_infections <- epidemics::new_infections(
   output_vaccinate_group_1,
-  compartments_from_susceptible = "vaccinated",
+  exclude_compartments = "vaccinated",
   by_group = FALSE
 )
 vaccinate_group_2_infections <- epidemics::new_infections(
   output_vaccinate_group_2,
-  compartments_from_susceptible = "vaccinated",
+  exclude_compartments = "vaccinated",
   by_group = FALSE
 )
 vaccinate_group_3_infections <- epidemics::new_infections(
   output_vaccinate_group_3,
-  compartments_from_susceptible = "vaccinated",
+  exclude_compartments = "vaccinated",
   by_group = FALSE
 )
 
@@ -526,7 +526,7 @@ To convert infections to deaths, we will need new infections by age group, so we
 ``` r
 vaccinate_group_1_age <- epidemics::new_infections(
   output_vaccinate_group_1,
-  compartments_from_susceptible = "vaccinated",
+  exclude_compartments = "vaccinated",
   by_group = TRUE
 )
 

@@ -430,7 +430,7 @@ From the plot, we see that the peak number of total number of infectious individ
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 Lastly, if you want to plot new infections from an `epidemics::model_default()` that includes a `vaccination` intervention, you need to add one argument to `epidemics::new_infections()`:
-Set `compartments_from_susceptible = "vaccinated"` to tell the function that people moving from "susceptible" to "vaccinated" are not becoming infected. This ensures vaccinated individuals aren't counted as infections.
+Set `exclude_compartments = "vaccinated"` to tell the function that people moving from "susceptible" to "vaccinated" are not becoming infected. This ensures vaccinated individuals aren't counted as infections.
 
 ::::::::::::::::::::: spoiler
 
@@ -440,13 +440,13 @@ Note that if we add `by_group = FALSE` in `epidemics::new_infections()`, we get 
 ``` r
 infections_baseline <- epidemics::new_infections(
   data = output_baseline,
-  compartments_from_susceptible = "vaccinated", # if vaccination
+  exclude_compartments = "vaccinated", # if vaccination
   by_group = FALSE
 )
 
 infections_intervention <- epidemics::new_infections(
   data = output_vaccinate,
-  compartments_from_susceptible = "vaccinated", # if vaccination
+  exclude_compartments = "vaccinated", # if vaccination
   by_group = FALSE
 )
 
