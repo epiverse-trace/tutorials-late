@@ -513,6 +513,75 @@ each other.</p>
 challenges associated with the lessons. They appear in the “Instructor
 View”.</p>
 <hr>
+<br><h3 id="disease-burden-headingInstructor2">
+<a href="disease-burden.html#headingInstructor2">Instructor Note</a><a class="anchor" aria-label="anchor" href="#disease-burden-headingInstructor2"></a>
+</h3>
+<div class="codewrapper sourceCode" id="cb2">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># load contact and population data from socialmixr::polymod</span></span>
+<span><span class="va">polymod</span> <span class="op">&lt;-</span> <span class="fu">socialmixr</span><span class="fu">::</span><span class="va">polymod</span></span>
+<span><span class="va">contact_data</span> <span class="op">&lt;-</span> <span class="fu">socialmixr</span><span class="fu">::</span><span class="fu">contact_matrix</span><span class="op">(</span></span>
+<span>  <span class="va">polymod</span>,</span>
+<span>  countries <span class="op">=</span> <span class="st">"United Kingdom"</span>,</span>
+<span>  age.limits <span class="op">=</span> <span class="fu">c</span><span class="op">(</span><span class="fl">0</span>, <span class="fl">20</span>, <span class="fl">40</span><span class="op">)</span>,</span>
+<span>  symmetric <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># prepare contact matrix</span></span>
+<span><span class="va">contact_matrix</span> <span class="op">&lt;-</span> <span class="fu">t</span><span class="op">(</span><span class="va">contact_data</span><span class="op">$</span><span class="va">matrix</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># prepare the demography vector</span></span>
+<span><span class="va">demography_vector</span> <span class="op">&lt;-</span> <span class="va">contact_data</span><span class="op">$</span><span class="va">demography</span><span class="op">$</span><span class="va">population</span></span>
+<span><span class="fu">names</span><span class="op">(</span><span class="va">demography_vector</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu">rownames</span><span class="op">(</span><span class="va">contact_matrix</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># initial conditions: one in every 1 million is infected</span></span>
+<span><span class="va">initial_i</span> <span class="op">&lt;-</span> <span class="fl">1e-6</span></span>
+<span><span class="va">initial_conditions_inf</span> <span class="op">&lt;-</span> <span class="fu">c</span><span class="op">(</span></span>
+<span>  S <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">initial_i</span>, E <span class="op">=</span> <span class="fl">0</span>, I <span class="op">=</span> <span class="va">initial_i</span>, R <span class="op">=</span> <span class="fl">0</span>, V <span class="op">=</span> <span class="fl">0</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">initial_conditions_free</span> <span class="op">&lt;-</span> <span class="fu">c</span><span class="op">(</span></span>
+<span>  S <span class="op">=</span> <span class="fl">1</span>, E <span class="op">=</span> <span class="fl">0</span>, I <span class="op">=</span> <span class="fl">0</span>, R <span class="op">=</span> <span class="fl">0</span>, V <span class="op">=</span> <span class="fl">0</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># build for all age groups</span></span>
+<span><span class="va">initial_conditions</span> <span class="op">&lt;-</span> <span class="fu">rbind</span><span class="op">(</span></span>
+<span>  <span class="va">initial_conditions_inf</span>,</span>
+<span>  <span class="va">initial_conditions_free</span>,</span>
+<span>  <span class="va">initial_conditions_free</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu">rownames</span><span class="op">(</span><span class="va">initial_conditions</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu">rownames</span><span class="op">(</span><span class="va">contact_matrix</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># prepare the population to model as affected by the epidemic</span></span>
+<span><span class="va">uk_population</span> <span class="op">&lt;-</span> <span class="fu">epidemics</span><span class="fu">::</span><span class="fu">population</span><span class="op">(</span></span>
+<span>  name <span class="op">=</span> <span class="st">"UK"</span>,</span>
+<span>  contact_matrix <span class="op">=</span> <span class="va">contact_matrix</span>,</span>
+<span>  demography_vector <span class="op">=</span> <span class="va">demography_vector</span>,</span>
+<span>  initial_conditions <span class="op">=</span> <span class="va">initial_conditions</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># time periods</span></span>
+<span><span class="va">preinfectious_period</span> <span class="op">&lt;-</span> <span class="fl">3.0</span></span>
+<span><span class="va">infectious_period</span> <span class="op">&lt;-</span> <span class="fl">7.0</span></span>
+<span><span class="va">basic_reproduction</span> <span class="op">&lt;-</span> <span class="fl">1.46</span></span>
+<span></span>
+<span><span class="co"># rates</span></span>
+<span><span class="va">infectiousness_rate</span> <span class="op">&lt;-</span> <span class="fl">1.0</span> <span class="op">/</span> <span class="va">preinfectious_period</span></span>
+<span><span class="va">recovery_rate</span> <span class="op">&lt;-</span> <span class="fl">1.0</span> <span class="op">/</span> <span class="va">infectious_period</span></span>
+<span><span class="va">transmission_rate</span> <span class="op">&lt;-</span> <span class="va">basic_reproduction</span> <span class="op">/</span> <span class="va">infectious_period</span></span>
+<span></span>
+<span><span class="co"># run an epidemic model using `epidemic()`</span></span>
+<span><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu">epidemics</span><span class="fu">::</span><span class="fu">model_default</span><span class="op">(</span></span>
+<span>  population <span class="op">=</span> <span class="va">uk_population</span>,</span>
+<span>  transmission_rate <span class="op">=</span> <span class="va">transmission_rate</span>,</span>
+<span>  infectiousness_rate <span class="op">=</span> <span class="va">infectiousness_rate</span>,</span>
+<span>  recovery_rate <span class="op">=</span> <span class="va">recovery_rate</span>,</span>
+<span>  time_end <span class="op">=</span> <span class="fl">600</span>, increment <span class="op">=</span> <span class="fl">1.0</span></span>
+<span><span class="op">)</span></span></code></pre>
+</div>
+<hr>
 <br></section></section>
 </div>
     </main>

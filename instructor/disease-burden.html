@@ -448,8 +448,8 @@ View”.</p>
 </div>
 </section><section><h2 class="section-heading" id="a-burden-model">A burden model<a class="anchor" aria-label="anchor" href="#a-burden-model"></a></h2>
 <hr class="half-width"><p>We will extend the influenza example from the <a href="simulating-transmission.html">Simulating transmission</a> tutorial
-to calculate hospitalizations over time. Our approach has two main
-components:</p>
+by using the <code>output</code> object to calculate hospitalizations
+over time. Our approach has two main components:</p>
 <ol style="list-style-type: decimal"><li>
 <strong>Transmission model</strong>: An SEIR model that generates
 new infections over time</li>
@@ -468,11 +468,87 @@ because:</p>
 <ul><li>It’s flexible and can model various shapes</li>
 <li>It’s bounded at zero (negative delays don’t make sense)</li>
 <li>It’s supported by empirical data for many infectious diseases</li>
-</ul><div class="codewrapper sourceCode" id="cb2">
+</ul><div id="accordionInstructor2" class="accordion instructor-note accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor2" aria-expanded="false" aria-controls="collapseInstructor2">
+  <h3 class="accordion-header" id="headingInstructor2">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
+</button>
+<div id="collapseInstructor2" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor2" aria-labelledby="headingInstructor2">
+<div class="accordion-body">
+<div class="codewrapper sourceCode" id="cb2">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">new_cases</span> <span class="op">&lt;-</span> <span class="fu">new_infections</span><span class="op">(</span><span class="va">output_plot</span>, by_group <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="co"># load contact and population data from socialmixr::polymod</span></span>
+<span><span class="va">polymod</span> <span class="op">&lt;-</span> <span class="fu">socialmixr</span><span class="fu">::</span><span class="va">polymod</span></span>
+<span><span class="va">contact_data</span> <span class="op">&lt;-</span> <span class="fu">socialmixr</span><span class="fu">::</span><span class="fu">contact_matrix</span><span class="op">(</span></span>
+<span>  <span class="va">polymod</span>,</span>
+<span>  countries <span class="op">=</span> <span class="st">"United Kingdom"</span>,</span>
+<span>  age.limits <span class="op">=</span> <span class="fu">c</span><span class="op">(</span><span class="fl">0</span>, <span class="fl">20</span>, <span class="fl">40</span><span class="op">)</span>,</span>
+<span>  symmetric <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># prepare contact matrix</span></span>
+<span><span class="va">contact_matrix</span> <span class="op">&lt;-</span> <span class="fu">t</span><span class="op">(</span><span class="va">contact_data</span><span class="op">$</span><span class="va">matrix</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># prepare the demography vector</span></span>
+<span><span class="va">demography_vector</span> <span class="op">&lt;-</span> <span class="va">contact_data</span><span class="op">$</span><span class="va">demography</span><span class="op">$</span><span class="va">population</span></span>
+<span><span class="fu">names</span><span class="op">(</span><span class="va">demography_vector</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu">rownames</span><span class="op">(</span><span class="va">contact_matrix</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># initial conditions: one in every 1 million is infected</span></span>
+<span><span class="va">initial_i</span> <span class="op">&lt;-</span> <span class="fl">1e-6</span></span>
+<span><span class="va">initial_conditions_inf</span> <span class="op">&lt;-</span> <span class="fu">c</span><span class="op">(</span></span>
+<span>  S <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">initial_i</span>, E <span class="op">=</span> <span class="fl">0</span>, I <span class="op">=</span> <span class="va">initial_i</span>, R <span class="op">=</span> <span class="fl">0</span>, V <span class="op">=</span> <span class="fl">0</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">initial_conditions_free</span> <span class="op">&lt;-</span> <span class="fu">c</span><span class="op">(</span></span>
+<span>  S <span class="op">=</span> <span class="fl">1</span>, E <span class="op">=</span> <span class="fl">0</span>, I <span class="op">=</span> <span class="fl">0</span>, R <span class="op">=</span> <span class="fl">0</span>, V <span class="op">=</span> <span class="fl">0</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># build for all age groups</span></span>
+<span><span class="va">initial_conditions</span> <span class="op">&lt;-</span> <span class="fu">rbind</span><span class="op">(</span></span>
+<span>  <span class="va">initial_conditions_inf</span>,</span>
+<span>  <span class="va">initial_conditions_free</span>,</span>
+<span>  <span class="va">initial_conditions_free</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu">rownames</span><span class="op">(</span><span class="va">initial_conditions</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu">rownames</span><span class="op">(</span><span class="va">contact_matrix</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># prepare the population to model as affected by the epidemic</span></span>
+<span><span class="va">uk_population</span> <span class="op">&lt;-</span> <span class="fu">epidemics</span><span class="fu">::</span><span class="fu">population</span><span class="op">(</span></span>
+<span>  name <span class="op">=</span> <span class="st">"UK"</span>,</span>
+<span>  contact_matrix <span class="op">=</span> <span class="va">contact_matrix</span>,</span>
+<span>  demography_vector <span class="op">=</span> <span class="va">demography_vector</span>,</span>
+<span>  initial_conditions <span class="op">=</span> <span class="va">initial_conditions</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># time periods</span></span>
+<span><span class="va">preinfectious_period</span> <span class="op">&lt;-</span> <span class="fl">3.0</span></span>
+<span><span class="va">infectious_period</span> <span class="op">&lt;-</span> <span class="fl">7.0</span></span>
+<span><span class="va">basic_reproduction</span> <span class="op">&lt;-</span> <span class="fl">1.46</span></span>
+<span></span>
+<span><span class="co"># rates</span></span>
+<span><span class="va">infectiousness_rate</span> <span class="op">&lt;-</span> <span class="fl">1.0</span> <span class="op">/</span> <span class="va">preinfectious_period</span></span>
+<span><span class="va">recovery_rate</span> <span class="op">&lt;-</span> <span class="fl">1.0</span> <span class="op">/</span> <span class="va">infectious_period</span></span>
+<span><span class="va">transmission_rate</span> <span class="op">&lt;-</span> <span class="va">basic_reproduction</span> <span class="op">/</span> <span class="va">infectious_period</span></span>
+<span></span>
+<span><span class="co"># run an epidemic model using `epidemic()`</span></span>
+<span><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu">epidemics</span><span class="fu">::</span><span class="fu">model_default</span><span class="op">(</span></span>
+<span>  population <span class="op">=</span> <span class="va">uk_population</span>,</span>
+<span>  transmission_rate <span class="op">=</span> <span class="va">transmission_rate</span>,</span>
+<span>  infectiousness_rate <span class="op">=</span> <span class="va">infectiousness_rate</span>,</span>
+<span>  recovery_rate <span class="op">=</span> <span class="va">recovery_rate</span>,</span>
+<span>  time_end <span class="op">=</span> <span class="fl">600</span>, increment <span class="op">=</span> <span class="fl">1.0</span></span>
+<span><span class="op">)</span></span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="codewrapper sourceCode" id="cb3">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">new_cases</span> <span class="op">&lt;-</span> <span class="fu">new_infections</span><span class="op">(</span><span class="va">output</span>, by_group <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu">head</span><span class="op">(</span><span class="va">new_cases</span><span class="op">)</span></span></code></pre>
 </div>
 <div class="codewrapper">
@@ -495,7 +571,7 @@ parameter distributions to describe the following processes :</p>
 </ul><p>We will use the function <code>epiparameter()</code> from
 <a href="https://github.com/epiverse-trace/epiparameter/" class="external-link">epiparameter</a> package to define and store parameter
 distributions for these processes.</p>
-<div class="codewrapper sourceCode" id="cb4">
+<div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -515,7 +591,7 @@ distributions for these processes.</p>
 <span><span class="co"># with right-skewed distribution reflecting variability in disease progression</span></span></code></pre>
 </div>
 <p>To visualise this distribution we can create a density plot :</p>
-<div class="codewrapper sourceCode" id="cb5">
+<div class="codewrapper sourceCode" id="cb6">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -552,7 +628,7 @@ shape = 10 and scale = 2 and plot the density of this distribution.</p>
 </button>
 <div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
-<div class="codewrapper sourceCode" id="cb6">
+<div class="codewrapper sourceCode" id="cb7">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -598,7 +674,7 @@ cumulative sum of discharges so far.</li>
 </ol><div class="section level4">
 <h4 id="calculate-the-expected-numbers-of-new-hospitalisations-using-the-infection-hospitalisation-ratio-ihr">1. Calculate the expected numbers of new hospitalisations using the
 infection hospitalisation ratio (IHR)<a class="anchor" aria-label="anchor" href="#calculate-the-expected-numbers-of-new-hospitalisations-using-the-infection-hospitalisation-ratio-ihr"></a></h4>
-<div class="codewrapper sourceCode" id="cb7">
+<div class="codewrapper sourceCode" id="cb8">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -655,7 +731,7 @@ it means they’ve had a longer delay from infection to admission than
 someone infected more recently. In effect the infection to admission
 delay tells us how far we have to ‘rewind’ time to find previously new
 infections that are now showing up as hospital admissions.</p>
-<div class="codewrapper sourceCode" id="cb8">
+<div class="codewrapper sourceCode" id="cb9">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -673,7 +749,7 @@ infections that are now showing up as hospital admissions.</p>
 <p>Using the same approach as above, we convolve the hospitalisations
 with the distribution of admission to discharge times to obtain the
 estimated number of new discharges.</p>
-<div class="codewrapper sourceCode" id="cb9">
+<div class="codewrapper sourceCode" id="cb10">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -691,7 +767,7 @@ discharges<a class="anchor" aria-label="anchor" href="#calculate-the-number-in-h
 cumulative number of hospitalisations and discharges. The difference
 between these two quantities gives us the current number of people in
 hospital at each time point.</p>
-<div class="codewrapper sourceCode" id="cb10">
+<div class="codewrapper sourceCode" id="cb11">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -700,7 +776,7 @@ hospital at each time point.</p>
 </div>
 <p>We create a data frame to plot our outcomes using
 <code>pivot_longer()</code>:</p>
-<div class="codewrapper sourceCode" id="cb11">
+<div class="codewrapper sourceCode" id="cb12">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">

@@ -433,8 +433,8 @@ values to estimate disease burden as a follow-on analysis. We’ll use
 
 </section><section><h2 class="section-heading" id="a-burden-model">A burden model<a class="anchor" aria-label="anchor" href="#a-burden-model"></a></h2>
 <hr class="half-width"><p>We will extend the influenza example from the <a href="simulating-transmission.html">Simulating transmission</a> tutorial
-to calculate hospitalizations over time. Our approach has two main
-components:</p>
+by using the <code>output</code> object to calculate hospitalizations
+over time. Our approach has two main components:</p>
 <ol style="list-style-type: decimal"><li>
 <strong>Transmission model</strong>: An SEIR model that generates
 new infections over time</li>
@@ -453,11 +453,11 @@ because:</p>
 <ul><li>It’s flexible and can model various shapes</li>
 <li>It’s bounded at zero (negative delays don’t make sense)</li>
 <li>It’s supported by empirical data for many infectious diseases</li>
-</ul><div class="codewrapper sourceCode" id="cb2">
+</ul><div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">new_cases</span> <span class="op">&lt;-</span> <span class="fu">new_infections</span><span class="op">(</span><span class="va">output_plot</span>, by_group <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">new_cases</span> <span class="op">&lt;-</span> <span class="fu">new_infections</span><span class="op">(</span><span class="va">output</span>, by_group <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu">head</span><span class="op">(</span><span class="va">new_cases</span><span class="op">)</span></span></code></pre>
 </div>
 <div class="codewrapper">
@@ -480,7 +480,7 @@ parameter distributions to describe the following processes :</p>
 </ul><p>We will use the function <code>epiparameter()</code> from
 <a href="https://github.com/epiverse-trace/epiparameter/" class="external-link">epiparameter</a> package to define and store parameter
 distributions for these processes.</p>
-<div class="codewrapper sourceCode" id="cb4">
+<div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -500,7 +500,7 @@ distributions for these processes.</p>
 <span><span class="co"># with right-skewed distribution reflecting variability in disease progression</span></span></code></pre>
 </div>
 <p>To visualise this distribution we can create a density plot :</p>
-<div class="codewrapper sourceCode" id="cb5">
+<div class="codewrapper sourceCode" id="cb6">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -537,7 +537,7 @@ shape = 10 and scale = 2 and plot the density of this distribution.</p>
 </button>
 <div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
-<div class="codewrapper sourceCode" id="cb6">
+<div class="codewrapper sourceCode" id="cb7">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -583,7 +583,7 @@ cumulative sum of discharges so far.</li>
 </ol><div class="section level4">
 <h4 id="calculate-the-expected-numbers-of-new-hospitalisations-using-the-infection-hospitalisation-ratio-ihr">1. Calculate the expected numbers of new hospitalisations using the
 infection hospitalisation ratio (IHR)<a class="anchor" aria-label="anchor" href="#calculate-the-expected-numbers-of-new-hospitalisations-using-the-infection-hospitalisation-ratio-ihr"></a></h4>
-<div class="codewrapper sourceCode" id="cb7">
+<div class="codewrapper sourceCode" id="cb8">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -640,7 +640,7 @@ it means they’ve had a longer delay from infection to admission than
 someone infected more recently. In effect the infection to admission
 delay tells us how far we have to ‘rewind’ time to find previously new
 infections that are now showing up as hospital admissions.</p>
-<div class="codewrapper sourceCode" id="cb8">
+<div class="codewrapper sourceCode" id="cb9">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -658,7 +658,7 @@ infections that are now showing up as hospital admissions.</p>
 <p>Using the same approach as above, we convolve the hospitalisations
 with the distribution of admission to discharge times to obtain the
 estimated number of new discharges.</p>
-<div class="codewrapper sourceCode" id="cb9">
+<div class="codewrapper sourceCode" id="cb10">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -676,7 +676,7 @@ discharges<a class="anchor" aria-label="anchor" href="#calculate-the-number-in-h
 cumulative number of hospitalisations and discharges. The difference
 between these two quantities gives us the current number of people in
 hospital at each time point.</p>
-<div class="codewrapper sourceCode" id="cb10">
+<div class="codewrapper sourceCode" id="cb11">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -685,7 +685,7 @@ hospital at each time point.</p>
 </div>
 <p>We create a data frame to plot our outcomes using
 <code>pivot_longer()</code>:</p>
-<div class="codewrapper sourceCode" id="cb11">
+<div class="codewrapper sourceCode" id="cb12">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
