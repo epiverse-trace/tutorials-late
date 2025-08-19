@@ -769,7 +769,7 @@ controlling the epidemic.
 # Load new infections data for each scenario
 data_vaccine <- epidemics::new_infections(
   output3,
-  compartments_from_susceptible = "vaccinated",
+  exclude_compartments = "vaccinated",
   by_group = TRUE
 )
 
