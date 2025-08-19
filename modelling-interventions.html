@@ -345,7 +345,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Modelling interventions</h1>
-        <p>Last updated on 2025-08-06 |
+        <p>Last updated on 2025-08-19 |
 
         <a href="https://github.com/epiverse-trace/tutorials-late/edit/main/episodes/modelling-interventions.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -859,7 +859,7 @@ reduces the peak number of infectious individuals the most?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb16">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -903,16 +903,16 @@ compared to school closures and mask-wearing interventions.</p>
 <code>epidemics::model_default()</code> that includes a
 <code>vaccination</code> intervention, you need to add one argument to
 <code>epidemics::new_infections()</code>: Set
-<code>compartments_from_susceptible = "vaccinated"</code> to tell the
-function that people moving from “susceptible” to “vaccinated” are not
-becoming infected. This ensures vaccinated individuals aren’t counted as
+<code>exclude_compartments = "vaccinated"</code> to tell the function
+that people moving from “susceptible” to “vaccinated” are not becoming
+infected. This ensures vaccinated individuals aren’t counted as
 infections.</p>
 <div id="accordionSpoiler1" class="accordion spoiler-accordion accordion-flush">
 <div class="accordion-item">
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler1" aria-expanded="false" aria-controls="collapseSpoiler1">
   <h3 class="accordion-header" id="headingSpoiler1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
 </button>
-<div id="collapseSpoiler1" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler1" aria-labelledby="headingSpoiler1">
+<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
 <div class="accordion-body">
 <p>Note that if we add <code>by_group = FALSE</code> in
 <code>epidemics::new_infections()</code>, we get a summary of the new
@@ -923,13 +923,13 @@ infections in the population.</p>
 <pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">infections_baseline</span> <span class="op">&lt;-</span> <span class="fu">epidemics</span><span class="fu">::</span><span class="fu">new_infections</span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">output_baseline</span>,</span>
-<span>  compartments_from_susceptible <span class="op">=</span> <span class="st">"vaccinated"</span>, <span class="co"># if vaccination</span></span>
+<span>  exclude_compartments <span class="op">=</span> <span class="st">"vaccinated"</span>, <span class="co"># if vaccination</span></span>
 <span>  by_group <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">infections_intervention</span> <span class="op">&lt;-</span> <span class="fu">epidemics</span><span class="fu">::</span><span class="fu">new_infections</span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">output_vaccinate</span>,</span>
-<span>  compartments_from_susceptible <span class="op">=</span> <span class="st">"vaccinated"</span>, <span class="co"># if vaccination</span></span>
+<span>  exclude_compartments <span class="op">=</span> <span class="st">"vaccinated"</span>, <span class="co"># if vaccination</span></span>
 <span>  by_group <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -1058,8 +1058,8 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://epiverse-trace.github.io/tutorials-late/modelling-interventions.html",
   "identifier": "https://epiverse-trace.github.io/tutorials-late/modelling-interventions.html",
-  "dateCreated": "2025-08-12",
-  "dateModified": "2025-08-06",
+  "dateCreated": "2025-08-19",
+  "dateModified": "2025-08-19",
   "datePublished": "2025-08-19"
 }
 
