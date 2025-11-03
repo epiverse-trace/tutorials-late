@@ -20,7 +20,7 @@ format:
 
 # Introduction
 
-Ce travail pratique vise à évaluer votre compréhension des principes fondamentaux de la modélisation mathématique, tout en vous guidant dans la construction de modèles à l’aide d’un cadre SEIR simple pour les épidémies de maladies infectieuses.  
+Cet exercice vise à évaluer votre compréhension des principes fondamentaux de la modélisation mathématique, tout en vous guidant dans la construction de modèles de type SEIR simple pour les épidémies de maladies infectieuses.  
 
 **Remarque :** Veuillez remplir les champs vides.
 
