@@ -26,7 +26,7 @@ Cet exercice vise à évaluer votre compréhension des principes fondamentaux de
 
 # Modèle SEIR
 
-Dans le modèle SEIR, nous avons quatre compartiments ($S$, $E$, $I$, $R$) :
+Il y a quatre compartiments dans un modèle SEIR:  ($S$, $E$, $I$, $R$) :
 
 - $S$ signifie ____, ce qui veut dire ____.
   Le paramètre qui décrit la transition du compartiment ($S$) vers ($E$) est ____.
