@@ -179,7 +179,7 @@ Veuillez remplir le tableau ci-dessous avec les paramètres décrits ci-dessus. 
 | `E/N`                  | ___    | Proportion de personnes exposées |
 | `I/N`                  | ___    | Proportion de personnes infectieuses |
 | `R/N`                  | ___    | Proportion de personnes rétablies |
-| `V/N`                  | ___    | Proportion de personnes vaccine9es |
+| `V/N`                  | ___    | Proportion de personnes vaccinées |
 | `r0`                   | ___    | Nombre de reproduction de base |
 | `latent_period`        | ___    | Temps entre l'infection et le début de la contagiosité (jours) |
 | `infectious_period`    | ___    | Duree de la periode de contagion (jours) |
