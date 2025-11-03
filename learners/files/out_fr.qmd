@@ -176,7 +176,7 @@ Veuillez remplir le tableau ci-dessous avec les paramètres décrits ci-dessus. 
 |:------------------------:|:------:|:-----------:|
 | `bf_pop`               | ___    | Taille de la population |
 | `S/N`                  | ___    | Proportion de personnes sensibles |
-| `E/N`                  | ___    | Proportion de personnes expose9es |
+| `E/N`                  | ___    | Proportion de personnes exposées |
 | `I/N`                  | ___    | Proportion de personnes infectieuses |
 | `R/N`                  | ___    | Proportion de personnes re9tablies |
 | `V/N`                  | ___    | Proportion de personnes vaccine9es |
