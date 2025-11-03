@@ -52,7 +52,7 @@ Il est défini comme le nombre moyen de ____ dans une population composée d’i
 # Un diagramme du modèle SEIR
 
 
-Ci-dessous se trouve un modèle SEIR typique avec démographie (naissances et décès).
+Le schéma ci-dessous montre un modèle SEIR typique avec démographie (naissances et décès).
 Il s’agit d’un modèle simple, applicable aux infections de personne à personne dans une population à mélange homogène.
 
 Veuillez observer attentivement le modèle et examiner ses interactions avec les équations de la section [Equations](#equations).  Utilisez des codes de couleur ou des flèches pour relier le diagramme aux équations.
