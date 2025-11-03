@@ -172,7 +172,7 @@ Un paramètre dans un modèle de transmission correspond à une propriété biol
 Veuillez remplir le tableau ci-dessous avec les paramètres décrits ci-dessus. De plus, notez que nous exécuterons la simulation pendant 120 jours.
 
 
-| Parametre               | Valeur | Definition |
+| Paramètre               | Valeur | Définition |
 |:------------------------:|:------:|:-----------:|
 | `bf_pop`               | ___    | Taille de la population |
 | `S/N`                  | ___    | Proportion de personnes sensibles |
