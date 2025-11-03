@@ -46,7 +46,7 @@ Il est défini comme le nombre moyen de ____ cas secondaires générés par un c
 # $R_t$
 
 $R_t$ aide à suivre la progression de l’épidémie.  
-Lorsque la population n’est plus ____, le nombre de reproduction instantané $R_t$ est utilisé.  
+Lorsque la population n’est plus ____, on utilise le nombre de reproduction instantané $R_t$.  
 Il est défini comme le nombre moyen de ____ dans une population composée d’individus ____ et non ____ au temps $t$.
 
 # Un diagramme du modèle SEIR
