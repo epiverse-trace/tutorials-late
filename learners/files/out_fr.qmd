@@ -187,7 +187,7 @@ Veuillez remplir le tableau ci-dessous avec les paramètres décrits ci-dessus. 
 | `infectiousness_rate`  | ___    | Taux de progression des exposés vers les infectieux (1 / latent_period) |
 | `recovery_rate`        | ___    | Taux de progression des infectieux vers les rétablis (1 / infectious_period) |
 | `time_end`             | ___    | Nombre maximal d'unités de temps pour la simulation (jours) |
-| `increment`            | ___    | Taille de leincrement de temps (jours) |
+| `increment`            | ___    | Taille de l'incrément de temps (jours) |
 
 
 
