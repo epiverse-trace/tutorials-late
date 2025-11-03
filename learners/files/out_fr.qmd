@@ -211,7 +211,7 @@ $$
 
 
 ## À propos de ce document
-Ce document a été adapté à partir de "Practical: Building a Simple Compartmental Model for Zika",  par Zulma Cucunubá, Pierre Nouvellet et José M. Velasco-España
+Ce document a été adapté à partir de ["Practical: Building a Simple Compartmental Model for Zika"](https://epiverse-trace.github.io/epimodelac/ZIKAB.html),  par Zulma Cucunubá, Pierre Nouvellet et José M. Velasco-España
 (Version 1.0.3, 10 janvier 2024).
 Publié sous licence CC-BY 4.0 par les auteurs originaux.
 
