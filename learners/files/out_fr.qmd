@@ -156,7 +156,7 @@ Un paramètre dans un modèle de transmission correspond à une propriété biol
 - La période infectieuse moyenne dure 5 jours (Masters et al., 2023).
 - Pour la rougeole, le nombre de reproduction de base ($R_0$) varie généralement entre 12 et 18, voire plus (Fiona et al., 2017).
 - Un seul cas infectieux est introduit dans la population.
-- Toute la population, à l’exception de ce cas, est initialement susceptible. Cette hypothèse simplifie le modèle et permet d’explorer la propagation de l’infection en l’absence d’immunité. Bien que dans la réalité, les populations aient généralement une certaine immunité due à la vaccination ou à une infection antérieure. De plus, aucun individu n’est exposé ou rétabli à ce moment-là.
+- Toute la population, à l’exception de ce cas, est initialement susceptible. Cette hypothèse simplifie le modèle et permet d’explorer la propagation de l’infection en l’absence d’immunité. Bien que dans la réalité, certains individus de la population ont généralement une certaine immunité due à la vaccination ou à une infection antérieure. De plus, aucun individu n’est exposé ou rétabli à ce moment-là.
 - La population du Burkina Faso est d’environ 22,67 millions d’habitants.
 - La structure par âge du Burkina Faso est caractéristique d’une population jeune, avec une majorité de personnes âgées de moins de 25 ans. Selon des estimations récentes (United Nations, 2023; Central Intelligence Agency, 2023; World Bank, 2023), la structure par âge se décompose comme suit:
 
