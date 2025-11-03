@@ -185,7 +185,7 @@ Veuillez remplir le tableau ci-dessous avec les paramètres décrits ci-dessus. 
 | `infectious_period`    | ___    | Duree de la periode de contagion (jours) |
 | `transmission_rate`    | ___    | Taux auquel les individus infectieux infectent les personnes sensibles (r0 / infectious_period) |
 | `infectiousness_rate`  | ___    | Taux de progression des exposés vers les infectieux (1 / latent_period) |
-| `recovery_rate`        | ___    | Taux de progression des infectieux vers les re9tablis (1 / infectious_period) |
+| `recovery_rate`        | ___    | Taux de progression des infectieux vers les rétablis (1 / infectious_period) |
 | `time_end`             | ___    | Nombre maximal de unites de temps pour la simulation (jours) |
 | `increment`            | ___    | Taille de leincrement de temps (jours) |
 
