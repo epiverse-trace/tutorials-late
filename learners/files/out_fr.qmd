@@ -148,7 +148,7 @@ $$
 
 
 
-## Parameters for the Measles outbreak
+## Paramètres d'une epidémie de rougeole
 
 Un paramètre dans un modèle de transmission correspond à une propriété biologique ou sociale d’un système dynamique dans un contexte spécifique. Dans cette section, nous fournirons les éléments nécessaires pour alimenter les paramètres d’un modèle SEIR  dans le cadre d’une épidémie de rougeole au Burkina Faso.
 
