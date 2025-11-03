@@ -178,7 +178,7 @@ Veuillez remplir le tableau ci-dessous avec les paramètres décrits ci-dessus. 
 | `S/N`                  | ___    | Proportion de personnes sensibles |
 | `E/N`                  | ___    | Proportion de personnes exposées |
 | `I/N`                  | ___    | Proportion de personnes infectieuses |
-| `R/N`                  | ___    | Proportion de personnes re9tablies |
+| `R/N`                  | ___    | Proportion de personnes rétablies |
 | `V/N`                  | ___    | Proportion de personnes vaccine9es |
 | `r0`                   | ___    | Nombre de reproduction de base |
 | `latent_period`        | ___    | Temps entre l'infection et le de9but de la contagiosite (jours) |
