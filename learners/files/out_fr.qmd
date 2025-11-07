@@ -5,6 +5,7 @@ license: "CC-BY"
 format:
   pdf:
     toc: false
+    number-sections: true
     include-in-header:
       text: |
         \usepackage{fancyhdr}
@@ -28,26 +29,27 @@ Cet exercice vise à évaluer votre compréhension des principes fondamentaux de
 
 Il y a quatre compartiments dans un modèle SEIR:  ($S$, $E$, $I$, $R$) :
 
-- $S$ signifie ____, ce qui veut dire ____.
+- $S$ signifie ________, ce qui veut dire ________.
+  
   Le paramètre qui décrit la transition du compartiment ($S$) vers ($E$) est ____.
-- $E$ signifie ____, ce qui veut dire qu’il peut ____.
+- $E$ signifie ________, ce qui veut dire qu’il peut ____.
   
   Le taux qui décrit la transition de ($E$) vers ($I$) est le taux de ____.
-- $I$ signifie ____, ce qui veut dire qu’il peut ____.
+- $I$ signifie ________, ce qui veut dire qu’il peut ____.
   
   Le taux qui décrit la transition de ($I$) vers ($R$) est le taux de ____.
-- $R$ signifie ____. Ce compartiment inclut les individus qui ont cessé d’être infectieux et ont acquis une immunité contre l’infection, quel que soit le cours clinique.
+- $R$ signifie ________. Ce compartiment inclut les individus qui ont cessé d’être infectieux et ont acquis une immunité contre l’infection, quel que soit le cours clinique.
 
 # $R_0$
 
 $R_0$ aide à projeter la taille potentielle d’une épidémie et à calculer le seuil d’immunité collective.  
-Il est défini comme le nombre moyen de ____ cas secondaires générés par un cas primaire dans une population complètement ____.
+Il est défini comme le nombre moyen de ________ secondaires générés par un infection primaire dans une population complètement ________.
 
 # $R_t$
 
 $R_t$ aide à suivre la progression de l’épidémie.  
-Lorsque la population n’est plus ____, on utilise le nombre de reproduction instantané $R_t$.  
-Il est défini comme le nombre moyen de ____ dans une population composée d’individus ____ et non ____ au temps $t$.
+Lorsque la population n’est plus ________, on utilise le nombre de reproduction instantané $R_t$.  
+Il est défini comme le nombre moyen de ____________ dans une population composée d’individus ________ et non ________ au temps $t$.
 
 # Un diagramme du modèle SEIR
 
