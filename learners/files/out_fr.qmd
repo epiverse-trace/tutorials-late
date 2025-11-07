@@ -2,6 +2,8 @@
 title: "Introduction simple à la modélisation mathématique des maladies infectieuses"
 author: "Andree Valle Campos et Abdoelnaser M Degoot  \nÉquipe Epiverse-TRACE @ LSHTM"
 license: "CC-BY"
+date: last-modified
+date-format: long
 format:
   pdf:
     toc: false
@@ -48,8 +50,7 @@ Il est défini comme le nombre moyen de ________ secondaires générés par un i
 # $R_t$
 
 $R_t$ aide à suivre la progression de l’épidémie.  
-Lorsque la population n’est plus ________, on utilise le nombre de reproduction instantané $R_t$.  
-Il est défini comme le nombre moyen de ____________ dans une population composée d’individus ________ et non ________ au temps $t$.
+Lorsque la population n’est plus ________, on utilise le nombre de reproduction instantané $R_t$. Il est défini comme le nombre moyen de ____________ dans une population composée d’individus ________ et non ________ au temps $t$.
 
 # Un diagramme du modèle SEIR
 
