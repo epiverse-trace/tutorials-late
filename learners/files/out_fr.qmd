@@ -177,6 +177,7 @@ Veuillez remplir le tableau ci-dessous avec les paramètres décrits ci-dessus. 
 
 \begin{table}[htb]
 	\centering
+  \renewcommand{\arraystretch}{1.3}
 	\addtolength{\leftskip} {-2cm}
 	\addtolength{\rightskip}{-2cm}
 	\begin{tabular}{@{}lll@{}}
