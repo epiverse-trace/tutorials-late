@@ -180,7 +180,7 @@ Veuillez remplir le tableau ci-dessous avec les paramètres décrits ci-dessus. 
 		\toprule
 		Paramètre            & Valeur             & Définition                                                                            \\ \midrule
 		bf\_pop              & \underline{\hspace{1cm}} & Taille de la population                                                               \\
-		S/N                  & \underline{\hspace{1cm}} & Proportion de personnes sensibles                                                     \\
+		S/N                  & \underline{\hspace{1cm}} & Proportion de personnes susceptibles                                                   \\
 		E/N                  & \underline{\hspace{1cm}} & Proportion de personnes exposées                                                     \\
 		I/N                  & \underline{\hspace{1cm}} & Proportion de personnes infectieuses                                                 \\
 		R/N                  & \underline{\hspace{1cm}} & Proportion de personnes rétablies                                                    \\
@@ -188,7 +188,7 @@ Veuillez remplir le tableau ci-dessous avec les paramètres décrits ci-dessus. 
 		r0                   & \underline{\hspace{1cm}} & Nombre de reproduction de base                                                       \\
 		latent\_period       & \underline{\hspace{1cm}} & Temps entre l'infection et le début de la contagiosité (jours)                      \\
 		infectious\_period   & \underline{\hspace{1cm}} & Durée de la période de contagion (jours)                                            \\
-		transmission\_rate   & \underline{\hspace{1cm}} & Taux auquel les individus infectieux infectent les sensibles (r0/infectious\_period) \\
+		transmission\_rate   & \underline{\hspace{1cm}} & Taux auquel les individus infectieux infectent les susceptibles (r0/infectious\_period) \\
 		infectiousness\_rate & \underline{\hspace{1cm}} & Taux de progression des exposés vers les infectieux (1 / latent\_period)            \\
 		recovery\_rate       & \underline{\hspace{1cm}} & Taux de progression des infectieux vers les rétablis (1 / infectious\_period)       \\
 		time\_end            & \underline{\hspace{1cm}} & Nombre maximal d'unités de temps pour la simulation (jours)                         \\
