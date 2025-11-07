@@ -2,9 +2,12 @@
 title: "Introduction simple à la modélisation mathématique des maladies infectieuses"
 author: "Andree Valle Campos et Abdoelnaser M Degoot  \nÉquipe Epiverse-TRACE @ LSHTM"
 license: "CC-BY"
+date: last-modified
+date-format: long
 format:
   pdf:
     toc: false
+    number-sections: true
     include-in-header:
       text: |
         \usepackage{fancyhdr}
@@ -28,26 +31,26 @@ Cet exercice vise à évaluer votre compréhension des principes fondamentaux de
 
 Il y a quatre compartiments dans un modèle SEIR:  ($S$, $E$, $I$, $R$) :
 
-- $S$ signifie ____, ce qui veut dire ____.
+- $S$ signifie ________, ce qui veut dire ________.
+  
   Le paramètre qui décrit la transition du compartiment ($S$) vers ($E$) est ____.
-- $E$ signifie ____, ce qui veut dire qu’il peut ____.
+- $E$ signifie ________, ce qui veut dire qu’il peut ____.
   
   Le taux qui décrit la transition de ($E$) vers ($I$) est le taux de ____.
-- $I$ signifie ____, ce qui veut dire qu’il peut ____.
+- $I$ signifie ________, ce qui veut dire qu’il peut ____.
   
   Le taux qui décrit la transition de ($I$) vers ($R$) est le taux de ____.
-- $R$ signifie ____. Ce compartiment inclut les individus qui ont cessé d’être infectieux et ont acquis une immunité contre l’infection, quel que soit le cours clinique.
+- $R$ signifie ________. Ce compartiment inclut les individus qui ont cessé d’être infectieux et ont acquis une immunité contre l’infection, quel que soit le cours clinique.
 
 # $R_0$
 
 $R_0$ aide à projeter la taille potentielle d’une épidémie et à calculer le seuil d’immunité collective.  
-Il est défini comme le nombre moyen de ____ cas secondaires générés par un cas primaire dans une population complètement ____.
+Il est défini comme le nombre moyen de ________ secondaires générés par un infection primaire dans une population complètement ________.
 
 # $R_t$
 
 $R_t$ aide à suivre la progression de l’épidémie.  
-Lorsque la population n’est plus ____, on utilise le nombre de reproduction instantané $R_t$.  
-Il est défini comme le nombre moyen de ____ dans une population composée d’individus ____ et non ____ au temps $t$.
+Lorsque la population n’est plus ________, on utilise le nombre de reproduction instantané $R_t$. Il est défini comme le nombre moyen de ____________ dans une population composée d’individus ________ et non ________ au temps $t$.
 
 # Un diagramme du modèle SEIR
 
@@ -172,22 +175,31 @@ Un paramètre dans un modèle de transmission correspond à une propriété biol
 Veuillez remplir le tableau ci-dessous avec les paramètres décrits ci-dessus. De plus, notez que nous exécuterons la simulation pendant 120 jours.
 
 
-| Paramètre               | Valeur | Définition |
-|:------------------------:|:------:|:-----------:|
-| `bf_pop`               | ___    | Taille de la population |
-| `S/N`                  | ___    | Proportion de personnes sensibles |
-| `E/N`                  | ___    | Proportion de personnes exposées |
-| `I/N`                  | ___    | Proportion de personnes infectieuses |
-| `R/N`                  | ___    | Proportion de personnes rétablies |
-| `V/N`                  | ___    | Proportion de personnes vaccinées |
-| `r0`                   | ___    | Nombre de reproduction de base |
-| `latent_period`        | ___    | Temps entre l'infection et le début de la contagiosité (jours) |
-| `infectious_period`    | ___    | Durée de la période de contagion (jours) |
-| `transmission_rate`    | ___    | Taux auquel les individus infectieux infectent les personnes sensibles (r0 / infectious_period) |
-| `infectiousness_rate`  | ___    | Taux de progression des exposés vers les infectieux (1 / latent_period) |
-| `recovery_rate`        | ___    | Taux de progression des infectieux vers les rétablis (1 / infectious_period) |
-| `time_end`             | ___    | Nombre maximal d'unités de temps pour la simulation (jours) |
-| `increment`            | ___    | Taille de l'incrément de temps (jours) |
+\begin{table}[htb]
+	\centering
+  \renewcommand{\arraystretch}{1.3}
+	\addtolength{\leftskip} {-2cm}
+	\addtolength{\rightskip}{-2cm}
+	\begin{tabular}{@{}lll@{}}
+		\toprule
+		Paramètre            & Valeur             & Définition                                                                            \\ \midrule
+		bf\_pop              & \underline{\hspace{1cm}} & Taille de la population                                                               \\
+		S/N                  & \underline{\hspace{1cm}} & Proportion de personnes susceptibles                                                   \\
+		E/N                  & \underline{\hspace{1cm}} & Proportion de personnes exposées                                                     \\
+		I/N                  & \underline{\hspace{1cm}} & Proportion de personnes infectieuses                                                 \\
+		R/N                  & \underline{\hspace{1cm}} & Proportion de personnes rétablies                                                    \\
+		V/N                  & \underline{\hspace{1cm}} & Proportion de personnes vaccinées                                                    \\
+		r0                   & \underline{\hspace{1cm}} & Nombre de reproduction de base                                                       \\
+		latent\_period       & \underline{\hspace{1cm}} & Temps entre l'infection et le début de la contagiosité (jours)                      \\
+		infectious\_period   & \underline{\hspace{1cm}} & Durée de la période de contagion (jours)                                            \\
+		transmission\_rate   & \underline{\hspace{1cm}} & Taux auquel les individus infectieux infectent les susceptibles (r0/infectious\_period) \\
+		infectiousness\_rate & \underline{\hspace{1cm}} & Taux de progression des exposés vers les infectieux (1 / latent\_period)            \\
+		recovery\_rate       & \underline{\hspace{1cm}} & Taux de progression des infectieux vers les rétablis (1 / infectious\_period)       \\
+		time\_end            & \underline{\hspace{1cm}} & Nombre maximal d'unités de temps pour la simulation (jours)                         \\
+		increment            & \underline{\hspace{1cm}} & Taille de l'incrément de temps (jours)                                             \\ \bottomrule
+	\end{tabular}
+\end{table}
+
 
 
 
