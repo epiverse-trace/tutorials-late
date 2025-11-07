@@ -172,22 +172,30 @@ Un paramètre dans un modèle de transmission correspond à une propriété biol
 Veuillez remplir le tableau ci-dessous avec les paramètres décrits ci-dessus. De plus, notez que nous exécuterons la simulation pendant 120 jours.
 
 
-| Paramètre               | Valeur | Définition |
-|:------------------------:|:------:|:-----------:|
-| `bf_pop`               | ___    | Taille de la population |
-| `S/N`                  | ___    | Proportion de personnes sensibles |
-| `E/N`                  | ___    | Proportion de personnes exposées |
-| `I/N`                  | ___    | Proportion de personnes infectieuses |
-| `R/N`                  | ___    | Proportion de personnes rétablies |
-| `V/N`                  | ___    | Proportion de personnes vaccinées |
-| `r0`                   | ___    | Nombre de reproduction de base |
-| `latent_period`        | ___    | Temps entre l'infection et le début de la contagiosité (jours) |
-| `infectious_period`    | ___    | Durée de la période de contagion (jours) |
-| `transmission_rate`    | ___    | Taux auquel les individus infectieux infectent les personnes sensibles (r0 / infectious_period) |
-| `infectiousness_rate`  | ___    | Taux de progression des exposés vers les infectieux (1 / latent_period) |
-| `recovery_rate`        | ___    | Taux de progression des infectieux vers les rétablis (1 / infectious_period) |
-| `time_end`             | ___    | Nombre maximal d'unités de temps pour la simulation (jours) |
-| `increment`            | ___    | Taille de l'incrément de temps (jours) |
+\begin{table}[htb]
+	\centering
+	\addtolength{\leftskip} {-2cm}
+	\addtolength{\rightskip}{-2cm}
+	\begin{tabular}{@{}lll@{}}
+		\toprule
+		Paramètre            & Valeur             & Définition                                                                            \\ \midrule
+		bf\_pop              & \underline{\hspace{1cm}} & Taille de la population                                                               \\
+		S/N                  & \underline{\hspace{1cm}} & Proportion de personnes sensibles                                                     \\
+		E/N                  & \underline{\hspace{1cm}} & Proportion de personnes exposées                                                     \\
+		I/N                  & \underline{\hspace{1cm}} & Proportion de personnes infectieuses                                                 \\
+		R/N                  & \underline{\hspace{1cm}} & Proportion de personnes rétablies                                                    \\
+		V/N                  & \underline{\hspace{1cm}} & Proportion de personnes vaccinées                                                    \\
+		r0                   & \underline{\hspace{1cm}} & Nombre de reproduction de base                                                       \\
+		latent\_period       & \underline{\hspace{1cm}} & Temps entre l'infection et le début de la contagiosité (jours)                      \\
+		infectious\_period   & \underline{\hspace{1cm}} & Durée de la période de contagion (jours)                                            \\
+		transmission\_rate   & \underline{\hspace{1cm}} & Taux auquel les individus infectieux infectent les sensibles (r0/infectious\_period) \\
+		infectiousness\_rate & \underline{\hspace{1cm}} & Taux de progression des exposés vers les infectieux (1 / latent\_period)            \\
+		recovery\_rate       & \underline{\hspace{1cm}} & Taux de progression des infectieux vers les rétablis (1 / infectious\_period)       \\
+		time\_end            & \underline{\hspace{1cm}} & Nombre maximal d'unités de temps pour la simulation (jours)                         \\
+		increment            & \underline{\hspace{1cm}} & Taille de l'incrément de temps (jours)                                             \\ \bottomrule
+	\end{tabular}
+\end{table}
+
 
 
 
