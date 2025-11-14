@@ -6,7 +6,6 @@ exercises: 30 # exercise time in minutes
 
 
 
-
 :::::::::::::::::::::::::::::::::::::: questions 
 
 - How do I simulate disease spread using a mathematical model?
@@ -26,14 +25,31 @@ exercises: 30 # exercise time in minutes
 
 ::::::::::::::::::::::::::::::::::::: prereq
 
++ Complete tutorial on [Contact matrices](../episodes/contact-matrices.md).
+
 Learners should familiarise themselves with following concept dependencies before working through this tutorial: 
 
 **Mathematical Modelling** : [Introduction to infectious disease models](https://doi.org/10.1038/s41592-020-0856-2), [state variables](../learners/reference.md#state), [model parameters](../learners/reference.md#parsode), [initial conditions](../learners/reference.md#initial), [differential equations](../learners/reference.md#ordinary).
 
 **Epidemic theory** : [Transmission](https://doi.org/10.1155/2011/267049), [Reproduction number](https://doi.org/10.3201/eid2501.171901).
+
+**R packages installed**: `{epidemics}`, `{socialmixr}`, `{tidyverse}`.
+
 :::::::::::::::::::::::::::::::::
 
+:::::::::: spoiler
 
+Install packages if their are not already installed
+
+```r
+if (!base::require("pak")) install.packages("pak")
+pak::pak(c("epidemics", "socialmixr", "tidyverse"))
+```
+
+If you have any error message,
+go to the [main setup page](../learners/setup.md#software-setup).
+
+::::::::::
 
 ## Introduction
 
@@ -48,16 +64,16 @@ library(socialmixr)
 library(tidyverse)
 ```
 
+:::::::::::::::::::::: instructor
 
-<img src="fig/simulating-transmission-rendered-traj-1.png" style="display: block; margin: auto;" />
+Use slides to introduce the topics of:
 
+- Scenario modelling and 
+- Contact matrix.
 
-:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: instructor
+Then start with the livecoding.
 
-By the end of this tutorial, learners should be able to replicate the above image on their own computers.
-
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
+::::::::::::::::::::::
 
 ## Simulating disease spread
 
@@ -132,27 +148,41 @@ A contact matrix represents the average number of contacts between individuals i
 
 ## Load contact and population data
 
-Using the R package `socialmixr`, run the following lines of R code to obtain the contact matrix for the United Kingdom for the year age bins:
+Using the R package `socialmixr`, obtain the contact matrix for the United Kingdom for the year age bins:
 
 + age between 0 and 20 years,
 + age between 20 and 40,
 + 40 years and over.
 
-```r
+Use the survey available at `socialmixr::polymod`
+
+:::::::::::::::: hint
+
++ Complete tutorial on [Contact matrices](../episodes/contact-matrices.md).
+
+::::::::::::::::
+
+:::::::::::::::::::::::: solution 
+ 
+
+``` r
+# Access the contact survey data
 polymod <- socialmixr::polymod
+
+# Generate the contact matrix
 contact_data <- socialmixr::contact_matrix(
-  survey = polymod,
+  polymod,
   countries = "United Kingdom",
   age.limits = c(0, 20, 40),
   symmetric = TRUE
 )
+
 # prepare contact matrix
 contact_matrix <- t(contact_data$matrix)
+
+# print
 contact_matrix
 ```
-
-:::::::::::::::::::::::: solution 
- 
 
 ``` output
                  age.group
@@ -175,6 +205,19 @@ The result is a square matrix with rows and columns for each age group. Contact 
 In `{epidemics}` the contact matrix normalisation happens within the function call, so we don't need to normalise the contact matrix before we pass it to `population()` (see section 3. Population Structure). For details on normalisation, see the tutorial on [Contact matrices](../episodes/contact-matrices.md).
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
+
+:::::::::::::::::::::: instructor
+
+Make a pause.
+
+Use slides to introduce the topics of:
+
+- Initial conditions and 
+- Population structure.
+
+Then continue with the livecoding.
+
+::::::::::::::::::::::
 
 ### 2. Initial conditions
 
@@ -255,6 +298,18 @@ uk_population <- population(
 ```
 
 
+:::::::::::::::::::::: instructor
+
+Make a pause.
+
+Use slides to introduce the topics of:
+
+- Model parameters and 
+- New infections.
+
+Then continue with the livecoding.
+
+::::::::::::::::::::::
 
 
 ### 4. Model parameters
@@ -451,6 +506,16 @@ newinfections_bygroup %>%
 <img src="fig/simulating-transmission-rendered-unnamed-chunk-6-1.png" style="display: block; margin: auto;" />
 
 :::::::::::::::::::::::
+
+:::::::::::::::::::::: instructor
+
+Stop the livecoding.
+
+Suggest learners to read the rest of the episode.
+
+Return to slides.
+
+::::::::::::::::::::::
 
 ## Accounting for uncertainty
 
