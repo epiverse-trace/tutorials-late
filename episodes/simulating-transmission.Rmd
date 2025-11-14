@@ -67,103 +67,16 @@ library(socialmixr)
 library(tidyverse)
 ```
 
+:::::::::::::::::::::: instructor
 
-```{r traj, echo = FALSE, message = FALSE, fig.width = 10, eval = TRUE}
-# load contact and population data from socialmixr::polymod
-polymod <- socialmixr::polymod
-contact_data <- socialmixr::contact_matrix(
-  polymod,
-  countries = "United Kingdom",
-  age.limits = c(0, 20, 40),
-  symmetric = TRUE
-)
+Use slides to introduce the topics of:
 
-# prepare contact matrix
-contact_matrix <- t(contact_data$matrix)
+- Scenario modelling and 
+- Contact matrix.
 
-# prepare the demography vector
-demography_vector <- contact_data$demography$population
-names(demography_vector) <- rownames(contact_matrix)
+Then start with the livecoding.
 
-# initial conditions: one in every 1 million is infected
-initial_i <- 1e-6
-initial_conditions_inf <- c(
-  S = 1 - initial_i, E = 0, I = initial_i, R = 0, V = 0
-)
-
-initial_conditions_free <- c(
-  S = 1, E = 0, I = 0, R = 0, V = 0
-)
-
-# build for all age groups
-initial_conditions <- rbind(
-  initial_conditions_inf,
-  initial_conditions_free,
-  initial_conditions_free
-)
-rownames(initial_conditions) <- rownames(contact_matrix)
-
-# prepare the population to model as affected by the epidemic
-uk_population <- epidemics::population(
-  name = "UK",
-  contact_matrix = contact_matrix,
-  demography_vector = demography_vector,
-  initial_conditions = initial_conditions
-)
-
-# time periods
-preinfectious_period <- 3.0
-infectious_period <- 7.0
-basic_reproduction <- 1.46
-
-# rates
-infectiousness_rate <- 1.0 / preinfectious_period
-recovery_rate <- 1.0 / infectious_period
-transmission_rate <- basic_reproduction / infectious_period
-
-# run an epidemic model using `epidemic()`
-output_plot <- epidemics::model_default(
-  population = uk_population,
-  transmission_rate = transmission_rate,
-  infectiousness_rate = infectiousness_rate,
-  recovery_rate = recovery_rate,
-  time_end = 600, increment = 1.0
-)
-
-output_plot %>%
-  filter(compartment %in% c("exposed", "infectious")) %>%
-  ggplot() +
-  geom_line(
-    aes(
-      x = time,
-      y = value,
-      colour = demography_group,
-      linetype = compartment
-    ),
-    linewidth = 1.2
-  ) +
-  scale_y_continuous(
-    labels = scales::comma
-  ) +
-  scale_colour_brewer(
-    palette = "Dark2",
-    name = "Age group"
-  ) +
-  theme_bw() +
-  labs(
-    x = "Simulation time (days)",
-    linetype = "Compartment",
-    y = "Individuals"
-  )
-```
-
-
-:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: instructor
-
-By the end of this tutorial, learners should be able to replicate the above image on their own computers.
-
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
+::::::::::::::::::::::
 
 ## Simulating disease spread
 
@@ -315,6 +228,19 @@ In `{epidemics}` the contact matrix normalisation happens within the function ca
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
+:::::::::::::::::::::: instructor
+
+Make a pause.
+
+Use slides to introduce the topics of:
+
+- Initial conditions and 
+- Population structure.
+
+Then continue with the livecoding.
+
+::::::::::::::::::::::
+
 ### 2. Initial conditions
 
 The initial conditions are the proportion of individuals in each disease state $S$, $E$, $I$ and $R$ for each age group at time 0. In this example, we have three age groups age between 0 and 20 years, age between 20 and 40 years and over. Let's assume that in the youngest age category, one in a million individuals are infectious, and the remaining age categories are infection free. 
@@ -377,6 +303,18 @@ uk_population <- population(
 ```
 
 
+:::::::::::::::::::::: instructor
+
+Make a pause.
+
+Use slides to introduce the topics of:
+
+- Model parameters and 
+- New infections.
+
+Then continue with the livecoding.
+
+::::::::::::::::::::::
 
 
 ### 4. Model parameters
@@ -539,6 +477,16 @@ newinfections_bygroup %>%
 ```
 
 :::::::::::::::::::::::
+
+:::::::::::::::::::::: instructor
+
+Stop the livecoding.
+
+Suggest learners to read the rest of the episode.
+
+Return to slides.
+
+::::::::::::::::::::::
 
 ## Accounting for uncertainty
 
