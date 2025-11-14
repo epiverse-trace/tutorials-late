@@ -45,8 +45,8 @@ Learners should familiarise themselves with following concept dependencies befor
 
 Install packages if their are not already installed
 
-```{r, eval = FALSE}
-if(!require("pak")) install.packages("pak")
+```r
+if (!base::require("pak")) install.packages("pak")
 pak::pak(c("epidemics", "socialmixr", "tidyverse"))
 ```
 
@@ -266,37 +266,38 @@ A contact matrix represents the average number of contacts between individuals i
 
 ## Load contact and population data
 
-Using the R package `socialmixr`, run the following lines of R code to obtain the contact matrix for the United Kingdom for the year age bins:
+Using the R package `socialmixr`, obtain the contact matrix for the United Kingdom for the year age bins:
 
 + age between 0 and 20 years,
 + age between 20 and 40,
 + 40 years and over.
 
-```r
-polymod <- socialmixr::polymod
-contact_data <- socialmixr::contact_matrix(
-  survey = polymod,
-  countries = "United Kingdom",
-  age.limits = c(0, 20, 40),
-  symmetric = TRUE
-)
-# prepare contact matrix
-contact_matrix <- t(contact_data$matrix)
-contact_matrix
-```
+Use the survey available at `socialmixr::polymod`
+
+:::::::::::::::: hint
+
++ Complete tutorial on [Contact matrices](../episodes/contact-matrices.md).
+
+::::::::::::::::
 
 :::::::::::::::::::::::: solution 
  
-```{r polymod_uk, echo = FALSE, message = FALSE}
+```{r polymod_uk, echo = TRUE, message = FALSE}
+# Access the contact survey data
 polymod <- socialmixr::polymod
+
+# Generate the contact matrix
 contact_data <- socialmixr::contact_matrix(
   polymod,
   countries = "United Kingdom",
   age.limits = c(0, 20, 40),
   symmetric = TRUE
 )
+
 # prepare contact matrix
 contact_matrix <- t(contact_data$matrix)
+
+# print
 contact_matrix
 ```
 
