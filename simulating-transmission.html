@@ -345,7 +345,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Simulating transmission</h1>
-        <p>Last updated on 2025-11-11 |
+        <p>Last updated on 2025-11-14 |
 
         <a href="https://github.com/epiverse-trace/tutorials-late/edit/main/episodes/simulating-transmission.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -395,13 +395,37 @@ package</li>
 <div class="callout-inner">
 <h3 class="callout-title">Prerequisite</h3>
 <div class="callout-content">
-<p>Learners should familiarise themselves with following concept
+<ul><li>Complete tutorial on <a href="contact-matrices.html">Contact
+matrices</a>.</li>
+</ul><p>Learners should familiarise themselves with following concept
 dependencies before working through this tutorial:</p>
 <p><strong>Mathematical Modelling</strong> : <a href="https://doi.org/10.1038/s41592-020-0856-2" class="external-link">Introduction to
 infectious disease models</a>, <a href="reference.html#state">state
 variables</a>, <a href="reference.html#parsode">model parameters</a>, <a href="reference.html#initial">initial conditions</a>, <a href="reference.html#ordinary">differential equations</a>.</p>
 <p><strong>Epidemic theory</strong> : <a href="https://doi.org/10.1155/2011/267049" class="external-link">Transmission</a>, <a href="https://doi.org/10.3201/eid2501.171901" class="external-link">Reproduction
 number</a>.</p>
+<p><strong>R packages installed</strong>: <code>{epidemics}</code>,
+<a href="https://github.com/epiforecasts/socialmixr" class="external-link">socialmixr</a>, <a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a>.</p>
+</div>
+</div>
+</div>
+<div id="accordionSpoiler1" class="accordion spoiler-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler1" aria-expanded="false" aria-controls="collapseSpoiler1">
+  <h3 class="accordion-header" id="headingSpoiler1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
+</button>
+<div id="collapseSpoiler1" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler1" aria-labelledby="headingSpoiler1">
+<div class="accordion-body">
+<p>Install packages if their are not already installed</p>
+<div class="codewrapper sourceCode" id="cb1">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu">base</span><span class="fu">::</span><span class="kw">require</span><span class="op">(</span><span class="st">"pak"</span><span class="op">)</span><span class="op">)</span> <span class="fu">install.packages</span><span class="op">(</span><span class="st">"pak"</span><span class="op">)</span></span>
+<span><span class="fu">pak</span><span class="fu">::</span><span class="fu">pak</span><span class="op">(</span><span class="fu">c</span><span class="op">(</span><span class="st">"epidemics"</span>, <span class="st">"socialmixr"</span>, <span class="st">"tidyverse"</span><span class="op">)</span><span class="op">)</span></span></code></pre>
+</div>
+<p>If you have any error message, go to the <a href="index.html#software-setup">main setup page</a>.</p>
+</div>
 </div>
 </div>
 </div>
@@ -418,7 +442,7 @@ access to social contact data with <a href="https://github.com/epiforecasts/soci
 <a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a>, <a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a> and the pipe
 <code>%&gt;%</code> to connect some of their functions, so let’s also
 call to the <a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a> package:</p>
-<div class="codewrapper sourceCode" id="cb1">
+<div class="codewrapper sourceCode" id="cb2">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -426,7 +450,8 @@ call to the <a href="https://tidyverse.tidyverse.org" class="external-link">tidy
 <span><span class="kw">library</span><span class="op">(</span><span class="va">socialmixr</span><span class="op">)</span></span>
 <span><span class="kw">library</span><span class="op">(</span><span class="va">tidyverse</span><span class="op">)</span></span></code></pre>
 </div>
-<figure><img src="fig/simulating-transmission-rendered-traj-1.png" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure></section><section><h2 class="section-heading" id="simulating-disease-spread">Simulating disease spread<a class="anchor" aria-label="anchor" href="#simulating-disease-spread"></a></h2>
+
+</section><section><h2 class="section-heading" id="simulating-disease-spread">Simulating disease spread<a class="anchor" aria-label="anchor" href="#simulating-disease-spread"></a></h2>
 <hr class="half-width"><p>To simulate infectious disease trajectories, we must first select a
 mathematical model to use. There is a library of models to choose from
 in <code>{epidemics}</code>. These are prefixed with
@@ -541,27 +566,25 @@ al. 2008)</a>.</p>
 <div id="load-contact-and-population-data" class="callout-inner">
 <h3 class="callout-title">Load contact and population data</h3>
 <div class="callout-content">
-<p>Using the R package <code>socialmixr</code>, run the following lines
-of R code to obtain the contact matrix for the United Kingdom for the
-year age bins:</p>
+<p>Using the R package <code>socialmixr</code>, obtain the contact
+matrix for the United Kingdom for the year age bins:</p>
 <ul><li>age between 0 and 20 years,</li>
 <li>age between 20 and 40,</li>
 <li>40 years and over.</li>
-</ul><div class="codewrapper sourceCode" id="cb2">
-<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">polymod</span> <span class="op">&lt;-</span> <span class="fu">socialmixr</span><span class="fu">::</span><span class="va">polymod</span></span>
-<span><span class="va">contact_data</span> <span class="op">&lt;-</span> <span class="fu">socialmixr</span><span class="fu">::</span><span class="fu">contact_matrix</span><span class="op">(</span></span>
-<span>  survey <span class="op">=</span> <span class="va">polymod</span>,</span>
-<span>  countries <span class="op">=</span> <span class="st">"United Kingdom"</span>,</span>
-<span>  age.limits <span class="op">=</span> <span class="fu">c</span><span class="op">(</span><span class="fl">0</span>, <span class="fl">20</span>, <span class="fl">40</span><span class="op">)</span>,</span>
-<span>  symmetric <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co"># prepare contact matrix</span></span>
-<span><span class="va">contact_matrix</span> <span class="op">&lt;-</span> <span class="fu">t</span><span class="op">(</span><span class="va">contact_data</span><span class="op">$</span><span class="va">matrix</span><span class="op">)</span></span>
-<span><span class="va">contact_matrix</span></span></code></pre>
+</ul><p>Use the survey available at <code>socialmixr::polymod</code></p>
 </div>
+</div>
+</div>
+<div id="accordionHint1" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint1" aria-expanded="false" aria-controls="collapseHint1">
+  <h4 class="accordion-header" id="headingHint1"> Give me a hint </h4>
+</button>
+<div id="collapseHint1" class="accordion-collapse collapse" data-bs-parent="#accordionHint1" aria-labelledby="headingHint1">
+<div class="accordion-body">
+<ul><li>Complete tutorial on <a href="contact-matrices.html">Contact
+matrices</a>.</li>
+</ul></div>
 </div>
 </div>
 </div>
@@ -572,6 +595,27 @@ year age bins:</p>
 </button>
 <div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
+<div class="codewrapper sourceCode" id="cb3">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Access the contact survey data</span></span>
+<span><span class="va">polymod</span> <span class="op">&lt;-</span> <span class="fu">socialmixr</span><span class="fu">::</span><span class="va">polymod</span></span>
+<span></span>
+<span><span class="co"># Generate the contact matrix</span></span>
+<span><span class="va">contact_data</span> <span class="op">&lt;-</span> <span class="fu">socialmixr</span><span class="fu">::</span><span class="fu">contact_matrix</span><span class="op">(</span></span>
+<span>  <span class="va">polymod</span>,</span>
+<span>  countries <span class="op">=</span> <span class="st">"United Kingdom"</span>,</span>
+<span>  age.limits <span class="op">=</span> <span class="fu">c</span><span class="op">(</span><span class="fl">0</span>, <span class="fl">20</span>, <span class="fl">40</span><span class="op">)</span>,</span>
+<span>  symmetric <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># prepare contact matrix</span></span>
+<span><span class="va">contact_matrix</span> <span class="op">&lt;-</span> <span class="fu">t</span><span class="op">(</span><span class="va">contact_data</span><span class="op">$</span><span class="va">matrix</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># print</span></span>
+<span><span class="va">contact_matrix</span></span></code></pre>
+</div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -603,6 +647,7 @@ Population Structure). For details on normalisation, see the tutorial on
 </div>
 </div>
 </div>
+
 </div>
 <div class="section level3">
 <h3 id="initial-conditions">2. Initial conditions<a class="anchor" aria-label="anchor" href="#initial-conditions"></a></h3>
@@ -615,7 +660,7 @@ age category, one in a million individuals are infectious, and the
 remaining age categories are infection free.</p>
 <p>The initial conditions in the first age category are <span class="math inline">\(S(0)=1-\frac{1}{1,000,000}\)</span>, <span class="math inline">\(E(0) =0\)</span>, <span class="math inline">\(I(0)=\frac{1}{1,000,000}\)</span>, <span class="math inline">\(R(0)=0\)</span>. This is specified as a vector as
 follows:</p>
-<div class="codewrapper sourceCode" id="cb4">
+<div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -626,7 +671,7 @@ follows:</p>
 </div>
 <p>For the age categories that are free from infection, the initial
 conditions are <span class="math inline">\(S(0)=1\)</span>, <span class="math inline">\(E(0) =0\)</span>, <span class="math inline">\(I(0)=0\)</span>, <span class="math inline">\(R(0)=0\)</span>. We specify this as follows,</p>
-<div class="codewrapper sourceCode" id="cb5">
+<div class="codewrapper sourceCode" id="cb6">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -635,7 +680,7 @@ conditions are <span class="math inline">\(S(0)=1\)</span>, <span class="math in
 <span><span class="op">)</span></span></code></pre>
 </div>
 <p>We combine the three initial conditions vectors into one matrix,</p>
-<div class="codewrapper sourceCode" id="cb6">
+<div class="codewrapper sourceCode" id="cb7">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -667,7 +712,7 @@ vector containing the number of individuals in each age group of our
 given population. In this example, we can extract the demographic
 information from the <code>contact_data</code> object that we obtained
 using the <code>socialmixr</code> package.</p>
-<div class="codewrapper sourceCode" id="cb8">
+<div class="codewrapper sourceCode" id="cb9">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -685,7 +730,7 @@ using the <code>socialmixr</code> package.</p>
 package we call the function <code>population()</code> specifying a
 name, the contact matrix, the demography vector and the initial
 conditions.</p>
-<div class="codewrapper sourceCode" id="cb10">
+<div class="codewrapper sourceCode" id="cb11">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -698,6 +743,7 @@ conditions.</p>
 <span>  initial_conditions <span class="op">=</span> <span class="va">initial_conditions</span></span>
 <span><span class="op">)</span></span></code></pre>
 </div>
+
 </div>
 <div class="section level3">
 <h3 id="model-parameters">4. Model parameters<a class="anchor" aria-label="anchor" href="#model-parameters"></a></h3>
@@ -719,7 +765,7 @@ R_0 \gamma\)</span>,</li>
 <span class="math inline">\(R_0=1.46\)</span>, with a pre-infectious
 period of 3 days and infectious period of 7 days. Therefore our inputs
 will be:</p>
-<div class="codewrapper sourceCode" id="cb11">
+<div class="codewrapper sourceCode" id="cb12">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -728,7 +774,7 @@ will be:</p>
 <span><span class="va">infectious_period</span> <span class="op">&lt;-</span> <span class="fl">7.0</span></span>
 <span><span class="va">basic_reproduction</span> <span class="op">&lt;-</span> <span class="fl">1.46</span></span></code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb12">
+<div class="codewrapper sourceCode" id="cb13">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -781,7 +827,7 @@ systems and models</a> at the “Design principles” vignette.</p>
 from the <code>{epidemics}</code> package.</p>
 <p>Let’s specify <code>time_end=600</code> to run the model for 600
 days.</p>
-<div class="codewrapper sourceCode" id="cb13">
+<div class="codewrapper sourceCode" id="cb14">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -817,7 +863,7 @@ will cover the use of vaccination in future tutorials.</em></p>
 <p>Our model output consists of the number of individuals in each
 compartment in each age group through time. We can visualise the
 infectious individuals only (those in the <span class="math inline">\(I\)</span> class) through time.</p>
-<div class="codewrapper sourceCode" id="cb15">
+<div class="codewrapper sourceCode" id="cb16">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -880,7 +926,7 @@ month.</li>
 <p>Use <code>epidemics::epidemic_peak()</code> to get the time and size
 of a compartment’s highest peak for all demographic groups. By default,
 this will calculate for the infectious compartment.</p>
-<div class="codewrapper sourceCode" id="cb16">
+<div class="codewrapper sourceCode" id="cb17">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -899,7 +945,7 @@ this will calculate for the infectious compartment.</p>
 epidemic at any stage between the start and the end. This is calculated
 as the number of individuals <em>recovered</em> from infection at that
 stage of the epidemic.</p>
-<div class="codewrapper sourceCode" id="cb18">
+<div class="codewrapper sourceCode" id="cb19">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -922,17 +968,17 @@ show the <em>total burden</em> of the disease, the
 other hand, if you want to show the <em>daily burden</em>, then you
 could use <code>epidemics::new_infections()</code> to get the daily
 incidence.</p>
-<div id="accordionSpoiler1" class="accordion spoiler-accordion accordion-flush">
+<div id="accordionSpoiler2" class="accordion spoiler-accordion accordion-flush">
 <div class="accordion-item">
-<button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler1" aria-expanded="false" aria-controls="collapseSpoiler1">
-  <h3 class="accordion-header" id="headingSpoiler1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
+<button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler2" aria-expanded="false" aria-controls="collapseSpoiler2">
+  <h3 class="accordion-header" id="headingSpoiler2">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
 </button>
-<div id="collapseSpoiler1" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler1" aria-labelledby="headingSpoiler1">
+<div id="collapseSpoiler2" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler2" aria-labelledby="headingSpoiler2">
 <div class="accordion-body">
 <p>Notice that the number of new infected individuals at each time (as
 in the figure below) is lower than the cumulative number of infectious
 individuals at each time (as in the figure above).</p>
-<div class="codewrapper sourceCode" id="cb20">
+<div class="codewrapper sourceCode" id="cb21">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -953,6 +999,7 @@ individuals at each time (as in the figure above).</p>
 </div>
 </div>
 </div>
+
 </section><section><h2 class="section-heading" id="accounting-for-uncertainty">Accounting for uncertainty<a class="anchor" aria-label="anchor" href="#accounting-for-uncertainty"></a></h2>
 <hr class="half-width"><p>The epidemic model is <a href="reference.html#deterministic">deterministic</a>, which means it
 runs like clockwork: the same parameters will always lead to the same
@@ -974,7 +1021,7 @@ To account for uncertainty, we will run the model for different values
 of <span class="math inline">\(R_0\)</span>. The steps we will follow to
 do this are:</p>
 <ol style="list-style-type: decimal"><li>Obtain 100 samples from a normal distribution</li>
-</ol><div class="codewrapper sourceCode" id="cb21">
+</ol><div class="codewrapper sourceCode" id="cb22">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -995,7 +1042,7 @@ do this are:</p>
 </div>
 <ol start="2" style="list-style-type: decimal"><li>Run the model 100 times with <span class="math inline">\(R_0\)</span> equal to a different sample each
 time</li>
-</ol><div class="codewrapper sourceCode" id="cb22">
+</ol><div class="codewrapper sourceCode" id="cb23">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1009,7 +1056,7 @@ time</li>
 </div>
 <ol start="3" style="list-style-type: decimal"><li>Calculate the mean and 95% quantiles of the number of infectious
 individuals across each model simulation and visualise the output</li>
-</ol><div class="codewrapper sourceCode" id="cb23">
+</ol><div class="codewrapper sourceCode" id="cb24">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1060,12 +1107,12 @@ these changes expected? Explain briefly.</p></li>
 </ul></div>
 </div>
 </div>
-<div id="accordionHint1" class="accordion challenge-accordion accordion-flush">
+<div id="accordionHint2" class="accordion challenge-accordion accordion-flush">
 <div class="accordion-item">
-<button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint1" aria-expanded="false" aria-controls="collapseHint1">
-  <h4 class="accordion-header" id="headingHint1"> Give me a hint </h4>
+<button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint2" aria-expanded="false" aria-controls="collapseHint2">
+  <h4 class="accordion-header" id="headingHint2"> Give me a hint </h4>
 </button>
-<div id="collapseHint1" class="accordion-collapse collapse" data-bs-parent="#accordionHint1" aria-labelledby="headingHint1">
+<div id="collapseHint2" class="accordion-collapse collapse" data-bs-parent="#accordionHint2" aria-labelledby="headingHint2">
 <div class="accordion-body">
 <p>To interpret the output based on location (time) and size of the peak
 infection, you can find a guide in this two-page paper introduction to
@@ -1160,9 +1207,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://epiverse-trace.github.io/tutorials-late/simulating-transmission.html",
   "identifier": "https://epiverse-trace.github.io/tutorials-late/simulating-transmission.html",
-  "dateCreated": "2025-11-07",
-  "dateModified": "2025-11-11",
-  "datePublished": "2025-11-11"
+  "dateCreated": "2025-11-14",
+  "dateModified": "2025-11-14",
+  "datePublished": "2025-11-14"
 }
 
   </script><script>
