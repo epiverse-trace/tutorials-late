@@ -5,15 +5,10 @@ exercises: 30 # exercise time in minutes
 ---
 
 ```{r setup, echo= FALSE, message = FALSE, warning = FALSE}
-library(ggplot2)
-library(dplyr)
-library(tidyverse)
 library(DiagrammeR)
 library(webshot)
-library(epidemics)
 webshot::install_phantomjs(force = TRUE)
 ```
-
 
 :::::::::::::::::::::::::::::::::::::: questions 
 
@@ -34,14 +29,31 @@ webshot::install_phantomjs(force = TRUE)
 
 ::::::::::::::::::::::::::::::::::::: prereq
 
++ Complete tutorial on [Contact matrices](../episodes/contact-matrices.md).
+
 Learners should familiarise themselves with following concept dependencies before working through this tutorial: 
 
 **Mathematical Modelling** : [Introduction to infectious disease models](https://doi.org/10.1038/s41592-020-0856-2), [state variables](../learners/reference.md#state), [model parameters](../learners/reference.md#parsode), [initial conditions](../learners/reference.md#initial), [differential equations](../learners/reference.md#ordinary).
 
 **Epidemic theory** : [Transmission](https://doi.org/10.1155/2011/267049), [Reproduction number](https://doi.org/10.3201/eid2501.171901).
+
+**R packages installed**: `{epidemics}`, `{socialmixr}`, `{tidyverse}`.
+
 :::::::::::::::::::::::::::::::::
 
+:::::::::: spoiler
 
+Install packages if their are not already installed
+
+```{r, eval = FALSE}
+if(!require("pak")) install.packages("pak")
+pak::pak(c("epidemics", "socialmixr", "tidyverse"))
+```
+
+If you have any error message,
+go to the [main setup page](../learners/setup.md#software-setup).
+
+::::::::::
 
 ## Introduction
 
