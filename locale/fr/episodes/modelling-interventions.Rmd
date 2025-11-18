@@ -429,6 +429,17 @@ Le graphique montre que le pic du nombre total d'individus infectieux en cas de 
 :::::::::::::::::::::::::::::::::
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
+Enfin, si vous souhaitez représenter graphiquement les nouvelles infections à partir d'un object de epidemics::model_default() qui inclut la vaccination, vous devez ajouter un argument à epidemics::new_infections() : définissez exclude_compartments = « vaccinated » pour indiquer à la fonction que les personnes passant de « susceptibles » à « vaccinées » ne sont pas infectées. Cela garantit que les personnes vaccinées ne seront pas comptées comme des infections.
+
+Montrez les détails 
+
+Notez que si nous ajoutons by_group = FALSE dans epidemics::new_infections(), nous obtenons un résumé des nouvelles infections dans la population.
+
+Assigner les noms des scénarios
+Combiner les données des deux scénarios
+
+Pour obtenir un graphique stratifié par âge, conservez la valeur par défaut by_group = TRUE, puis ajoutez linetype = demography_group lors de la déclaration des variables dans ggplot(aes(...)).
+
 ## Résumé
 
 Différents types d'intervention peuvent être mis en œuvre à l'aide de la modélisation mathématique. La modélisation des interventions nécessite des hypothèses sur les paramètres du modèle qui sont affectés (par exemple, les matrices de contact, le taux de transmission), ainsi que sur l'ampleur et le moment de la simulation d'une épidémie.
