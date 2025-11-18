@@ -429,16 +429,50 @@ Le graphique montre que le pic du nombre total d'individus infectieux en cas de 
 :::::::::::::::::::::::::::::::::
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
-Enfin, si vous souhaitez représenter graphiquement les nouvelles infections à partir d'un object de epidemics::model_default() qui inclut la vaccination, vous devez ajouter un argument à epidemics::new_infections() : définissez exclude_compartments = « vaccinated » pour indiquer à la fonction que les personnes passant de « susceptibles » à « vaccinées » ne sont pas infectées. Cela garantit que les personnes vaccinées ne seront pas comptées comme des infections.
+Enfin, si vous souhaitez représenter graphiquement les nouvelles infections à partir d'un object de `epidemics::model_default()` qui inclut la `vaccination`, vous devez ajouter un argument à `epidemics::new_infections()` : définissez `exclude_compartments = "vaccinated"` pour indiquer à la fonction que les personnes passant de « susceptibles » à « vaccinées » ne sont pas infectées. Cela garantit que les personnes vaccinées ne seront pas comptées comme des infections.
 
-Montrez les détails 
+::::::::::::::::::::: spoiler 
 
 Notez que si nous ajoutons by_group = FALSE dans epidemics::new_infections(), nous obtenons un résumé des nouvelles infections dans la population.
 
-Assigner les noms des scénarios
-Combiner les données des deux scénarios
+```{r}
+infections_baseline <- epidemics::new_infections(
+  data = output_baseline,
+  exclude_compartments = "vaccinated", # if vaccination
+  by_group = FALSE
+)
 
-Pour obtenir un graphique stratifié par âge, conservez la valeur par défaut by_group = TRUE, puis ajoutez linetype = demography_group lors de la déclaration des variables dans ggplot(aes(...)).
+infections_intervention <- epidemics::new_infections(
+  data = output_vaccinate,
+  exclude_compartments = "vaccinated", # if vaccination
+  by_group = FALSE
+)
+
+# Assigner les noms des scénarios
+infections_baseline$scenario <- "Baseline"
+infections_intervention$scenario <- "Vaccination"
+
+# Combiner les données des deux scénarios
+infections_baseline_interv <- dplyr::bind_rows(
+  infections_baseline,
+  infections_intervention
+)
+
+infections_baseline_interv %>%
+  ggplot(aes(x = time, y = new_infections, colour = scenario)) +
+  geom_line() +
+  geom_vline(
+    xintercept = c(vaccinate$time_begin, vaccinate$time_end),
+    linetype = "dashed",
+    linewidth = 0.2
+  ) +
+  scale_y_continuous(labels = scales::comma) +
+  theme_bw()
+```
+
+Pour obtenir un graphique stratifié par âge, conservez la valeur par défaut `by_group = TRUE`, puis ajoutez `linetype = demography_group` lors de la déclaration des variables dans `ggplot(aes(...))`.
+
+:::::::::::::::::::::
 
 ## Résumé
 
