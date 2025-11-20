@@ -345,7 +345,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Simulating transmission</h1>
-        <p>Last updated on 2025-11-16 |
+        <p>Last updated on 2025-11-20 |
 
         <a href="https://github.com/epiverse-trace/tutorials-late/edit/main/episodes/simulating-transmission.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -424,7 +424,7 @@ number</a>.</p>
 </h3>
 <pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu">base</span><span class="fu">::</span><span class="kw">require</span><span class="op">(</span><span class="st">"pak"</span><span class="op">)</span><span class="op">)</span> <span class="fu">install.packages</span><span class="op">(</span><span class="st">"pak"</span><span class="op">)</span></span>
-<span><span class="fu">pak</span><span class="fu">::</span><span class="fu">pak</span><span class="op">(</span><span class="fu">c</span><span class="op">(</span><span class="st">"epiverse-trace/epidemics"</span>, <span class="st">"socialmixr"</span>, <span class="st">"tidyverse"</span><span class="op">)</span><span class="op">)</span></span></code></pre>
+<span><span class="fu">pak</span><span class="fu">::</span><span class="fu">pak</span><span class="op">(</span><span class="fu">c</span><span class="op">(</span><span class="st">"epiverse-trace/epidemics"</span>, <span class="st">"socialmixr"</span>, <span class="st">"scales"</span>, <span class="st">"tidyverse"</span><span class="op">)</span><span class="op">)</span></span></code></pre>
 </div>
 <p>If you have any error message, go to the <a href="index.html#software-setup">main setup page</a>.</p>
 </div>
@@ -627,10 +627,10 @@ matrices</a>.</li>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># prepare contact matrix</span></span>
-<span><span class="va">contact_matrix</span> <span class="op">&lt;-</span> <span class="fu">t</span><span class="op">(</span><span class="va">contact_data</span><span class="op">$</span><span class="va">matrix</span><span class="op">)</span></span>
+<span><span class="va">socialcontact_matrix</span> <span class="op">&lt;-</span> <span class="fu">t</span><span class="op">(</span><span class="va">contact_data</span><span class="op">$</span><span class="va">matrix</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># print</span></span>
-<span><span class="va">contact_matrix</span></span></code></pre>
+<span><span class="va">socialcontact_matrix</span></span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -640,6 +640,27 @@ contact.age.group   [0,20)  [20,40)      40+
           [0,20)  7.883663 2.794154 1.565665
           [20,40) 3.120220 4.854839 2.624868
           40+     3.063895 4.599893 5.005571</code></pre>
+</div>
+<p>Remember that the matrix satisfies the <code>symmetric = TRUE</code>
+condition at the level of total number of contacts.</p>
+<p>The total number of contacts between groups <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> is calculated as the mean number of
+contacts (<code>contact_data$matrix</code>) multiplied by the number of
+individuals in group <span class="math inline">\(i\)</span>
+(<code>contact_data$demography$population</code>)</p>
+<div class="codewrapper sourceCode" id="cb5">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">contact_data</span><span class="op">$</span><span class="va">matrix</span> <span class="op">*</span> <span class="va">contact_data</span><span class="op">$</span><span class="va">demography</span><span class="op">$</span><span class="va">population</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>         contact.age.group
+age.group    [0,20)  [20,40)       40+
+  [0,20)  116672620 46177038  45343471
+  [20,40)  46177038 80232531  76019216
+  40+      45343471 76019216 144967139</code></pre>
 </div>
 </div>
 </div>
@@ -657,9 +678,9 @@ be formatted as a matrix to be used in <code>epidemics</code>.</p>
 <div class="callout-content">
 <p>In <code>{epidemics}</code> the contact matrix normalisation happens
 within the function call, so we don’t need to normalise the contact
-matrix before we pass it to <code>population()</code> (see section 3.
-Population Structure). For details on normalisation, see the tutorial on
-<a href="contact-matrices.html">Contact matrices</a>.</p>
+matrix before we pass it to <code>epidemics::population()</code> (see
+section 3. Population Structure). For details on normalisation, see the
+tutorial on <a href="contact-matrices.html">Contact matrices</a>.</p>
 </div>
 </div>
 </div>
@@ -691,18 +712,24 @@ age category, one in a million individuals are infectious, and the
 remaining age categories are infection free.</p>
 <p>The initial conditions in the first age category are <span class="math inline">\(S(0)=1-\frac{1}{1,000,000}\)</span>, <span class="math inline">\(E(0) =0\)</span>, <span class="math inline">\(I(0)=\frac{1}{1,000,000}\)</span>, <span class="math inline">\(R(0)=0\)</span>. This is specified as a vector as
 follows:</p>
-<div class="codewrapper sourceCode" id="cb5">
+<div class="codewrapper sourceCode" id="cb7">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">initial_i</span> <span class="op">&lt;-</span> <span class="fl">1e-6</span></span>
+<code class="sourceCode R"><span><span class="co"># 1 in 1,000,000 is equivalent to 1e-6</span></span>
+<span><span class="va">initial_i</span> <span class="op">&lt;-</span> <span class="fl">1e-6</span></span>
 <span><span class="va">initial_conditions_inf</span> <span class="op">&lt;-</span> <span class="fu">c</span><span class="op">(</span></span>
 <span>  S <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">initial_i</span>, E <span class="op">=</span> <span class="fl">0</span>, I <span class="op">=</span> <span class="va">initial_i</span>, R <span class="op">=</span> <span class="fl">0</span>, V <span class="op">=</span> <span class="fl">0</span></span>
 <span><span class="op">)</span></span></code></pre>
 </div>
+<p>Note that R uses scientific <code>e</code> notation where
+<code>e</code> tells you to multiple the base number by 10 raised to the
+power shown (<a href="https://www.datakwery.com/post/2020-07-11-scientific-notation-in-r/" class="external-link">DataKwery,
+2020</a>). The expression <span class="math inline">\(1 \times
+10^{-6}\)</span> is equivalent to <code>1e-6</code>.</p>
 <p>For the age categories that are free from infection, the initial
 conditions are <span class="math inline">\(S(0)=1\)</span>, <span class="math inline">\(E(0) =0\)</span>, <span class="math inline">\(I(0)=0\)</span>, <span class="math inline">\(R(0)=0\)</span>. We specify this as follows,</p>
-<div class="codewrapper sourceCode" id="cb6">
+<div class="codewrapper sourceCode" id="cb8">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -711,19 +738,19 @@ conditions are <span class="math inline">\(S(0)=1\)</span>, <span class="math in
 <span><span class="op">)</span></span></code></pre>
 </div>
 <p>We combine the three initial conditions vectors into one matrix,</p>
-<div class="codewrapper sourceCode" id="cb7">
+<div class="codewrapper sourceCode" id="cb9">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># combine the initial conditions</span></span>
+<code class="sourceCode R"><span><span class="co"># combine the initial conditions into a matrix class object</span></span>
 <span><span class="va">initial_conditions</span> <span class="op">&lt;-</span> <span class="fu">rbind</span><span class="op">(</span></span>
-<span>  <span class="va">initial_conditions_inf</span>, <span class="co"># age group 1</span></span>
+<span>  <span class="va">initial_conditions_inf</span>, <span class="co"># age group 1 (only group with infectious)</span></span>
 <span>  <span class="va">initial_conditions_free</span>, <span class="co"># age group 2</span></span>
 <span>  <span class="va">initial_conditions_free</span> <span class="co"># age group 3</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># use contact matrix to assign age group names</span></span>
-<span><span class="fu">rownames</span><span class="op">(</span><span class="va">initial_conditions</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu">rownames</span><span class="op">(</span><span class="va">contact_matrix</span><span class="op">)</span></span>
+<span><span class="fu">rownames</span><span class="op">(</span><span class="va">initial_conditions</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu">rownames</span><span class="op">(</span><span class="va">socialcontact_matrix</span><span class="op">)</span></span>
 <span><span class="va">initial_conditions</span></span></code></pre>
 </div>
 <div class="codewrapper">
@@ -743,12 +770,15 @@ vector containing the number of individuals in each age group of our
 given population. In this example, we can extract the demographic
 information from the <code>contact_data</code> object that we obtained
 using the <code>socialmixr</code> package.</p>
-<div class="codewrapper sourceCode" id="cb9">
+<div class="codewrapper sourceCode" id="cb11">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">demography_vector</span> <span class="op">&lt;-</span> <span class="va">contact_data</span><span class="op">$</span><span class="va">demography</span><span class="op">$</span><span class="va">population</span></span>
-<span><span class="fu">names</span><span class="op">(</span><span class="va">demography_vector</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu">rownames</span><span class="op">(</span><span class="va">contact_matrix</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="co"># extract the demography vector</span></span>
+<span><span class="va">demography_vector</span> <span class="op">&lt;-</span> <span class="va">contact_data</span><span class="op">$</span><span class="va">demography</span><span class="op">$</span><span class="va">population</span></span>
+<span></span>
+<span><span class="co"># use contact matrix to assign age group names</span></span>
+<span><span class="fu">names</span><span class="op">(</span><span class="va">demography_vector</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu">rownames</span><span class="op">(</span><span class="va">socialcontact_matrix</span><span class="op">)</span></span>
 <span><span class="va">demography_vector</span></span></code></pre>
 </div>
 <div class="codewrapper">
@@ -758,18 +788,18 @@ using the <code>socialmixr</code> package.</p>
 14799290 16526302 28961159 </code></pre>
 </div>
 <p>To create our population object, from the <code>{epidemics}</code>
-package we call the function <code>population()</code> specifying a
-name, the contact matrix, the demography vector and the initial
-conditions.</p>
-<div class="codewrapper sourceCode" id="cb11">
+package we call the function <code>epidemics::population()</code>
+specifying a name, the contact matrix, the demography vector and the
+initial conditions.</p>
+<div class="codewrapper sourceCode" id="cb13">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">epidemics</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">uk_population</span> <span class="op">&lt;-</span> <span class="fu">population</span><span class="op">(</span></span>
+<span><span class="va">uk_population</span> <span class="op">&lt;-</span> <span class="fu">epidemics</span><span class="fu">::</span><span class="fu">population</span><span class="op">(</span></span>
 <span>  name <span class="op">=</span> <span class="st">"UK"</span>,</span>
-<span>  contact_matrix <span class="op">=</span> <span class="va">contact_matrix</span>,</span>
+<span>  contact_matrix <span class="op">=</span> <span class="va">socialcontact_matrix</span>,</span>
 <span>  demography_vector <span class="op">=</span> <span class="va">demography_vector</span>,</span>
 <span>  initial_conditions <span class="op">=</span> <span class="va">initial_conditions</span></span>
 <span><span class="op">)</span></span></code></pre>
@@ -811,7 +841,7 @@ R_0 \gamma\)</span>,</li>
 <span class="math inline">\(R_0=1.46\)</span>, with a pre-infectious
 period of 3 days and infectious period of 7 days. Therefore our inputs
 will be:</p>
-<div class="codewrapper sourceCode" id="cb12">
+<div class="codewrapper sourceCode" id="cb14">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -820,7 +850,7 @@ will be:</p>
 <span><span class="va">infectious_period</span> <span class="op">&lt;-</span> <span class="fl">7.0</span></span>
 <span><span class="va">basic_reproduction</span> <span class="op">&lt;-</span> <span class="fl">1.46</span></span></code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb13">
+<div class="codewrapper sourceCode" id="cb15">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -869,15 +899,16 @@ systems and models</a> at the “Design principles” vignette.</p>
 </div>
 </div>
 </div>
-<p>Now we are ready to run our model using <code>model_default()</code>
-from the <code>{epidemics}</code> package.</p>
+<p>Now we are ready to run our model using
+<code>epidemics::model_default()</code> from the
+<code>{epidemics}</code> package.</p>
 <p>Let’s specify <code>time_end=600</code> to run the model for 600
 days.</p>
-<div class="codewrapper sourceCode" id="cb14">
+<div class="codewrapper sourceCode" id="cb16">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu">model_default</span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu">epidemics</span><span class="fu">::</span><span class="fu">model_default</span><span class="op">(</span></span>
 <span>  <span class="co"># population</span></span>
 <span>  population <span class="op">=</span> <span class="va">uk_population</span>,</span>
 <span>  <span class="co"># rates</span></span>
@@ -909,7 +940,7 @@ will cover the use of vaccination in future tutorials.</em></p>
 <p>Our model output consists of the number of individuals in each
 compartment in each age group through time. We can visualise the
 infectious individuals only (those in the <span class="math inline">\(I\)</span> class) through time.</p>
-<div class="codewrapper sourceCode" id="cb16">
+<div class="codewrapper sourceCode" id="cb18">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -972,7 +1003,7 @@ month.</li>
 <p>Use <code>epidemics::epidemic_peak()</code> to get the time and size
 of a compartment’s highest peak for all demographic groups. By default,
 this will calculate for the infectious compartment.</p>
-<div class="codewrapper sourceCode" id="cb17">
+<div class="codewrapper sourceCode" id="cb19">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -991,7 +1022,7 @@ this will calculate for the infectious compartment.</p>
 epidemic at any stage between the start and the end. This is calculated
 as the number of individuals <em>recovered</em> from infection at that
 stage of the epidemic.</p>
-<div class="codewrapper sourceCode" id="cb19">
+<div class="codewrapper sourceCode" id="cb21">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1024,7 +1055,7 @@ incidence.</p>
 <p>Notice that the number of new infected individuals at each time (as
 in the figure below) is lower than the cumulative number of infectious
 individuals at each time (as in the figure above).</p>
-<div class="codewrapper sourceCode" id="cb21">
+<div class="codewrapper sourceCode" id="cb23">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1041,7 +1072,7 @@ individuals at each time (as in the figure above).</p>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">theme_bw</span><span class="op">(</span><span class="op">)</span></span></code></pre>
 </div>
-<figure><img src="../fig/simulating-transmission-rendered-unnamed-chunk-6-1.png" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure></div>
+<figure><img src="../fig/simulating-transmission-rendered-unnamed-chunk-7-1.png" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure></div>
 </div>
 </div>
 </div>
@@ -1080,7 +1111,7 @@ To account for uncertainty, we will run the model for different values
 of <span class="math inline">\(R_0\)</span>. The steps we will follow to
 do this are:</p>
 <ol style="list-style-type: decimal"><li>Obtain 100 samples from a normal distribution</li>
-</ol><div class="codewrapper sourceCode" id="cb22">
+</ol><div class="codewrapper sourceCode" id="cb24">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1101,11 +1132,11 @@ do this are:</p>
 </div>
 <ol start="2" style="list-style-type: decimal"><li>Run the model 100 times with <span class="math inline">\(R_0\)</span> equal to a different sample each
 time</li>
-</ol><div class="codewrapper sourceCode" id="cb23">
+</ol><div class="codewrapper sourceCode" id="cb25">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">output_samples</span> <span class="op">&lt;-</span> <span class="fu">model_default</span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">output_samples</span> <span class="op">&lt;-</span> <span class="fu">epidemics</span><span class="fu">::</span><span class="fu">model_default</span><span class="op">(</span></span>
 <span>  population <span class="op">=</span> <span class="va">uk_population</span>,</span>
 <span>  transmission_rate <span class="op">=</span> <span class="va">beta</span>,</span>
 <span>  infectiousness_rate <span class="op">=</span> <span class="va">infectiousness_rate</span>,</span>
@@ -1115,7 +1146,7 @@ time</li>
 </div>
 <ol start="3" style="list-style-type: decimal"><li>Calculate the mean and 95% quantiles of the number of infectious
 individuals across each model simulation and visualise the output</li>
-</ol><div class="codewrapper sourceCode" id="cb24">
+</ol><div class="codewrapper sourceCode" id="cb26">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1266,9 +1297,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://epiverse-trace.github.io/tutorials-late/instructor/simulating-transmission.html",
   "identifier": "https://epiverse-trace.github.io/tutorials-late/instructor/simulating-transmission.html",
-  "dateCreated": "2025-11-16",
-  "dateModified": "2025-11-16",
-  "datePublished": "2025-11-18"
+  "dateCreated": "2025-11-20",
+  "dateModified": "2025-11-20",
+  "datePublished": "2025-11-20"
 }
 
   </script><script>
