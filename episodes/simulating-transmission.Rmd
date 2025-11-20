@@ -255,11 +255,15 @@ The initial conditions are the proportion of individuals in each disease state $
 The initial conditions in the first age category are $S(0)=1-\frac{1}{1,000,000}$, $E(0) =0$, $I(0)=\frac{1}{1,000,000}$, $R(0)=0$. This is specified as a vector as follows:
 
 ```{r initial_inf}
+# 1 in 1,000,000 is equivalent to 1e-6
 initial_i <- 1e-6
 initial_conditions_inf <- c(
   S = 1 - initial_i, E = 0, I = initial_i, R = 0, V = 0
 )
 ```
+
+Note that R uses scientific `e` notation where `e` tells you to multiple the base number by 10 raised to the power shown ([DataKwery, 2020](https://www.datakwery.com/post/2020-07-11-scientific-notation-in-r/)).
+The expression $1 \times 10^{-6}$ is equivalent to `1e-6`.
 
 For the age categories that are free from infection, the initial conditions are $S(0)=1$, $E(0) =0$, $I(0)=0$, $R(0)=0$. We specify this as follows,
 
