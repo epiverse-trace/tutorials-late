@@ -208,10 +208,10 @@ contact_data <- socialmixr::contact_matrix(
 )
 
 # prepare contact matrix
-contact_matrix <- t(contact_data$matrix)
+socialcontact_matrix <- t(contact_data$matrix)
 
 # print
-contact_matrix
+socialcontact_matrix
 ```
 
 Remember that the matrix satisfies the `symmetric = TRUE` condition at the level of total number of contacts.
@@ -284,7 +284,7 @@ initial_conditions <- rbind(
 )
 
 # use contact matrix to assign age group names
-rownames(initial_conditions) <- rownames(contact_matrix)
+rownames(initial_conditions) <- rownames(socialcontact_matrix)
 initial_conditions
 ```
 
@@ -299,7 +299,7 @@ The population object requires a vector containing the demographic structure of 
 demography_vector <- contact_data$demography$population
 
 # use contact matrix to assign age group names
-names(demography_vector) <- rownames(contact_matrix)
+names(demography_vector) <- rownames(socialcontact_matrix)
 demography_vector
 ```
 
@@ -310,7 +310,7 @@ library(epidemics)
 
 uk_population <- epidemics::population(
   name = "UK",
-  contact_matrix = contact_matrix,
+  contact_matrix = socialcontact_matrix,
   demography_vector = demography_vector,
   initial_conditions = initial_conditions
 )
