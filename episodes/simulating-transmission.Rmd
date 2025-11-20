@@ -231,7 +231,7 @@ The result is a square matrix with rows and columns for each age group. Contact 
 
 ### Normalisation
 
-In `{epidemics}` the contact matrix normalisation happens within the function call, so we don't need to normalise the contact matrix before we pass it to `population()` (see section 3. Population Structure). For details on normalisation, see the tutorial on [Contact matrices](../episodes/contact-matrices.md).
+In `{epidemics}` the contact matrix normalisation happens within the function call, so we don't need to normalise the contact matrix before we pass it to `epidemics::population()` (see section 3. Population Structure). For details on normalisation, see the tutorial on [Contact matrices](../episodes/contact-matrices.md).
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -276,7 +276,7 @@ initial_conditions_free <- c(
 We combine the three initial conditions vectors into one matrix, 
 
 ```{r initial_conditions}
-# combine the initial conditions
+# combine the initial conditions into a matrix class object
 initial_conditions <- rbind(
   initial_conditions_inf, # age group 1
   initial_conditions_free, # age group 2
@@ -295,17 +295,20 @@ initial_conditions
 The population object requires a vector containing the demographic structure of the population. The demographic vector must be a named vector containing the number of individuals in each age group of our given population. In this example, we can extract the demographic information from the `contact_data` object that we obtained using the `socialmixr` package.
 
 ```{r demography}
+# extract the demography vector
 demography_vector <- contact_data$demography$population
+
+# use contact matrix to assign age group names
 names(demography_vector) <- rownames(contact_matrix)
 demography_vector
 ```
 
-To create our population object, from the `{epidemics}` package we call the function `population()` specifying a name, the contact matrix, the demography vector and the initial conditions.
+To create our population object, from the `{epidemics}` package we call the function `epidemics::population()` specifying a name, the contact matrix, the demography vector and the initial conditions.
 
 ```{r population}
 library(epidemics)
 
-uk_population <- population(
+uk_population <- epidemics::population(
   name = "UK",
   contact_matrix = contact_matrix,
   demography_vector = demography_vector,
@@ -385,11 +388,11 @@ For models that are described by [differential equations](../learners/reference.
 An _ODE solver_ is the software used to find numerical solutions to differential equations. If interested on how a system of differential equations is solved in `{epidemics}`, we suggest you to read the section on [ODE systems and models](https://epiverse-trace.github.io/epidemics/articles/design-principles.html#ode-systems-and-models) at the "Design principles" vignette. 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
-Now we are ready to run our model using `model_default()` from the `{epidemics}` package. 
+Now we are ready to run our model using `epidemics::model_default()` from the `{epidemics}` package. 
 
 Let's specify `time_end=600` to run the model for 600 days.
 ```{r run_model}
-output <- model_default(
+output <- epidemics::model_default(
   # population
   population = uk_population,
   # rates
@@ -527,7 +530,7 @@ beta <- r_samples / infectious_period
 2. Run the model 100 times with $R_0$ equal to a different sample each time
 
 ```{r samples}
-output_samples <- model_default(
+output_samples <- epidemics::model_default(
   population = uk_population,
   transmission_rate = beta,
   infectiousness_rate = infectiousness_rate,
