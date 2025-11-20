@@ -43,7 +43,7 @@ Install packages if their are not already installed
 
 ```r
 if (!base::require("pak")) install.packages("pak")
-pak::pak(c("epiverse-trace/epidemics", "socialmixr", "tidyverse"))
+pak::pak(c("epiverse-trace/epidemics", "socialmixr", "scales", "tidyverse"))
 ```
 
 If you have any error message,
@@ -178,10 +178,10 @@ contact_data <- socialmixr::contact_matrix(
 )
 
 # prepare contact matrix
-contact_matrix <- t(contact_data$matrix)
+socialcontact_matrix <- t(contact_data$matrix)
 
 # print
-contact_matrix
+socialcontact_matrix
 ```
 
 ``` output
@@ -192,6 +192,22 @@ contact.age.group   [0,20)  [20,40)      40+
           40+     3.063895 4.599893 5.005571
 ```
 
+Remember that the matrix satisfies the `symmetric = TRUE` condition at the level of total number of contacts.
+
+The total number of contacts between groups $i$ and $j$ is calculated as the mean number of contacts (`contact_data$matrix`) multiplied by the number of individuals in group $i$ (`contact_data$demography$population`)
+
+
+``` r
+contact_data$matrix * contact_data$demography$population
+```
+
+``` output
+         contact.age.group
+age.group    [0,20)  [20,40)       40+
+  [0,20)  116672620 46177038  45343471
+  [20,40)  46177038 80232531  76019216
+  40+      45343471 76019216 144967139
+```
 
 :::::::::::::::::::::::::::::::::
 ::::::::::::::::::::::::::::::::::::::::::::::::
@@ -202,7 +218,7 @@ The result is a square matrix with rows and columns for each age group. Contact 
 
 ### Normalisation
 
-In `{epidemics}` the contact matrix normalisation happens within the function call, so we don't need to normalise the contact matrix before we pass it to `population()` (see section 3. Population Structure). For details on normalisation, see the tutorial on [Contact matrices](../episodes/contact-matrices.md).
+In `{epidemics}` the contact matrix normalisation happens within the function call, so we don't need to normalise the contact matrix before we pass it to `epidemics::population()` (see section 3. Population Structure). For details on normalisation, see the tutorial on [Contact matrices](../episodes/contact-matrices.md).
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -227,11 +243,15 @@ The initial conditions in the first age category are $S(0)=1-\frac{1}{1,000,000}
 
 
 ``` r
+# 1 in 1,000,000 is equivalent to 1e-6
 initial_i <- 1e-6
 initial_conditions_inf <- c(
   S = 1 - initial_i, E = 0, I = initial_i, R = 0, V = 0
 )
 ```
+
+Note that R uses scientific `e` notation where `e` tells you to multiple the base number by 10 raised to the power shown ([DataKwery, 2020](https://www.datakwery.com/post/2020-07-11-scientific-notation-in-r/)).
+The expression $1 \times 10^{-6}$ is equivalent to `1e-6`.
 
 For the age categories that are free from infection, the initial conditions are $S(0)=1$, $E(0) =0$, $I(0)=0$, $R(0)=0$. We specify this as follows,
 
@@ -246,15 +266,15 @@ We combine the three initial conditions vectors into one matrix,
 
 
 ``` r
-# combine the initial conditions
+# combine the initial conditions into a matrix class object
 initial_conditions <- rbind(
-  initial_conditions_inf, # age group 1
+  initial_conditions_inf, # age group 1 (only group with infectious)
   initial_conditions_free, # age group 2
   initial_conditions_free # age group 3
 )
 
 # use contact matrix to assign age group names
-rownames(initial_conditions) <- rownames(contact_matrix)
+rownames(initial_conditions) <- rownames(socialcontact_matrix)
 initial_conditions
 ```
 
@@ -273,8 +293,11 @@ The population object requires a vector containing the demographic structure of 
 
 
 ``` r
+# extract the demography vector
 demography_vector <- contact_data$demography$population
-names(demography_vector) <- rownames(contact_matrix)
+
+# use contact matrix to assign age group names
+names(demography_vector) <- rownames(socialcontact_matrix)
 demography_vector
 ```
 
@@ -283,15 +306,15 @@ demography_vector
 14799290 16526302 28961159 
 ```
 
-To create our population object, from the `{epidemics}` package we call the function `population()` specifying a name, the contact matrix, the demography vector and the initial conditions.
+To create our population object, from the `{epidemics}` package we call the function `epidemics::population()` specifying a name, the contact matrix, the demography vector and the initial conditions.
 
 
 ``` r
 library(epidemics)
 
-uk_population <- population(
+uk_population <- epidemics::population(
   name = "UK",
-  contact_matrix = contact_matrix,
+  contact_matrix = socialcontact_matrix,
   demography_vector = demography_vector,
   initial_conditions = initial_conditions
 )
@@ -371,12 +394,12 @@ For models that are described by [differential equations](../learners/reference.
 An _ODE solver_ is the software used to find numerical solutions to differential equations. If interested on how a system of differential equations is solved in `{epidemics}`, we suggest you to read the section on [ODE systems and models](https://epiverse-trace.github.io/epidemics/articles/design-principles.html#ode-systems-and-models) at the "Design principles" vignette. 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
-Now we are ready to run our model using `model_default()` from the `{epidemics}` package. 
+Now we are ready to run our model using `epidemics::model_default()` from the `{epidemics}` package. 
 
 Let's specify `time_end=600` to run the model for 600 days.
 
 ``` r
-output <- model_default(
+output <- epidemics::model_default(
   # population
   population = uk_population,
   # rates
@@ -503,7 +526,7 @@ newinfections_bygroup %>%
   theme_bw()
 ```
 
-<img src="fig/simulating-transmission-rendered-unnamed-chunk-6-1.png" style="display: block; margin: auto;" />
+<img src="fig/simulating-transmission-rendered-unnamed-chunk-7-1.png" style="display: block; margin: auto;" />
 
 :::::::::::::::::::::::
 
@@ -547,7 +570,7 @@ beta <- r_samples / infectious_period
 
 
 ``` r
-output_samples <- model_default(
+output_samples <- epidemics::model_default(
   population = uk_population,
   transmission_rate = beta,
   infectiousness_rate = infectiousness_rate,
