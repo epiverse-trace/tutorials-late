@@ -64,6 +64,7 @@ $$
 1 & 3 
 \end{bmatrix}
 $$
+
 In this example, we would use this to represent that children meet, on average, 2 other children and 2 adult per day (first row), and adults meet, on average, 1 child and 3 other adults per day (second row). We can use this kind of information to account for the role heterogeneity in contact plays in infectious disease transmission.
 
 ::::::::::::::::::::::::::::::::::::: callout
@@ -267,6 +268,7 @@ $$
 \frac{dR}{dt} &=\gamma I \\
 \end{aligned}
 $$
+
 To add age structure to our model, we need to add additional equations for the infection states $S$, $I$ and $R$ for each age group $i$. If we want to assume that there is heterogeneity in contacts between age groups then we must adapt the transmission term $\beta SI$ to include the contact matrix $C$ as follows :
 
 $$ \beta S_i \sum_j C_{i,j} I_j/N_j. $$ 
