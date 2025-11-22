@@ -37,7 +37,7 @@ Learners should familiarise themselves with following concept dependencies befor
 
 **Epidemic theory** : [Transmission](https://doi.org/10.1155/2011/267049), [Reproduction number](https://doi.org/10.3201/eid2501.171901).
 
-**R packages installed**: `{epidemics}`, `{socialmixr}`, `{tidyverse}`.
+**R packages installed**: `{epidemics}`, `{socialmixr}`, `{scales}`, `{tidyverse}`.
 
 :::::::::::::::::::::::::::::::::
 
