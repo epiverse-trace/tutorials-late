@@ -118,7 +118,7 @@ recovery_rate <- 1.0 / infectious_period
 transmission_rate <- basic_reproduction * recovery_rate
 
 # run baseline simulation with no intervention
-output_baseline <- model_default(
+output_baseline <- epidemics::model_default(
   population = uk_population,
   transmission_rate = transmission_rate,
   infectiousness_rate = infectiousness_rate,
@@ -144,15 +144,13 @@ rownames(cm_matrix)
 Therefore, we specify ` reduction = matrix(c(0.5, 0.01, 0.01))`. We assume that the school closures start on day 50 and continue to be in place for a further 100 days. Therefore our intervention object is: 
 
 ```{r intervention}
-close_schools <- intervention(
+close_schools <- epidemics::intervention(
   name = "School closure",
   type = "contacts",
   time_begin = 50,
   time_end = 50 + 100,
   reduction = matrix(c(0.5, 0.01, 0.01))
 )
-
-close_schools
 ```
 
 ::::::::::::::::::::::::::::::::::::: callout
@@ -183,7 +181,7 @@ The contacts within group 1 are reduced by 50% twice to accommodate for a 50% re
 We run the model with ` intervention = list(contacts = close_schools)` as follows:
 
 ```{r school}
-output_school <- model_default(
+output_school <- epidemics::model_default(
   # population
   population = uk_population,
   # rate
@@ -204,7 +202,7 @@ To observe the effect of our intervention, we will combine the baseline and inte
 # create intervention_type column for plotting
 output_school$intervention_type <- "school closure"
 output_baseline$intervention_type <- "baseline"
-output <- rbind(output_school, output_baseline)
+output <- base::rbind(output_school, output_baseline)
 
 output %>%
   filter(compartment == "infectious") %>%
@@ -250,21 +248,19 @@ We expect that mask wearing will reduce an individual's infectiousness, based on
 We create an intervention object with `type = rate` and `reduction = 0.161`. Using parameters adapted from [Li et al. 2020](https://doi.org/10.1371/journal.pone.0237691) we have proportion wearing masks = coverage $\times$ availability = $0.54 \times 0.525 = 0.2835$ and proportion reduction in transmission rate = $0.575$. Therefore, $\theta = 0.2835 \times 0.575 = 0.163$. We assume that the mask wearing mandate starts at day 40 and continue to be in place for 200 days.
 
 ```{r masks}
-mask_mandate <- intervention(
+mask_mandate <- epidemics::intervention(
   name = "mask mandate",
   type = "rate",
   time_begin = 40,
   time_end = 40 + 200,
   reduction = 0.163
 )
-
-mask_mandate
 ```
 
 To implement this intervention on the transmission rate $\beta$, we specify `intervention = list(transmission_rate = mask_mandate)`.
 
 ```{r output_masks}
-output_masks <- model_default(
+output_masks <- epidemics::model_default(
   # population
   population = uk_population,
   # rate
@@ -283,7 +279,7 @@ output_masks <- model_default(
 # create intervention_type column for plotting
 output_masks$intervention_type <- "mask mandate"
 output_baseline$intervention_type <- "baseline"
-output <- rbind(output_masks, output_baseline)
+output <- base::rbind(output_masks, output_baseline)
 
 output %>%
   filter(compartment == "infectious") %>%
@@ -385,20 +381,18 @@ Here we will assume all age groups are vaccinated at the same rate 0.01 and that
 
 ```{r vaccinate}
 # prepare a vaccination object
-vaccinate <- vaccination(
+vaccinate <- epidemics::vaccination(
   name = "vaccinate all",
   time_begin = matrix(40, nrow(cm_matrix)),
   time_end = matrix(40 + 150, nrow(cm_matrix)),
   nu = matrix(c(0.01, 0.01, 0.01))
 )
-
-vaccinate
 ```
 
 We pass our vaccination object into the model using the argument `vaccination = vaccinate`:
 
 ```{r output_vaccinate}
-output_vaccinate <- model_default(
+output_vaccinate <- epidemics::model_default(
   # population
   population = uk_population,
   # rate
@@ -425,7 +419,7 @@ Plot the three interventions vaccination, school closure and mask mandate and th
 ```{r plot_vaccinate, echo = TRUE, message = FALSE, fig.width = 10}
 # create intervention_type column for plotting
 output_vaccinate$intervention_type <- "vaccination"
-output <- rbind(
+output <- base::rbind(
   output_school,
   output_masks,
   output_vaccinate,
