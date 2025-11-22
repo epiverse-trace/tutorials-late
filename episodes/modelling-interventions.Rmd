@@ -80,10 +80,10 @@ names(demography_vector) <- rownames(cm_matrix)
 # initial conditions: one in every 1 million is infected
 initial_i <- 1e-6
 initial_conditions <- c(
-  S = 1 - initial_i, 
-  E = 0, 
-  I = initial_i, 
-  R = 0, 
+  S = 1 - initial_i,
+  E = 0,
+  I = initial_i,
+  R = 0,
   V = 0
 )
 
