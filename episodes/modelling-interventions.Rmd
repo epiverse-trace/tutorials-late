@@ -68,6 +68,16 @@ In this tutorial different types of intervention and how they can be modelled ar
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
+:::::::::::::::::::::: instructor
+
+Share with learners the code for the baseline model.
+
+It has **different** disease parameters than previous episode.
+
+Then start with the livecoding directly with interventions.
+
+::::::::::::::::::::::
+
 ## Baseline model
 
 We will investigate the effect of interventions on a COVID-19 outbreak using an SEIR model (`model_default()` in the R package `{epidemics}`). To be able to see the effect of our intervention, we will run a baseline variant of the model, i.e,  without intervention.
@@ -142,6 +152,18 @@ output_baseline <- epidemics::model_default(
   time_end = 300, increment = 1.0
 )
 ```
+
+:::::::::::::::::::::: instructor
+
+Make a pause.
+
+Use slides to introduce the topics of:
+
+- Non pharmaceutical interventions.
+
+Then continue with the livecoding.
+
+::::::::::::::::::::::
 
 ## Non-pharmaceutical interventions
 
@@ -337,6 +359,17 @@ To implement both contact and rate interventions in the same simulation they mus
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
+:::::::::::::::::::::: instructor
+
+Make a pause.
+
+Use slides to introduce the topics of:
+
+- Pharmaceutical interventions.
+
+Then continue with the livecoding.
+
+::::::::::::::::::::::
 
 ## Pharmaceutical interventions
 
@@ -518,6 +551,15 @@ To get an age-stratified plot, keep the default `by_group = TRUE` and then add `
 
 :::::::::::::::::::::
 
+:::::::::::::::::::::: instructor
+
+Stop the livecoding.
+
+Suggest learners to read the next episode.
+
+Return to slides.
+
+::::::::::::::::::::::
 
 ## Summary
 
