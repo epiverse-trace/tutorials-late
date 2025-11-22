@@ -104,7 +104,7 @@ uk_population <- epidemics::population(
 )
 ```
 
-We run the model with a transmission rate $= 2.7/5.5$ (remember that [transmission rate = $R_0$* recovery rate](../episodes/simulating-transmission.md#the-basic-reproduction-number-r_0)), infectiousness rate $1/= 4$ and the recovery rate $= 1/5.5$ as follows:
+We run the model with an infectiousness rate $= 1/4$, a recovery rate $= 1/5.5$, and a transmission rate $= 2.7/5.5$ (remember that [transmission rate = $R_0$* recovery rate](../episodes/simulating-transmission.md#the-basic-reproduction-number-r_0)) as follows:
 
 ```{r, echo = TRUE, message = FALSE}
 # time periods
