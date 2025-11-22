@@ -2,7 +2,6 @@
 title: 'Modelling interventions'
 teaching: 45 # teaching time in minutes
 exercises: 30 # exercise time in minutes
-
 ---
 
 
@@ -51,52 +50,88 @@ In this tutorial different types of intervention and how they can be modelled ar
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-## Non-pharmaceutical interventions
+## A baseline model
 
-[Non-pharmaceutical interventions](../learners/reference.md#NPIs) (NPIs) are measures put in place to reduce transmission that do not include the administration of drugs or vaccinations. NPIs aim at reducing contacts between infectious and susceptible individuals by closure of schools and workplaces, and other measures to prevent the spread of the disease,  for example, washing hands and wearing masks.
+We will investigate the effect of interventions on a COVID-19 outbreak using an SEIR model (`model_default()` in the R package `{epidemics}`). To be able to see the effect of our intervention, we will run a baseline variant of the model, i.e,  without intervention.
 
-We will investigate the effect of interventions on a COVID-19 outbreak using an SEIR model (`model_default()` in the R package `{epidemics}`). The SEIR model divides the population into four compartments: Susceptible (S), Exposed (E), Infectious (I), and Recovered (R). We will set the following parameters for our model: $R_0 = 2.7$ (basic reproduction number), latent period or pre-infectious period $= 4$ days, and the infectious period $= 5.5$ days (parameters adapted from [Davies et al. (2020)](https://doi.org/10.1016/S2468-2667(20)30133-X)). We adopt a contact matrix with age bins 0-18, 18-65, 65 years and older using `{socialmixr}`, and assume that one in every 1 million individuals in each age group is infectious at the start of the epidemic.
+The SEIR model divides the population into four compartments: Susceptible (S), Exposed (E), Infectious (I), and Recovered (R). We will set the following parameters for our model: $R_0 = 2.7$ (basic reproduction number), latent period or pre-infectious period $= 4$ days, and the infectious period $= 5.5$ days (parameters adapted from [Davies et al. (2020)](https://doi.org/10.1016/S2468-2667(20)30133-X)). We adopt a contact matrix with age bins 0-18, 18-65, 65 years and older using `{socialmixr}`, and assume that one in every 1 million individuals in each age group is infectious at the start of the epidemic.
 
 
 ``` r
-polymod <- socialmixr::polymod
-contact_data <- socialmixr::contact_matrix(
-  polymod,
+# load survey data
+survey_data <- socialmixr::polymod
+
+# generate contact matrix
+cm_results <- socialmixr::contact_matrix(
+  survey = survey_data,
   countries = "United Kingdom",
   age.limits = c(0, 15, 65),
   symmetric = TRUE
 )
 
-# prepare contact matrix
-contact_matrix <- t(contact_data$matrix)
+# transpose contact matrix
+cm_matrix <- t(cm_results$matrix)
 
 # prepare the demography vector
-demography_vector <- contact_data$demography$population
-names(demography_vector) <- rownames(contact_matrix)
+demography_vector <- cm_results$demography$population
+names(demography_vector) <- rownames(cm_matrix)
 
 # initial conditions: one in every 1 million is infected
 initial_i <- 1e-6
 initial_conditions <- c(
-  S = 1 - initial_i, E = 0, I = initial_i, R = 0, V = 0
+  S = 1 - initial_i,
+  E = 0,
+  I = initial_i,
+  R = 0,
+  V = 0
 )
 
 # build for all age groups
-initial_conditions <- matrix(
-  rep(initial_conditions, dim(contact_matrix)[1]),
-  ncol = 5, byrow = TRUE
+initial_conditions <- base::rbind(
+  initial_conditions,
+  initial_conditions,
+  initial_conditions
 )
-rownames(initial_conditions) <- rownames(contact_matrix)
+rownames(initial_conditions) <- rownames(cm_matrix)
 
 # prepare the population to model as affected by the epidemic
 uk_population <- epidemics::population(
   name = "UK",
-  contact_matrix = contact_matrix,
+  contact_matrix = cm_matrix,
   demography_vector = demography_vector,
   initial_conditions = initial_conditions
 )
 ```
 
-#### Effect of school closures on COVID-19 spread
+We run the model with a transmission rate $= 2.7/5.5$ (remember that [transmission rate = $R_0$* recovery rate](../episodes/simulating-transmission.md#the-basic-reproduction-number-r_0)), infectiousness rate $1/= 4$ and the recovery rate $= 1/5.5$ as follows:
+
+
+``` r
+# time periods
+preinfectious_period <- 4.0
+infectious_period <- 5.5
+basic_reproduction <- 2.7
+
+# rates
+infectiousness_rate <- 1.0 / preinfectious_period
+recovery_rate <- 1.0 / infectious_period
+transmission_rate <- basic_reproduction * recovery_rate
+
+# run baseline simulation with no intervention
+output_baseline <- epidemics::model_default(
+  population = uk_population,
+  transmission_rate = transmission_rate,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
+  time_end = 300, increment = 1.0
+)
+```
+
+## Non-pharmaceutical interventions
+
+[Non-pharmaceutical interventions](../learners/reference.md#NPIs) (NPIs) are measures put in place to reduce transmission that do not include the administration of drugs or vaccinations. NPIs aim at reducing contacts between infectious and susceptible individuals by closure of schools and workplaces, and other measures to prevent the spread of the disease,  for example, washing hands and wearing masks.
+
+### Effect of school closures on COVID-19 spread
 
 The first NPI we will consider is the effect of school closures on reducing the number of individuals infected with COVID-19 over time. We assume that a school closure will reduce the frequency of contacts within and between different age groups. Based on empirical studies, we assume that school closures will reduce the contacts between school-aged children (aged 0-15) by 50%, and will cause a small reduction (1%) in the contacts between adults (aged 15 and over). 
 
@@ -104,7 +139,7 @@ To include an intervention in our model we must create an `intervention` object.
 
 
 ``` r
-rownames(contact_matrix)
+rownames(cm_matrix)
 ```
 
 ``` output
@@ -115,7 +150,7 @@ Therefore, we specify ` reduction = matrix(c(0.5, 0.01, 0.01))`. We assume that 
 
 
 ``` r
-close_schools <- intervention(
+close_schools <- epidemics::intervention(
   name = "School closure",
   type = "contacts",
   time_begin = 50,
@@ -149,25 +184,11 @@ The contacts within group 1 are reduced by 50% twice to accommodate for a 50% re
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
-Using transmission rate $= 2.7/5.5$ (remember that [transmission rate = $R_0$/ infectious period](../episodes/simulating-transmission.md#the-basic-reproduction-number-r_0)), infectiousness rate $1/= 4$ and the recovery rate $= 1/5.5$ we run the model with ` intervention = list(contacts = close_schools)` as follows:
+We run the model with ` intervention = list(contacts = close_schools)` as follows:
 
 
 ``` r
-# time periods
-preinfectious_period <- 4.0
-infectious_period <- 5.5
-basic_reproduction <- 2.7
-
-# rates
-infectiousness_rate <- 1.0 / preinfectious_period
-recovery_rate <- 1.0 / infectious_period
-transmission_rate <- basic_reproduction / infectious_period
-```
-
-
-
-``` r
-output_school <- model_default(
+output_school <- epidemics::model_default(
   # population
   population = uk_population,
   # rate
@@ -182,25 +203,14 @@ output_school <- model_default(
 ```
 
 
-To be able to see the effect of our intervention, we also run a baseline variant of the model, i.e,  without intervention, combine the two outputs into one data frame, and then plot the output. Here we plot the total number of infectious individuals in all age groups using `ggplot2::stat_summary()` function:
+To observe the effect of our intervention, we will combine the baseline and intervention outputs into a single data frame and then plot the results. Here we plot the total number of infectious individuals in all age groups using `ggplot2::stat_summary()` function:
 
 
 ``` r
-# run baseline simulation with no intervention
-output_baseline <- model_default(
-  population = uk_population,
-  transmission_rate = transmission_rate,
-  infectiousness_rate = infectiousness_rate,
-  recovery_rate = recovery_rate,
-  time_end = 300, increment = 1.0
-)
-
 # create intervention_type column for plotting
 output_school$intervention_type <- "school closure"
 output_baseline$intervention_type <- "baseline"
-output <- rbind(output_school, output_baseline)
-
-library(tidyverse)
+output <- base::rbind(output_school, output_baseline)
 
 output %>%
   filter(compartment == "infectious") %>%
@@ -234,11 +244,12 @@ output %>%
 ```
 
 <img src="fig/modelling-interventions-rendered-baseline-1.png" style="display: block; margin: auto;" />
+
 We can see that with the intervention in place, the infection still spreads through the population and hence accumulation of immunity contributes to the eventual peak-and-decline. However, the peak number of infectious individuals is smaller (green dashed line) than the baseline with no intervention in place (red solid line), showing a reduction in the absolute number of cases.
 
 
 
-#### Effect of mask wearing on COVID-19 spread
+### Effect of mask wearing on COVID-19 spread
 
 We can also model the effect of other NPIs by reducing the value of the relevant parameters. For example, investigating the effect of mask wearing on the number of individuals infected with COVID-19 over time. 
 
@@ -248,7 +259,7 @@ We create an intervention object with `type = rate` and `reduction = 0.161`. Usi
 
 
 ``` r
-mask_mandate <- intervention(
+mask_mandate <- epidemics::intervention(
   name = "mask mandate",
   type = "rate",
   time_begin = 40,
@@ -261,7 +272,7 @@ To implement this intervention on the transmission rate $\beta$, we specify `int
 
 
 ``` r
-output_masks <- model_default(
+output_masks <- epidemics::model_default(
   # population
   population = uk_population,
   # rate
@@ -281,7 +292,7 @@ output_masks <- model_default(
 # create intervention_type column for plotting
 output_masks$intervention_type <- "mask mandate"
 output_baseline$intervention_type <- "baseline"
-output <- rbind(output_masks, output_baseline)
+output <- base::rbind(output_masks, output_baseline)
 
 output %>%
   filter(compartment == "infectious") %>%
@@ -332,7 +343,8 @@ Pharmaceutical interventions (PIs) are measures such as vaccination and mass tre
 
 The diagram below shows the SEIRV model implemented using `model_default()` where susceptible individuals are vaccinated and then move to the $V$ class.
 
-<img src="fig/modelling-interventions-rendered-diagram_SEIRV-1.png" style="display: block; margin: auto;" />
+<!--html_preserve--><div class="grViz html-widget html-fill-item" id="htmlwidget-de152564c8513d091837" style="width:504px;height:504px;"></div>
+<script type="application/json" data-for="htmlwidget-de152564c8513d091837">{"x":{"diagram":"digraph {\n\n  # graph statement\n  ################\n  graph [layout = dot,\n         rankdir = LR,\n         overlap = true,\n         fontsize = 10]\n\n  # nodes\n  #######\n  node [shape = square,\n       fixedsize = true\n       width = 1.3]\n\n       S\n       E\n       I\n       R\n       V\n\n  # edges\n  #######\n  S -> E [label = \" infection (&beta;)\"]\n  S -> V [label = \" vaccination (&nu;)\"]\n  E -> I [label = \" onset of \ninfectiousness (&alpha;)\"]\n  I -> R [label = \" recovery (&gamma;)\"]\n\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script><!--/html_preserve-->
 
 
 
@@ -356,10 +368,10 @@ Here we will assume all age groups are vaccinated at the same rate 0.01 and that
 
 ``` r
 # prepare a vaccination object
-vaccinate <- vaccination(
+vaccinate <- epidemics::vaccination(
   name = "vaccinate all",
-  time_begin = matrix(40, nrow(contact_matrix)),
-  time_end = matrix(40 + 150, nrow(contact_matrix)),
+  time_begin = matrix(40, nrow(cm_matrix)),
+  time_end = matrix(40 + 150, nrow(cm_matrix)),
   nu = matrix(c(0.01, 0.01, 0.01))
 )
 ```
@@ -368,7 +380,7 @@ We pass our vaccination object into the model using the argument `vaccination = 
 
 
 ``` r
-output_vaccinate <- model_default(
+output_vaccinate <- epidemics::model_default(
   # population
   population = uk_population,
   # rate
@@ -396,7 +408,12 @@ Plot the three interventions vaccination, school closure and mask mandate and th
 ``` r
 # create intervention_type column for plotting
 output_vaccinate$intervention_type <- "vaccination"
-output <- rbind(output_school, output_masks, output_vaccinate, output_baseline)
+output <- base::rbind(
+  output_school,
+  output_masks,
+  output_vaccinate,
+  output_baseline
+)
 
 output %>%
   filter(compartment == "infectious") %>%
