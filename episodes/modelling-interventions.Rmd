@@ -373,6 +373,7 @@ $$
 \frac{dV_i}{dt} & =\nu_{i,t} S_i\\
 \end{aligned}
 $$
+
 Individuals in age group ($i$)  at specific time dependent ($t$)  are vaccinated at rate ($\nu_{i,t}$). The other SEIR components of these equations are described in the tutorial [simulating transmission](../episodes/simulating-transmission.md#simulating-disease-spread). 
 
 To explore the effect of vaccination we need to create a vaccination object to pass as an input into `model_default()` that includes  age groups specific vaccination rate `nu` and age groups specific start and end times of the vaccination program (`time_begin` and `time_end`). 
