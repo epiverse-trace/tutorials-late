@@ -52,7 +52,7 @@ In this tutorial different types of intervention and how they can be modelled ar
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-## A baseline model
+## Baseline model
 
 We will investigate the effect of interventions on a COVID-19 outbreak using an SEIR model (`model_default()` in the R package `{epidemics}`). To be able to see the effect of our intervention, we will run a baseline variant of the model, i.e,  without intervention.
 
@@ -141,7 +141,7 @@ To include an intervention in our model we must create an `intervention` object.
 rownames(cm_matrix)
 ```
 
-Therefore, we specify ` reduction = matrix(c(0.5, 0.01, 0.01))`. We assume that the school closures start on day 50 and continue to be in place for a further 100 days. Therefore our intervention object is: 
+Therefore, we specify `reduction = matrix(c(0.5, 0.01, 0.01))`. We assume that the school closures start on day 50 and continue to be in place for a further 100 days. Therefore our intervention object is: 
 
 ```{r intervention}
 close_schools <- epidemics::intervention(
@@ -160,18 +160,18 @@ In `{epidemics}`, the contact matrix is scaled down by proportions for the perio
 
 ```{r echo = FALSE}
 reduction <- matrix(c(0.5, 0.1))
-cm_matrix_example <- matrix(c(1, 1, 1, 1), nrow = 2)
-cm_matrix_example
+contact_matrix_example <- matrix(c(1, 1, 1, 1), nrow = 2)
+contact_matrix_example
 ```
 
 If the reduction is 50% in group 1 and 10% in group 2, the contact matrix during the intervention will be:
 
 ```{r echo = FALSE}
-cm_matrix_example[1, ] <- cm_matrix_example[1, ] * (1 - reduction[1])
-cm_matrix_example[, 1] <- cm_matrix_example[, 1] * (1 - reduction[1])
-cm_matrix_example[2, ] <- cm_matrix_example[2, ] * (1 - reduction[2])
-cm_matrix_example[, 2] <- cm_matrix_example[, 2] * (1 - reduction[2])
-cm_matrix_example
+contact_matrix_example[1, ] <- contact_matrix_example[1, ] * (1 - reduction[1])
+contact_matrix_example[, 1] <- contact_matrix_example[, 1] * (1 - reduction[1])
+contact_matrix_example[2, ] <- contact_matrix_example[2, ] * (1 - reduction[2])
+contact_matrix_example[, 2] <- contact_matrix_example[, 2] * (1 - reduction[2])
+contact_matrix_example
 ```
 
 The contacts within group 1 are reduced by 50% twice to accommodate for a 50% reduction in outgoing and incoming contacts ($1\times 0.5 \times 0.5 = 0.25$). Similarly, the contacts within group 2 are reduced by 10% twice. The contacts between group 1 and group 2 are reduced by 50% and then by 10% ($1 \times 0.5 \times 0.9= 0.45$). 
@@ -245,7 +245,7 @@ We can also model the effect of other NPIs by reducing the value of the relevant
 
 We expect that mask wearing will reduce an individual's infectiousness, based on multiple studies showing the effectiveness of masks in reducing transmission. As we are using a population-based model, we cannot make changes to individual behavior and so assume that the transmission rate $\beta$ is reduced by a proportion due to mask wearing in the population. We specify this proportion, $\theta$ as product of the proportion wearing masks multiplied by the proportion reduction in transmission rate (adapted from [Li et al. 2020](https://doi.org/10.1371/journal.pone.0237691)).
 
-We create an intervention object with `type = rate` and `reduction = 0.161`. Using parameters adapted from [Li et al. 2020](https://doi.org/10.1371/journal.pone.0237691) we have proportion wearing masks = coverage $\times$ availability = $0.54 \times 0.525 = 0.2835$ and proportion reduction in transmission rate = $0.575$. Therefore, $\theta = 0.2835 \times 0.575 = 0.163$. We assume that the mask wearing mandate starts at day 40 and continue to be in place for 200 days.
+We create an intervention object with `type = "rate"` and `reduction = 0.161`. Using parameters adapted from [Li et al. 2020](https://doi.org/10.1371/journal.pone.0237691) we have proportion wearing masks = coverage $\times$ availability = $0.54 \times 0.525 = 0.2835$ and proportion reduction in transmission rate = $0.575$. Therefore, $\theta = 0.2835 \times 0.575 = 0.163$. We assume that the mask wearing mandate starts at day 40 and continue to be in place for 200 days.
 
 ```{r masks}
 mask_mandate <- epidemics::intervention(
