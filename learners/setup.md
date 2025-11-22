@@ -96,7 +96,71 @@ While this may sound scary, it is **far more common** to run into issues due to 
 
 :::::::::::::::::::::::::::::
 
-### 2. Install the required R packages
+### 2. Check and Install Build Tools
+
+Some packages require a complementary set of tools to build them.
+Open RStudio and **copy and paste** the following code chunk into the 
+[console window](https://docs.posit.co/ide/user/ide/guide/code/console.html),
+then press the <kbd>Enter</kbd> (Windows and Linux) or <kbd>Return</kbd> (MacOS) to execute the command:
+
+```r
+if(!require("pkgbuild")) install.packages("pkgbuild")
+pkgbuild::check_build_tools(debug = TRUE)
+```
+
+We expect a message like the one below:
+
+```output
+Your system is ready to build packages!
+```
+
+If the build tools are not available, this will trigger an automated install.
+
+1. Run the command in the console.
+2. Don’t interrupt it—wait until R prints the confirmation message.
+3. Once that’s done, restart your R session (or just restart RStudio) to ensure the changes take effect.
+
+If the automatic installation **does not** work, you can manually install them according to your operating system.
+
+::::::::::::::::::::::::::::: tab
+
+### Windows
+
+Windows users will need a working installation of `Rtools` in order to build the package from source.  
+`Rtools` is not an R package, but a software you need to download and install.
+We suggest you to follow:
+
+- **Install `Rtools`**. Download the `Rtools` installer from <https://cran.r-project.org/bin/windows/Rtools/>. Install with default selections.
+- Close and reopen RStudio so it can recognize the new installation.
+
+### Mac
+
+Mac users require two additional steps as detailed in this [guide to Configuring C Toolchain for Mac](https://github.com/stan-dev/rstan/wiki/Configuring-C---Toolchain-for-Mac):
+
+- Install and use [`macrtools`](https://mac.thecoatlessprofessor.com/macrtools/) to setup the C++ toolchain
+- Enable some compiler optimizations.
+
+### Linux
+
+Linux users require specific details per distribution. Find them in this [guide to Configuring C Toolchain for Linux](https://github.com/stan-dev/rstan/wiki/Configuring-C-Toolchain-for-Linux).
+
+:::::::::::::::::::::::::::::
+
+::::::::::::: callout
+
+### Environment Check
+
+This step requires administrator privileges to install software.
+
+If you do not have admin rights in your current environment:  
+
+- Try running the tutorial on your **personal machine** where you have full access.  
+- Use a **preconfigured development environment** (e.g. [Posit Cloud](https://posit.cloud/)).  
+- Ask your **system administrator** to install the required software for you.  
+
+:::::::::::::
+
+### 3. Install the required R packages
 
 <!--
 During the tutorial, we will need a number of R packages. Packages contain useful R code written by other people. We will use packages from the [Epiverse-TRACE](https://epiverse-trace.github.io/). 
@@ -128,12 +192,14 @@ These installation steps could ask you `? Do you want to continue (Y/n)` write `
 If you get an error message when installing {epidemics}, try this alternative code:
 
 ```r
-if(!require("devtools")) install.packages("devtools")
-
-devtools::install_github("epiverse-trace/epidemics")
+install.packages("epidemics", repos = c("https://epiverse-trace.r-universe.dev", "https://cloud.r-project.org"))
 ```
 
-**What to do if an Error persist?**
+:::::::::::::::::::::::::::::
+
+::::::::::::::::::::::::::: spoiler
+
+### Do you need a GitHub Personal access token (PAT)?
 
 If the error message keyword include an string like `Personal access token (PAT)`, you may need to [set up your GitHub token](https://epiverse-trace.github.io/git-rstudio-basics/02-setup.html#set-up-your-github-token).
 
@@ -162,19 +228,20 @@ gitcreds::gitcreds_set()
 usethis::git_sitrep()
 ```
 
-Try again installing {epidemics}:
+Try again installing {epiparameter}:
 
 ```r
-if(!require("devtools")) install.packages("devtools")
-
-devtools::install_github("epiverse-trace/epidemics")
+if(!require("remotes")) install.packages("remotes")
+remotes::install_github("epiverse-trace/epiparameter")
 ```
 
 If the error persist, [contact us](#your-questions)!
 
-:::::::::::::::::::::::::::::
+:::::::::::::::::::::::::::
 
 You should update **all of the packages** required for the tutorial, even if you installed them relatively recently. New versions bring improvements and important bug fixes.
+
+### 4. Verify the installation
 
 When the installation has finished, you can try to load the packages by pasting the following code into the console:
 
