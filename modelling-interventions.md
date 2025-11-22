@@ -103,7 +103,7 @@ uk_population <- epidemics::population(
 )
 ```
 
-We run the model with a transmission rate $= 2.7/5.5$ (remember that [transmission rate = $R_0$* recovery rate](../episodes/simulating-transmission.md#the-basic-reproduction-number-r_0)), infectiousness rate $1/= 4$ and the recovery rate $= 1/5.5$ as follows:
+We run the model with an infectiousness rate $= 1/4$, a recovery rate $= 1/5.5$, and a transmission rate $= 2.7/5.5$ (remember that [transmission rate = $R_0$* recovery rate](../episodes/simulating-transmission.md#the-basic-reproduction-number-r_0)) as follows:
 
 
 ``` r
@@ -343,8 +343,8 @@ Pharmaceutical interventions (PIs) are measures such as vaccination and mass tre
 
 The diagram below shows the SEIRV model implemented using `model_default()` where susceptible individuals are vaccinated and then move to the $V$ class.
 
-<!--html_preserve--><div class="grViz html-widget html-fill-item" id="htmlwidget-de152564c8513d091837" style="width:504px;height:504px;"></div>
-<script type="application/json" data-for="htmlwidget-de152564c8513d091837">{"x":{"diagram":"digraph {\n\n  # graph statement\n  ################\n  graph [layout = dot,\n         rankdir = LR,\n         overlap = true,\n         fontsize = 10]\n\n  # nodes\n  #######\n  node [shape = square,\n       fixedsize = true\n       width = 1.3]\n\n       S\n       E\n       I\n       R\n       V\n\n  # edges\n  #######\n  S -> E [label = \" infection (&beta;)\"]\n  S -> V [label = \" vaccination (&nu;)\"]\n  E -> I [label = \" onset of \ninfectiousness (&alpha;)\"]\n  I -> R [label = \" recovery (&gamma;)\"]\n\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script><!--/html_preserve-->
+<!--html_preserve--><div class="grViz html-widget html-fill-item" id="htmlwidget-03babbe204de7b594996" style="width:504px;height:504px;"></div>
+<script type="application/json" data-for="htmlwidget-03babbe204de7b594996">{"x":{"diagram":"digraph {\n\n  # graph statement\n  ################\n  graph [layout = dot,\n         rankdir = LR,\n         overlap = true,\n         fontsize = 10]\n\n  # nodes\n  #######\n  node [shape = square,\n       fixedsize = true\n       width = 1.3]\n\n       S\n       E\n       I\n       R\n       V\n\n  # edges\n  #######\n  S -> E [label = \" infection (&beta;)\"]\n  S -> V [label = \" vaccination (&nu;)\"]\n  E -> I [label = \" onset of \ninfectiousness (&alpha;)\"]\n  I -> R [label = \" recovery (&gamma;)\"]\n\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script><!--/html_preserve-->
 
 
 
