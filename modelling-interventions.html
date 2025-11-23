@@ -250,7 +250,7 @@
     <div id="flush-collapsecurrent" class="accordion-collapse collapse show" aria-labelledby="flush-headingcurrent" data-bs-parent="#accordionFlushcurrent">
       <div class="accordion-body">
         <ul><li><a href="#introduction">Introduction</a></li>
-<li><a href="#a-baseline-model">A baseline model</a></li>
+<li><a href="#baseline-model">Baseline model</a></li>
 <li><a href="#non-pharmaceutical-interventions">Non-pharmaceutical interventions</a></li>
 <li><a href="#pharmaceutical-interventions">Pharmaceutical interventions</a></li>
 <li><a href="#summary">Summary</a></li>
@@ -346,7 +346,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Modelling interventions</h1>
-        <p>Last updated on 2025-11-22 |
+        <p>Last updated on 2025-11-23 |
 
         <a href="https://github.com/epiverse-trace/tutorials-late/edit/main/episodes/modelling-interventions.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -393,6 +393,29 @@ trajectories?</li>
 dependencies before working through this tutorial:</p>
 <p><strong>Outbreak response</strong> : <a href="https://www.cdc.gov/nonpharmaceutical-interventions/" class="external-link">Intervention
 types</a>.</p>
+<p><strong>R packages installed</strong>: <code>{epidemics}</code>,
+<a href="https://github.com/epiforecasts/socialmixr" class="external-link">socialmixr</a>, <a href="https://scales.r-lib.org" class="external-link">scales</a>,
+<a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a>.</p>
+</div>
+</div>
+</div>
+<div id="accordionSpoiler1" class="accordion spoiler-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler1" aria-expanded="false" aria-controls="collapseSpoiler1">
+  <h3 class="accordion-header" id="headingSpoiler1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
+</button>
+<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
+<div class="accordion-body">
+<p>Install packages if their are not already installed</p>
+<div class="codewrapper sourceCode" id="cb1">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu">base</span><span class="fu">::</span><span class="kw">require</span><span class="op">(</span><span class="st">"pak"</span><span class="op">)</span><span class="op">)</span> <span class="fu">install.packages</span><span class="op">(</span><span class="st">"pak"</span><span class="op">)</span></span>
+<span><span class="fu">pak</span><span class="fu">::</span><span class="fu">pak</span><span class="op">(</span><span class="fu">c</span><span class="op">(</span><span class="st">"epiverse-trace/epidemics"</span>, <span class="st">"socialmixr"</span>, <span class="st">"scales"</span>, <span class="st">"tidyverse"</span><span class="op">)</span><span class="op">)</span></span></code></pre>
+</div>
+<p>If you have any error message, go to the <a href="index.html#software-setup">main setup page</a>.</p>
+</div>
 </div>
 </div>
 </div>
@@ -412,7 +435,7 @@ to model interventions and access to social contact data with
 <a href="https://github.com/epiforecasts/socialmixr" class="external-link">socialmixr</a>. We’ll use <a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a>,
 <a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a> and the pipe <code>%&gt;%</code> to connect some
 of their functions, so let’s also call <a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a>:</p>
-<div class="codewrapper sourceCode" id="cb1">
+<div class="codewrapper sourceCode" id="cb2">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -421,7 +444,8 @@ of their functions, so let’s also call <a href="https://tidyverse.tidyverse.or
 <span><span class="kw">library</span><span class="op">(</span><span class="va">tidyverse</span><span class="op">)</span></span></code></pre>
 </div>
 
-</section><section><h2 class="section-heading" id="a-baseline-model">A baseline model<a class="anchor" aria-label="anchor" href="#a-baseline-model"></a></h2>
+
+</section><section><h2 class="section-heading" id="baseline-model">Baseline model<a class="anchor" aria-label="anchor" href="#baseline-model"></a></h2>
 <hr class="half-width"><p>We will investigate the effect of interventions on a COVID-19
 outbreak using an SEIR model (<code>model_default()</code> in the R
 package <code>{epidemics}</code>). To be able to see the effect of our
@@ -437,7 +461,7 @@ al. (2020)</a>). We adopt a contact matrix with age bins 0-18, 18-65, 65
 years and older using <a href="https://github.com/epiforecasts/socialmixr" class="external-link">socialmixr</a>, and assume that one in
 every 1 million individuals in each age group is infectious at the start
 of the epidemic.</p>
-<div class="codewrapper sourceCode" id="cb2">
+<div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -488,7 +512,7 @@ of the epidemic.</p>
 <p>We run the model with an infectiousness rate <span class="math inline">\(= 1/4\)</span>, a recovery rate <span class="math inline">\(= 1/5.5\)</span>, and a transmission rate <span class="math inline">\(= 2.7/5.5\)</span> (remember that <a href="simulating-transmission.html#the-basic-reproduction-number-r_0">transmission
 rate = <span class="math inline">\(R_0\)</span>* recovery rate</a>) as
 follows:</p>
-<div class="codewrapper sourceCode" id="cb3">
+<div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -511,6 +535,7 @@ follows:</p>
 <span>  time_end <span class="op">=</span> <span class="fl">300</span>, increment <span class="op">=</span> <span class="fl">1.0</span></span>
 <span><span class="op">)</span></span></code></pre>
 </div>
+
 </section><section><h2 class="section-heading" id="non-pharmaceutical-interventions">Non-pharmaceutical interventions<a class="anchor" aria-label="anchor" href="#non-pharmaceutical-interventions"></a></h2>
 <hr class="half-width"><p><a href="reference.html#NPIs">Non-pharmaceutical interventions</a>
 (NPIs) are measures put in place to reduce transmission that do not
@@ -535,7 +560,7 @@ intervention (<code>name</code>), the type of intervention
 reduction (<code>reduction</code>). The values of the reduction matrix
 are specified in the same order as the age groups in the contact
 matrix.</p>
-<div class="codewrapper sourceCode" id="cb4">
+<div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -550,7 +575,7 @@ matrix.</p>
 <code>reduction = matrix(c(0.5, 0.01, 0.01))</code>. We assume that the
 school closures start on day 50 and continue to be in place for a
 further 100 days. Therefore our intervention object is:</p>
-<div class="codewrapper sourceCode" id="cb6">
+<div class="codewrapper sourceCode" id="cb7">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -602,7 +627,7 @@ contacts between group 1 and group 2 are reduced by 50% and then by 10%
 <p>We run the model with
 <code>intervention = list(contacts = close_schools)</code> as
 follows:</p>
-<div class="codewrapper sourceCode" id="cb9">
+<div class="codewrapper sourceCode" id="cb10">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -623,7 +648,7 @@ follows:</p>
 baseline and intervention outputs into a single data frame and then plot
 the results. Here we plot the total number of infectious individuals in
 all age groups using <code>ggplot2::stat_summary()</code> function:</p>
-<div class="codewrapper sourceCode" id="cb10">
+<div class="codewrapper sourceCode" id="cb11">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -685,13 +710,13 @@ specify this proportion, <span class="math inline">\(\theta\)</span> as
 product of the proportion wearing masks multiplied by the proportion
 reduction in transmission rate (adapted from <a href="https://doi.org/10.1371/journal.pone.0237691" class="external-link">Li et
 al. 2020</a>).</p>
-<p>We create an intervention object with <code>type = rate</code> and
+<p>We create an intervention object with <code>type = "rate"</code> and
 <code>reduction = 0.161</code>. Using parameters adapted from <a href="https://doi.org/10.1371/journal.pone.0237691" class="external-link">Li et al. 2020</a>
 we have proportion wearing masks = coverage <span class="math inline">\(\times\)</span> availability = <span class="math inline">\(0.54 \times 0.525 = 0.2835\)</span> and proportion
 reduction in transmission rate = <span class="math inline">\(0.575\)</span>. Therefore, <span class="math inline">\(\theta = 0.2835 \times 0.575 = 0.163\)</span>. We
 assume that the mask wearing mandate starts at day 40 and continue to be
 in place for 200 days.</p>
-<div class="codewrapper sourceCode" id="cb11">
+<div class="codewrapper sourceCode" id="cb12">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -705,7 +730,7 @@ in place for 200 days.</p>
 </div>
 <p>To implement this intervention on the transmission rate <span class="math inline">\(\beta\)</span>, we specify
 <code>intervention = list(transmission_rate = mask_mandate)</code>.</p>
-<div class="codewrapper sourceCode" id="cb12">
+<div class="codewrapper sourceCode" id="cb13">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -722,7 +747,7 @@ in place for 200 days.</p>
 <span>  time_end <span class="op">=</span> <span class="fl">300</span>, increment <span class="op">=</span> <span class="fl">1.0</span></span>
 <span><span class="op">)</span></span></code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb13">
+<div class="codewrapper sourceCode" id="cb14">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -783,6 +808,7 @@ on modelling overlapping interventions</a> for more detail.</p>
 </div>
 </div>
 </div>
+
 </div>
 </section><section><h2 class="section-heading" id="pharmaceutical-interventions">Pharmaceutical interventions<a class="anchor" aria-label="anchor" href="#pharmaceutical-interventions"></a></h2>
 <hr class="half-width"><p>Pharmaceutical interventions (PIs) are measures such as vaccination
@@ -808,8 +834,12 @@ class.</p>
 \frac{dR_i}{dt} &amp;=\gamma I_i \\
 \frac{dV_i}{dt} &amp; =\nu_{i,t} S_i\\
 \end{aligned}
-\]</span> Individuals in age group (<span class="math inline">\(i\)</span>) at specific time dependent (<span class="math inline">\(t\)</span>) are vaccinated at rate (<span class="math inline">\(\nu_{i,t}\)</span>). The other SEIR components of
-these equations are described in the tutorial <a href="simulating-transmission.html#simulating-disease-spread">simulating
+\]</span></p>
+<p>Individuals in age group (<span class="math inline">\(i\)</span>) at
+specific time dependent (<span class="math inline">\(t\)</span>) are
+vaccinated at rate (<span class="math inline">\(\nu_{i,t}\)</span>). The
+other SEIR components of these equations are described in the tutorial
+<a href="simulating-transmission.html#simulating-disease-spread">simulating
 transmission</a>.</p>
 <p>To explore the effect of vaccination we need to create a vaccination
 object to pass as an input into <code>model_default()</code> that
@@ -819,7 +849,7 @@ groups specific start and end times of the vaccination program
 <p>Here we will assume all age groups are vaccinated at the same rate
 0.01 and that the vaccination program starts on day 40 and continue to
 be in place for 150 days.</p>
-<div class="codewrapper sourceCode" id="cb14">
+<div class="codewrapper sourceCode" id="cb15">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -833,7 +863,7 @@ be in place for 150 days.</p>
 </div>
 <p>We pass our vaccination object into the model using the argument
 <code>vaccination = vaccinate</code>:</p>
-<div class="codewrapper sourceCode" id="cb15">
+<div class="codewrapper sourceCode" id="cb16">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -870,7 +900,7 @@ reduces the peak number of infectious individuals the most?</p>
 </button>
 <div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
-<div class="codewrapper sourceCode" id="cb16">
+<div class="codewrapper sourceCode" id="cb17">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -921,17 +951,17 @@ compared to school closures and mask-wearing interventions.</p>
 that people moving from “susceptible” to “vaccinated” are not becoming
 infected. This ensures vaccinated individuals aren’t counted as
 infections.</p>
-<div id="accordionSpoiler1" class="accordion spoiler-accordion accordion-flush">
+<div id="accordionSpoiler2" class="accordion spoiler-accordion accordion-flush">
 <div class="accordion-item">
-<button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler1" aria-expanded="false" aria-controls="collapseSpoiler1">
-  <h3 class="accordion-header" id="headingSpoiler1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
+<button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler2" aria-expanded="false" aria-controls="collapseSpoiler2">
+  <h3 class="accordion-header" id="headingSpoiler2">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
 </button>
-<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
+<div id="collapseSpoiler2" class="accordion-collapse collapse" aria-labelledby="headingSpoiler2" data-bs-parent="#accordionSpoiler2">
 <div class="accordion-body">
 <p>Note that if we add <code>by_group = FALSE</code> in
 <code>epidemics::new_infections()</code>, we get a summary of the new
 infections in the population.</p>
-<div class="codewrapper sourceCode" id="cb17">
+<div class="codewrapper sourceCode" id="cb18">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -976,6 +1006,7 @@ infections in the population.</p>
 </div>
 </div>
 </div>
+
 </section><section><h2 class="section-heading" id="summary">Summary<a class="anchor" aria-label="anchor" href="#summary"></a></h2>
 <hr class="half-width"><p>Different types of intervention can be implemented using mathematical
 modelling. Modelling interventions requires assumptions of which model
@@ -1072,9 +1103,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://epiverse-trace.github.io/tutorials-late/modelling-interventions.html",
   "identifier": "https://epiverse-trace.github.io/tutorials-late/modelling-interventions.html",
-  "dateCreated": "2025-11-22",
-  "dateModified": "2025-11-22",
-  "datePublished": "2025-11-22"
+  "dateCreated": "2025-11-23",
+  "dateModified": "2025-11-23",
+  "datePublished": "2025-11-23"
 }
 
   </script><script>
