@@ -25,8 +25,24 @@ exercises: 30 # exercise time in minutes
 Learners should also familiarise themselves with following concept dependencies before working through this tutorial: 
 
 **Outbreak response** : [Intervention types](https://www.cdc.gov/nonpharmaceutical-interventions/).
+
+**R packages installed**: `{epidemics}`, `{socialmixr}`, `{scales}`, `{tidyverse}`.
+
 :::::::::::::::::::::::::::::::::
 
+:::::::::: spoiler
+
+Install packages if their are not already installed
+
+```r
+if (!base::require("pak")) install.packages("pak")
+pak::pak(c("epiverse-trace/epidemics", "socialmixr", "scales", "tidyverse"))
+```
+
+If you have any error message,
+go to the [main setup page](../learners/setup.md#software-setup).
+
+::::::::::
 
 ## Introduction
 
@@ -50,7 +66,17 @@ In this tutorial different types of intervention and how they can be modelled ar
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-## A baseline model
+:::::::::::::::::::::: instructor
+
+Share with learners the code for the baseline model.
+
+It has **different** disease parameters than previous episode.
+
+Then start with the livecoding directly with interventions.
+
+::::::::::::::::::::::
+
+## Baseline model
 
 We will investigate the effect of interventions on a COVID-19 outbreak using an SEIR model (`model_default()` in the R package `{epidemics}`). To be able to see the effect of our intervention, we will run a baseline variant of the model, i.e,  without intervention.
 
@@ -127,6 +153,18 @@ output_baseline <- epidemics::model_default(
 )
 ```
 
+:::::::::::::::::::::: instructor
+
+Make a pause.
+
+Use slides to introduce the topics of:
+
+- Non pharmaceutical interventions.
+
+Then continue with the livecoding.
+
+::::::::::::::::::::::
+
 ## Non-pharmaceutical interventions
 
 [Non-pharmaceutical interventions](../learners/reference.md#NPIs) (NPIs) are measures put in place to reduce transmission that do not include the administration of drugs or vaccinations. NPIs aim at reducing contacts between infectious and susceptible individuals by closure of schools and workplaces, and other measures to prevent the spread of the disease,  for example, washing hands and wearing masks.
@@ -146,7 +184,7 @@ rownames(cm_matrix)
 [1] "[0,15)"  "[15,65)" "65+"    
 ```
 
-Therefore, we specify ` reduction = matrix(c(0.5, 0.01, 0.01))`. We assume that the school closures start on day 50 and continue to be in place for a further 100 days. Therefore our intervention object is: 
+Therefore, we specify `reduction = matrix(c(0.5, 0.01, 0.01))`. We assume that the school closures start on day 50 and continue to be in place for a further 100 days. Therefore our intervention object is: 
 
 
 ``` r
@@ -255,7 +293,7 @@ We can also model the effect of other NPIs by reducing the value of the relevant
 
 We expect that mask wearing will reduce an individual's infectiousness, based on multiple studies showing the effectiveness of masks in reducing transmission. As we are using a population-based model, we cannot make changes to individual behavior and so assume that the transmission rate $\beta$ is reduced by a proportion due to mask wearing in the population. We specify this proportion, $\theta$ as product of the proportion wearing masks multiplied by the proportion reduction in transmission rate (adapted from [Li et al. 2020](https://doi.org/10.1371/journal.pone.0237691)).
 
-We create an intervention object with `type = rate` and `reduction = 0.161`. Using parameters adapted from [Li et al. 2020](https://doi.org/10.1371/journal.pone.0237691) we have proportion wearing masks = coverage $\times$ availability = $0.54 \times 0.525 = 0.2835$ and proportion reduction in transmission rate = $0.575$. Therefore, $\theta = 0.2835 \times 0.575 = 0.163$. We assume that the mask wearing mandate starts at day 40 and continue to be in place for 200 days.
+We create an intervention object with `type = "rate"` and `reduction = 0.161`. Using parameters adapted from [Li et al. 2020](https://doi.org/10.1371/journal.pone.0237691) we have proportion wearing masks = coverage $\times$ availability = $0.54 \times 0.525 = 0.2835$ and proportion reduction in transmission rate = $0.575$. Therefore, $\theta = 0.2835 \times 0.575 = 0.163$. We assume that the mask wearing mandate starts at day 40 and continue to be in place for 200 days.
 
 
 ``` r
@@ -336,6 +374,17 @@ To implement both contact and rate interventions in the same simulation they mus
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
+:::::::::::::::::::::: instructor
+
+Make a pause.
+
+Use slides to introduce the topics of:
+
+- Pharmaceutical interventions.
+
+Then continue with the livecoding.
+
+::::::::::::::::::::::
 
 ## Pharmaceutical interventions
 
@@ -358,6 +407,7 @@ $$
 \frac{dV_i}{dt} & =\nu_{i,t} S_i\\
 \end{aligned}
 $$
+
 Individuals in age group ($i$)  at specific time dependent ($t$)  are vaccinated at rate ($\nu_{i,t}$). The other SEIR components of these equations are described in the tutorial [simulating transmission](../episodes/simulating-transmission.md#simulating-disease-spread). 
 
 To explore the effect of vaccination we need to create a vaccination object to pass as an input into `model_default()` that includes  age groups specific vaccination rate `nu` and age groups specific start and end times of the vaccination program (`time_begin` and `time_end`). 
@@ -494,6 +544,15 @@ To get an age-stratified plot, keep the default `by_group = TRUE` and then add `
 
 :::::::::::::::::::::
 
+:::::::::::::::::::::: instructor
+
+Stop the livecoding.
+
+Suggest learners to read the next episode.
+
+Return to slides.
+
+::::::::::::::::::::::
 
 ## Summary
 
