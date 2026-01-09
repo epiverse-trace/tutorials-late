@@ -13,6 +13,7 @@ linters: linters_with_defaults(
     nrow_subset_linter = NULL,
     return_linter = NULL,
     cyclocomp_linter = NULL,
+    object_usage_linter = NULL,
     undesirable_function_linter(
       modify_defaults(
         default_undesirable_functions,
