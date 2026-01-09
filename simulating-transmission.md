@@ -85,7 +85,7 @@ In this tutorial, we will use the default model in `{epidemics}`, called `model_
 The schematic below shows the processes which describe the flow of individuals between the disease states $S$, $E$, $I$ and $R$ and the key parameters for each process.
 
 
-<img src="fig/simulating-transmission-rendered-diagram-1.png" style="display: block; margin: auto;" />
+<img src="fig/simulating-transmission-rendered-diagram-1.png" alt="" style="display: block; margin: auto;" />
 
 
 ::::::::::::::::::::::::::::::::::::: callout
@@ -453,7 +453,7 @@ output %>%
   )
 ```
 
-<img src="fig/simulating-transmission-rendered-visualise-1.png" style="display: block; margin: auto;" />
+<img src="fig/simulating-transmission-rendered-visualise-1.png" alt="" style="display: block; margin: auto;" />
 
 
 ::::::::::::::::::::::::::::::::::::: callout
@@ -526,7 +526,7 @@ newinfections_bygroup %>%
   theme_bw()
 ```
 
-<img src="fig/simulating-transmission-rendered-unnamed-chunk-7-1.png" style="display: block; margin: auto;" />
+<img src="fig/simulating-transmission-rendered-unnamed-chunk-7-1.png" alt="" style="display: block; margin: auto;" />
 
 :::::::::::::::::::::::
 
@@ -609,7 +609,7 @@ output_samples %>%
   )
 ```
 
-<img src="fig/simulating-transmission-rendered-plot-1.png" style="display: block; margin: auto;" />
+<img src="fig/simulating-transmission-rendered-plot-1.png" alt="" style="display: block; margin: auto;" />
 
 
 Deciding which parameters to include uncertainty in depends on a few factors: how well informed a parameter value is, e.g. consistency of estimates from the literature; how sensitive model outputs are to parameter value changes; and the purpose of the modelling task. See [McCabe et al. 2021](https://doi.org/10.1016%2Fj.epidem.2021.100520) to learn about different types of uncertainty in infectious disease modelling.

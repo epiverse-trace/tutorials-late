@@ -95,7 +95,7 @@ We see the intuitive result that the higher the vaccination rate, the more peopl
 
 ### Output
 
-<img src="fig/vaccine-comparisons-rendered-unnamed-chunk-4-1.png" style="display: block; margin: auto;" />
+<img src="fig/vaccine-comparisons-rendered-unnamed-chunk-4-1.png" alt="" style="display: block; margin: auto;" />
 
 ### R Code
 
@@ -203,7 +203,7 @@ vaccinate_01_infections <- epidemics::new_infections(
 
 ### Output 
 
-<img src="fig/vaccine-comparisons-rendered-unnamed-chunk-7-1.png" style="display: block; margin: auto;" />
+<img src="fig/vaccine-comparisons-rendered-unnamed-chunk-7-1.png" alt="" style="display: block; margin: auto;" />
 
 ### R code
 
@@ -355,7 +355,7 @@ To show the effect of targeted vaccination, we will compare the following scenar
 
 ### Output
 
-<img src="fig/vaccine-comparisons-rendered-unnamed-chunk-11-1.png" style="display: block; margin: auto;" />
+<img src="fig/vaccine-comparisons-rendered-unnamed-chunk-11-1.png" alt="" style="display: block; margin: auto;" />
 
 ### R Code
 
@@ -577,7 +577,7 @@ output_deaths %>%
   )
 ```
 
-<img src="fig/vaccine-comparisons-rendered-unnamed-chunk-17-1.png" style="display: block; margin: auto;" />
+<img src="fig/vaccine-comparisons-rendered-unnamed-chunk-17-1.png" alt="" style="display: block; margin: auto;" />
 
 
 
@@ -641,7 +641,7 @@ output_npi_early_vacc_late <- epidemics::model_default(
 Early implementation of NPIs (`early npi`) delays the timing of the peak of infectious individuals but does not decrease the magnitude by much once the measure is lifted. Early implementation of the vaccine (`early vacc`) is the most effective control for reducing the peak number of infectious individuals, because it reduces the size of the susceptible group rather than just temporarily keeping infections away from it. Having an NPI in place before the vaccine is implemented (`early npi, late vacc`) is more effective than simply just implementing the vaccine late (`late vacc`).
 
 
-<img src="fig/vaccine-comparisons-rendered-unnamed-chunk-20-1.png" style="display: block; margin: auto;" />
+<img src="fig/vaccine-comparisons-rendered-unnamed-chunk-20-1.png" alt="" style="display: block; margin: auto;" />
 
 
 
@@ -741,7 +741,7 @@ output_npis %>%
   )
 ```
 
-<img src="fig/vaccine-comparisons-rendered-unnamed-chunk-21-1.png" style="display: block; margin: auto;" />
+<img src="fig/vaccine-comparisons-rendered-unnamed-chunk-21-1.png" alt="" style="display: block; margin: auto;" />
 
 
 

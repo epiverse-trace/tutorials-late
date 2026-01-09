@@ -314,7 +314,7 @@ output %>%
   )
 ```
 
-<img src="fig/BF_measles-rendered-unnamed-chunk-2-1.png" style="display: block; margin: auto;" />
+<img src="fig/BF_measles-rendered-unnamed-chunk-2-1.png" alt="" style="display: block; margin: auto;" />
 
 
 ## Expected Epidemic Size & Herd Immunity
@@ -511,7 +511,7 @@ output1 %>%
   )
 ```
 
-<img src="fig/BF_measles-rendered-unnamed-chunk-6-1.png" style="display: block; margin: auto;" />
+<img src="fig/BF_measles-rendered-unnamed-chunk-6-1.png" alt="" style="display: block; margin: auto;" />
 
 
 ## Effective Reproduction Number ($\mathcal{R}_{eff}$)
@@ -711,7 +711,7 @@ ggplot(data_combined) +
   )
 ```
 
-<img src="fig/BF_measles-rendered-unnamed-chunk-9-1.png" style="display: block; margin: auto;" />
+<img src="fig/BF_measles-rendered-unnamed-chunk-9-1.png" alt="" style="display: block; margin: auto;" />
 
 ## Vaccination Model
 
@@ -785,7 +785,7 @@ output3 %>%
   )
 ```
 
-<img src="fig/BF_measles-rendered-unnamed-chunk-10-1.png" style="display: block; margin: auto;" />
+<img src="fig/BF_measles-rendered-unnamed-chunk-10-1.png" alt="" style="display: block; margin: auto;" />
 
 We can visualize the outcomes of both the baseline model and the
 vaccine-intervention model to highlight the differences in infection
@@ -867,7 +867,7 @@ ggplot(data_combined2) +
   )
 ```
 
-<img src="fig/BF_measles-rendered-unnamed-chunk-11-1.png" style="display: block; margin: auto;" />
+<img src="fig/BF_measles-rendered-unnamed-chunk-11-1.png" alt="" style="display: block; margin: auto;" />
 
 
 ## Combining interventions
@@ -927,4 +927,4 @@ output4 %>%
   )
 ```
 
-<img src="fig/BF_measles-rendered-unnamed-chunk-12-1.png" style="display: block; margin: auto;" />
+<img src="fig/BF_measles-rendered-unnamed-chunk-12-1.png" alt="" style="display: block; margin: auto;" />

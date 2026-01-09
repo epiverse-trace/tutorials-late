@@ -124,7 +124,7 @@ output %>%
   )
 ```
 
-<img src="fig/compare-interventions-rendered-unnamed-chunk-2-1.png" style="display: block; margin: auto;" />
+<img src="fig/compare-interventions-rendered-unnamed-chunk-2-1.png" alt="" style="display: block; margin: auto;" />
 
 If we wanted to quantify the impact of the intervention over the model output through time, we could consider the cumulative number of infectious people in the baseline scenario compared to the intervention scenario: 
 
@@ -168,7 +168,7 @@ output %>%
 `.groups` argument.
 ```
 
-<img src="fig/compare-interventions-rendered-unnamed-chunk-3-1.png" style="display: block; margin: auto;" />
+<img src="fig/compare-interventions-rendered-unnamed-chunk-3-1.png" alt="" style="display: block; margin: auto;" />
 
 
 ### Vacamole model
@@ -186,7 +186,7 @@ The Vacamole model is a deterministic model based on a system of Ordinary Differ
 
 The diagram below describes the flow of individuals through the different compartments.
 
-<img src="fig/compare-interventions-rendered-unnamed-chunk-4-1.png" width="80%" style="display: block; margin: auto;" />
+<img src="fig/compare-interventions-rendered-unnamed-chunk-4-1.png" alt="" width="80%" style="display: block; margin: auto;" />
 
 
 ::::::::::::::::::::::::::::::::::::: challenge
@@ -375,7 +375,7 @@ output_vacamole %>%
 `.groups` argument.
 ```
 
-<img src="fig/compare-interventions-rendered-unnamed-chunk-7-1.png" style="display: block; margin: auto;" />
+<img src="fig/compare-interventions-rendered-unnamed-chunk-7-1.png" alt="" style="display: block; margin: auto;" />
 
 
 

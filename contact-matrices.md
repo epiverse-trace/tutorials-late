@@ -303,7 +303,7 @@ Whereas a contact matrix gives the average number of contacts that one groups ma
 
 Consider the SIR model where individuals are categorized as either susceptible $S$, infected but not yet infectious $E$, infectious $I$ or recovered $R$. The schematic below shows the processes which describe the flow of individuals between the disease states $S$, $I$ and $R$ and the key parameters for each process.
 
-<img src="fig/contact-matrices-rendered-diagram-1.png" style="display: block; margin: auto;" />
+<img src="fig/contact-matrices-rendered-diagram-1.png" alt="" style="display: block; margin: auto;" />
 
 The [differential equations](../learners/reference.md#ordinary) below describe how individuals move from one state to another [(Bjørnstad et al. 2020)](https://doi.org/10.1038/s41592-020-0822-z).
 

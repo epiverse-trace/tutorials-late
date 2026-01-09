@@ -211,7 +211,7 @@ ggplot(data = density_df, aes(x = days, y = density_admission))  +
   )
 ```
 
-<img src="fig/disease-burden-rendered-unnamed-chunk-5-1.png" style="display: block; margin: auto;" />
+<img src="fig/disease-burden-rendered-unnamed-chunk-5-1.png" alt="" style="display: block; margin: auto;" />
 
 
 ::::::::::::::::::::::::::::::::::::: challenge 
@@ -249,7 +249,7 @@ ggplot(data = density_df, aes(x = days, y = density_discharge)) +
   )
 ```
 
-<img src="fig/disease-burden-rendered-unnamed-chunk-6-1.png" style="display: block; margin: auto;" />
+<img src="fig/disease-burden-rendered-unnamed-chunk-6-1.png" alt="" style="display: block; margin: auto;" />
 
 :::::::::::::::::::::::::::::::::
 ::::::::::::::::::::::::::::::::::::::::::::::::
@@ -352,7 +352,7 @@ ggplot(data = hosp_df_long) +
   )
 ```
 
-<img src="fig/disease-burden-rendered-unnamed-chunk-11-1.png" style="display: block; margin: auto;" />
+<img src="fig/disease-burden-rendered-unnamed-chunk-11-1.png" alt="" style="display: block; margin: auto;" />
 
 ## Summary
 

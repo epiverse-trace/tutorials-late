@@ -281,7 +281,7 @@ output %>%
   )
 ```
 
-<img src="fig/modelling-interventions-rendered-baseline-1.png" style="display: block; margin: auto;" />
+<img src="fig/modelling-interventions-rendered-baseline-1.png" alt="" style="display: block; margin: auto;" />
 
 We can see that with the intervention in place, the infection still spreads through the population and hence accumulation of immunity contributes to the eventual peak-and-decline. However, the peak number of infectious individuals is smaller (green dashed line) than the baseline with no intervention in place (red solid line), showing a reduction in the absolute number of cases.
 
@@ -363,7 +363,7 @@ output %>%
   )
 ```
 
-<img src="fig/modelling-interventions-rendered-plot_masks-1.png" style="display: block; margin: auto;" />
+<img src="fig/modelling-interventions-rendered-plot_masks-1.png" alt="" style="display: block; margin: auto;" />
 
 ::::::::::::::::::::::::::::::::::::: callout
 ### Intervention types
@@ -392,7 +392,7 @@ Pharmaceutical interventions (PIs) are measures such as vaccination and mass tre
 
 The diagram below shows the SEIRV model implemented using `model_default()` where susceptible individuals are vaccinated and then move to the $V$ class.
 
-<img src="fig/modelling-interventions-rendered-diagram_SEIRV-1.png" style="display: block; margin: auto;" />
+<img src="fig/modelling-interventions-rendered-diagram_SEIRV-1.png" alt="" style="display: block; margin: auto;" />
 
 
 
@@ -488,7 +488,7 @@ output %>%
   )
 ```
 
-<img src="fig/modelling-interventions-rendered-plot_vaccinate-1.png" style="display: block; margin: auto;" />
+<img src="fig/modelling-interventions-rendered-plot_vaccinate-1.png" alt="" style="display: block; margin: auto;" />
 
 From the plot, we see that the peak number of total number of infectious individuals when vaccination is in place is much lower compared to school closures and mask-wearing interventions. 
 
@@ -538,7 +538,7 @@ infections_baseline_interv %>%
   theme_bw()
 ```
 
-<img src="fig/modelling-interventions-rendered-unnamed-chunk-6-1.png" style="display: block; margin: auto;" />
+<img src="fig/modelling-interventions-rendered-unnamed-chunk-6-1.png" alt="" style="display: block; margin: auto;" />
 
 To get an age-stratified plot, keep the default `by_group = TRUE` and then add `linetype = demography_group` when declaring variables in `ggplot(aes(...))`.
 
