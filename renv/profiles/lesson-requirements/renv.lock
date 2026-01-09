@@ -1572,16 +1572,15 @@
       "Language": "en-GB",
       "Roxygen": "list(markdown = TRUE)",
       "RoxygenNote": "7.3.2",
+      "Author": "Pratik Gupte [aut, cph] (ORCID: <https://orcid.org/0000-0001-5294-7819>), Rosalind Eggo [aut, cph, cre] (ORCID: <https://orcid.org/0000-0002-0362-6717>), Edwin Van Leeuwen [aut, cph] (ORCID: <https://orcid.org/0000-0002-2383-5305>), Adam Kucharski [ctb, rev] (ORCID: <https://orcid.org/0000-0001-8814-9421>), Tim Taylor [ctb, rev] (ORCID: <https://orcid.org/0000-0002-8587-7113>), Banky Ahadzie [ctb], Alexis Robert [ctb] (ORCID: <https://orcid.org/0000-0002-4516-2965>), Hugo Gruson [rev] (ORCID: <https://orcid.org/0000-0002-4094-1476>), Joshua W. Lambert [rev] (ORCID: <https://orcid.org/0000-0001-5218-3046>), James M. Azam [rev] (ORCID: <https://orcid.org/0000-0001-5782-7330>), Alexis Robert [rev] (ORCID: <https://orcid.org/0000-0002-4516-2965>)",
+      "Maintainer": "Rosalind Eggo <rosalind.eggo@lshtm.ac.uk>",
       "RemoteType": "github",
       "RemoteHost": "api.github.com",
       "RemoteRepo": "epidemics",
       "RemoteUsername": "epiverse-trace",
       "RemotePkgRef": "epiverse-trace/epidemics",
       "RemoteRef": "HEAD",
-      "RemoteSha": "376ac8fa2602f2d3c75f947e874476fd16dedd5b",
-      "NeedsCompilation": "yes",
-      "Author": "Pratik Gupte [aut, cph] (ORCID: <https://orcid.org/0000-0001-5294-7819>), Rosalind Eggo [aut, cph, cre] (ORCID: <https://orcid.org/0000-0002-0362-6717>), Edwin Van Leeuwen [aut, cph] (ORCID: <https://orcid.org/0000-0002-2383-5305>), Adam Kucharski [ctb, rev] (ORCID: <https://orcid.org/0000-0001-8814-9421>), Tim Taylor [ctb, rev] (ORCID: <https://orcid.org/0000-0002-8587-7113>), Banky Ahadzie [ctb], Alexis Robert [ctb] (ORCID: <https://orcid.org/0000-0002-4516-2965>), Hugo Gruson [rev] (ORCID: <https://orcid.org/0000-0002-4094-1476>), Joshua W. Lambert [rev] (ORCID: <https://orcid.org/0000-0001-5218-3046>), James M. Azam [rev] (ORCID: <https://orcid.org/0000-0001-5782-7330>), Alexis Robert [rev] (ORCID: <https://orcid.org/0000-0002-4516-2965>)",
-      "Maintainer": "Rosalind Eggo <rosalind.eggo@lshtm.ac.uk>"
+      "RemoteSha": "376ac8fa2602f2d3c75f947e874476fd16dedd5b"
     },
     "epiparameter": {
       "Package": "epiparameter",
