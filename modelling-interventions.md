@@ -392,7 +392,8 @@ Pharmaceutical interventions (PIs) are measures such as vaccination and mass tre
 
 The diagram below shows the SEIRV model implemented using `model_default()` where susceptible individuals are vaccinated and then move to the $V$ class.
 
-<img src="fig/modelling-interventions-rendered-diagram_SEIRV-1.png" alt="" style="display: block; margin: auto;" />
+<!--html_preserve--><div class="grViz html-widget html-fill-item" id="htmlwidget-3f8b8134d03487db3b5e" style="width:504px;height:504px;"></div>
+<script type="application/json" data-for="htmlwidget-3f8b8134d03487db3b5e">{"x":{"diagram":"digraph {\n\n  # graph statement\n  ################\n  graph [layout = dot,\n         rankdir = LR,\n         overlap = true,\n         fontsize = 10]\n\n  # nodes\n  #######\n  node [shape = square,\n       fixedsize = true\n       width = 1.3]\n\n       S\n       E\n       I\n       R\n       V\n\n  # edges\n  #######\n  S -> E [label = \" infection (&beta;)\"]\n  S -> V [label = \" vaccination (&nu;)\"]\n  E -> I [label = \" onset of \ninfectiousness (&alpha;)\"]\n  I -> R [label = \" recovery (&gamma;)\"]\n\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script><!--/html_preserve-->
 
 
 
@@ -553,6 +554,17 @@ Suggest learners to read the next episode.
 Return to slides.
 
 ::::::::::::::::::::::
+
+::::::::::::::::::: testimonial
+
+__Want to build an interactive dashboard so others can explore epidemic scenarios?__
+
+We can use Shiny to overlay plots with a drag-and-drop approach. Now, with `{overshiny}`, you can do this with much more flexibility.
+You can combine `{epidemics}` and `{overshiny}` to explore the effect of different interventions like vaccines and social distancing with a common set of parameters.
+
+Read this tutorial on [how to overlay multiple interventions in epidemic modelling with a drag-and-drop approach](https://nicholasdavies.github.io/overshiny/articles/epidemics.html).
+
+:::::::::::::::::::
 
 ## Summary
 
