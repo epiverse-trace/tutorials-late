@@ -561,6 +561,17 @@ Return to slides.
 
 ::::::::::::::::::::::
 
+::::::::::::::::::: testimonial
+
+__Want to build an interactive dashboard so others can explore epidemic scenarios?__
+
+We can use Shiny to overlay plots with a drag-and-drop approach. Now, with `{overshiny}`, you can do this with much more flexibility.
+You can combine `{epidemics}` and `{overshiny}` to explore the effect of different interventions like vaccines and social distancing with a common set of parameters.
+
+Read this tutorial on [how to overlay multiple interventions in epidemic modelling with a drag-and-drop approach](https://nicholasdavies.github.io/overshiny/articles/epidemics.html).
+
+:::::::::::::::::::
+
 ## Summary
 
 Different types of intervention can be implemented using mathematical modelling. Modelling interventions requires assumptions of which model parameters are affected (e.g. contact matrices, transmission rate), and by what magnitude and what times in the simulation of an outbreak. 
