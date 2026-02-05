@@ -248,13 +248,6 @@ contact_data <- socialmixr::contact_matrix(
   age.limits = c(0, 20, 40),
   symmetric = TRUE
 )
-```
-
-``` output
-Removing participants that have contacts without age information. To change this behaviour, set the 'missing.contact.age' option
-```
-
-``` r
 # prepare contact matrix
 contact_matrix <- t(contact_data$matrix)
 

@@ -86,23 +86,16 @@ The R package `{socialmixr}` contains functions which can estimate contact matri
 polymod <- socialmixr::polymod
 ```
 
-Then we can obtain the contact matrix for the age categories we want by specifying `age.limits`. 
+Then we can obtain the contact matrix for the age categories we want by specifying `age_limits`. 
 
 
 ``` r
 contact_data <- socialmixr::contact_matrix(
   survey = polymod,
   countries = "United Kingdom",
-  age.limits = c(0, 20, 40),
+  age_limits = c(0, 20, 40),
   symmetric = TRUE
 )
-```
-
-``` output
-Removing participants that have contacts without age information. To change this behaviour, set the 'missing.contact.age' option
-```
-
-``` r
 contact_data
 ```
 
@@ -221,17 +214,16 @@ Similar to the code above, to access vector values within a dataframe, you can u
 contact_data_zambia <- socialmixr::contact_matrix(
   survey = zambia_sa_survey,
   countries = "Zambia", # key argument
-  age.limits = c(0, 20),
+  age_limits = c(0, 20),
   symmetric = TRUE
 )
 ```
 
-``` output
-Removing participants without age information. To change this behaviour, set the 'missing.participant.age' option
-```
-
-``` output
-Removing participants that have contacts without age information. To change this behaviour, set the 'missing.contact.age' option
+``` warning
+Warning: Survey contains multiple observations per participant (4531 rows, 3576 unique
+participants).
+• Results will aggregate across all observations.
+ℹ Use `filter` to select by "Building_id".
 ```
 
 ``` r
@@ -243,8 +235,8 @@ contact_data_zambia
 $matrix
          contact.age.group
 age.group   [0,20)      20+
-   [0,20) 3.650000 1.451168
-   20+    1.988136 2.461856
+   [0,20) 3.766393 1.427100
+   20+    1.955162 2.642584
 
 $demography
    age.group population proportion  year
@@ -255,8 +247,8 @@ $demography
 $participants
    age.group participants proportion
       <char>        <int>      <num>
-1:    [0,20)          180 0.08490566
-2:       20+         1940 0.91509434
+1:    [0,20)          244 0.08531469
+2:       20+         2616 0.91468531
 ```
 
 ``` r
@@ -373,7 +365,7 @@ Normalisation can be performed by the function `contact_matrix()` in `{socialmix
 contact_data_split <- socialmixr::contact_matrix(
   survey = polymod,
   countries = "United Kingdom",
-  age.limits = c(0, 20, 40),
+  age_limits = c(0, 20, 40),
   symmetric = TRUE,
   split = TRUE
 )
