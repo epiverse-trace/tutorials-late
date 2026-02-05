@@ -92,7 +92,7 @@ survey_data <- socialmixr::polymod
 cm_results <- socialmixr::contact_matrix(
   survey = survey_data,
   countries = "United Kingdom",
-  age.limits = c(0, 15, 65),
+  age_limits = c(0, 15, 65),
   symmetric = TRUE
 )
 
