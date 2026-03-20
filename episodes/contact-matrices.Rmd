@@ -201,7 +201,7 @@ Similar to the code above, to access vector values within a dataframe, you can u
 
 :::::::::::::::::::::::: instructor 
 
-```{r zambia_solution, message = FALSE, warning = FALSE}
+```{r zambia_solution}
 # Generate the contact matrix for Zambia only
 contacts_byage_zambia <- socialmixr::contact_matrix(
   survey = zambia_sa_survey,
