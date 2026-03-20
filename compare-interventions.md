@@ -133,7 +133,7 @@ If we wanted to quantify the impact of the intervention over the model output th
 output %>%
   filter(compartment == "infectious") %>%
   group_by(time, intervention_type) %>%
-  summarise(value_total = sum(value)) %>%
+  summarise(value_total = sum(value), .groups = "drop_last") %>%
   group_by(intervention_type) %>%
   mutate(cum_value = cumsum(value_total)) %>%
   ggplot() +
@@ -161,11 +161,6 @@ output %>%
     x = "Simulation time (days)",
     y = "Cumulative number of infectious individuals"
   )
-```
-
-``` output
-`summarise()` has grouped output by 'time'. You can override using the
-`.groups` argument.
 ```
 
 <img src="fig/compare-interventions-rendered-unnamed-chunk-3-1.png" alt="" style="display: block; margin: auto;" />
@@ -340,7 +335,7 @@ output_vacamole <- rbind(output_intervention_vc, output_baseline_vc)
 output_vacamole %>%
   filter(compartment == "dead") %>%
   group_by(time, intervention_type) %>%
-  summarise(value_total = sum(value)) %>%
+  summarise(value_total = sum(value), .groups = "drop_last") %>%
   group_by(intervention_type) %>%
   mutate(cum_value = cumsum(value_total)) %>%
   ggplot() +
@@ -361,11 +356,6 @@ output_vacamole %>%
     x = "Simulation time (days)",
     y = "Cumulative number of deaths"
   )
-```
-
-``` output
-`summarise()` has grouped output by 'time'. You can override using the
-`.groups` argument.
 ```
 
 <img src="fig/compare-interventions-rendered-unnamed-chunk-7-1.png" alt="" style="display: block; margin: auto;" />
