@@ -40,6 +40,8 @@ In this tutorial we will compare different vaccination strategies using models f
 ```{r, message = FALSE}
 library(ggplot2)
 library(epidemics)
+library(contactsurveys)
+library(socialmixr)
 library(dplyr)
 library(purrr)
 ```
@@ -66,21 +68,27 @@ We will illustrate this using results from `model_default()` in `{epidemics}`. T
 
 
 ```{r, echo = FALSE, message = FALSE}
-polymod <- socialmixr::polymod
-contact_data <- socialmixr::contact_matrix(
-  polymod,
+survey_files <- contactsurveys::download_survey(
+  survey = "https://doi.org/10.5281/zenodo.3874557",
+  verbose = FALSE
+)
+survey_load <- socialmixr::load_survey(files = survey_files)
+
+contacts_byage <- socialmixr::contact_matrix(
+  survey = survey_load,
   countries = "United Kingdom",
   age_limits = c(0, 15, 65),
-  symmetric = TRUE
+  symmetric = TRUE,
+  return_demography = TRUE
 )
 
 
 # prepare contact matrix
-contact_matrix <- t(contact_data$matrix)
+contacts_byage_matrix <- t(contacts_byage$matrix)
 
 # prepare the demography vector
-demography_vector <- contact_data$demography$population
-names(demography_vector) <- rownames(contact_matrix)
+demography_vector <- contacts_byage$demography$population
+names(demography_vector) <- rownames(contacts_byage_matrix)
 
 # initial conditions: one in every 1 million is infected
 initial_i <- 1e-6
@@ -90,15 +98,15 @@ initial_conditions <- c(
 
 # build for all age groups
 initial_conditions <- matrix(
-  rep(initial_conditions, dim(contact_matrix)[1]),
+  rep(initial_conditions, dim(contacts_byage_matrix)[1]),
   ncol = 5, byrow = TRUE
 )
-rownames(initial_conditions) <- rownames(contact_matrix)
+rownames(initial_conditions) <- rownames(contacts_byage_matrix)
 
 # prepare the population to model as affected by the epidemic
 uk_population <- epidemics::population(
   name = "UK",
-  contact_matrix = contact_matrix,
+  contact_matrix = contacts_byage_matrix,
   demography_vector = demography_vector,
   initial_conditions = initial_conditions
 )
@@ -119,15 +127,15 @@ transmission_rate <- basic_reproduction / infectious_period
 # prepare vaccination objects
 vaccinate_01 <- epidemics::vaccination(
   name = "vaccinate all",
-  time_begin = matrix(0, nrow(contact_matrix)),
-  time_end = matrix(150, nrow(contact_matrix)),
+  time_begin = matrix(0, nrow(contacts_byage_matrix)),
+  time_end = matrix(150, nrow(contacts_byage_matrix)),
   nu = matrix(c(0.001, 0.001, 0.001))
 )
 
 vaccinate_02 <- epidemics::vaccination(
   name = "vaccinate all",
-  time_begin = matrix(0, nrow(contact_matrix)),
-  time_end = matrix(150, nrow(contact_matrix)),
+  time_begin = matrix(0, nrow(contacts_byage_matrix)),
+  time_end = matrix(150, nrow(contacts_byage_matrix)),
   nu = matrix(c(0.01, 0.01, 0.01))
 )
 ```
@@ -494,7 +502,7 @@ For infections that have a higher burden in different risk groups, targeted vacc
 We will use the same contact matrix as above from [Modelling interventions](../episodes/modelling-interventions.md):
 
 ```{r}
-contact_matrix
+contacts_byage_matrix
 ```
 
 There is higher levels of mixing within the 0-15 and 15-65 age groups than in the 65+ age group, so we expect that targeting different age groups will result in different disease trajectories. 
@@ -514,22 +522,22 @@ To show the effect of targeted vaccination, we will compare the following scenar
 ```{r, echo = FALSE}
 vaccinate_group_1 <- epidemics::vaccination(
   name = "vaccinate all",
-  time_begin = matrix(40, nrow(contact_matrix)),
-  time_end = matrix(40 + 150, nrow(contact_matrix)),
+  time_begin = matrix(40, nrow(contacts_byage_matrix)),
+  time_end = matrix(40 + 150, nrow(contacts_byage_matrix)),
   nu = matrix(c(0.001 * 3, 0, 0))
 )
 
 vaccinate_group_2 <- epidemics::vaccination(
   name = "vaccinate all",
-  time_begin = matrix(40, nrow(contact_matrix)),
-  time_end = matrix(40 + 150, nrow(contact_matrix)),
+  time_begin = matrix(40, nrow(contacts_byage_matrix)),
+  time_end = matrix(40 + 150, nrow(contacts_byage_matrix)),
   nu = matrix(c(0, 0.001 * 3, 0))
 )
 
 vaccinate_group_3 <- epidemics::vaccination(
   name = "vaccinate all",
-  time_begin = matrix(40, nrow(contact_matrix)),
-  time_end = matrix(40 + 150, nrow(contact_matrix)),
+  time_begin = matrix(40, nrow(contacts_byage_matrix)),
+  time_end = matrix(40 + 150, nrow(contacts_byage_matrix)),
   nu = matrix(c(0, 0, 0.001 * 3))
 )
 
@@ -638,22 +646,22 @@ output_infections %>%
 ```{r, echo = TRUE, eval = FALSE}
 vaccinate_group_1 <- epidemics::vaccination(
   name = "vaccinate all",
-  time_begin = matrix(40, nrow(contact_matrix)),
-  time_end = matrix(40 + 150, nrow(contact_matrix)),
+  time_begin = matrix(40, nrow(contacts_byage_matrix)),
+  time_end = matrix(40 + 150, nrow(contacts_byage_matrix)),
   nu = matrix(c(0.001 * 3, 0, 0))
 )
 
 vaccinate_group_2 <- epidemics::vaccination(
   name = "vaccinate all",
-  time_begin = matrix(40, nrow(contact_matrix)),
-  time_end = matrix(40 + 150, nrow(contact_matrix)),
+  time_begin = matrix(40, nrow(contacts_byage_matrix)),
+  time_end = matrix(40 + 150, nrow(contacts_byage_matrix)),
   nu = matrix(c(0, 0.001 * 3, 0))
 )
 
 vaccinate_group_3 <- epidemics::vaccination(
   name = "vaccinate all",
-  time_begin = matrix(40, nrow(contact_matrix)),
-  time_end = matrix(40 + 150, nrow(contact_matrix)),
+  time_begin = matrix(40, nrow(contacts_byage_matrix)),
+  time_end = matrix(40 + 150, nrow(contacts_byage_matrix)),
   nu = matrix(c(0, 0, 0.001 * 3))
 )
 
@@ -781,7 +789,7 @@ Targeting specific age groups can reduce the number of deaths in the eldest age 
 
 ```{r}
 ifr <- c(0.00001, 0.001, 0.4)
-names(ifr) <- rownames(contact_matrix)
+names(ifr) <- rownames(contacts_byage_matrix)
 ```
 
 To convert infections to deaths, we will need new infections by age group, so we call `new_infections()` with `by_group = TRUE` and then multiply the new infections by the IFR for that age group:
@@ -937,8 +945,8 @@ close_schools_early <- epidemics::intervention(
 # vaccination late
 vacc_late <- epidemics::vaccination(
   name = "vaccinate late",
-  time_begin = matrix(late_start, nrow(contact_matrix)),
-  time_end = matrix(late_start + duration, nrow(contact_matrix)),
+  time_begin = matrix(late_start, nrow(contacts_byage_matrix)),
+  time_end = matrix(late_start + duration, nrow(contacts_byage_matrix)),
   nu = matrix(c(0.01, 0.01, 0.01))
 )
 
@@ -960,8 +968,8 @@ output_npi_early_vacc_late <- epidemics::model_default(
 # vaccinate early
 vacc_early <- epidemics::vaccination(
   name = "vaccinate early",
-  time_begin = matrix(early_start, nrow(contact_matrix)),
-  time_end = matrix(early_start + duration, nrow(contact_matrix)),
+  time_begin = matrix(early_start, nrow(contacts_byage_matrix)),
+  time_end = matrix(early_start + duration, nrow(contacts_byage_matrix)),
   nu = matrix(c(0.01, 0.01, 0.01))
 )
 

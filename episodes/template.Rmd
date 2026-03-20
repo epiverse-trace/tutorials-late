@@ -60,32 +60,47 @@ Lesson content
 
 ## Challenge 1 : can the learner run existing code
 
-Load contact and population data from socialmixr::polymod
+Load contact and population data from the POLYMOD Zenodo survey
 
 ```r
-polymod <- socialmixr::polymod
-contact_data <- socialmixr::contact_matrix(
-  polymod,
+library(contactsurveys)
+library(socialmixr)
+
+survey_files <- contactsurveys::download_survey(
+  survey = "https://doi.org/10.5281/zenodo.3874557",
+  verbose = FALSE
+)
+survey_load <- socialmixr::load_survey(files = survey_files)
+
+contacts_byage <- socialmixr::contact_matrix(
+  survey = survey_load,
   countries = "United Kingdom",
   age_limits = c(0, 20, 40),
-  symmetric = TRUE
+  symmetric = TRUE,
+  return_demography = TRUE
 )
-contact_data
+contacts_byage
 ```
 
-:::::::::::::::::::::::: solution 
+:::::::::::::::::::::::: solution
 
 ## Output
- 
-```{r polymod_uk, echo = FALSE}
-polymod <- socialmixr::polymod
-contact_data <- socialmixr::contact_matrix(
-  polymod,
+
+```{r polymod_uk, echo = FALSE, message = FALSE}
+survey_files <- contactsurveys::download_survey(
+  survey = "https://doi.org/10.5281/zenodo.3874557",
+  verbose = FALSE
+)
+survey_load <- socialmixr::load_survey(files = survey_files)
+
+contacts_byage <- socialmixr::contact_matrix(
+  survey = survey_load,
   countries = "United Kingdom",
   age_limits = c(0, 20, 40),
-  symmetric = TRUE
+  symmetric = TRUE,
+  return_demography = TRUE
 )
-contact_data
+contacts_byage
 ```
 
 
@@ -107,7 +122,7 @@ Add additional maths (or epi) content for novice learners
 
 ## Challenge 2 : edit code/answer a question
 
-Load contact and population data for Poland from socialmixr::polymod using the following age bins:
+Load contact and population data for Poland from the POLYMOD Zenodo survey using the following age bins:
 
 + [0,15)
 + [15, 50)
@@ -115,15 +130,21 @@ Load contact and population data for Poland from socialmixr::polymod using the f
 
 :::::::::::::::::::::::: solution 
 
-```{r polymod_poland}
-polymod <- socialmixr::polymod
-contact_data <- socialmixr::contact_matrix(
-  polymod,
+```{r polymod_poland, message = FALSE}
+survey_files <- contactsurveys::download_survey(
+  survey = "https://doi.org/10.5281/zenodo.3874557",
+  verbose = FALSE
+)
+survey_load <- socialmixr::load_survey(files = survey_files)
+
+contacts_byage <- socialmixr::contact_matrix(
+  survey = survey_load,
   countries = "Poland",
   age_limits = c(0, 15, 50),
-  symmetric = TRUE
+  symmetric = TRUE,
+  return_demography = TRUE
 )
-contact_data
+contacts_byage
 ```
 :::::::::::::::::::::::::::::::::
 ::::::::::::::::::::::::::::::::::::::::::::::::
