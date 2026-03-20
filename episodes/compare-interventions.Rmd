@@ -204,7 +204,7 @@ If we wanted to quantify the impact of the intervention over the model output th
 output %>%
   filter(compartment == "infectious") %>%
   group_by(time, intervention_type) %>%
-  summarise(value_total = sum(value)) %>%
+  summarise(value_total = sum(value), .groups = "drop_last") %>%
   group_by(intervention_type) %>%
   mutate(cum_value = cumsum(value_total)) %>%
   ggplot() +
@@ -454,7 +454,7 @@ output_vacamole <- rbind(output_intervention_vc, output_baseline_vc)
 output_vacamole %>%
   filter(compartment == "dead") %>%
   group_by(time, intervention_type) %>%
-  summarise(value_total = sum(value)) %>%
+  summarise(value_total = sum(value), .groups = "drop_last") %>%
   group_by(intervention_type) %>%
   mutate(cum_value = cumsum(value_total)) %>%
   ggplot() +
