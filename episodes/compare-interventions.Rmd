@@ -12,20 +12,26 @@ library(epidemics)
 # hidden seed for stable stochastic output in lesson
 set.seed(33)
 
-polymod <- socialmixr::polymod
-contact_data <- socialmixr::contact_matrix(
-  polymod,
+survey_files <- contactsurveys::download_survey(
+  survey = "https://doi.org/10.5281/zenodo.3874557",
+  verbose = FALSE
+)
+survey_load <- socialmixr::load_survey(files = survey_files)
+
+contacts_byage <- socialmixr::contact_matrix(
+  survey = survey_load,
   countries = "United Kingdom",
   age_limits = c(0, 15, 65),
-  symmetric = TRUE
+  symmetric = TRUE,
+  return_demography = TRUE
 )
 
 # prepare contact matrix
-contact_matrix <- t(contact_data$matrix)
+contacts_byage_matrix <- t(contacts_byage$matrix)
 
 # prepare the demography vector
-demography_vector <- contact_data$demography$population
-names(demography_vector) <- rownames(contact_matrix)
+demography_vector <- contacts_byage$demography$population
+names(demography_vector) <- rownames(contacts_byage_matrix)
 
 # initial conditions: one in every 1 million is infected
 initial_i <- 1e-6
@@ -35,15 +41,15 @@ initial_conditions <- c(
 
 # build for all age groups
 initial_conditions <- matrix(
-  rep(initial_conditions, dim(contact_matrix)[1]),
+  rep(initial_conditions, dim(contacts_byage_matrix)[1]),
   ncol = 5, byrow = TRUE
 )
-rownames(initial_conditions) <- rownames(contact_matrix)
+rownames(initial_conditions) <- rownames(contacts_byage_matrix)
 
 # prepare the population to model as affected by the epidemic
 uk_population <- epidemics::population(
   name = "UK",
-  contact_matrix = contact_matrix,
+  contact_matrix = contacts_byage_matrix,
   demography_vector = demography_vector,
   initial_conditions = initial_conditions
 )
@@ -355,19 +361,25 @@ output <- epidemics::model_vacamole(
 1.  Run the model
 
 ```{r}
-polymod <- socialmixr::polymod
-contact_data <- socialmixr::contact_matrix(
-  survey = polymod,
+survey_files_2 <- contactsurveys::download_survey(
+  survey = "https://doi.org/10.5281/zenodo.3874557",
+  verbose = FALSE
+)
+survey_load_2 <- socialmixr::load_survey(files = survey_files_2)
+
+contacts_byage_2 <- socialmixr::contact_matrix(
+  survey = survey_load_2,
   countries = "United Kingdom",
   age_limits = c(0, 20, 40),
-  symmetric = TRUE
+  symmetric = TRUE,
+  return_demography = TRUE
 )
 # prepare contact matrix
-contact_matrix <- t(contact_data$matrix)
+contacts_byage_matrix_2 <- t(contacts_byage_2$matrix)
 
 # extract demography vector
-demography_vector <- contact_data$demography$population
-names(demography_vector) <- rownames(contact_matrix)
+demography_vector <- contacts_byage_2$demography$population
+names(demography_vector) <- rownames(contacts_byage_matrix_2)
 
 # prepare initial conditions
 initial_i <- 1e-6
@@ -385,12 +397,12 @@ initial_conditions_vacamole <- rbind(
   initial_conditions_vacamole,
   initial_conditions_vacamole
 )
-rownames(initial_conditions_vacamole) <- rownames(contact_matrix)
+rownames(initial_conditions_vacamole) <- rownames(contacts_byage_matrix_2)
 
 # prepare population object
 uk_population_vacamole <- epidemics::population(
   name = "UK",
-  contact_matrix = contact_matrix,
+  contact_matrix = contacts_byage_matrix_2,
   demography_vector = demography_vector,
   initial_conditions = initial_conditions_vacamole
 )
