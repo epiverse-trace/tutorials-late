@@ -67,7 +67,7 @@ We will illustrate this using results from `model_default()` in `{epidemics}`. T
 + vaccination program 02: vaccination rate 0.01.
 
 
-```{r, echo = FALSE, message = FALSE}
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
 survey_files <- contactsurveys::download_survey(
   survey = "https://doi.org/10.5281/zenodo.3874557",
   verbose = FALSE

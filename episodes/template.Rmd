@@ -86,7 +86,7 @@ contacts_byage
 
 ## Output
 
-```{r polymod_uk, echo = FALSE, message = FALSE}
+```{r polymod_uk, echo = FALSE, message = FALSE, warning = FALSE}
 survey_files <- contactsurveys::download_survey(
   survey = "https://doi.org/10.5281/zenodo.3874557",
   verbose = FALSE
@@ -130,7 +130,7 @@ Load contact and population data for Poland from the POLYMOD Zenodo survey using
 
 :::::::::::::::::::::::: solution 
 
-```{r polymod_poland, message = FALSE}
+```{r polymod_poland, message = FALSE, warning = FALSE}
 survey_files <- contactsurveys::download_survey(
   survey = "https://doi.org/10.5281/zenodo.3874557",
   verbose = FALSE

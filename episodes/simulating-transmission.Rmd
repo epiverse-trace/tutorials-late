@@ -196,7 +196,7 @@ Use the POLYMOD survey available at `https://doi.org/10.5281/zenodo.3874557`
 
 :::::::::::::::::::::::: solution 
  
-```{r polymod_uk, echo = TRUE, message = FALSE}
+```{r polymod_uk, echo = TRUE, message = FALSE, warning = FALSE}
 # Download and load the contact survey data
 survey_files <- contactsurveys::download_survey(
   survey = "https://doi.org/10.5281/zenodo.3874557",

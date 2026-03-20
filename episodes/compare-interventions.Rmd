@@ -360,7 +360,7 @@ output <- epidemics::model_vacamole(
 
 1.  Run the model
 
-```{r}
+```{r, message = FALSE, warning = FALSE}
 survey_files_2 <- contactsurveys::download_survey(
   survey = "https://doi.org/10.5281/zenodo.3874557",
   verbose = FALSE
