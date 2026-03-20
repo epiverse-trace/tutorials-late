@@ -16,7 +16,7 @@ polymod <- socialmixr::polymod
 contact_data <- socialmixr::contact_matrix(
   polymod,
   countries = "United Kingdom",
-  age.limits = c(0, 15, 65),
+  age_limits = c(0, 15, 65),
   symmetric = TRUE
 )
 
@@ -359,7 +359,7 @@ polymod <- socialmixr::polymod
 contact_data <- socialmixr::contact_matrix(
   survey = polymod,
   countries = "United Kingdom",
-  age.limits = c(0, 20, 40),
+  age_limits = c(0, 20, 40),
   symmetric = TRUE
 )
 # prepare contact matrix
