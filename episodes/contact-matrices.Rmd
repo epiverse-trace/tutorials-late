@@ -83,7 +83,7 @@ Contact matrices are commonly estimated from studies that use diaries to record 
 
 The R package `{socialmixr}` contains functions which can estimate contact matrices from POLYMOD and other surveys. We can download and load the POLYMOD survey data directly from Zenodo using `{contactsurveys}` and `{socialmixr}`:
 
-```{r polymod_, echo = TRUE, message = FALSE}
+```{r polymod_, echo = TRUE, message = FALSE, warning = FALSE}
 survey_files <- contactsurveys::download_survey(
   survey = "https://doi.org/10.5281/zenodo.3874557",
   verbose = FALSE
@@ -201,7 +201,7 @@ Similar to the code above, to access vector values within a dataframe, you can u
 
 :::::::::::::::::::::::: instructor 
 
-```{r zambia_solution}
+```{r zambia_solution, message = FALSE, warning = FALSE}
 # Generate the contact matrix for Zambia only
 contacts_byage_zambia <- socialmixr::contact_matrix(
   survey = zambia_sa_survey,
