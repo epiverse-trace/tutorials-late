@@ -148,7 +148,7 @@ zambia_sa_survey <- socialmixr::load_survey(files = zambia_survey_files)
 
 You can explore all the available surveys from the Zenodo repository at <https://zenodo.org/communities/social_contact_data/>. If you are interested in accessing to a specific URL within R, you can try:
 
-```r
+```{r}
 library(contactsurveys)
 library(tidyverse)
 
