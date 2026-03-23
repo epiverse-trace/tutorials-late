@@ -134,7 +134,7 @@ If `symmetric` is set to TRUE, the `contact_matrix()` function will internally u
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
-The example above uses the POLYMOD survey. There are a number of surveys available in `socialmixr`. To list the available surveys, use `socialmixr::list_surveys()`. To download a survey from Zenodo and load it, we use `contactsurveys::download_survey()` followed by `socialmixr::load_survey()`:
+The example above uses the POLYMOD survey. A number of surveys are available in the [Zenodo Social Contact Data community](https://zenodo.org/communities/social_contact_data/). To list available surveys programmatically, use `contactsurveys::list_surveys()`. To download a survey from Zenodo and load it, we use `contactsurveys::download_survey()` followed by `socialmixr::load_survey()`:
 
 ```{r, message = FALSE, warning = FALSE}
 # Download and load the contact survey data for Zambia from Zenodo
@@ -151,11 +151,11 @@ zambia_sa_survey <- socialmixr::load_survey(files = zambia_survey_files)
 You can explore all the available surveys from the Zenodo repository at <https://zenodo.org/communities/social_contact_data/>. If you are interested in accessing to a specific URL within R, you can try:
 
 ```r
-library(socialmixr)
+library(contactsurveys)
 library(tidyverse)
 
-# Get URL for Zambia contact survey data from {socialmixr}
-socialmixr::list_surveys() %>%
+# Get URL for Zambia contact survey data from {contactsurveys}
+contactsurveys::list_surveys() %>%
   dplyr::filter(stringr::str_detect(title, "Zambia")) %>%
   dplyr::pull(url)
 ```
