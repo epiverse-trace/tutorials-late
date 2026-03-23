@@ -25,13 +25,13 @@ exercises: 30 # exercise time in minutes
 
 ::::::::::::::::::::::::::::::::::::: prereq
 
-+ Complete tutorial on [Contact matrices](../episodes/contact-matrices.md).
++ Complete tutorial on [contact matrices](../episodes/contact-matrices.md).
 
 Learners should familiarise themselves with following concept dependencies before working through this tutorial: 
 
-**Mathematical Modelling** : [Introduction to infectious disease models](https://doi.org/10.1038/s41592-020-0856-2), [state variables](../learners/reference.md#state), [model parameters](../learners/reference.md#parsode), [initial conditions](../learners/reference.md#initial), [differential equations](../learners/reference.md#ordinary).
+**Mathematical Modelling**: [Introduction to infectious disease models](https://doi.org/10.1038/s41592-020-0856-2), [state variables](../learners/reference.md#state), [model parameters](../learners/reference.md#parsode), [initial conditions](../learners/reference.md#initial), [differential equations](../learners/reference.md#ordinary).
 
-**Epidemic theory** : [Transmission](https://doi.org/10.1155/2011/267049), [Reproduction number](https://doi.org/10.3201/eid2501.171901).
+**Epidemic theory**: [Transmission](https://doi.org/10.1155/2011/267049), [Reproduction number](https://doi.org/10.3201/eid2501.171901).
 
 **R packages installed**: `{epidemics}`, `{socialmixr}`, `{scales}`, `{tidyverse}`.
 
@@ -39,7 +39,7 @@ Learners should familiarise themselves with following concept dependencies befor
 
 :::::::::: spoiler
 
-Install packages if their are not already installed
+Install these packages if their are not already installed
 
 ```r
 if (!base::require("pak")) install.packages("pak")
@@ -60,6 +60,7 @@ In this tutorial we are going to learn how to use the `{epidemics}` package to s
 
 ``` r
 library(epidemics)
+library(contactsurveys)
 library(socialmixr)
 library(tidyverse)
 ```
@@ -127,7 +128,7 @@ Confusion sometimes arises when referring to the terms 'exposed', 'infected' and
 
 We will use the following definitions for our state variables:
 
-+ $E$ = Exposed : infected **but not yet** infectious,
++ $E$ = Exposed: infected **but not yet** infectious,
 + $I$ = Infectious: infected **and** infectious.
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -154,7 +155,7 @@ Using the R package `socialmixr`, obtain the contact matrix for the United Kingd
 + age between 20 and 40,
 + 40 years and over.
 
-Use the survey available at `socialmixr::polymod`
+Use the POLYMOD survey available at `https://doi.org/10.5281/zenodo.3874557`
 
 :::::::::::::::: hint
 
@@ -166,22 +167,27 @@ Use the survey available at `socialmixr::polymod`
  
 
 ``` r
-# Access the contact survey data
-polymod <- socialmixr::polymod
+# Download and load the contact survey data
+survey_files <- contactsurveys::download_survey(
+  survey = "https://doi.org/10.5281/zenodo.3874557",
+  verbose = FALSE
+)
+survey_load <- socialmixr::load_survey(files = survey_files)
 
 # Generate the contact matrix
-contact_data <- socialmixr::contact_matrix(
-  polymod,
+contacts_byage <- socialmixr::contact_matrix(
+  survey = survey_load,
   countries = "United Kingdom",
   age_limits = c(0, 20, 40),
-  symmetric = TRUE
+  symmetric = TRUE,
+  return_demography = TRUE
 )
 
 # prepare contact matrix
-socialcontact_matrix <- t(contact_data$matrix)
+contacts_byage_matrix <- t(contacts_byage$matrix)
 
 # print
-socialcontact_matrix
+contacts_byage_matrix
 ```
 
 ``` output
@@ -194,11 +200,11 @@ contact.age.group   [0,20)  [20,40)      40+
 
 Remember that the matrix satisfies the `symmetric = TRUE` condition at the level of total number of contacts.
 
-The total number of contacts between groups $i$ and $j$ is calculated as the mean number of contacts (`contact_data$matrix`) multiplied by the number of individuals in group $i$ (`contact_data$demography$population`)
+The total number of contacts between groups $i$ and $j$ is calculated as the mean number of contacts (`contacts_byage$matrix`) multiplied by the number of individuals in group $i$ (`contacts_byage$demography$population`)
 
 
 ``` r
-contact_data$matrix * contact_data$demography$population
+contacts_byage$matrix * contacts_byage$demography$population
 ```
 
 ``` output
@@ -274,7 +280,7 @@ initial_conditions <- rbind(
 )
 
 # use contact matrix to assign age group names
-rownames(initial_conditions) <- rownames(socialcontact_matrix)
+rownames(initial_conditions) <- rownames(contacts_byage_matrix)
 initial_conditions
 ```
 
@@ -289,15 +295,15 @@ initial_conditions
 
 
 ### 3. Population structure
-The population object requires a vector containing the demographic structure of the population. The demographic vector must be a named vector containing the number of individuals in each age group of our given population. In this example, we can extract the demographic information from the `contact_data` object that we obtained using the `socialmixr` package.
+The population object requires a vector containing the demographic structure of the population. The demographic vector must be a named vector containing the number of individuals in each age group of our given population. In this example, we can extract the demographic information from the `contacts_byage` object that we obtained using the `socialmixr` package.
 
 
 ``` r
 # extract the demography vector
-demography_vector <- contact_data$demography$population
+demography_vector <- contacts_byage$demography$population
 
 # use contact matrix to assign age group names
-names(demography_vector) <- rownames(socialcontact_matrix)
+names(demography_vector) <- rownames(contacts_byage_matrix)
 demography_vector
 ```
 
@@ -314,7 +320,7 @@ library(epidemics)
 
 uk_population <- epidemics::population(
   name = "UK",
-  contact_matrix = socialcontact_matrix,
+  contact_matrix = contacts_byage_matrix,
   demography_vector = demography_vector,
   initial_conditions = initial_conditions
 )
@@ -343,7 +349,7 @@ To run our model we need to specify the model parameters:
 - infectiousness rate $\alpha$ (preinfectious period=$1/\alpha$),
 - recovery rate $\gamma$ (infectious period=$1/\gamma$).
 
-In `epidemics`, we specify the model inputs as :
+In `epidemics`, we specify the model inputs as:
 
 - `transmission_rate` $\beta = R_0 \gamma$,
 - `infectiousness_rate` = $\alpha$,
@@ -642,7 +648,7 @@ In this tutorial, we have learnt how to simulate disease spread using a mathemat
 
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
-- Disease trajectories can be generated using the R package `epidemics`
+- Disease trajectories can be generated using the R package `{epidemics}`
 - Uncertainty should be included in model trajectories using a range of model parameter values
 
 ::::::::::::::::::::::::::::::::::::::::::::::::

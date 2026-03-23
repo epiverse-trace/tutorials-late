@@ -48,6 +48,7 @@ In this tutorial, we'll focus on the separated approach, where we first run an e
 ``` r
 library(epiparameter)
 library(epidemics)
+library(contactsurveys)
 library(socialmixr)
 library(tidyverse)
 ```
@@ -85,21 +86,27 @@ We'll use `{epiparameter}` to define these delay distributions. The Gamma distri
 
 
 ``` r
-# load contact and population data from socialmixr::polymod
-polymod <- socialmixr::polymod
-contact_data <- socialmixr::contact_matrix(
-  polymod,
+# download and load contact and population data from Zenodo
+survey_files <- contactsurveys::download_survey(
+  survey = "https://doi.org/10.5281/zenodo.3874557",
+  verbose = FALSE
+)
+survey_load <- socialmixr::load_survey(files = survey_files)
+
+contacts_byage <- socialmixr::contact_matrix(
+  survey = survey_load,
   countries = "United Kingdom",
   age_limits = c(0, 20, 40),
-  symmetric = TRUE
+  symmetric = TRUE,
+  return_demography = TRUE
 )
 
 # prepare contact matrix
-contact_matrix <- t(contact_data$matrix)
+contacts_byage_matrix <- t(contacts_byage$matrix)
 
 # prepare the demography vector
-demography_vector <- contact_data$demography$population
-names(demography_vector) <- rownames(contact_matrix)
+demography_vector <- contacts_byage$demography$population
+names(demography_vector) <- rownames(contacts_byage_matrix)
 
 # initial conditions: one in every 1 million is infected
 initial_i <- 1e-6
@@ -117,12 +124,12 @@ initial_conditions <- rbind(
   initial_conditions_free,
   initial_conditions_free
 )
-rownames(initial_conditions) <- rownames(contact_matrix)
+rownames(initial_conditions) <- rownames(contacts_byage_matrix)
 
 # prepare the population to model as affected by the epidemic
 uk_population <- epidemics::population(
   name = "UK",
-  contact_matrix = contact_matrix,
+  contact_matrix = contacts_byage_matrix,
   demography_vector = demography_vector,
   initial_conditions = initial_conditions
 )
@@ -167,7 +174,7 @@ Key: <time>
 6:     5       3.183338
 ```
 
-To convert the new infections to hospitalisations we need to parameter distributions to describe the following processes :
+To convert the new infections to hospitalisations we need to parameter distributions to describe the following processes:
 
 + the time from infection to admission to hospital,
 
@@ -193,7 +200,7 @@ infection_to_admission <- epiparameter(
 # with right-skewed distribution reflecting variability in disease progression
 ```
 
-To visualise this distribution we can create a density plot :
+To visualise this distribution we can create a density plot:
 
 
 ``` r

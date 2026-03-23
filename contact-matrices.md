@@ -36,15 +36,9 @@ Some groups of individuals have more contacts than others; the average schoolchi
 
 
 ``` r
+library(contactsurveys)
 library(socialmixr)
 ```
-
-
-:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: instructor
-
-
-
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 ## The contact matrix
 
@@ -63,40 +57,62 @@ $$
 \end{bmatrix}
 $$
 
-In this example, we would use this to represent that children meet, on average, 2 other children and 2 adult per day (first row), and adults meet, on average, 1 child and 3 other adults per day (second row). We can use this kind of information to account for the role heterogeneity in contact plays in infectious disease transmission.
+In this example, we would use this to represent that children meet, on average, 2 other children and 2 adult per day (first row), and adults meet, on average, 1 child and 3 other adults per day (second row). We can use this kind of information to account for the role that heterogeneity in contact plays in infectious disease transmission.
 
 ::::::::::::::::::::::::::::::::::::: callout
 
 ### A Note on Notation
-For a contact matrix with rows $i$ and columns $j$:
+In a contact matrix, the entry $C[i,j]$, at row $i$ and column $j$:
 
-- $C[i,j]$ represents the average number of contacts that individuals in group $i$ have with individuals in group $j$
-- This average is calculated as the total number of contacts between groups $i$ and $j$, divided by the number of individuals in group $i$
+-  Represents the average number of contacts an individual in group $i$ has with individuals in group $j$
+- This  is calculated by dividing the total number of contacts between groups $i$ and $j$ by the size of group $i$
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ## Using `socialmixr`
 
 Contact matrices are commonly estimated from studies that use diaries to record interactions. For example, the POLYMOD survey measured contact patterns in 8 European countries using data on the location and duration of contacts reported by the study participants [(Mossong et al. 2008)](https://doi.org/10.1371/journal.pmed.0050074).
 
-The R package `{socialmixr}` contains functions which can estimate contact matrices from POLYMOD and other surveys. We can load the POLYMOD survey data:
-
+The R package `{socialmixr}` contains functions which can estimate contact matrices from POLYMOD and other surveys. We can download and load the POLYMOD survey data directly from Zenodo using `{contactsurveys}` and `{socialmixr}`:
 
 
 ``` r
-polymod <- socialmixr::polymod
+survey_files <- contactsurveys::download_survey(
+  survey = "https://doi.org/10.5281/zenodo.3874557",
+  verbose = FALSE
+)
+
+survey_load <- socialmixr::load_survey(files = survey_files)
 ```
 
-Then we can obtain the contact matrix for the age categories we want by specifying `age_limits`. 
+::::::::::::::::::::::::::::::::::::: callout
+### Inspect available countries
+
+A single survey file can contain data from multiple countries. You can inspect the available countries with:
 
 
 ``` r
-contact_data <- socialmixr::contact_matrix(
-  survey = polymod,
+levels(survey_load$participants$country)
+```
+
+``` output
+[1] "Belgium"        "Finland"        "Germany"        "Italy"         
+[5] "Luxembourg"     "Netherlands"    "Poland"         "United Kingdom"
+```
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+We obtain the contact matrix for the United Kingdom — passing `countries = "United Kingdom"` to select data from the intended country, `age_limits` to define age categories, and `return_demography = TRUE` to include demographic information required by `{epidemics}`.
+
+
+``` r
+contacts_byage <- socialmixr::contact_matrix(
+  survey = survey_load,
   countries = "United Kingdom",
   age_limits = c(0, 20, 40),
-  symmetric = TRUE
+  symmetric = TRUE,
+  return_demography = TRUE
 )
-contact_data
+contacts_byage
 ```
 
 ``` output
@@ -124,9 +140,9 @@ $participants
 
 
 
-**Note: although the contact matrix `contact_data$matrix` is not itself mathematically symmetric, it satisfies the condition that the total number of contacts of one group with another is the same as the reverse. In other words:
-`contact_data$matrix[j,i]*contact_data$demography$proportion[j] = contact_data$matrix[i,j]*contact_data$demography$proportion[i]`.
-For the mathematical explanation see [the corresponding section in the socialmixr documentation](https://epiforecasts.io/socialmixr/articles/socialmixr.html#symmetric-contact-matrices).**
+**Note**: although the contact matrix `contacts_byage$matrix` is not itself mathematically symmetric, it satisfies the condition that the total number of contacts of one group with another is the same as the reverse. In other words:
+`contacts_byage$matrix[j,i]*contacts_byage$demography$proportion[j] = contacts_byage$matrix[i,j]*contacts_byage$demography$proportion[i]`.
+For the mathematical explanation see [the corresponding section in the socialmixr documentation](https://epiforecasts.io/socialmixr/articles/socialmixr.html#symmetric-contact-matrices).
 
 
 ::::::::::::::::::::::::::::::::::::: callout
@@ -145,28 +161,38 @@ If `symmetric` is set to TRUE, the `contact_matrix()` function will internally u
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
-The example above uses the POLYMOD survey. There are a number of surveys available in `socialmixr`. To list the available surveys, use `socialmixr::list_surveys()`. To download a survey, we can use `socialmixr::get_survey()`
+The example above uses the POLYMOD survey. Other surveys are available in the [Zenodo Social Contact Data community](https://zenodo.org/communities/social_contact_data/). To use a different survey, first identify its DOI (see below), then download and load it with `contactsurveys::download_survey()` and `socialmixr::load_survey()`. Here we use the Zambia and South Africa contact survey:
 
 
 ``` r
-# Access the contact survey data from Zenodo
-zambia_sa_survey <- socialmixr::get_survey(
-  "https://doi.org/10.5281/zenodo.3874675"
+# Download and load the contact survey data for Zambia from Zenodo
+survey_files_zambia <- contactsurveys::download_survey(
+  survey = "https://doi.org/10.5281/zenodo.3874675",
+  verbose = FALSE
 )
+
+survey_load_zambia <- socialmixr::load_survey(files = survey_files_zambia)
 ```
 
 :::::::::::::::::: spoiler
 
-You can explore all the available surveys from the Zenodo repository at <https://zenodo.org/communities/social_contact_data/>. If you are interested in accessing to a specific URL within R, you can try:
+**Find a survey DOI with contactsurveys**
 
-```r
-library(socialmixr)
+Browse available surveys in the [Zenodo Social Contact Data community](https://zenodo.org/communities/social_contact_data/), or list them programmatically:
+
+
+``` r
+library(contactsurveys)
 library(tidyverse)
 
-# Get URL for Zambia contact survey data from {socialmixr}
-socialmixr::list_surveys() %>%
+# Get URL for Zambia contact survey data from {contactsurveys}
+contactsurveys::list_surveys() %>%
   dplyr::filter(stringr::str_detect(title, "Zambia")) %>%
   dplyr::pull(url)
+```
+
+``` output
+[1] "https://doi.org/10.5281/zenodo.3874675"
 ```
 
 ::::::::::::::::::
@@ -188,12 +214,12 @@ The R package {socialmixr} contains functions which can estimate contact matrice
 
 ::::::::::::::::::::: hint
 
-The survey object `zambia_sa_survey` contains data from two countries. If you need to estimate the social contact matrix from data of the specific country of Zambia, identify what argument in `socialmixr::contact_matrix()` you need for this.
+The survey object `survey_load_zambia` contains data from two countries. If you need to estimate the social contact matrix from data of the specific country of Zambia, identify what argument in `socialmixr::contact_matrix()` you need for this.
 
 
 ``` r
 # Inspect the countries within the survey object
-levels(zambia_sa_survey$participants$country)
+levels(survey_load_zambia$participants$country)
 ```
 
 ``` output
@@ -211,11 +237,12 @@ Similar to the code above, to access vector values within a dataframe, you can u
 
 ``` r
 # Generate the contact matrix for Zambia only
-contact_data_zambia <- socialmixr::contact_matrix(
-  survey = zambia_sa_survey,
+contacts_byage_zambia <- socialmixr::contact_matrix(
+  survey = survey_load_zambia,
   countries = "Zambia", # key argument
   age_limits = c(0, 20),
-  symmetric = TRUE
+  symmetric = TRUE,
+  return_demography = TRUE
 )
 ```
 
@@ -228,7 +255,7 @@ participants).
 
 ``` r
 # Print the contact matrix for Zambia only
-contact_data_zambia
+contacts_byage_zambia
 ```
 
 ``` output
@@ -253,7 +280,7 @@ $participants
 
 ``` r
 # Print the vector of population size for {epidemics}
-contact_data_zambia$demography$population
+contacts_byage_zambia$demography$population
 ```
 
 ``` output
@@ -267,8 +294,6 @@ contact_data_zambia$demography$population
 Contact matrices can be estimated from data obtained from diary (such as POLYMOD), survey or contact data, or synthetic ones can be used. [Prem et al. 2021](https://doi.org/10.1371/journal.pcbi.1009098) used the POLYMOD data within a Bayesian hierarchical model to project contact matrices for 177 other countries.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
-
-
 
 
 ## Analyses with contact matrices
@@ -293,7 +318,7 @@ Whereas a contact matrix gives the average number of contacts that one groups ma
 
 ### In mathematical models
 
-Consider the SIR model where individuals are categorized as either susceptible $S$, infected but not yet infectious $E$, infectious $I$ or recovered $R$. The schematic below shows the processes which describe the flow of individuals between the disease states $S$, $I$ and $R$ and the key parameters for each process.
+Consider the SIR model where individuals are categorized as either susceptible $S$,  infected $I$ and recovered $R$. The schematic below shows the processes which describe the flow of individuals between the disease states $S$, $I$ and $R$ and the key parameters for each process.
 
 <img src="fig/contact-matrices-rendered-diagram-1.png" alt="" style="display: block; margin: auto;" />
 
@@ -308,11 +333,11 @@ $$
 \end{aligned}
 $$
 
-To add age structure to our model, we need to add additional equations for the infection states $S$, $I$ and $R$ for each age group $i$. If we want to assume that there is heterogeneity in contacts between age groups then we must adapt the transmission term $\beta SI$ to include the contact matrix $C$ as follows :
+To add age structure to our model, we need to add additional equations for the infection states $S$, $I$ and $R$ for each age group $i$. If we want to assume that there is heterogeneity in contacts between age groups then we must adapt the transmission term $\beta SI$ to include the contact matrix $C$ as follows:
 
 $$ \beta S_i \sum_j C_{i,j} I_j/N_j. $$ 
 
-Susceptible individuals in age group $i$ become infected dependent on their rate of contact with individuals in each age group. For each disease state ($S$, $E$, $I$ and $R$) and age group ($i$), we have a differential equation describing the rate of change with respect to time.  
+Susceptible individuals in age group $i$ become infected dependent on their rate of contact with individuals in each age group. For each disease state ($S$,  $I$ and $R$) and age group ($i$), we have a differential equations describing the rate of change with respect to time.  
 
 $$
 \begin{aligned}
@@ -329,13 +354,13 @@ When simulating an epidemic, we often want to ensure that the average number of 
 
 Rather than just using the raw number of contacts, we can instead normalise the contact matrix to make it easier to work in terms of $R_0$. In particular, we normalise the matrix by scaling it so that if we were to calculate the average number of secondary cases based on this normalised matrix, the result would be 1 (in mathematical terms, we are scaling the matrix so the largest eigenvalue is 1). This transformation scales the entries but preserves their relative values.
 
-In the case of the above model, we want to define $\beta  C_{i,j}$ so that the model has a specified valued of $R_0$. If the entry of the contact matrix $C[i,j]$ represents the contacts of population $i$ with $j$, it is equivalent to `contact_data$matrix[i,j]`, and the maximum eigenvalue of this matrix represents the typical magnitude of contacts, not typical magnitude of transmission. We must therefore normalise the matrix $C$ so the maximum eigenvalue is one; we call this matrix $C_{normalised}$. Because the rate of recovery is $\gamma$, individuals will be infectious on average for $1/\gamma$ days. So $\beta$ as a model input is calculated from $R_0$, the scaling factor and the value of $\gamma$  (i.e. mathematically we use the fact that the dominant eigenvalue of the matrix $R_0 \times C_{normalised}$ is equal to $\beta / \gamma$). 
+In the case of the above model, we want to define $\beta  C_{i,j}$ so that the model has a specified valued of $R_0$. If the entry of the contact matrix $C[i,j]$ represents the contacts of population $i$ with $j$, it is equivalent to `contacts_byage$matrix[i,j]`, and the maximum eigenvalue of this matrix represents the typical magnitude of contacts, not typical magnitude of transmission. We must therefore normalise the matrix $C$ so the maximum eigenvalue is one; we call this matrix $C_{normalised}$. Because the rate of recovery is $\gamma$, individuals will be infectious on average for $1/\gamma$ days. So $\beta$ as a model input is calculated from $R_0$, the scaling factor and the value of $\gamma$  (i.e. mathematically we use the fact that the dominant eigenvalue of the matrix $R_0 \times C_{normalised}$ is equal to $\beta / \gamma$).
 
 
 ``` r
-contact_matrix <- t(contact_data$matrix)
-scaling_factor <- 1 / max(eigen(contact_matrix)$values)
-normalised_matrix <- contact_matrix * scaling_factor
+contacts_byage_matrix <- t(contacts_byage$matrix)
+scaling_factor <- 1 / max(eigen(contacts_byage_matrix)$values)
+normalised_matrix <- contacts_byage_matrix * scaling_factor
 ```
 
 As a result, if we multiply the scaled matrix by $R_0$, then converting to the number of expected secondary cases would give us $R_0$, as required.
@@ -363,7 +388,7 @@ Normalisation can be performed by the function `contact_matrix()` in `{socialmix
 
 ``` r
 contact_data_split <- socialmixr::contact_matrix(
-  survey = polymod,
+  survey = survey_load,
   countries = "United Kingdom",
   age_limits = c(0, 20, 40),
   symmetric = TRUE,

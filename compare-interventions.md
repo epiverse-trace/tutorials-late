@@ -27,7 +27,7 @@ exercises: 30 # exercise time in minutes
 
 Learners should familiarise themselves with following concept dependencies before working through this tutorial: 
 
-**Outbreak response** : [Intervention types](https://www.cdc.gov/nonpharmaceutical-interventions/).
+**Outbreak response**: [Intervention types](https://www.cdc.gov/nonpharmaceutical-interventions/).
 :::::::::::::::::::::::::::::::::
 
 
@@ -213,7 +213,7 @@ There is no vaccination scheme in place
 
 ::::::::::::::::: hint
 
-### HINT : Running the model with default parameter values
+### HINT: Running the model with default parameter values
 
 We can run the Vacamole model with [default parameter values](https://epiverse-trace.github.io/epidemics/articles/model_vacamole.html#model-epidemic-using-vacamole) by just specifying the population object and number of time steps to run the model for:
 
@@ -236,19 +236,25 @@ output <- epidemics::model_vacamole(
 
 
 ``` r
-polymod <- socialmixr::polymod
-contact_data <- socialmixr::contact_matrix(
-  survey = polymod,
+survey_files_uk <- contactsurveys::download_survey(
+  survey = "https://doi.org/10.5281/zenodo.3874557",
+  verbose = FALSE
+)
+survey_load_uk <- socialmixr::load_survey(files = survey_files_uk)
+
+contacts_byage_uk <- socialmixr::contact_matrix(
+  survey = survey_load_uk,
   countries = "United Kingdom",
-  age.limits = c(0, 20, 40),
-  symmetric = TRUE
+  age_limits = c(0, 20, 40),
+  symmetric = TRUE,
+  return_demography = TRUE
 )
 # prepare contact matrix
-contact_matrix <- t(contact_data$matrix)
+contacts_byage_matrix_uk <- t(contacts_byage_uk$matrix)
 
 # extract demography vector
-demography_vector <- contact_data$demography$population
-names(demography_vector) <- rownames(contact_matrix)
+demography_vector <- contacts_byage_uk$demography$population
+names(demography_vector) <- rownames(contacts_byage_matrix_uk)
 
 # prepare initial conditions
 initial_i <- 1e-6
@@ -266,12 +272,12 @@ initial_conditions_vacamole <- rbind(
   initial_conditions_vacamole,
   initial_conditions_vacamole
 )
-rownames(initial_conditions_vacamole) <- rownames(contact_matrix)
+rownames(initial_conditions_vacamole) <- rownames(contacts_byage_matrix_uk)
 
 # prepare population object
 uk_population_vacamole <- epidemics::population(
   name = "UK",
-  contact_matrix = contact_matrix,
+  contact_matrix = contacts_byage_matrix_uk,
   demography_vector = demography_vector,
   initial_conditions = initial_conditions_vacamole
 )
@@ -415,9 +421,9 @@ output_baseline <- epidemics::model_default(
 
 Then, we create a list of all the interventions we want to include in our comparison. We define our scenarios as follows:
 
-+ scenario 1 : close schools
-+ scenario 2 : mask mandate
-+ scenario 3 : close schools and mask mandate.
++ scenario 1: close schools
++ scenario 2: mask mandate
++ scenario 3: close schools and mask mandate.
 
 In R we specify this as: 
 
@@ -480,7 +486,7 @@ head(output)
 
 Now that we have our model output for all of our scenarios, we want to compare the outputs of the interventions to our baseline. 
 
-We can do this using `outcomes_averted()` in `{epidemics}`. This function calculates the final epidemic size for each scenario, and then calculates the number of infections averted in each scenario compared to the baseline. To use this function we specify the :
+We can do this using `outcomes_averted()` in `{epidemics}`. This function calculates the final epidemic size for each scenario, and then calculates the number of infections averted in each scenario compared to the baseline. To use this function we specify the:
   
 + output of the baseline scenario
 + outputs of the intervention scenario(s).
@@ -542,9 +548,9 @@ We recommend to read the vignette on [Modelling responses to a stochastic Ebola 
 
 ::::::::::::::::::::::::::::::::::::: challenge 
 
-## Challenge : Ebola outbreak analysis
+## Challenge: Ebola outbreak analysis
 
-You have been tasked to investigate the potential impact of an intervention on an Ebola outbreak in Guinea (e.g. a reduction in risky contacts with cases). Using `model_ebola()` and the the information detailed below, find the number of infections averted when :
+You have been tasked to investigate the potential impact of an intervention on an Ebola outbreak in Guinea (e.g. a reduction in risky contacts with cases). Using `model_ebola()` and the the information detailed below, find the number of infections averted when:
 
 + an intervention is applied to reduce the transmission rate by 50% from day 60 and,
 + an intervention is applied to reduce transmission by 10% from day 30.
@@ -553,11 +559,11 @@ For both interventions, we assume there is some uncertainty about the baseline t
 
 *Note: Depending on the number of replicates used, this simulation may take several minutes to run.*
 
-+ Population size : 14 million
-+ Initial number of exposed individuals : 10
-+ Initial number of infectious individuals : 5
-+ Time of simulation : 120 days
-+ Parameter values : 
++ Population size: 14 million
++ Initial number of exposed individuals: 10
++ Initial number of infectious individuals: 5
++ Time of simulation: 120 days
++ Parameter values: 
   + $R_0$ (`r0`) = 1.1,
   + $p^I$ (`infectious_period`) = 12,
   + $p^E$ (`preinfectious_period`) = 5,

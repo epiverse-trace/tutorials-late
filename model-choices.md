@@ -22,7 +22,7 @@ exercises: 20 # exercise time in minutes
 
 ::::::::::::::::::::::::::::::::::::: prereq
 
-+ Complete tutorial [Simulating transmission](../episodes/simulating-transmission.md)
++ Complete tutorial [simulating transmission](../episodes/simulating-transmission.md)
 :::::::::::::::::::::::::::::::::
 
 
@@ -40,7 +40,7 @@ The focus of this tutorial is understanding existing models to decide if they ar
 
 ### Choosing a model 
 
-When deciding which mathematical model to use, there are a number of questions we must consider :
+When deciding which mathematical model to use, there are a number of questions we must consider:
 
 :::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -171,7 +171,7 @@ The key parameters affecting the transition between states are:
 + $\rho^E$, the mean preinfectious period,
 + $p_{hosp}$ the probability of being transferred to the hospitalised compartment. 
 
-**Note: the functional relationship between the preinfectious  period ($\rho^E$) and the transition rate between exposed and infectious ($\gamma^E$) is $\rho^E = k^E/\gamma^E$ where $k^E$ is the shape of the Erlang distribution. Similarly for the infectious period $\rho^I = k^I/\gamma^I$. For more detail on the stochastic model formulation refer to the section on [Discrete-time Ebola virus disease model](https://epiverse-trace.github.io/epidemics/articles/model_ebola.html#details-discrete-time-ebola-virus-disease-model) in the "Modelling responses to a stochastic Ebola virus epidemic" vignette. ** 
+**Note:** the functional relationship between the preinfectious  period ($\rho^E$) and the transition rate between exposed and infectious ($\gamma^E$) is $\rho^E = k^E/\gamma^E$ where $k^E$ is the shape of the Erlang distribution. Similarly for the infectious period $\rho^I = k^I/\gamma^I$. For more detail on the stochastic model formulation refer to the section on [Discrete-time Ebola virus disease model](https://epiverse-trace.github.io/epidemics/articles/model_ebola.html#details-discrete-time-ebola-virus-disease-model) in the "Modelling responses to a stochastic Ebola virus epidemic" vignette. 
 
 <img src="fig/model-choices-rendered-unnamed-chunk-1-1.png" alt="" style="display: block; margin: auto;" />
 
@@ -200,7 +200,7 @@ An advantage of using `finalsize` is that fewer parameters are required. You onl
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 
-## Challenge : Ebola outbreak analysis 
+## Challenge: Ebola outbreak analysis 
 
 
 
@@ -213,11 +213,11 @@ You have been tasked to generate initial trajectories of an Ebola outbreak in Gu
 1. Run the model once and plot the number of infectious individuals  through time
 2. Run model 100 times and plot the mean, upper and lower 95% quantiles of the number of infectious individuals through time
 
-+ Population size : 14 million
-+ Initial number of exposed individuals : 10
-+ Initial number of infectious individuals : 5
-+ Time of simulation : 120 days
-+ Parameter values : 
++ Population size: 14 million
++ Initial number of exposed individuals: 10
++ Initial number of infectious individuals: 5
++ Time of simulation: 120 days
++ Parameter values: 
   + $R_0$ (`r0`) = 1.1,
   + $p^I$ (`infectious_period`) = 12,
   + $p^E$ (`preinfectious_period`) = 5,
@@ -259,7 +259,7 @@ guinea_population <- population(
 
 ::::::::::::::::: hint
 
-### HINT : Multiple model simulations
+### HINT: Multiple model simulations
 
 Adapt the code from the [accounting for uncertainty](../episodes/simulating-transmission.md#accounting-for-uncertainty) section
 

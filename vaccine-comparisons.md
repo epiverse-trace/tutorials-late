@@ -25,7 +25,7 @@ exercises: 20
 
 Learners should familiarise themselves with following concept dependencies before working through this tutorial: 
 
-**Outbreak response** : [Intervention types](https://www.cdc.gov/nonpharmaceutical-interventions/).
+**Outbreak response**: [Intervention types](https://www.cdc.gov/nonpharmaceutical-interventions/).
 :::::::::::::::::::::::::::::::::
 
 
@@ -41,6 +41,8 @@ In this tutorial we will compare different vaccination strategies using models f
 ``` r
 library(ggplot2)
 library(epidemics)
+library(contactsurveys)
+library(socialmixr)
 library(dplyr)
 library(purrr)
 ```
@@ -74,15 +76,15 @@ We will illustrate this using results from `model_default()` in `{epidemics}`. T
 # prepare vaccination objects
 vaccinate_01 <- epidemics::vaccination(
   name = "vaccinate all",
-  time_begin = matrix(0, nrow(contact_matrix)),
-  time_end = matrix(150, nrow(contact_matrix)),
+  time_begin = matrix(0, nrow(contacts_byage_matrix)),
+  time_end = matrix(150, nrow(contacts_byage_matrix)),
   nu = matrix(c(0.001, 0.001, 0.001))
 )
 
 vaccinate_02 <- epidemics::vaccination(
   name = "vaccinate all",
-  time_begin = matrix(0, nrow(contact_matrix)),
-  time_end = matrix(150, nrow(contact_matrix)),
+  time_begin = matrix(0, nrow(contacts_byage_matrix)),
+  time_end = matrix(150, nrow(contacts_byage_matrix)),
   nu = matrix(c(0.01, 0.01, 0.01))
 )
 ```
@@ -182,11 +184,11 @@ output %>%
 
 To understand the **indirect** effect of vaccinations, we want to know the effect that vaccination has on transmission, and hence the rate at new infections occur. We will use the function `new_infections()` in `{epidemics}` to calculate the number of new infections over time for the different vaccination programs. 
 
-The inputs required are :
+The inputs required are:
 
-+ `data` : the model output,
-+ `exclude_compartments` : this is an optional input, but in our case needed. We don't want the number of people vaccinated to be counted as new infections, so we need to specify the name of the model compartment where individuals transition out from `susceptible` (in this example `vaccinated`),
-+ `by_group` : should the results be calculated for each demographic group separately. 
++ `data`: the model output,
++ `exclude_compartments`: this is an optional input, but in our case needed. We don't want the number of people vaccinated to be counted as new infections, so we need to specify the name of the model compartment where individuals transition out from `susceptible` (in this example `vaccinated`),
++ `by_group`: should the results be calculated for each demographic group separately. 
 
 
 
@@ -330,7 +332,7 @@ We will use the same contact matrix as above from [Modelling interventions](../e
 
 
 ``` r
-contact_matrix
+contacts_byage_matrix
 ```
 
 ``` output
@@ -363,22 +365,22 @@ To show the effect of targeted vaccination, we will compare the following scenar
 ``` r
 vaccinate_group_1 <- epidemics::vaccination(
   name = "vaccinate all",
-  time_begin = matrix(40, nrow(contact_matrix)),
-  time_end = matrix(40 + 150, nrow(contact_matrix)),
+  time_begin = matrix(40, nrow(contacts_byage_matrix)),
+  time_end = matrix(40 + 150, nrow(contacts_byage_matrix)),
   nu = matrix(c(0.001 * 3, 0, 0))
 )
 
 vaccinate_group_2 <- epidemics::vaccination(
   name = "vaccinate all",
-  time_begin = matrix(40, nrow(contact_matrix)),
-  time_end = matrix(40 + 150, nrow(contact_matrix)),
+  time_begin = matrix(40, nrow(contacts_byage_matrix)),
+  time_end = matrix(40 + 150, nrow(contacts_byage_matrix)),
   nu = matrix(c(0, 0.001 * 3, 0))
 )
 
 vaccinate_group_3 <- epidemics::vaccination(
   name = "vaccinate all",
-  time_begin = matrix(40, nrow(contact_matrix)),
-  time_end = matrix(40 + 150, nrow(contact_matrix)),
+  time_begin = matrix(40, nrow(contacts_byage_matrix)),
+  time_end = matrix(40 + 150, nrow(contacts_byage_matrix)),
   nu = matrix(c(0, 0, 0.001 * 3))
 )
 
@@ -517,7 +519,7 @@ Targeting specific age groups can reduce the number of deaths in the eldest age 
 
 ``` r
 ifr <- c(0.00001, 0.001, 0.4)
-names(ifr) <- rownames(contact_matrix)
+names(ifr) <- rownames(contacts_byage_matrix)
 ```
 
 To convert infections to deaths, we will need new infections by age group, so we call `new_infections()` with `by_group = TRUE` and then multiply the new infections by the IFR for that age group:
@@ -589,7 +591,7 @@ The NPI we will consider is temporarily closing schools, an intervention that ha
 
 We define **early implementation** as the first day of the simulation  (i.e. when there are less than 100 infections in total), and **late implementation** as 50 days after the start of the simulation (i.e. when there are approximately 50,000 infections in total). We assume the control measures are in place for 100 days after they start. 
 
-The combinations we will consider are :
+The combinations we will consider are:
 
 + early implementation of closing schools,
 + early implementation of a vaccine,
@@ -616,8 +618,8 @@ close_schools_early <- epidemics::intervention(
 # vaccination late
 vacc_late <- epidemics::vaccination(
   name = "vaccinate late",
-  time_begin = matrix(late_start, nrow(contact_matrix)),
-  time_end = matrix(late_start + duration, nrow(contact_matrix)),
+  time_begin = matrix(late_start, nrow(contacts_byage_matrix)),
+  time_end = matrix(late_start + duration, nrow(contacts_byage_matrix)),
   nu = matrix(c(0.01, 0.01, 0.01))
 )
 

@@ -24,7 +24,7 @@ exercises: 30 # exercise time in minutes
 
 Learners should also familiarise themselves with following concept dependencies before working through this tutorial: 
 
-**Outbreak response** : [Intervention types](https://www.cdc.gov/nonpharmaceutical-interventions/).
+**Outbreak response**: [Intervention types](https://www.cdc.gov/nonpharmaceutical-interventions/).
 
 **R packages installed**: `{epidemics}`, `{socialmixr}`, `{scales}`, `{tidyverse}`.
 
@@ -55,6 +55,7 @@ In this tutorial, we will learn how to use `{epidemics}` to model interventions 
 
 ``` r
 library(epidemics)
+library(contactsurveys)
 library(socialmixr)
 library(tidyverse)
 ```
@@ -84,23 +85,28 @@ The SEIR model divides the population into four compartments: Susceptible (S), E
 
 
 ``` r
-# load survey data
-survey_data <- socialmixr::polymod
+# download and load survey data
+survey_files <- contactsurveys::download_survey(
+  survey = "https://doi.org/10.5281/zenodo.3874557",
+  verbose = FALSE
+)
+survey_load <- socialmixr::load_survey(files = survey_files)
 
 # generate contact matrix
-cm_results <- socialmixr::contact_matrix(
-  survey = survey_data,
+contacts_byage <- socialmixr::contact_matrix(
+  survey = survey_load,
   countries = "United Kingdom",
   age_limits = c(0, 15, 65),
-  symmetric = TRUE
+  symmetric = TRUE,
+  return_demography = TRUE
 )
 
 # transpose contact matrix
-cm_matrix <- t(cm_results$matrix)
+contacts_byage_matrix <- t(contacts_byage$matrix)
 
 # prepare the demography vector
-demography_vector <- cm_results$demography$population
-names(demography_vector) <- rownames(cm_matrix)
+demography_vector <- contacts_byage$demography$population
+names(demography_vector) <- rownames(contacts_byage_matrix)
 
 # initial conditions: one in every 1 million is infected
 initial_i <- 1e-6
@@ -118,12 +124,12 @@ initial_conditions <- base::rbind(
   initial_conditions,
   initial_conditions
 )
-rownames(initial_conditions) <- rownames(cm_matrix)
+rownames(initial_conditions) <- rownames(contacts_byage_matrix)
 
 # prepare the population to model as affected by the epidemic
 uk_population <- epidemics::population(
   name = "UK",
-  contact_matrix = cm_matrix,
+  contact_matrix = contacts_byage_matrix,
   demography_vector = demography_vector,
   initial_conditions = initial_conditions
 )
@@ -177,7 +183,7 @@ To include an intervention in our model we must create an `intervention` object.
 
 
 ``` r
-rownames(cm_matrix)
+rownames(contacts_byage_matrix)
 ```
 
 ``` output
@@ -419,8 +425,8 @@ Here we will assume all age groups are vaccinated at the same rate 0.01 and that
 # prepare a vaccination object
 vaccinate <- epidemics::vaccination(
   name = "vaccinate all",
-  time_begin = matrix(40, nrow(cm_matrix)),
-  time_end = matrix(40 + 150, nrow(cm_matrix)),
+  time_begin = matrix(40, nrow(contacts_byage_matrix)),
+  time_end = matrix(40 + 150, nrow(contacts_byage_matrix)),
   nu = matrix(c(0.01, 0.01, 0.01))
 )
 ```
