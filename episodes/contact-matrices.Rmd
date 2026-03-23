@@ -150,7 +150,7 @@ survey_load_zambia <- socialmixr::load_survey(files = survey_files_zambia)
 
 Browse available surveys in the [Zenodo Social Contact Data community](https://zenodo.org/communities/social_contact_data/), or list them programmatically:
 
-```{r}
+```{r,message=FALSE,warning=FALSE}
 library(contactsurveys)
 library(tidyverse)
 
