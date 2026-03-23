@@ -13,13 +13,13 @@ Epiverse-TRACE aims to provide a software ecosystem for [**outbreak analytics**]
 Our tutorials are built around an outbreak analysis pipeline split into three stages: **Early tasks**, **Middle tasks** and **Late tasks**. The outputs of tasks completed in earlier stages commonly feed into the tasks required for later ones.
 
 
-![An overview of the tutorial topics](https://epiverse-trace.github.io/task_pipeline-minimal.svg)
+![An overview of the tutorial topics arranged by the three stages of outbreak analytics.](https://epiverse-trace.github.io/task_pipeline-minimal.svg)
 
-Each task has its tutorial website and each tutorial website consists of a set of episodes covering different topics.
+Each stage has its tutorial website and each tutorial website consists of a set of episodes covering different topics.
 
 | [Early task tutorials ➠](https://epiverse-trace.github.io/tutorials-early/) | [Middle task tutorials ➠](https://epiverse-trace.github.io/tutorials-middle) | [Late task tutorials ➠](https://epiverse-trace.github.io/tutorials-late/) |
 |---|---|---|
-| Read and clean case data, and make linelist | Real-time analysis and forecasting | Scenario modelling |
+| Import and standardized outbreak data, and produce epicurves | Real-time analysis and forecasting | Scenario modelling |
 | Read, clean and validate case data, convert linelist data to incidence for visualization. | Access delay distributions and estimate transmission metrics, forecast cases, estimate severity and superspreading. | Simulate disease spread and investigate interventions. |
 
 Each episode contains:
@@ -30,20 +30,20 @@ Each episode contains:
 + **Challenges**: challenges that can be completed to test your understanding.
 + **Explainers**: boxes to enhance your understanding of mathematical and modelling concepts.
 
-Also check out the [glossary](./reference.md) for any terms you may be unfamiliar with.
+Also check out the [glossary](./reference.md) for any terms you may be unfamiliar with. The **More** tab provides detailed technical documentation and case studies.
 
 ### Epiverse-TRACE R packages
 
 Our strategy is to gradually incorporate specialised **R packages** into a traditional analysis pipeline. These packages should fill the gaps in these epidemiology-specific tasks in response to outbreaks.
 
-![In **R**, the fundamental unit of shareable code is the **package**. A package bundles together code, data, documentation, and tests and is easy to share with others ([Wickham and Bryan, 2023](https://r-pkgs.org/introduction.html))](episodes/fig/pkgs-hexlogos-2.png)
+![In **R**, the fundamental unit of shareable code is the **package**. A package bundles together code, data, documentation, and tests and is easy to share with others ([Wickham and Bryan, 2023](https://r-pkgs.org/introduction.html))](episodes/fig/pkgs-hexlogos-2.png).
 
 :::::::::::::::::::::::::::: prereq
 
 This content assumes intermediate R knowledge. This tutorials are for you if:
 
-- You can read data into R, transform and reshape data, and make a wide variety of graphs
-- You are familiar with functions from `{dplyr}`, `{tidyr}`, and `{ggplot2}`
+- You can read data into R, transform and reshape data, and make a wide variety of graphs.
+- You are familiar with functions from `{dplyr}`, `{tidyr}`, and `{ggplot2}`.
 - You can use the magrittr pipe `%>%` and/or native pipe `|>`.
 
 
