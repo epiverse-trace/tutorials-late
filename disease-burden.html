@@ -343,7 +343,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Modelling disease burden</h1>
-        <p>Last updated on 2026-03-20 |
+        <p>Last updated on 2026-03-23 |
 
         <a href="https://github.com/epiverse-trace/tutorials-late/edit/main/episodes/disease-burden.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -427,6 +427,7 @@ values to estimate disease burden as a follow-on analysis. We’ll use
 <pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">epiparameter</span><span class="op">)</span></span>
 <span><span class="kw">library</span><span class="op">(</span><span class="va">epidemics</span><span class="op">)</span></span>
+<span><span class="kw">library</span><span class="op">(</span><span class="va">contactsurveys</span><span class="op">)</span></span>
 <span><span class="kw">library</span><span class="op">(</span><span class="va">socialmixr</span><span class="op">)</span></span>
 <span><span class="kw">library</span><span class="op">(</span><span class="va">tidyverse</span><span class="op">)</span></span></code></pre>
 </div>
@@ -474,7 +475,7 @@ because:</p>
 6:     5       3.183338</code></pre>
 </div>
 <p>To convert the new infections to hospitalisations we need to
-parameter distributions to describe the following processes :</p>
+parameter distributions to describe the following processes:</p>
 <ul><li><p>the time from infection to admission to hospital,</p></li>
 <li><p>the time from admission to discharge from hospital.</p></li>
 </ul><p>We will use the function <code>epiparameter()</code> from
@@ -499,7 +500,7 @@ distributions for these processes.</p>
 <span><span class="co"># showing a median time from infection to hospitalization of around 10 days</span></span>
 <span><span class="co"># with right-skewed distribution reflecting variability in disease progression</span></span></code></pre>
 </div>
-<p>To visualise this distribution we can create a density plot :</p>
+<p>To visualise this distribution we can create a density plot:</p>
 <div class="codewrapper sourceCode" id="cb6">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -535,7 +536,7 @@ shape = 10 and scale = 2 and plot the density of this distribution.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb7">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -807,9 +808,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://epiverse-trace.github.io/tutorials-late/disease-burden.html",
   "identifier": "https://epiverse-trace.github.io/tutorials-late/disease-burden.html",
-  "dateCreated": "2026-03-20",
-  "dateModified": "2026-03-20",
-  "datePublished": "2026-03-20"
+  "dateCreated": "2026-03-23",
+  "dateModified": "2026-03-23",
+  "datePublished": "2026-03-23"
 }
 
   </script><script>

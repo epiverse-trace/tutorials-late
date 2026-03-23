@@ -346,7 +346,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Comparing vaccination strategies</h1>
-        <p>Last updated on 2026-03-20 |
+        <p>Last updated on 2026-03-23 |
 
         <a href="https://github.com/epiverse-trace/tutorials-late/edit/main/episodes/vaccine-comparisons.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -399,7 +399,7 @@ interventions</a> and <a href="compare-interventions.html">Comparing
 public health outcomes of interventions</a>.</li>
 </ul><p>Learners should familiarise themselves with following concept
 dependencies before working through this tutorial:</p>
-<p><strong>Outbreak response</strong> : <a href="https://www.cdc.gov/nonpharmaceutical-interventions/" class="external-link">Intervention
+<p><strong>Outbreak response</strong>: <a href="https://www.cdc.gov/nonpharmaceutical-interventions/" class="external-link">Intervention
 types</a>.</p>
 </div>
 </div>
@@ -425,6 +425,8 @@ packages:</p>
 <pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">ggplot2</span><span class="op">)</span></span>
 <span><span class="kw">library</span><span class="op">(</span><span class="va">epidemics</span><span class="op">)</span></span>
+<span><span class="kw">library</span><span class="op">(</span><span class="va">contactsurveys</span><span class="op">)</span></span>
+<span><span class="kw">library</span><span class="op">(</span><span class="va">socialmixr</span><span class="op">)</span></span>
 <span><span class="kw">library</span><span class="op">(</span><span class="va">dplyr</span><span class="op">)</span></span>
 <span><span class="kw">library</span><span class="op">(</span><span class="va">purrr</span><span class="op">)</span></span></code></pre>
 </div>
@@ -470,15 +472,15 @@ the same rate in each program as follows:</p>
 <code class="sourceCode R"><span><span class="co"># prepare vaccination objects</span></span>
 <span><span class="va">vaccinate_01</span> <span class="op">&lt;-</span> <span class="fu">epidemics</span><span class="fu">::</span><span class="fu">vaccination</span><span class="op">(</span></span>
 <span>  name <span class="op">=</span> <span class="st">"vaccinate all"</span>,</span>
-<span>  time_begin <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="fl">0</span>, <span class="fu">nrow</span><span class="op">(</span><span class="va">contact_matrix</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  time_end <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="fl">150</span>, <span class="fu">nrow</span><span class="op">(</span><span class="va">contact_matrix</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  time_begin <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="fl">0</span>, <span class="fu">nrow</span><span class="op">(</span><span class="va">contacts_byage_matrix</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  time_end <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="fl">150</span>, <span class="fu">nrow</span><span class="op">(</span><span class="va">contacts_byage_matrix</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  nu <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="fu">c</span><span class="op">(</span><span class="fl">0.001</span>, <span class="fl">0.001</span>, <span class="fl">0.001</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">vaccinate_02</span> <span class="op">&lt;-</span> <span class="fu">epidemics</span><span class="fu">::</span><span class="fu">vaccination</span><span class="op">(</span></span>
 <span>  name <span class="op">=</span> <span class="st">"vaccinate all"</span>,</span>
-<span>  time_begin <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="fl">0</span>, <span class="fu">nrow</span><span class="op">(</span><span class="va">contact_matrix</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  time_end <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="fl">150</span>, <span class="fu">nrow</span><span class="op">(</span><span class="va">contact_matrix</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  time_begin <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="fl">0</span>, <span class="fu">nrow</span><span class="op">(</span><span class="va">contacts_byage_matrix</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  time_end <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="fl">150</span>, <span class="fu">nrow</span><span class="op">(</span><span class="va">contacts_byage_matrix</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  nu <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="fu">c</span><span class="op">(</span><span class="fl">0.01</span>, <span class="fl">0.01</span>, <span class="fl">0.01</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre>
 </div>
@@ -498,9 +500,9 @@ more people that are vaccinated.</p>
 </button>
 </div>
 </nav><div id="nav-tabContent-1" class="tab-content">
-<div id="nav-tabpanel-1-1" class="tab-pane show active" role="tabpanel" aria-labelledby="nav-tab-1-1">
+<div id="nav-tabpanel-1-1" class="tab-pane show active" aria-labelledby="nav-tab-1-1" role="tabpanel">
 <figure><img src="../fig/vaccine-comparisons-rendered-unnamed-chunk-4-1.png" alt="" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure></div>
-<div id="nav-tabpanel-1-2" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-1-2">
+<div id="nav-tabpanel-1-2" class="tab-pane" aria-labelledby="nav-tab-1-2" role="tabpanel">
 <div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -589,17 +591,17 @@ hence the rate at new infections occur. We will use the function
 <code>new_infections()</code> in <code>{epidemics}</code> to calculate
 the number of new infections over time for the different vaccination
 programs.</p>
-<p>The inputs required are :</p>
+<p>The inputs required are:</p>
 <ul><li>
-<code>data</code> : the model output,</li>
+<code>data</code>: the model output,</li>
 <li>
-<code>exclude_compartments</code> : this is an optional input, but
-in our case needed. We don’t want the number of people vaccinated to be
+<code>exclude_compartments</code>: this is an optional input, but in
+our case needed. We don’t want the number of people vaccinated to be
 counted as new infections, so we need to specify the name of the model
 compartment where individuals transition out from
 <code>susceptible</code> (in this example <code>vaccinated</code>),</li>
 <li>
-<code>by_group</code> : should the results be calculated for each
+<code>by_group</code>: should the results be calculated for each
 demographic group separately.</li>
 </ul><div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -625,9 +627,9 @@ demographic group separately.</li>
 </button>
 </div>
 </nav><div id="nav-tabContent-2" class="tab-content">
-<div id="nav-tabpanel-2-1" class="tab-pane show active" role="tabpanel" aria-labelledby="nav-tab-2-1">
+<div id="nav-tabpanel-2-1" class="tab-pane show active" aria-labelledby="nav-tab-2-1" role="tabpanel">
 <figure><img src="../fig/vaccine-comparisons-rendered-unnamed-chunk-7-1.png" alt="" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure></div>
-<div id="nav-tabpanel-2-2" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-2-2">
+<div id="nav-tabpanel-2-2" class="tab-pane" aria-labelledby="nav-tab-2-2" role="tabpanel">
 <div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -770,7 +772,7 @@ trajectories.</p>
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">contact_matrix</span></span></code></pre>
+<code class="sourceCode R"><span><span class="va">contacts_byage_matrix</span></span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -804,31 +806,31 @@ following scenarios:</p>
 </button>
 </div>
 </nav><div id="nav-tabContent-3" class="tab-content">
-<div id="nav-tabpanel-3-1" class="tab-pane show active" role="tabpanel" aria-labelledby="nav-tab-3-1">
+<div id="nav-tabpanel-3-1" class="tab-pane show active" aria-labelledby="nav-tab-3-1" role="tabpanel">
 <figure><img src="../fig/vaccine-comparisons-rendered-unnamed-chunk-11-1.png" alt="" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure></div>
-<div id="nav-tabpanel-3-2" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-3-2">
+<div id="nav-tabpanel-3-2" class="tab-pane" aria-labelledby="nav-tab-3-2" role="tabpanel">
 <div class="codewrapper sourceCode" id="cb10">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">vaccinate_group_1</span> <span class="op">&lt;-</span> <span class="fu">epidemics</span><span class="fu">::</span><span class="fu">vaccination</span><span class="op">(</span></span>
 <span>  name <span class="op">=</span> <span class="st">"vaccinate all"</span>,</span>
-<span>  time_begin <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="fl">40</span>, <span class="fu">nrow</span><span class="op">(</span><span class="va">contact_matrix</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  time_end <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="fl">40</span> <span class="op">+</span> <span class="fl">150</span>, <span class="fu">nrow</span><span class="op">(</span><span class="va">contact_matrix</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  time_begin <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="fl">40</span>, <span class="fu">nrow</span><span class="op">(</span><span class="va">contacts_byage_matrix</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  time_end <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="fl">40</span> <span class="op">+</span> <span class="fl">150</span>, <span class="fu">nrow</span><span class="op">(</span><span class="va">contacts_byage_matrix</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  nu <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="fu">c</span><span class="op">(</span><span class="fl">0.001</span> <span class="op">*</span> <span class="fl">3</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">vaccinate_group_2</span> <span class="op">&lt;-</span> <span class="fu">epidemics</span><span class="fu">::</span><span class="fu">vaccination</span><span class="op">(</span></span>
 <span>  name <span class="op">=</span> <span class="st">"vaccinate all"</span>,</span>
-<span>  time_begin <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="fl">40</span>, <span class="fu">nrow</span><span class="op">(</span><span class="va">contact_matrix</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  time_end <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="fl">40</span> <span class="op">+</span> <span class="fl">150</span>, <span class="fu">nrow</span><span class="op">(</span><span class="va">contact_matrix</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  time_begin <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="fl">40</span>, <span class="fu">nrow</span><span class="op">(</span><span class="va">contacts_byage_matrix</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  time_end <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="fl">40</span> <span class="op">+</span> <span class="fl">150</span>, <span class="fu">nrow</span><span class="op">(</span><span class="va">contacts_byage_matrix</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  nu <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="fu">c</span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.001</span> <span class="op">*</span> <span class="fl">3</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">vaccinate_group_3</span> <span class="op">&lt;-</span> <span class="fu">epidemics</span><span class="fu">::</span><span class="fu">vaccination</span><span class="op">(</span></span>
 <span>  name <span class="op">=</span> <span class="st">"vaccinate all"</span>,</span>
-<span>  time_begin <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="fl">40</span>, <span class="fu">nrow</span><span class="op">(</span><span class="va">contact_matrix</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  time_end <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="fl">40</span> <span class="op">+</span> <span class="fl">150</span>, <span class="fu">nrow</span><span class="op">(</span><span class="va">contact_matrix</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  time_begin <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="fl">40</span>, <span class="fu">nrow</span><span class="op">(</span><span class="va">contacts_byage_matrix</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  time_end <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="fl">40</span> <span class="op">+</span> <span class="fl">150</span>, <span class="fu">nrow</span><span class="op">(</span><span class="va">contacts_byage_matrix</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  nu <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="fu">c</span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0.001</span> <span class="op">*</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -974,7 +976,7 @@ infection-fatality-risk (IFR):</p>
 </h3>
 <pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ifr</span> <span class="op">&lt;-</span> <span class="fu">c</span><span class="op">(</span><span class="fl">0.00001</span>, <span class="fl">0.001</span>, <span class="fl">0.4</span><span class="op">)</span></span>
-<span><span class="fu">names</span><span class="op">(</span><span class="va">ifr</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu">rownames</span><span class="op">(</span><span class="va">contact_matrix</span><span class="op">)</span></span></code></pre>
+<span><span class="fu">names</span><span class="op">(</span><span class="va">ifr</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu">rownames</span><span class="op">(</span><span class="va">contacts_byage_matrix</span><span class="op">)</span></span></code></pre>
 </div>
 <p>To convert infections to deaths, we will need new infections by age
 group, so we call <code>new_infections()</code> with
@@ -1062,7 +1064,7 @@ and <strong>late implementation</strong> as 50 days after the start of
 the simulation (i.e. when there are approximately 50,000 infections in
 total). We assume the control measures are in place for 100 days after
 they start.</p>
-<p>The combinations we will consider are :</p>
+<p>The combinations we will consider are:</p>
 <ul><li>early implementation of closing schools,</li>
 <li>early implementation of a vaccine,</li>
 <li>late implementation of a vaccine,</li>
@@ -1090,8 +1092,8 @@ vaccine.</li>
 <span><span class="co"># vaccination late</span></span>
 <span><span class="va">vacc_late</span> <span class="op">&lt;-</span> <span class="fu">epidemics</span><span class="fu">::</span><span class="fu">vaccination</span><span class="op">(</span></span>
 <span>  name <span class="op">=</span> <span class="st">"vaccinate late"</span>,</span>
-<span>  time_begin <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="va">late_start</span>, <span class="fu">nrow</span><span class="op">(</span><span class="va">contact_matrix</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  time_end <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="va">late_start</span> <span class="op">+</span> <span class="va">duration</span>, <span class="fu">nrow</span><span class="op">(</span><span class="va">contact_matrix</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  time_begin <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="va">late_start</span>, <span class="fu">nrow</span><span class="op">(</span><span class="va">contacts_byage_matrix</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  time_end <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="va">late_start</span> <span class="op">+</span> <span class="va">duration</span>, <span class="fu">nrow</span><span class="op">(</span><span class="va">contacts_byage_matrix</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  nu <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="fu">c</span><span class="op">(</span><span class="fl">0.01</span>, <span class="fl">0.01</span>, <span class="fl">0.01</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -1134,7 +1136,7 @@ Adapt the code below to lift the NPI after 20, 50 and 100 days</p>
   Output
   </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb17">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1323,9 +1325,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://epiverse-trace.github.io/tutorials-late/instructor/vaccine-comparisons.html",
   "identifier": "https://epiverse-trace.github.io/tutorials-late/instructor/vaccine-comparisons.html",
-  "dateCreated": "2026-03-20",
-  "dateModified": "2026-03-20",
-  "datePublished": "2026-03-20"
+  "dateCreated": "2026-03-23",
+  "dateModified": "2026-03-23",
+  "datePublished": "2026-03-23"
 }
 
   </script><script>

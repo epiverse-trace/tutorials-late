@@ -343,7 +343,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Comparing public health outcomes of interventions</h1>
-        <p>Last updated on 2026-03-20 |
+        <p>Last updated on 2026-03-23 |
 
         <a href="https://github.com/epiverse-trace/tutorials-late/edit/main/episodes/compare-interventions.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -389,7 +389,7 @@ interventions</a>
 </li>
 </ul><p>Learners should familiarise themselves with following concept
 dependencies before working through this tutorial:</p>
-<p><strong>Outbreak response</strong> : <a href="https://www.cdc.gov/nonpharmaceutical-interventions/" class="external-link">Intervention
+<p><strong>Outbreak response</strong>: <a href="https://www.cdc.gov/nonpharmaceutical-interventions/" class="external-link">Intervention
 types</a>.</p>
 </div>
 </div>
@@ -596,9 +596,9 @@ time</li>
 <div id="accordionHint1" class="accordion challenge-accordion accordion-flush">
 <div class="accordion-item">
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint1" aria-expanded="false" aria-controls="collapseHint1">
-  <h4 class="accordion-header" id="headingHint1"> HINT : Running the model with default parameter values </h4>
+  <h4 class="accordion-header" id="headingHint1"> HINT: Running the model with default parameter values </h4>
 </button>
-<div id="collapseHint1" class="accordion-collapse collapse" data-bs-parent="#accordionHint1" aria-labelledby="headingHint1">
+<div id="collapseHint1" class="accordion-collapse collapse" aria-labelledby="headingHint1" data-bs-parent="#accordionHint1">
 <div class="accordion-body">
 <p>We can run the Vacamole model with <a href="https://epiverse-trace.github.io/epidemics/articles/model_vacamole.html#model-epidemic-using-vacamole" class="external-link">default
 parameter values</a> by just specifying the population object and number
@@ -621,26 +621,32 @@ of time steps to run the model for:</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <ol style="list-style-type: decimal"><li>Run the model</li>
 </ol><div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">polymod</span> <span class="op">&lt;-</span> <span class="fu">socialmixr</span><span class="fu">::</span><span class="va">polymod</span></span>
-<span><span class="va">contact_data</span> <span class="op">&lt;-</span> <span class="fu">socialmixr</span><span class="fu">::</span><span class="fu">contact_matrix</span><span class="op">(</span></span>
-<span>  survey <span class="op">=</span> <span class="va">polymod</span>,</span>
+<code class="sourceCode R"><span><span class="va">survey_files_uk</span> <span class="op">&lt;-</span> <span class="fu">contactsurveys</span><span class="fu">::</span><span class="fu">download_survey</span><span class="op">(</span></span>
+<span>  survey <span class="op">=</span> <span class="st">"https://doi.org/10.5281/zenodo.3874557"</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">survey_load_uk</span> <span class="op">&lt;-</span> <span class="fu">socialmixr</span><span class="fu">::</span><span class="fu">load_survey</span><span class="op">(</span>files <span class="op">=</span> <span class="va">survey_files_uk</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">contacts_byage_uk</span> <span class="op">&lt;-</span> <span class="fu">socialmixr</span><span class="fu">::</span><span class="fu">contact_matrix</span><span class="op">(</span></span>
+<span>  survey <span class="op">=</span> <span class="va">survey_load_uk</span>,</span>
 <span>  countries <span class="op">=</span> <span class="st">"United Kingdom"</span>,</span>
-<span>  age.limits <span class="op">=</span> <span class="fu">c</span><span class="op">(</span><span class="fl">0</span>, <span class="fl">20</span>, <span class="fl">40</span><span class="op">)</span>,</span>
-<span>  symmetric <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  age_limits <span class="op">=</span> <span class="fu">c</span><span class="op">(</span><span class="fl">0</span>, <span class="fl">20</span>, <span class="fl">40</span><span class="op">)</span>,</span>
+<span>  symmetric <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  return_demography <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co"># prepare contact matrix</span></span>
-<span><span class="va">contact_matrix</span> <span class="op">&lt;-</span> <span class="fu">t</span><span class="op">(</span><span class="va">contact_data</span><span class="op">$</span><span class="va">matrix</span><span class="op">)</span></span>
+<span><span class="va">contacts_byage_matrix_uk</span> <span class="op">&lt;-</span> <span class="fu">t</span><span class="op">(</span><span class="va">contacts_byage_uk</span><span class="op">$</span><span class="va">matrix</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># extract demography vector</span></span>
-<span><span class="va">demography_vector</span> <span class="op">&lt;-</span> <span class="va">contact_data</span><span class="op">$</span><span class="va">demography</span><span class="op">$</span><span class="va">population</span></span>
-<span><span class="fu">names</span><span class="op">(</span><span class="va">demography_vector</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu">rownames</span><span class="op">(</span><span class="va">contact_matrix</span><span class="op">)</span></span>
+<span><span class="va">demography_vector</span> <span class="op">&lt;-</span> <span class="va">contacts_byage_uk</span><span class="op">$</span><span class="va">demography</span><span class="op">$</span><span class="va">population</span></span>
+<span><span class="fu">names</span><span class="op">(</span><span class="va">demography_vector</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu">rownames</span><span class="op">(</span><span class="va">contacts_byage_matrix_uk</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># prepare initial conditions</span></span>
 <span><span class="va">initial_i</span> <span class="op">&lt;-</span> <span class="fl">1e-6</span></span>
@@ -658,12 +664,12 @@ of time steps to run the model for:</p>
 <span>  <span class="va">initial_conditions_vacamole</span>,</span>
 <span>  <span class="va">initial_conditions_vacamole</span></span>
 <span><span class="op">)</span></span>
-<span><span class="fu">rownames</span><span class="op">(</span><span class="va">initial_conditions_vacamole</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu">rownames</span><span class="op">(</span><span class="va">contact_matrix</span><span class="op">)</span></span>
+<span><span class="fu">rownames</span><span class="op">(</span><span class="va">initial_conditions_vacamole</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu">rownames</span><span class="op">(</span><span class="va">contacts_byage_matrix_uk</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># prepare population object</span></span>
 <span><span class="va">uk_population_vacamole</span> <span class="op">&lt;-</span> <span class="fu">epidemics</span><span class="fu">::</span><span class="fu">population</span><span class="op">(</span></span>
 <span>  name <span class="op">=</span> <span class="st">"UK"</span>,</span>
-<span>  contact_matrix <span class="op">=</span> <span class="va">contact_matrix</span>,</span>
+<span>  contact_matrix <span class="op">=</span> <span class="va">contacts_byage_matrix_uk</span>,</span>
 <span>  demography_vector <span class="op">=</span> <span class="va">demography_vector</span>,</span>
 <span>  initial_conditions <span class="op">=</span> <span class="va">initial_conditions_vacamole</span></span>
 <span><span class="op">)</span></span>
@@ -808,9 +814,9 @@ interventions</a> to run the model for the baseline scenario:</p>
 </div>
 <p>Then, we create a list of all the interventions we want to include in
 our comparison. We define our scenarios as follows:</p>
-<ul><li>scenario 1 : close schools</li>
-<li>scenario 2 : mask mandate</li>
-<li>scenario 3 : close schools and mask mandate.</li>
+<ul><li>scenario 1: close schools</li>
+<li>scenario 2: mask mandate</li>
+<li>scenario 3: close schools and mask mandate.</li>
 </ul><p>In R we specify this as:</p>
 <div class="codewrapper sourceCode" id="cb9">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -879,7 +885,7 @@ to compare the outputs of the interventions to our baseline.</p>
 <code>{epidemics}</code>. This function calculates the final epidemic
 size for each scenario, and then calculates the number of infections
 averted in each scenario compared to the baseline. To use this function
-we specify the :</p>
+we specify the:</p>
 <ul><li>output of the baseline scenario</li>
 <li>outputs of the intervention scenario(s).</li>
 </ul><div class="codewrapper sourceCode" id="cb12">
@@ -947,13 +953,13 @@ African EVD outbreak.</p>
 <i class="callout-icon" data-feather="zap"></i>
 </div>
 <div id="challenge-ebola-outbreak-analysis" class="callout-inner">
-<h3 class="callout-title">Challenge : Ebola outbreak analysis</h3>
+<h3 class="callout-title">Challenge: Ebola outbreak analysis</h3>
 <div class="callout-content">
 <p>You have been tasked to investigate the potential impact of an
 intervention on an Ebola outbreak in Guinea (e.g. a reduction in risky
 contacts with cases). Using <code>model_ebola()</code> and the the
-information detailed below, find the number of infections averted when
-:</p>
+information detailed below, find the number of infections averted
+when:</p>
 <ul><li>an intervention is applied to reduce the transmission rate by 50%
 from day 60 and,</li>
 <li>an intervention is applied to reduce transmission by 10% from day
@@ -964,11 +970,11 @@ a normal distribution with mean = 1.1 / 12 (i.e. <span class="math inline">\(R_
 and standard deviation = 0.01.</p>
 <p><em>Note: Depending on the number of replicates used, this simulation
 may take several minutes to run.</em></p>
-<ul><li>Population size : 14 million</li>
-<li>Initial number of exposed individuals : 10</li>
-<li>Initial number of infectious individuals : 5</li>
-<li>Time of simulation : 120 days</li>
-<li>Parameter values :
+<ul><li>Population size: 14 million</li>
+<li>Initial number of exposed individuals: 10</li>
+<li>Initial number of infectious individuals: 5</li>
+<li>Time of simulation: 120 days</li>
+<li>Parameter values:
 <ul><li>
 <span class="math inline">\(R_0\)</span> (<code>r0</code>) =
 1.1,</li>
@@ -998,7 +1004,7 @@ may take several minutes to run.</em></p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb16">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1192,9 +1198,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://epiverse-trace.github.io/tutorials-late/compare-interventions.html",
   "identifier": "https://epiverse-trace.github.io/tutorials-late/compare-interventions.html",
-  "dateCreated": "2026-03-20",
-  "dateModified": "2026-03-20",
-  "datePublished": "2026-03-20"
+  "dateCreated": "2026-03-23",
+  "dateModified": "2026-03-23",
+  "datePublished": "2026-03-23"
 }
 
   </script><script>

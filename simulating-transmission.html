@@ -345,7 +345,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Simulating transmission</h1>
-        <p>Last updated on 2026-03-20 |
+        <p>Last updated on 2026-03-23 |
 
         <a href="https://github.com/epiverse-trace/tutorials-late/edit/main/episodes/simulating-transmission.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -395,14 +395,14 @@ package</li>
 <div class="callout-inner">
 <h3 class="callout-title">Prerequisite</h3>
 <div class="callout-content">
-<ul><li>Complete tutorial on <a href="contact-matrices.html">Contact
+<ul><li>Complete tutorial on <a href="contact-matrices.html">contact
 matrices</a>.</li>
 </ul><p>Learners should familiarise themselves with following concept
 dependencies before working through this tutorial:</p>
-<p><strong>Mathematical Modelling</strong> : <a href="https://doi.org/10.1038/s41592-020-0856-2" class="external-link">Introduction to
+<p><strong>Mathematical Modelling</strong>: <a href="https://doi.org/10.1038/s41592-020-0856-2" class="external-link">Introduction to
 infectious disease models</a>, <a href="reference.html#state">state
 variables</a>, <a href="reference.html#parsode">model parameters</a>, <a href="reference.html#initial">initial conditions</a>, <a href="reference.html#ordinary">differential equations</a>.</p>
-<p><strong>Epidemic theory</strong> : <a href="https://doi.org/10.1155/2011/267049" class="external-link">Transmission</a>, <a href="https://doi.org/10.3201/eid2501.171901" class="external-link">Reproduction
+<p><strong>Epidemic theory</strong>: <a href="https://doi.org/10.1155/2011/267049" class="external-link">Transmission</a>, <a href="https://doi.org/10.3201/eid2501.171901" class="external-link">Reproduction
 number</a>.</p>
 <p><strong>R packages installed</strong>: <code>{epidemics}</code>,
 <a href="https://github.com/epiforecasts/socialmixr" class="external-link">socialmixr</a>, <a href="https://scales.r-lib.org" class="external-link">scales</a>,
@@ -417,7 +417,7 @@ number</a>.</p>
 </button>
 <div id="collapseSpoiler1" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler1" aria-labelledby="headingSpoiler1">
 <div class="accordion-body">
-<p>Install packages if their are not already installed</p>
+<p>Install these packages if their are not already installed</p>
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -448,6 +448,7 @@ call to the <a href="https://tidyverse.tidyverse.org" class="external-link">tidy
 </h3>
 <pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">epidemics</span><span class="op">)</span></span>
+<span><span class="kw">library</span><span class="op">(</span><span class="va">contactsurveys</span><span class="op">)</span></span>
 <span><span class="kw">library</span><span class="op">(</span><span class="va">socialmixr</span><span class="op">)</span></span>
 <span><span class="kw">library</span><span class="op">(</span><span class="va">tidyverse</span><span class="op">)</span></span></code></pre>
 </div>
@@ -537,7 +538,7 @@ after a person has been exposed, but in modelling terms individuals that
 are ‘exposed’ are treated as already infected.</p>
 <p>We will use the following definitions for our state variables:</p>
 <ul><li>
-<span class="math inline">\(E\)</span> = Exposed : infected
+<span class="math inline">\(E\)</span> = Exposed: infected
 <strong>but not yet</strong> infectious,</li>
 <li>
 <span class="math inline">\(I\)</span> = Infectious: infected
@@ -572,7 +573,8 @@ matrix for the United Kingdom for the year age bins:</p>
 <ul><li>age between 0 and 20 years,</li>
 <li>age between 20 and 40,</li>
 <li>40 years and over.</li>
-</ul><p>Use the survey available at <code>socialmixr::polymod</code></p>
+</ul><p>Use the POLYMOD survey available at
+<code>https://doi.org/10.5281/zenodo.3874557</code></p>
 </div>
 </div>
 </div>
@@ -600,22 +602,27 @@ matrices</a>.</li>
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Access the contact survey data</span></span>
-<span><span class="va">polymod</span> <span class="op">&lt;-</span> <span class="fu">socialmixr</span><span class="fu">::</span><span class="va">polymod</span></span>
+<code class="sourceCode R"><span><span class="co"># Download and load the contact survey data</span></span>
+<span><span class="va">survey_files</span> <span class="op">&lt;-</span> <span class="fu">contactsurveys</span><span class="fu">::</span><span class="fu">download_survey</span><span class="op">(</span></span>
+<span>  survey <span class="op">=</span> <span class="st">"https://doi.org/10.5281/zenodo.3874557"</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">survey_load</span> <span class="op">&lt;-</span> <span class="fu">socialmixr</span><span class="fu">::</span><span class="fu">load_survey</span><span class="op">(</span>files <span class="op">=</span> <span class="va">survey_files</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Generate the contact matrix</span></span>
-<span><span class="va">contact_data</span> <span class="op">&lt;-</span> <span class="fu">socialmixr</span><span class="fu">::</span><span class="fu">contact_matrix</span><span class="op">(</span></span>
-<span>  <span class="va">polymod</span>,</span>
+<span><span class="va">contacts_byage</span> <span class="op">&lt;-</span> <span class="fu">socialmixr</span><span class="fu">::</span><span class="fu">contact_matrix</span><span class="op">(</span></span>
+<span>  survey <span class="op">=</span> <span class="va">survey_load</span>,</span>
 <span>  countries <span class="op">=</span> <span class="st">"United Kingdom"</span>,</span>
 <span>  age_limits <span class="op">=</span> <span class="fu">c</span><span class="op">(</span><span class="fl">0</span>, <span class="fl">20</span>, <span class="fl">40</span><span class="op">)</span>,</span>
-<span>  symmetric <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  symmetric <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  return_demography <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># prepare contact matrix</span></span>
-<span><span class="va">socialcontact_matrix</span> <span class="op">&lt;-</span> <span class="fu">t</span><span class="op">(</span><span class="va">contact_data</span><span class="op">$</span><span class="va">matrix</span><span class="op">)</span></span>
+<span><span class="va">contacts_byage_matrix</span> <span class="op">&lt;-</span> <span class="fu">t</span><span class="op">(</span><span class="va">contacts_byage</span><span class="op">$</span><span class="va">matrix</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># print</span></span>
-<span><span class="va">socialcontact_matrix</span></span></code></pre>
+<span><span class="va">contacts_byage_matrix</span></span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -629,14 +636,14 @@ contact.age.group   [0,20)  [20,40)      40+
 <p>Remember that the matrix satisfies the <code>symmetric = TRUE</code>
 condition at the level of total number of contacts.</p>
 <p>The total number of contacts between groups <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> is calculated as the mean number of
-contacts (<code>contact_data$matrix</code>) multiplied by the number of
-individuals in group <span class="math inline">\(i\)</span>
-(<code>contact_data$demography$population</code>)</p>
+contacts (<code>contacts_byage$matrix</code>) multiplied by the number
+of individuals in group <span class="math inline">\(i\)</span>
+(<code>contacts_byage$demography$population</code>)</p>
 <div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">contact_data</span><span class="op">$</span><span class="va">matrix</span> <span class="op">*</span> <span class="va">contact_data</span><span class="op">$</span><span class="va">demography</span><span class="op">$</span><span class="va">population</span></span></code></pre>
+<code class="sourceCode R"><span><span class="va">contacts_byage</span><span class="op">$</span><span class="va">matrix</span> <span class="op">*</span> <span class="va">contacts_byage</span><span class="op">$</span><span class="va">demography</span><span class="op">$</span><span class="va">population</span></span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -720,7 +727,7 @@ conditions are <span class="math inline">\(S(0)=1\)</span>, <span class="math in
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># use contact matrix to assign age group names</span></span>
-<span><span class="fu">rownames</span><span class="op">(</span><span class="va">initial_conditions</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu">rownames</span><span class="op">(</span><span class="va">socialcontact_matrix</span><span class="op">)</span></span>
+<span><span class="fu">rownames</span><span class="op">(</span><span class="va">initial_conditions</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu">rownames</span><span class="op">(</span><span class="va">contacts_byage_matrix</span><span class="op">)</span></span>
 <span><span class="va">initial_conditions</span></span></code></pre>
 </div>
 <div class="codewrapper">
@@ -738,17 +745,17 @@ conditions are <span class="math inline">\(S(0)=1\)</span>, <span class="math in
 structure of the population. The demographic vector must be a named
 vector containing the number of individuals in each age group of our
 given population. In this example, we can extract the demographic
-information from the <code>contact_data</code> object that we obtained
+information from the <code>contacts_byage</code> object that we obtained
 using the <code>socialmixr</code> package.</p>
 <div class="codewrapper sourceCode" id="cb11">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># extract the demography vector</span></span>
-<span><span class="va">demography_vector</span> <span class="op">&lt;-</span> <span class="va">contact_data</span><span class="op">$</span><span class="va">demography</span><span class="op">$</span><span class="va">population</span></span>
+<span><span class="va">demography_vector</span> <span class="op">&lt;-</span> <span class="va">contacts_byage</span><span class="op">$</span><span class="va">demography</span><span class="op">$</span><span class="va">population</span></span>
 <span></span>
 <span><span class="co"># use contact matrix to assign age group names</span></span>
-<span><span class="fu">names</span><span class="op">(</span><span class="va">demography_vector</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu">rownames</span><span class="op">(</span><span class="va">socialcontact_matrix</span><span class="op">)</span></span>
+<span><span class="fu">names</span><span class="op">(</span><span class="va">demography_vector</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu">rownames</span><span class="op">(</span><span class="va">contacts_byage_matrix</span><span class="op">)</span></span>
 <span><span class="va">demography_vector</span></span></code></pre>
 </div>
 <div class="codewrapper">
@@ -769,7 +776,7 @@ initial conditions.</p>
 <span></span>
 <span><span class="va">uk_population</span> <span class="op">&lt;-</span> <span class="fu">epidemics</span><span class="fu">::</span><span class="fu">population</span><span class="op">(</span></span>
 <span>  name <span class="op">=</span> <span class="st">"UK"</span>,</span>
-<span>  contact_matrix <span class="op">=</span> <span class="va">socialcontact_matrix</span>,</span>
+<span>  contact_matrix <span class="op">=</span> <span class="va">contacts_byage_matrix</span>,</span>
 <span>  demography_vector <span class="op">=</span> <span class="va">demography_vector</span>,</span>
 <span>  initial_conditions <span class="op">=</span> <span class="va">initial_conditions</span></span>
 <span><span class="op">)</span></span></code></pre>
@@ -784,7 +791,7 @@ initial conditions.</p>
 (preinfectious period=<span class="math inline">\(1/\alpha\)</span>),</li>
 <li>recovery rate <span class="math inline">\(\gamma\)</span>
 (infectious period=<span class="math inline">\(1/\gamma\)</span>).</li>
-</ul><p>In <code>epidemics</code>, we specify the model inputs as :</p>
+</ul><p>In <code>epidemics</code>, we specify the model inputs as:</p>
 <ul><li>
 <code>transmission_rate</code> <span class="math inline">\(\beta =
 R_0 \gamma\)</span>,</li>
@@ -1171,7 +1178,7 @@ right model for different tasks.</p>
 <h3 class="callout-title">Key Points</h3>
 <div class="callout-content">
 <ul><li>Disease trajectories can be generated using the R package
-<code>epidemics</code>
+<code>{epidemics}</code>
 </li>
 <li>Uncertainty should be included in model trajectories using a range
 of model parameter values</li>
@@ -1239,9 +1246,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://epiverse-trace.github.io/tutorials-late/simulating-transmission.html",
   "identifier": "https://epiverse-trace.github.io/tutorials-late/simulating-transmission.html",
-  "dateCreated": "2026-03-20",
-  "dateModified": "2026-03-20",
-  "datePublished": "2026-03-20"
+  "dateCreated": "2026-03-23",
+  "dateModified": "2026-03-23",
+  "datePublished": "2026-03-23"
 }
 
   </script><script>

@@ -401,20 +401,17 @@ any links that you are not going to use.
 <h3 id="contact-matrices-headingInstructor1">
 <a href="contact-matrices.html#headingInstructor1">Instructor Note</a><a class="anchor" aria-label="anchor" href="#contact-matrices-headingInstructor1"></a>
 </h3>
-<hr>
-<br><h3 id="contact-matrices-headingInstructor2">
-<a href="contact-matrices.html#headingInstructor2">Instructor Note</a><a class="anchor" aria-label="anchor" href="#contact-matrices-headingInstructor2"></a>
-</h3>
-<div class="codewrapper sourceCode" id="cb9">
+<div class="codewrapper sourceCode" id="cb12">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Generate the contact matrix for Zambia only</span></span>
-<span><span class="va">contact_data_zambia</span> <span class="op">&lt;-</span> <span class="fu">socialmixr</span><span class="fu">::</span><span class="fu">contact_matrix</span><span class="op">(</span></span>
-<span>  survey <span class="op">=</span> <span class="va">zambia_sa_survey</span>,</span>
+<span><span class="va">contacts_byage_zambia</span> <span class="op">&lt;-</span> <span class="fu">socialmixr</span><span class="fu">::</span><span class="fu">contact_matrix</span><span class="op">(</span></span>
+<span>  survey <span class="op">=</span> <span class="va">survey_load_zambia</span>,</span>
 <span>  countries <span class="op">=</span> <span class="st">"Zambia"</span>, <span class="co"># key argument</span></span>
 <span>  age_limits <span class="op">=</span> <span class="fu">c</span><span class="op">(</span><span class="fl">0</span>, <span class="fl">20</span><span class="op">)</span>,</span>
-<span>  symmetric <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  symmetric <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  return_demography <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre>
 </div>
 <div class="codewrapper">
@@ -425,12 +422,12 @@ participants).
 • Results will aggregate across all observations.
 ℹ Use `filter` to select by "Building_id".</code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb11">
+<div class="codewrapper sourceCode" id="cb14">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Print the contact matrix for Zambia only</span></span>
-<span><span class="va">contact_data_zambia</span></span></code></pre>
+<span><span class="va">contacts_byage_zambia</span></span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -453,12 +450,12 @@ $participants
 1:    [0,20)          244 0.08531469
 2:       20+         2616 0.91468531</code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb13">
+<div class="codewrapper sourceCode" id="cb16">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Print the vector of population size for {epidemics}</span></span>
-<span><span class="va">contact_data_zambia</span><span class="op">$</span><span class="va">demography</span><span class="op">$</span><span class="va">population</span></span></code></pre>
+<span><span class="va">contacts_byage_zambia</span><span class="op">$</span><span class="va">demography</span><span class="op">$</span><span class="va">population</span></span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -586,21 +583,27 @@ View”.</p>
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># load contact and population data from socialmixr::polymod</span></span>
-<span><span class="va">polymod</span> <span class="op">&lt;-</span> <span class="fu">socialmixr</span><span class="fu">::</span><span class="va">polymod</span></span>
-<span><span class="va">contact_data</span> <span class="op">&lt;-</span> <span class="fu">socialmixr</span><span class="fu">::</span><span class="fu">contact_matrix</span><span class="op">(</span></span>
-<span>  <span class="va">polymod</span>,</span>
+<code class="sourceCode R"><span><span class="co"># download and load contact and population data from Zenodo</span></span>
+<span><span class="va">survey_files</span> <span class="op">&lt;-</span> <span class="fu">contactsurveys</span><span class="fu">::</span><span class="fu">download_survey</span><span class="op">(</span></span>
+<span>  survey <span class="op">=</span> <span class="st">"https://doi.org/10.5281/zenodo.3874557"</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">survey_load</span> <span class="op">&lt;-</span> <span class="fu">socialmixr</span><span class="fu">::</span><span class="fu">load_survey</span><span class="op">(</span>files <span class="op">=</span> <span class="va">survey_files</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">contacts_byage</span> <span class="op">&lt;-</span> <span class="fu">socialmixr</span><span class="fu">::</span><span class="fu">contact_matrix</span><span class="op">(</span></span>
+<span>  survey <span class="op">=</span> <span class="va">survey_load</span>,</span>
 <span>  countries <span class="op">=</span> <span class="st">"United Kingdom"</span>,</span>
 <span>  age_limits <span class="op">=</span> <span class="fu">c</span><span class="op">(</span><span class="fl">0</span>, <span class="fl">20</span>, <span class="fl">40</span><span class="op">)</span>,</span>
-<span>  symmetric <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  symmetric <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  return_demography <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># prepare contact matrix</span></span>
-<span><span class="va">contact_matrix</span> <span class="op">&lt;-</span> <span class="fu">t</span><span class="op">(</span><span class="va">contact_data</span><span class="op">$</span><span class="va">matrix</span><span class="op">)</span></span>
+<span><span class="va">contacts_byage_matrix</span> <span class="op">&lt;-</span> <span class="fu">t</span><span class="op">(</span><span class="va">contacts_byage</span><span class="op">$</span><span class="va">matrix</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># prepare the demography vector</span></span>
-<span><span class="va">demography_vector</span> <span class="op">&lt;-</span> <span class="va">contact_data</span><span class="op">$</span><span class="va">demography</span><span class="op">$</span><span class="va">population</span></span>
-<span><span class="fu">names</span><span class="op">(</span><span class="va">demography_vector</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu">rownames</span><span class="op">(</span><span class="va">contact_matrix</span><span class="op">)</span></span>
+<span><span class="va">demography_vector</span> <span class="op">&lt;-</span> <span class="va">contacts_byage</span><span class="op">$</span><span class="va">demography</span><span class="op">$</span><span class="va">population</span></span>
+<span><span class="fu">names</span><span class="op">(</span><span class="va">demography_vector</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu">rownames</span><span class="op">(</span><span class="va">contacts_byage_matrix</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># initial conditions: one in every 1 million is infected</span></span>
 <span><span class="va">initial_i</span> <span class="op">&lt;-</span> <span class="fl">1e-6</span></span>
@@ -618,12 +621,12 @@ View”.</p>
 <span>  <span class="va">initial_conditions_free</span>,</span>
 <span>  <span class="va">initial_conditions_free</span></span>
 <span><span class="op">)</span></span>
-<span><span class="fu">rownames</span><span class="op">(</span><span class="va">initial_conditions</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu">rownames</span><span class="op">(</span><span class="va">contact_matrix</span><span class="op">)</span></span>
+<span><span class="fu">rownames</span><span class="op">(</span><span class="va">initial_conditions</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu">rownames</span><span class="op">(</span><span class="va">contacts_byage_matrix</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># prepare the population to model as affected by the epidemic</span></span>
 <span><span class="va">uk_population</span> <span class="op">&lt;-</span> <span class="fu">epidemics</span><span class="fu">::</span><span class="fu">population</span><span class="op">(</span></span>
 <span>  name <span class="op">=</span> <span class="st">"UK"</span>,</span>
-<span>  contact_matrix <span class="op">=</span> <span class="va">contact_matrix</span>,</span>
+<span>  contact_matrix <span class="op">=</span> <span class="va">contacts_byage_matrix</span>,</span>
 <span>  demography_vector <span class="op">=</span> <span class="va">demography_vector</span>,</span>
 <span>  initial_conditions <span class="op">=</span> <span class="va">initial_conditions</span></span>
 <span><span class="op">)</span></span>
@@ -695,9 +698,9 @@ View”.</p>
   "creativeWorkStatus": "active",
   "url": "https://epiverse-trace.github.io/tutorials-late/instructor/instructor-notes.html",
   "identifier": "https://epiverse-trace.github.io/tutorials-late/instructor/instructor-notes.html",
-  "dateCreated": "2026-03-20",
-  "dateModified": "2026-03-20",
-  "datePublished": "2026-03-20"
+  "dateCreated": "2026-03-23",
+  "dateModified": "2026-03-23",
+  "datePublished": "2026-03-23"
 }
 
   </script><script>
