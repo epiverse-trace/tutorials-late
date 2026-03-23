@@ -42,13 +42,6 @@ library(contactsurveys)
 library(socialmixr)
 ```
 
-
-:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: instructor
-
-
-
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
 ## The contact matrix
 
 The basic contact matrix represents the amount of contact or mixing within and between different subgroups of a population. The subgroups are often age categories but can also be:
