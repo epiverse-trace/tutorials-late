@@ -132,7 +132,7 @@ If `symmetric` is set to TRUE, the `contact_matrix()` function will internally u
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
-The example above uses the POLYMOD survey. A number of surveys are available in the [Zenodo Social Contact Data community](https://zenodo.org/communities/social_contact_data/). To list available surveys programmatically, use `contactsurveys::list_surveys()`. To download a survey from Zenodo and load it, we use `contactsurveys::download_survey()` followed by `socialmixr::load_survey()`:
+The example above uses the POLYMOD survey. Other surveys are available in the [Zenodo Social Contact Data community](https://zenodo.org/communities/social_contact_data/). To use a different survey, first identify its DOI (see below), then download and load it with `contactsurveys::download_survey()` and `socialmixr::load_survey()`. Here we use the Zambia and South Africa contact survey:
 
 ```{r, message = FALSE, warning = FALSE}
 # Download and load the contact survey data for Zambia from Zenodo
@@ -146,7 +146,9 @@ survey_load_zambia <- socialmixr::load_survey(files = survey_files_zambia)
 
 :::::::::::::::::: spoiler
 
-You can explore all the available surveys from the Zenodo repository at <https://zenodo.org/communities/social_contact_data/>. If you are interested in accessing to a specific URL within R, you can try:
+**Find a survey DOI with contactsurveys**
+
+Browse available surveys in the [Zenodo Social Contact Data community](https://zenodo.org/communities/social_contact_data/), or list them programmatically:
 
 ```{r}
 library(contactsurveys)
