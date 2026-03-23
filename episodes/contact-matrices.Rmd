@@ -113,9 +113,9 @@ contacts_byage
 
 
 
-**Note: although the contact matrix `contacts_byage$matrix` is not itself mathematically symmetric, it satisfies the condition that the total number of contacts of one group with another is the same as the reverse. In other words:
+**Note**: although the contact matrix `contacts_byage$matrix` is not itself mathematically symmetric, it satisfies the condition that the total number of contacts of one group with another is the same as the reverse. In other words:
 `contacts_byage$matrix[j,i]*contacts_byage$demography$proportion[j] = contacts_byage$matrix[i,j]*contacts_byage$demography$proportion[i]`.
-For the mathematical explanation see [the corresponding section in the socialmixr documentation](https://epiforecasts.io/socialmixr/articles/socialmixr.html#symmetric-contact-matrices).**
+For the mathematical explanation see [the corresponding section in the socialmixr documentation](https://epiforecasts.io/socialmixr/articles/socialmixr.html#symmetric-contact-matrices).
 
 
 ::::::::::::::::::::::::::::::::::::: callout
@@ -220,8 +220,6 @@ Contact matrices can be estimated from data obtained from diary (such as POLYMOD
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 
-
-
 ## Analyses with contact matrices
 
 Contact matrices can be used in a wide range of epidemiological analyses, they can be used:
@@ -244,7 +242,7 @@ Whereas a contact matrix gives the average number of contacts that one groups ma
 
 ### In mathematical models
 
-Consider the SIR model where individuals are categorized as either susceptible $S$, infected but not yet infectious $E$, infectious $I$ or recovered $R$. The schematic below shows the processes which describe the flow of individuals between the disease states $S$, $I$ and $R$ and the key parameters for each process.
+Consider the SIR model where individuals are categorized as either susceptible $S$,  infected $I$ and recovered $R$. The schematic below shows the processes which describe the flow of individuals between the disease states $S$, $I$ and $R$ and the key parameters for each process.
 
 ```{r diagram, echo = FALSE, message = FALSE}
 DiagrammeR::grViz("digraph {
@@ -289,7 +287,7 @@ To add age structure to our model, we need to add additional equations for the i
 
 $$ \beta S_i \sum_j C_{i,j} I_j/N_j. $$ 
 
-Susceptible individuals in age group $i$ become infected dependent on their rate of contact with individuals in each age group. For each disease state ($S$, $E$, $I$ and $R$) and age group ($i$), we have a differential equation describing the rate of change with respect to time.  
+Susceptible individuals in age group $i$ become infected dependent on their rate of contact with individuals in each age group. For each disease state ($S$,  $I$ and $R$) and age group ($i$), we have a differential equations describing the rate of change with respect to time.  
 
 $$
 \begin{aligned}
