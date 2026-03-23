@@ -86,7 +86,7 @@ survey_load <- socialmixr::load_survey(files = survey_files)
 ```
 
 ::::::::::::::::::::::::::::::::::::: callout
-### Specify the country name
+### Inspect available countries
 
 A single survey file can contain data from multiple countries. You can inspect the available countries with:
 
@@ -94,11 +94,9 @@ A single survey file can contain data from multiple countries. You can inspect t
 levels(survey_load$participants$country)
 ```
 
-Always pass the `countries =` argument to `contact_matrix()` to make sure you use data from the intended country only.
-
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
-Then we can obtain the contact matrix for the age categories we want by specifying `age_limits`. We also add `return_demography = TRUE` to include demographic information in the output, which is required when using the contact matrix with `{epidemics}`.
+We obtain the contact matrix for the United Kingdom — passing `countries = "United Kingdom"` to select data from the intended country, `age_limits` to define age categories, and `return_demography = TRUE` to include demographic information required by `{epidemics}`.
 
 ```{r polymod_uk, echo = TRUE}
 contacts_byage <- socialmixr::contact_matrix(
