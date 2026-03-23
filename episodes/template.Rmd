@@ -58,7 +58,7 @@ Lesson content
 
 ::::::::::::::::::::::::::::::::::::: challenge 
 
-## Challenge 1 : can the learner run existing code
+## Challenge 1: can the learner run existing code
 
 Load contact and population data from the POLYMOD Zenodo survey
 
@@ -120,7 +120,7 @@ Add additional maths (or epi) content for novice learners
 
 ::::::::::::::::::::::::::::::::::::: challenge 
 
-## Challenge 2 : edit code/answer a question
+## Challenge 2: edit code/answer a question
 
 Load contact and population data for Poland from the POLYMOD Zenodo survey using the following age bins:
 

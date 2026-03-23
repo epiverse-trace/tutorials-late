@@ -283,7 +283,7 @@ $$
 \end{aligned}
 $$
 
-To add age structure to our model, we need to add additional equations for the infection states $S$, $I$ and $R$ for each age group $i$. If we want to assume that there is heterogeneity in contacts between age groups then we must adapt the transmission term $\beta SI$ to include the contact matrix $C$ as follows :
+To add age structure to our model, we need to add additional equations for the infection states $S$, $I$ and $R$ for each age group $i$. If we want to assume that there is heterogeneity in contacts between age groups then we must adapt the transmission term $\beta SI$ to include the contact matrix $C$ as follows:
 
 $$ \beta S_i \sum_j C_{i,j} I_j/N_j. $$ 
 

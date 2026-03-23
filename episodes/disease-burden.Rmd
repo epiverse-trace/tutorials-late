@@ -160,7 +160,7 @@ new_cases <- new_infections(output, by_group = FALSE)
 head(new_cases)
 ```
 
-To convert the new infections to hospitalisations we need to parameter distributions to describe the following processes :
+To convert the new infections to hospitalisations we need to parameter distributions to describe the following processes:
 
 + the time from infection to admission to hospital,
 
@@ -185,7 +185,7 @@ infection_to_admission <- epiparameter(
 # with right-skewed distribution reflecting variability in disease progression
 ```
 
-To visualise this distribution we can create a density plot :
+To visualise this distribution we can create a density plot:
 
 ```{r}
 x_range <- seq(0, 60, by = 0.1)

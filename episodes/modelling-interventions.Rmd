@@ -27,7 +27,7 @@ library(epidemics)
 
 Learners should also familiarise themselves with following concept dependencies before working through this tutorial: 
 
-**Outbreak response** : [Intervention types](https://www.cdc.gov/nonpharmaceutical-interventions/).
+**Outbreak response**: [Intervention types](https://www.cdc.gov/nonpharmaceutical-interventions/).
 
 **R packages installed**: `{epidemics}`, `{socialmixr}`, `{scales}`, `{tidyverse}`.
 
