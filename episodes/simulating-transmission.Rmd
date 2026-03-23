@@ -29,7 +29,7 @@ webshot::install_phantomjs(force = TRUE)
 
 ::::::::::::::::::::::::::::::::::::: prereq
 
-+ Complete tutorial on [Contact matrices](../episodes/contact-matrices.md).
++ Complete tutorial on [contact matrices](../episodes/contact-matrices.md).
 
 Learners should familiarise themselves with following concept dependencies before working through this tutorial: 
 
@@ -43,7 +43,7 @@ Learners should familiarise themselves with following concept dependencies befor
 
 :::::::::: spoiler
 
-Install packages if their are not already installed
+Install these packages if their are not already installed
 
 ```r
 if (!base::require("pak")) install.packages("pak")
@@ -605,7 +605,7 @@ In this tutorial, we have learnt how to simulate disease spread using a mathemat
 
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
-- Disease trajectories can be generated using the R package `epidemics`
+- Disease trajectories can be generated using the R package `{epidemics}`
 - Uncertainty should be included in model trajectories using a range of model parameter values
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
