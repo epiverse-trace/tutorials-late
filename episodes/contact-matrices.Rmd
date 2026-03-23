@@ -136,12 +136,12 @@ The example above uses the POLYMOD survey. A number of surveys are available in 
 
 ```{r, message = FALSE, warning = FALSE}
 # Download and load the contact survey data for Zambia from Zenodo
-zambia_survey_files <- contactsurveys::download_survey(
+survey_files_zambia <- contactsurveys::download_survey(
   survey = "https://doi.org/10.5281/zenodo.3874675",
   verbose = FALSE
 )
 
-zambia_sa_survey <- socialmixr::load_survey(files = zambia_survey_files)
+survey_load_zambia <- socialmixr::load_survey(files = survey_files_zambia)
 ```
 
 :::::::::::::::::: spoiler
@@ -177,11 +177,11 @@ The R package {socialmixr} contains functions which can estimate contact matrice
 
 ::::::::::::::::::::: hint
 
-The survey object `zambia_sa_survey` contains data from two countries. If you need to estimate the social contact matrix from data of the specific country of Zambia, identify what argument in `socialmixr::contact_matrix()` you need for this.
+The survey object `survey_load_zambia` contains data from two countries. If you need to estimate the social contact matrix from data of the specific country of Zambia, identify what argument in `socialmixr::contact_matrix()` you need for this.
 
 ```{r}
 # Inspect the countries within the survey object
-levels(zambia_sa_survey$participants$country)
+levels(survey_load_zambia$participants$country)
 ```
 
 Similar to the code above, to access vector values within a dataframe, you can use the dollar-sign operator: `$`
@@ -195,7 +195,7 @@ Similar to the code above, to access vector values within a dataframe, you can u
 ```{r zambia_solution}
 # Generate the contact matrix for Zambia only
 contacts_byage_zambia <- socialmixr::contact_matrix(
-  survey = zambia_sa_survey,
+  survey = survey_load_zambia,
   countries = "Zambia", # key argument
   age_limits = c(0, 20),
   symmetric = TRUE,
