@@ -59,15 +59,15 @@ $$
 \end{bmatrix}
 $$
 
-In this example, we would use this to represent that children meet, on average, 2 other children and 2 adult per day (first row), and adults meet, on average, 1 child and 3 other adults per day (second row). We can use this kind of information to account for the role heterogeneity in contact plays in infectious disease transmission.
+In this example, we would use this to represent that children meet, on average, 2 other children and 2 adult per day (first row), and adults meet, on average, 1 child and 3 other adults per day (second row). We can use this kind of information to account for the role that heterogeneity in contact plays in infectious disease transmission.
 
 ::::::::::::::::::::::::::::::::::::: callout
 
 ### A Note on Notation
-For a contact matrix with rows $i$ and columns $j$:
+In a contact matrix, the entry $C[i,j]$, at row $i$ and column $j$:
 
-- $C[i,j]$ represents the average number of contacts that individuals in group $i$ have with individuals in group $j$
-- This average is calculated as the total number of contacts between groups $i$ and $j$, divided by the number of individuals in group $i$
+-  Represents the average number of contacts an individual in group $i$ has with individuals in group $j$
+- This  is calculated by dividing the total number of contacts between groups $i$ and $j$ by the size of group $i$
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ## Using `socialmixr`
