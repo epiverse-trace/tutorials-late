@@ -33,9 +33,9 @@ webshot::install_phantomjs(force = TRUE)
 
 Learners should familiarise themselves with following concept dependencies before working through this tutorial: 
 
-**Mathematical Modelling** : [Introduction to infectious disease models](https://doi.org/10.1038/s41592-020-0856-2), [state variables](../learners/reference.md#state), [model parameters](../learners/reference.md#parsode), [initial conditions](../learners/reference.md#initial), [differential equations](../learners/reference.md#ordinary).
+**Mathematical Modelling**: [Introduction to infectious disease models](https://doi.org/10.1038/s41592-020-0856-2), [state variables](../learners/reference.md#state), [model parameters](../learners/reference.md#parsode), [initial conditions](../learners/reference.md#initial), [differential equations](../learners/reference.md#ordinary).
 
-**Epidemic theory** : [Transmission](https://doi.org/10.1155/2011/267049), [Reproduction number](https://doi.org/10.3201/eid2501.171901).
+**Epidemic theory**: [Transmission](https://doi.org/10.1155/2011/267049), [Reproduction number](https://doi.org/10.3201/eid2501.171901).
 
 **R packages installed**: `{epidemics}`, `{socialmixr}`, `{scales}`, `{tidyverse}`.
 
@@ -159,7 +159,7 @@ Confusion sometimes arises when referring to the terms 'exposed', 'infected' and
 
 We will use the following definitions for our state variables:
 
-+ $E$ = Exposed : infected **but not yet** infectious,
++ $E$ = Exposed: infected **but not yet** infectious,
 + $I$ = Infectious: infected **and** infectious.
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -345,7 +345,7 @@ To run our model we need to specify the model parameters:
 - infectiousness rate $\alpha$ (preinfectious period=$1/\alpha$),
 - recovery rate $\gamma$ (infectious period=$1/\gamma$).
 
-In `epidemics`, we specify the model inputs as :
+In `epidemics`, we specify the model inputs as:
 
 - `transmission_rate` $\beta = R_0 \gamma$,
 - `infectiousness_rate` = $\alpha$,

@@ -47,7 +47,7 @@ The focus of this tutorial is understanding existing models to decide if they ar
 
 ### Choosing a model 
 
-When deciding which mathematical model to use, there are a number of questions we must consider :
+When deciding which mathematical model to use, there are a number of questions we must consider:
 
 :::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -274,7 +274,7 @@ An advantage of using `finalsize` is that fewer parameters are required. You onl
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 
-## Challenge : Ebola outbreak analysis 
+## Challenge: Ebola outbreak analysis 
 
 
 
@@ -287,11 +287,11 @@ You have been tasked to generate initial trajectories of an Ebola outbreak in Gu
 1. Run the model once and plot the number of infectious individuals  through time
 2. Run model 100 times and plot the mean, upper and lower 95% quantiles of the number of infectious individuals through time
 
-+ Population size : 14 million
-+ Initial number of exposed individuals : 10
-+ Initial number of infectious individuals : 5
-+ Time of simulation : 120 days
-+ Parameter values : 
++ Population size: 14 million
++ Initial number of exposed individuals: 10
++ Initial number of infectious individuals: 5
++ Time of simulation: 120 days
++ Parameter values: 
   + $R_0$ (`r0`) = 1.1,
   + $p^I$ (`infectious_period`) = 12,
   + $p^E$ (`preinfectious_period`) = 5,
@@ -332,7 +332,7 @@ guinea_population <- population(
 
 ::::::::::::::::: hint
 
-### HINT : Multiple model simulations
+### HINT: Multiple model simulations
 
 Adapt the code from the [accounting for uncertainty](../episodes/simulating-transmission.md#accounting-for-uncertainty) section
 

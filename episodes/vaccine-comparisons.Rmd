@@ -25,7 +25,7 @@ exercises: 20
 
 Learners should familiarise themselves with following concept dependencies before working through this tutorial: 
 
-**Outbreak response** : [Intervention types](https://www.cdc.gov/nonpharmaceutical-interventions/).
+**Outbreak response**: [Intervention types](https://www.cdc.gov/nonpharmaceutical-interventions/).
 :::::::::::::::::::::::::::::::::
 
 
@@ -309,11 +309,11 @@ output %>%
 
 To understand the **indirect** effect of vaccinations, we want to know the effect that vaccination has on transmission, and hence the rate at new infections occur. We will use the function `new_infections()` in `{epidemics}` to calculate the number of new infections over time for the different vaccination programs. 
 
-The inputs required are :
+The inputs required are:
 
-+ `data` : the model output,
-+ `exclude_compartments` : this is an optional input, but in our case needed. We don't want the number of people vaccinated to be counted as new infections, so we need to specify the name of the model compartment where individuals transition out from `susceptible` (in this example `vaccinated`),
-+ `by_group` : should the results be calculated for each demographic group separately. 
++ `data`: the model output,
++ `exclude_compartments`: this is an optional input, but in our case needed. We don't want the number of people vaccinated to be counted as new infections, so we need to specify the name of the model compartment where individuals transition out from `susceptible` (in this example `vaccinated`),
++ `by_group`: should the results be calculated for each demographic group separately. 
 
 
 ```{r}
@@ -919,7 +919,7 @@ The NPI we will consider is temporarily closing schools, an intervention that ha
 
 We define **early implementation** as the first day of the simulation  (i.e. when there are less than 100 infections in total), and **late implementation** as 50 days after the start of the simulation (i.e. when there are approximately 50,000 infections in total). We assume the control measures are in place for 100 days after they start. 
 
-The combinations we will consider are :
+The combinations we will consider are:
 
 + early implementation of closing schools,
 + early implementation of a vaccine,
