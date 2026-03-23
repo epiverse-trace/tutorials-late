@@ -361,25 +361,25 @@ output <- epidemics::model_vacamole(
 1.  Run the model
 
 ```{r, message = FALSE, warning = FALSE}
-survey_files_2 <- contactsurveys::download_survey(
+survey_files_uk <- contactsurveys::download_survey(
   survey = "https://doi.org/10.5281/zenodo.3874557",
   verbose = FALSE
 )
-survey_load_2 <- socialmixr::load_survey(files = survey_files_2)
+survey_load_uk <- socialmixr::load_survey(files = survey_files_uk)
 
-contacts_byage_2 <- socialmixr::contact_matrix(
-  survey = survey_load_2,
+contacts_byage_uk <- socialmixr::contact_matrix(
+  survey = survey_load_uk,
   countries = "United Kingdom",
   age_limits = c(0, 20, 40),
   symmetric = TRUE,
   return_demography = TRUE
 )
 # prepare contact matrix
-contacts_byage_matrix_2 <- t(contacts_byage_2$matrix)
+contacts_byage_matrix_uk <- t(contacts_byage_uk$matrix)
 
 # extract demography vector
-demography_vector <- contacts_byage_2$demography$population
-names(demography_vector) <- rownames(contacts_byage_matrix_2)
+demography_vector <- contacts_byage_uk$demography$population
+names(demography_vector) <- rownames(contacts_byage_matrix_uk)
 
 # prepare initial conditions
 initial_i <- 1e-6
@@ -397,12 +397,12 @@ initial_conditions_vacamole <- rbind(
   initial_conditions_vacamole,
   initial_conditions_vacamole
 )
-rownames(initial_conditions_vacamole) <- rownames(contacts_byage_matrix_2)
+rownames(initial_conditions_vacamole) <- rownames(contacts_byage_matrix_uk)
 
 # prepare population object
 uk_population_vacamole <- epidemics::population(
   name = "UK",
-  contact_matrix = contacts_byage_matrix_2,
+  contact_matrix = contacts_byage_matrix_uk,
   demography_vector = demography_vector,
   initial_conditions = initial_conditions_vacamole
 )
