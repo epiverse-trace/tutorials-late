@@ -4,7 +4,7 @@ title: Setup
 
 ## Motivation
 
-**Outbreaks** of infectious diseases can appear as a result of different pathogens, and in different contexts, but they typically lead to similar public health questions, from understanding patterns of transmission and severity to examining the effect of control measures ([Cori et al. 2017](https://royalsocietypublishing.org/doi/10.1098/rstb.2016.0371#d1e605)). We can relate each of these public health questions to a series of outbreak data analysis tasks. The more efficiently and reliably we can perform these tasks, the faster and more accurately we can answer the underlying questions.
+**Outbreaks** of infectious diseases can appear as a result of different pathogens, and in different contexts, but they typically lead to similar public health questions, from understanding patterns of transmission and severity, to examining the effect of control measures ([Cori et al. 2017](https://royalsocietypublishing.org/doi/10.1098/rstb.2016.0371#d1e605)). We can relate each of these public health questions to a series of outbreak data analysis tasks. The more efficiently and reliably we can perform these tasks, the faster and more accurately we can answer the underlying questions.
 
 Epiverse-TRACE aims to provide a software ecosystem for [**outbreak analytics**](reference.md#outbreakanalytics) with integrated, generalisable and scalable community-driven software. We support the development of new R packages, help link together existing tools to make them more user-friendly, and contribute to a community of practice, spanning field epidemiologists, data scientists, lab researchers, health agency analysts, software engineers and more.
 
@@ -40,11 +40,11 @@ Our strategy is to gradually incorporate specialised **R packages** into a tradi
 
 :::::::::::::::::::::::::::: prereq
 
-This content assumes intermediate R knowledge. This tutorials are for you if:
+This content assumes intermediate R knowledge. These tutorials are for you if:
 
 - You can read data into R, transform and reshape data, and make a wide variety of graphs.
 - You are familiar with functions from `{dplyr}`, `{tidyr}`, and `{ggplot2}`.
-- You can use the magrittr pipe `%>%` and/or native pipe `|>`.
+- You can use the `{magrittr}` pipe `%>%` and/or native pipe `|>`.
 
 
 We expect learners to have some exposure to basic Statistical, Mathematical and Epidemic theory concepts, but NOT intermediate or expert familiarity with modeling.
