@@ -126,7 +126,7 @@ However, when contact matrices are estimated from surveys or other sources, the 
 - Recall bias: Different age groups may have different abilities to remember and report contacts accurately
 - Reporting bias: Some groups may systematically over- or under-report their contacts
 - Sampling uncertainty: Limited sample sizes can lead to statistical variations
-[(Prem et al 2021)](https://doi.org/10.1371/journal.pcbi.1009098)
+[(Prem et al. 2021)](https://doi.org/10.1371/journal.pcbi.1009098)
 
 If `symmetric` is set to TRUE, the `contact_matrix()` function will internally use an average of reported contacts to ensure the resulting total number of contacts are symmetric.
 
@@ -227,7 +227,7 @@ Contact matrices can be used in a wide range of epidemiological analyses, they c
 + to calculate the basic reproduction number while accounting for different rates of contacts between age groups [(Funk et al. 2019)](https://doi.org/10.1186/s12916-019-1413-7),
 + to calculate final size of an epidemic, as in the R package `{finalsize}`,
 + to assess the impact of interventions finding the relative change between pre and post intervention contact matrices to calculate the relative difference in $R_0$ [(Jarvis et al. 2020)](https://doi.org/10.1186/s12916-020-01597-8),
-+ and in mathematical models of transmission within a population, to account for group specific contact patterns.
++ and in mathematical models of transmission within a population, to account for group-specific contact patterns.
 
 
 However, all of these applications require us to perform some additional calculations using the contact matrix. Specifically, there are two main calculations we often need to do:
@@ -304,7 +304,7 @@ When simulating an epidemic, we often want to ensure that the average number of 
 
 Rather than just using the raw number of contacts, we can instead normalise the contact matrix to make it easier to work in terms of $R_0$. In particular, we normalise the matrix by scaling it so that if we were to calculate the average number of secondary cases based on this normalised matrix, the result would be 1 (in mathematical terms, we are scaling the matrix so the largest eigenvalue is 1). This transformation scales the entries but preserves their relative values.
 
-In the case of the above model, we want to define $\beta  C_{i,j}$ so that the model has a specified valued of $R_0$. If the entry of the contact matrix $C[i,j]$ represents the contacts of population $i$ with $j$, it is equivalent to `contacts_byage$matrix[i,j]`, and the maximum eigenvalue of this matrix represents the typical magnitude of contacts, not typical magnitude of transmission. We must therefore normalise the matrix $C$ so the maximum eigenvalue is one; we call this matrix $C_{normalised}$. Because the rate of recovery is $\gamma$, individuals will be infectious on average for $1/\gamma$ days. So $\beta$ as a model input is calculated from $R_0$, the scaling factor and the value of $\gamma$  (i.e. mathematically we use the fact that the dominant eigenvalue of the matrix $R_0 \times C_{normalised}$ is equal to $\beta / \gamma$).
+In the case of the above model, we want to define $\beta  C_{i,j}$ so that the model has a specified valued of $R_0$. If the entry of the contact matrix $C[i,j]$ represents the contacts of population $i$ with $j$, it is equivalent to `contacts_byage$matrix[i,j]`, and the maximum eigenvalue of this matrix represents the typical magnitude of contacts, not the typical magnitude of transmission. We must therefore normalise the matrix $C$ so the maximum eigenvalue is one; we call this matrix $C_{normalised}$. Because the rate of recovery is $\gamma$, individuals will be infectious on average for $1/\gamma$ days. So $\beta$ as a model input is calculated from $R_0$, the scaling factor and the value of $\gamma$  (i.e. mathematically we use the fact that the dominant eigenvalue of the matrix $R_0 \times C_{normalised}$ is equal to $\beta / \gamma$).
 
 ```{r}
 contacts_byage_matrix <- t(contacts_byage$matrix)
@@ -365,7 +365,7 @@ We can use contact matrices from `socialmixr` with mathematical models in the R 
 
 ### Contact groups
 
-In the example above the dimension of the contact matrix will be the same as the number of age groups i.e. if there are 3 age groups then the contact matrix will have 3 rows and 3 columns. Contact matrices can be used for other groups as long as the dimension of the matrix matches the number of groups.
+In the example above the dimension of the contact matrix will be the same as the number of age groups, i.e. if there are 3 age groups then the contact matrix will have 3 rows and 3 columns. Contact matrices can be used for other groups as long as the dimension of the matrix matches the number of groups.
 
 For example, we might have a meta population model with two geographic areas. Then our contact matrix would be a 2 x 2 matrix with entries representing the contact between and within the geographic areas.
 
@@ -373,7 +373,7 @@ For example, we might have a meta population model with two geographic areas. Th
 
 ## Summary 
 
-In this tutorial, we have learnt the definition of the contact matrix, how they are estimated and how to access social contact data from `socialmixr`. In the next tutorial, we will learn how to use the R package `{epidemics}` to generate disease trajectories from mathematical models with contact matrices from `socialmixr`.
+In this tutorial, we have learnt the definition of the contact matrix, how they are estimated and how to access social contact data using `{contactsurveys}` and `{socialmixr}`. In the next tutorial, we will learn how to use the R package `{epidemics}` to generate disease trajectories from mathematical models, with contact matrices using `socialmixr`.
 
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
