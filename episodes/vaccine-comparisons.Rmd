@@ -23,7 +23,7 @@ exercises: 20
 
 + Complete tutorials [Simulating transmission](../episodes/simulating-transmission.md), [Modelling interventions](../episodes/modelling-interventions.md) and [Comparing public health outcomes of interventions](../episodes/compare-interventions.md). 
 
-Learners should familiarise themselves with following concept dependencies before working through this tutorial: 
+Learners should familiarise themselves with the following concept dependencies before working through this tutorial: 
 
 **Outbreak response**: [Intervention types](https://www.cdc.gov/nonpharmaceutical-interventions/).
 :::::::::::::::::::::::::::::::::
