@@ -1,6 +1,6 @@
 {
   "R": {
-    "Version": "4.5.2",
+    "Version": "4.5.3",
     "Repositories": [
       {
         "Name": "CRAN",
@@ -24,7 +24,8 @@
       "NeedsCompilation": "no",
       "Author": "Dirk Eddelbuettel [aut, cre] (ORCID: <https://orcid.org/0000-0001-6419-907X>), John W. Emerson [aut], Michael J. Kane [aut] (ORCID: <https://orcid.org/0000-0003-1899-6662>)",
       "Maintainer": "Dirk Eddelbuettel <edd@debian.org>",
-      "Repository": "CRAN"
+      "Repository": "RSPM",
+      "Encoding": "UTF-8"
     },
     "DBI": {
       "Package": "DBI",
@@ -941,7 +942,7 @@
       "NeedsCompilation": "yes",
       "Author": "Rich FitzJohn [aut, cre], Imperial College of Science, Technology and Medicine [cph]",
       "Maintainer": "Rich FitzJohn <rich.fitzjohn@gmail.com>",
-      "Repository": "CRAN"
+      "Repository": "RSPM"
     },
     "cli": {
       "Package": "cli",
@@ -3272,7 +3273,7 @@
       "NeedsCompilation": "no",
       "Author": "Rich FitzJohn [aut, cre], Thibaut Jombart [ctb], Imperial College of Science, Technology and Medicine [cph]",
       "Maintainer": "Rich FitzJohn <rich.fitzjohn@gmail.com>",
-      "Repository": "CRAN"
+      "Repository": "RSPM"
     },
     "openssl": {
       "Package": "openssl",
@@ -3954,7 +3955,7 @@
       "NeedsCompilation": "yes",
       "Author": "Rich FitzJohn [aut, cre], Imperial College of Science, Technology and Medicine [cph]",
       "Maintainer": "Rich FitzJohn <rich.fitzjohn@gmail.com>",
-      "Repository": "CRAN"
+      "Repository": "RSPM"
     },
     "rlang": {
       "Package": "rlang",
@@ -5280,9 +5281,9 @@
     },
     "zen4R": {
       "Package": "zen4R",
-      "Version": "0.10.4",
+      "Version": "0.10.5",
       "Source": "Repository",
-      "Date": "2025-12-18",
+      "Date": "2026-03-29",
       "Title": "Interface to 'Zenodo' REST API",
       "Authors@R": "c( person(\"Emmanuel\", \"Blondel\", role = c(\"aut\", \"cre\"), email = \"emmanuel.blondel1@gmail.com\", comment = c(ORCID = \"0000-0002-5870-5762\")), person(\"Julien\", \"Barde\", role = c(\"ctb\"), email = \"julien.barde@ird.fr\", comment = c(ORCID = \"0000-0002-3519-6141\")), person(\"Stephen\", \"Eglen\", role = c(\"ctb\"), comment = c(ORCID = \"0000-0001-8607-8025\")), person(\"Hans\", \"Van Calster\", role = c(\"ctb\"), comment = c(ORCID = \"0000-0001-8595-8426\")), person(\"Floris\", \"Vanderhaeghe\", role = c(\"ctb\"), comment = c(ORCID = \"0000-0002-6378-6229\")), person(\"Jemma\", \"Stachelek\", role = c(\"ctb\"), comment = c(ORCID = \"0000-0002-5924-2464\")), person(\"Collin\", \"Schwantes\", role = c(\"ctb\"), comment = c(ORCID = \"0000-0002-9882-941X\")), person(\"Nicholas\", \"Tierney\", role = c(\"ctb\"), comment = c(ORCID = \"0000-0003-1460-8722\")))",
       "Maintainer": "Emmanuel Blondel <emmanuel.blondel1@gmail.com>",
