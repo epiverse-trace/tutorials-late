@@ -385,6 +385,8 @@ The diagram below shows the SEIRV model implemented using `model_default()` wher
 
 ```mermaid
 flowchart LR
+    accTitle: SEIRV compartmental model with vaccination
+    accDescr: Five compartments: S (Susceptible), E (Exposed), I (Infectious), R (Recovered), V (Vaccinated). Transitions: S to E by infection at rate beta; S to V by vaccination at rate nu; E to I by onset of infectiousness at rate alpha; I to R by recovery at rate gamma.
     S -->|"infection (&beta;)"| E
     S -->|"vaccination (&nu;)"| V
     E -->|"onset of infectiousness (&alpha;)"| I

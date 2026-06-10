@@ -163,6 +163,8 @@ A deterministic SEIR model with age specific direct transmission.
 
 ```mermaid
 flowchart LR
+    accTitle: SEIR compartmental model
+    accDescr: Four compartments: S (Susceptible), E (Exposed), I (Infectious), R (Recovered). Transitions: S to E by infection at transmissibility beta; E to I by onset of infectiousness at rate alpha; I to R by recovery at rate gamma.
     S -->|"infection<br>(transmissibility &beta;)"| E
     E -->|"onset of infectiousness<br>(infectiousness rate &alpha;)"| I
     I -->|"recovery<br>(recovery rate &gamma;)"| R
@@ -187,6 +189,8 @@ The key parameters affecting the transition between states are:
 
 ```mermaid
 flowchart LR
+    accTitle: SEIHFR compartmental model for Ebola virus disease
+    accDescr: Six compartments: S (Susceptible), E (Exposed), I (Infectious), H (Hospitalised), F (Funeral), R (Removed). Transitions: S to E by infection at rate beta; E to I by onset of infectiousness at rate gamma_E; I to F by death leading to funeral at rate gamma_I; F to R by safe burial in one timestep; I to H by hospitalisation at probability p_hosp; H to R by recovery or safe burial at rate gamma_I.
     S -->|"infection (&beta;)"| E
     E -->|"onset of infectiousness (&gamma; E)"| I
     I -->|"death funeral (&gamma; I)"| F
