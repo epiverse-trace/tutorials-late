@@ -664,7 +664,7 @@ Africa contact survey:</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler1" aria-expanded="false" aria-controls="collapseSpoiler1">
   <h3 class="accordion-header" id="headingSpoiler1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
 </button>
-<div id="collapseSpoiler1" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler1" aria-labelledby="headingSpoiler1">
+<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
 <div class="accordion-body">
 <p><strong>Find a survey DOI with contactsurveys</strong></p>
 <p>Browse available surveys in the <a href="https://zenodo.org/communities/social_contact_data/" class="external-link">Zenodo Social
@@ -723,7 +723,7 @@ output.</p></li>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint1" aria-expanded="false" aria-controls="collapseHint1">
   <h4 class="accordion-header" id="headingHint1"> Give me a hint </h4>
 </button>
-<div id="collapseHint1" class="accordion-collapse collapse" data-bs-parent="#accordionHint1" aria-labelledby="headingHint1">
+<div id="collapseHint1" class="accordion-collapse collapse" aria-labelledby="headingHint1" data-bs-parent="#accordionHint1">
 <div class="accordion-body">
 <p>The survey object <code>survey_load_zambia</code> contains data from
 two countries. If you need to estimate the social contact matrix from
@@ -822,11 +822,11 @@ susceptible <span class="math inline">\(S\)</span>, infected <span class="math i
 processes which describe the flow of individuals between the disease
 states <span class="math inline">\(S\)</span>, <span class="math inline">\(I\)</span> and <span class="math inline">\(R\)</span> and the key parameters for each
 process.</p>
-<pre class="mermaid"><code># nolint start
-flowchart LR
+<pre class="mermaid"><code>flowchart LR
+    accTitle: SIR compartmental model
+    accDescr: Three compartments: S (Susceptible), I (Infectious), R (Recovered). Transitions: S to I by infection at transmission rate beta; I to R by recovery at rate gamma.
     S --&gt;|"infection&lt;br&gt;(transmission rate &amp;beta;)"| I
-    I --&gt;|"recovery&lt;br&gt;(recovery rate &amp;gamma;)"| R
-# nolint end</code></pre>
+    I --&gt;|"recovery&lt;br&gt;(recovery rate &amp;gamma;)"| R</code></pre>
 <p>The <a href="reference.html#ordinary">differential equations</a>
 below describe how individuals move from one state to another <a href="https://doi.org/10.1038/s41592-020-0822-z" class="external-link">(Bjørnstad et
 al. 2020)</a>.</p>
@@ -1099,7 +1099,7 @@ number</a>.</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler1" aria-expanded="false" aria-controls="collapseSpoiler1">
   <h3 class="accordion-header" id="headingSpoiler1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
 </button>
-<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
+<div id="collapseSpoiler1" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler1" aria-labelledby="headingSpoiler1">
 <div class="accordion-body">
 <p>Install these packages if their are not already installed</p>
 <div class="codewrapper sourceCode" id="cb1">
@@ -1162,12 +1162,12 @@ compartment changes over time.</p>
 individuals between the disease states <span class="math inline">\(S\)</span>, <span class="math inline">\(E\)</span>, <span class="math inline">\(I\)</span>
 and <span class="math inline">\(R\)</span> and the key parameters for
 each process.</p>
-<pre class="mermaid"><code># nolint start
-flowchart LR
+<pre class="mermaid"><code>flowchart LR
+    accTitle: SEIR compartmental model
+    accDescr: Four compartments: S (Susceptible), E (Exposed), I (Infectious), R (Recovered). Transitions: S to E by infection at transmission rate beta; E to I by onset of infectiousness at rate alpha; I to R by recovery at rate gamma.
     S --&gt;|"infection&lt;br&gt;(transmission rate &amp;beta;)"| E
     E --&gt;|"onset of infectiousness&lt;br&gt;(infectiousness rate &amp;alpha;)"| I
-    I --&gt;|"recovery&lt;br&gt;(recovery rate &amp;gamma;)"| R
-# nolint end</code></pre>
+    I --&gt;|"recovery&lt;br&gt;(recovery rate &amp;gamma;)"| R</code></pre>
 <div id="model-parameters-rates" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
@@ -1286,7 +1286,7 @@ matrix for the United Kingdom for the year age bins:</p>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint1" aria-expanded="false" aria-controls="collapseHint1">
   <h4 class="accordion-header" id="headingHint1"> Give me a hint </h4>
 </button>
-<div id="collapseHint1" class="accordion-collapse collapse" aria-labelledby="headingHint1" data-bs-parent="#accordionHint1">
+<div id="collapseHint1" class="accordion-collapse collapse" data-bs-parent="#accordionHint1" aria-labelledby="headingHint1">
 <div class="accordion-body">
 <ul>
 <li>Complete tutorial on <a href="contact-matrices.html">Contact
@@ -1301,7 +1301,7 @@ matrices</a>.</li>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1728,7 +1728,7 @@ incidence.</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler2" aria-expanded="false" aria-controls="collapseSpoiler2">
   <h3 class="accordion-header" id="headingSpoiler2">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
 </button>
-<div id="collapseSpoiler2" class="accordion-collapse collapse" aria-labelledby="headingSpoiler2" data-bs-parent="#accordionSpoiler2">
+<div id="collapseSpoiler2" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler2" aria-labelledby="headingSpoiler2">
 <div class="accordion-body">
 <p>Notice that the number of new infected individuals at each time (as
 in the figure below) is lower than the cumulative number of infectious
@@ -1750,7 +1750,7 @@ individuals at each time (as in the figure above).</p>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">theme_bw</span><span class="op">(</span><span class="op">)</span></span></code></pre>
 </div>
-<figure><img src="fig/simulating-transmission-rendered-unnamed-chunk-8-1.png" alt="" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure>
+<figure><img src="fig/simulating-transmission-rendered-unnamed-chunk-7-1.png" alt="" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure>
 </div>
 </div>
 </div>
@@ -1878,7 +1878,7 @@ these changes expected? Explain briefly.</p></li>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint2" aria-expanded="false" aria-controls="collapseHint2">
   <h4 class="accordion-header" id="headingHint2"> Give me a hint </h4>
 </button>
-<div id="collapseHint2" class="accordion-collapse collapse" aria-labelledby="headingHint2" data-bs-parent="#accordionHint2">
+<div id="collapseHint2" class="accordion-collapse collapse" data-bs-parent="#accordionHint2" aria-labelledby="headingHint2">
 <div class="accordion-body">
 <p>To interpret the output based on location (time) and size of the peak
 infection, you can find a guide in this two-page paper introduction to
@@ -2185,12 +2185,12 @@ infections</strong>
 <code>model_default()</code><a class="anchor" aria-label="anchor" href="#model_default"></a>
 </h4>
 <p>A deterministic SEIR model with age specific direct transmission.</p>
-<pre class="mermaid"><code># nolint start
-flowchart LR
+<pre class="mermaid"><code>flowchart LR
+    accTitle: SEIR compartmental model
+    accDescr: Four compartments: S (Susceptible), E (Exposed), I (Infectious), R (Recovered). Transitions: S to E by infection at transmissibility beta; E to I by onset of infectiousness at rate alpha; I to R by recovery at rate gamma.
     S --&gt;|"infection&lt;br&gt;(transmissibility &amp;beta;)"| E
     E --&gt;|"onset of infectiousness&lt;br&gt;(infectiousness rate &amp;alpha;)"| I
-    I --&gt;|"recovery&lt;br&gt;(recovery rate &amp;gamma;)"| R
-# nolint end</code></pre>
+    I --&gt;|"recovery&lt;br&gt;(recovery rate &amp;gamma;)"| R</code></pre>
 <p>The model is capable of simulating an Ebola type outbreak, but as the
 model is deterministic, we are not able to explore stochastic variation
 in the early stages of the outbreak.</p>
@@ -2229,15 +2229,15 @@ distribution. Similarly for the infectious period <span class="math inline">\(\r
 the stochastic model formulation refer to the section on <a href="https://epiverse-trace.github.io/epidemics/articles/model_ebola.html#details-discrete-time-ebola-virus-disease-model" class="external-link">Discrete-time
 Ebola virus disease model</a> in the “Modelling responses to a
 stochastic Ebola virus epidemic” vignette.</p>
-<pre class="mermaid"><code># nolint start
-flowchart LR
+<pre class="mermaid"><code>flowchart LR
+    accTitle: SEIHFR compartmental model for Ebola virus disease
+    accDescr: Six compartments: S (Susceptible), E (Exposed), I (Infectious), H (Hospitalised), F (Funeral), R (Removed). Transitions: S to E by infection at rate beta; E to I by onset of infectiousness at rate gamma_E; I to F by death leading to funeral at rate gamma_I; F to R by safe burial in one timestep; I to H by hospitalisation at probability p_hosp; H to R by recovery or safe burial at rate gamma_I.
     S --&gt;|"infection (&amp;beta;)"| E
     E --&gt;|"onset of infectiousness (&amp;gamma; E)"| I
     I --&gt;|"death funeral (&amp;gamma; I)"| F
     F --&gt;|"safe burial (one timestep)"| R
     I --&gt;|"hospitalisation (p hosp)"| H
-    H --&gt;|"recovery or safe burial (&amp;gamma; I)"| R
-# nolint end</code></pre>
+    H --&gt;|"recovery or safe burial (&amp;gamma; I)"| R</code></pre>
 <p>The model has additional parameters describing the transmission risk
 in hospital and funeral settings:</p>
 <ul>
@@ -2427,7 +2427,7 @@ through time</li>
 <span>    base_size <span class="op">=</span> <span class="fl">15</span></span>
 <span>  <span class="op">)</span></span></code></pre>
 </div>
-<figure><img src="fig/model-choices-rendered-unnamed-chunk-4-1.png" alt="" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure><ol start="2" style="list-style-type: decimal">
+<figure><img src="fig/model-choices-rendered-unnamed-chunk-2-1.png" alt="" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure><ol start="2" style="list-style-type: decimal">
 <li>Run model 100 times and plot the mean, upper and lower 95% quantiles
 of the number of infectious individuals through time</li>
 </ol>
@@ -2473,7 +2473,7 @@ values.</p>
 <span>    base_size <span class="op">=</span> <span class="fl">15</span></span>
 <span>  <span class="op">)</span></span></code></pre>
 </div>
-<figure><img src="fig/model-choices-rendered-unnamed-chunk-5-1.png" alt="" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure>
+<figure><img src="fig/model-choices-rendered-unnamed-chunk-3-1.png" alt="" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure>
 </div>
 </div>
 </div>
@@ -2558,7 +2558,7 @@ types</a>.</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler1" aria-expanded="false" aria-controls="collapseSpoiler1">
   <h3 class="accordion-header" id="headingSpoiler1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
 </button>
-<div id="collapseSpoiler1" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler1" aria-labelledby="headingSpoiler1">
+<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
 <div class="accordion-body">
 <p>Install packages if their are not already installed</p>
 <div class="codewrapper sourceCode" id="cb1">
@@ -2994,13 +2994,13 @@ vaccinated individuals over time.</p>
 <code>model_default()</code> where susceptible individuals are
 vaccinated and then move to the <span class="math inline">\(V\)</span>
 class.</p>
-<pre class="mermaid"><code># nolint start
-flowchart LR
+<pre class="mermaid"><code>flowchart LR
+    accTitle: SEIRV compartmental model with vaccination
+    accDescr: Five compartments: S (Susceptible), E (Exposed), I (Infectious), R (Recovered), V (Vaccinated). Transitions: S to E by infection at rate beta; S to V by vaccination at rate nu; E to I by onset of infectiousness at rate alpha; I to R by recovery at rate gamma.
     S --&gt;|"infection (&amp;beta;)"| E
     S --&gt;|"vaccination (&amp;nu;)"| V
     E --&gt;|"onset of infectiousness (&amp;alpha;)"| I
-    I --&gt;|"recovery (&amp;gamma;)"| R
-# nolint end</code></pre>
+    I --&gt;|"recovery (&amp;gamma;)"| R</code></pre>
 <p>The equations describing this model are as follows:</p>
 <p><span class="math display">\[
 \begin{aligned}
@@ -3075,7 +3075,7 @@ reduces the peak number of infectious individuals the most?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb18">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -3133,7 +3133,7 @@ infections.</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler2" aria-expanded="false" aria-controls="collapseSpoiler2">
   <h3 class="accordion-header" id="headingSpoiler2">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
 </button>
-<div id="collapseSpoiler2" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler2" aria-labelledby="headingSpoiler2">
+<div id="collapseSpoiler2" class="accordion-collapse collapse" aria-labelledby="headingSpoiler2" data-bs-parent="#accordionSpoiler2">
 <div class="accordion-body">
 <p>Note that if we add <code>by_group = FALSE</code> in
 <code>epidemics::new_infections()</code>, we get a summary of the new
@@ -3175,7 +3175,7 @@ infections in the population.</p>
 <span>  <span class="fu">scale_y_continuous</span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va">comma</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">theme_bw</span><span class="op">(</span><span class="op">)</span></span></code></pre>
 </div>
-<figure><img src="fig/modelling-interventions-rendered-unnamed-chunk-7-1.png" alt="" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure><p>To get an age-stratified plot, keep the default
+<figure><img src="fig/modelling-interventions-rendered-unnamed-chunk-6-1.png" alt="" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure><p>To get an age-stratified plot, keep the default
 <code>by_group = TRUE</code> and then add
 <code>linetype = demography_group</code> when declaring variables in
 <code>ggplot(aes(...))</code>.</p>
@@ -3459,8 +3459,9 @@ hospitalized while vaccinated (<span class="math inline">\(H_V\)</span>)</li>
 </ul>
 <p>The diagram below describes the flow of individuals through the
 different compartments.</p>
-<pre class="mermaid"><code># nolint start
-flowchart LR
+<pre class="mermaid"><code>flowchart LR
+    accTitle: Vacamole compartmental model with two-dose vaccination
+    accDescr: Eleven compartments: S (Susceptible), E and E_V (Exposed unvaccinated and vaccinated), I and I_V (Infectious unvaccinated and vaccinated), H and H_V (Hospitalised unvaccinated and vaccinated), D (Dead), R (Recovered), V1 (first vaccine dose), V2 (second vaccine dose). Transitions: S to E by infection at rate beta; S to V1 by first-dose vaccination at rate nu1; V1 to E by infection at rate beta; V1 to V2 by second-dose vaccination at rate nu2; V2 to E_V by infection at rate beta; E and E_V to I and I_V by onset of infectiousness at rate alpha; I and I_V to H and H_V by hospitalisation at rates eta and eta_V; I, I_V, H, H_V to D by death at rates omega and omega_V; I, I_V, H, H_V to R by recovery at rate gamma.
     Ev["E&lt;sub&gt;V&lt;/sub&gt;"]:::vaccinated
     Iv["I&lt;sub&gt;V&lt;/sub&gt;"]:::vaccinated
     Hv["H&lt;sub&gt;V&lt;/sub&gt;"]:::vaccinated
@@ -3485,8 +3486,7 @@ flowchart LR
     H --&gt;|"death (&amp;omega;)"| D
     H --&gt;|"recovery (&amp;gamma;)"| R
 
-    classDef vaccinated fill:#808080,color:#fff
-# nolint end</code></pre>
+    classDef vaccinated fill:#808080,color:#fff</code></pre>
 <div id="running-a-counterfactual-scenario-using-the-vacamole-model" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
@@ -3702,7 +3702,7 @@ of time steps to run the model for:</p>
 <span>    y <span class="op">=</span> <span class="st">"Cumulative number of deaths"</span></span>
 <span>  <span class="op">)</span></span></code></pre>
 </div>
-<figure><img src="fig/compare-interventions-rendered-unnamed-chunk-7-1.png" alt="" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure>
+<figure><img src="fig/compare-interventions-rendered-unnamed-chunk-6-1.png" alt="" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure>
 </div>
 </div>
 </div>
@@ -4268,10 +4268,10 @@ more people that are vaccinated.</p>
 </button>
 </div>
 </nav><div id="nav-tabContent-1" class="tab-content">
-<div id="nav-tabpanel-1-1" class="tab-pane show active" aria-labelledby="nav-tab-1-1" role="tabpanel">
+<div id="nav-tabpanel-1-1" class="tab-pane show active" role="tabpanel" aria-labelledby="nav-tab-1-1">
 <figure><img src="fig/vaccine-comparisons-rendered-unnamed-chunk-4-1.png" alt="" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure>
 </div>
-<div id="nav-tabpanel-1-2" class="tab-pane" aria-labelledby="nav-tab-1-2" role="tabpanel">
+<div id="nav-tabpanel-1-2" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-1-2">
 <div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -4398,10 +4398,10 @@ demographic group separately.</li>
 </button>
 </div>
 </nav><div id="nav-tabContent-2" class="tab-content">
-<div id="nav-tabpanel-2-1" class="tab-pane show active" aria-labelledby="nav-tab-2-1" role="tabpanel">
+<div id="nav-tabpanel-2-1" class="tab-pane show active" role="tabpanel" aria-labelledby="nav-tab-2-1">
 <figure><img src="fig/vaccine-comparisons-rendered-unnamed-chunk-7-1.png" alt="" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure>
 </div>
-<div id="nav-tabpanel-2-2" class="tab-pane" aria-labelledby="nav-tab-2-2" role="tabpanel">
+<div id="nav-tabpanel-2-2" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-2-2">
 <div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -4582,10 +4582,10 @@ following scenarios:</p>
 </button>
 </div>
 </nav><div id="nav-tabContent-3" class="tab-content">
-<div id="nav-tabpanel-3-1" class="tab-pane show active" aria-labelledby="nav-tab-3-1" role="tabpanel">
+<div id="nav-tabpanel-3-1" class="tab-pane show active" role="tabpanel" aria-labelledby="nav-tab-3-1">
 <figure><img src="fig/vaccine-comparisons-rendered-unnamed-chunk-11-1.png" alt="" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure>
 </div>
-<div id="nav-tabpanel-3-2" class="tab-pane" aria-labelledby="nav-tab-3-2" role="tabpanel">
+<div id="nav-tabpanel-3-2" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-3-2">
 <div class="codewrapper sourceCode" id="cb10">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -4919,7 +4919,7 @@ Adapt the code below to lift the NPI after 20, 50 and 100 days</p>
   Output
   </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb17">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -5269,7 +5269,7 @@ shape = 10 and scale = 2 and plot the density of this distribution.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb7">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
