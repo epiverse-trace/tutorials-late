@@ -398,15 +398,14 @@ Pharmaceutical interventions (PIs) are measures such as vaccination and mass tre
 
 The diagram below shows the SEIRV model implemented using `model_default()` where susceptible individuals are vaccinated and then move to the $V$ class.
 
-
-``` mermaid
-# nolint start
+```mermaid
 flowchart LR
+    accTitle: SEIRV compartmental model with vaccination
+    accDescr: Five compartments: S (Susceptible), E (Exposed), I (Infectious), R (Recovered), V (Vaccinated). Transitions: S to E by infection at rate beta; S to V by vaccination at rate nu; E to I by onset of infectiousness at rate alpha; I to R by recovery at rate gamma.
     S -->|"infection (&beta;)"| E
     S -->|"vaccination (&nu;)"| V
     E -->|"onset of infectiousness (&alpha;)"| I
     I -->|"recovery (&gamma;)"| R
-# nolint end
 ```
 
 
@@ -553,7 +552,7 @@ infections_baseline_interv %>%
   theme_bw()
 ```
 
-<img src="fig/modelling-interventions-rendered-unnamed-chunk-7-1.png" alt="" style="display: block; margin: auto;" />
+<img src="fig/modelling-interventions-rendered-unnamed-chunk-6-1.png" alt="" style="display: block; margin: auto;" />
 
 To get an age-stratified plot, keep the default `by_group = TRUE` and then add `linetype = demography_group` when declaring variables in `ggplot(aes(...))`.
 

@@ -86,14 +86,13 @@ In this tutorial, we will use the default model in `{epidemics}`, called `model_
 The schematic below shows the processes which describe the flow of individuals between the disease states $S$, $E$, $I$ and $R$ and the key parameters for each process.
 
 
-
-``` mermaid
-# nolint start
+```mermaid
 flowchart LR
+    accTitle: SEIR compartmental model
+    accDescr: Four compartments: S (Susceptible), E (Exposed), I (Infectious), R (Recovered). Transitions: S to E by infection at transmission rate beta; E to I by onset of infectiousness at rate alpha; I to R by recovery at rate gamma.
     S -->|"infection<br>(transmission rate &beta;)"| E
     E -->|"onset of infectiousness<br>(infectiousness rate &alpha;)"| I
     I -->|"recovery<br>(recovery rate &gamma;)"| R
-# nolint end
 ```
 
 
@@ -540,7 +539,7 @@ newinfections_bygroup %>%
   theme_bw()
 ```
 
-<img src="fig/simulating-transmission-rendered-unnamed-chunk-8-1.png" alt="" style="display: block; margin: auto;" />
+<img src="fig/simulating-transmission-rendered-unnamed-chunk-7-1.png" alt="" style="display: block; margin: auto;" />
 
 :::::::::::::::::::::::
 

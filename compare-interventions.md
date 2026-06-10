@@ -181,10 +181,10 @@ The Vacamole model is a deterministic model based on a system of Ordinary Differ
 
 The diagram below describes the flow of individuals through the different compartments.
 
-
-``` mermaid
-# nolint start
+```mermaid
 flowchart LR
+    accTitle: Vacamole compartmental model with two-dose vaccination
+    accDescr: Eleven compartments: S (Susceptible), E and E_V (Exposed unvaccinated and vaccinated), I and I_V (Infectious unvaccinated and vaccinated), H and H_V (Hospitalised unvaccinated and vaccinated), D (Dead), R (Recovered), V1 (first vaccine dose), V2 (second vaccine dose). Transitions: S to E by infection at rate beta; S to V1 by first-dose vaccination at rate nu1; V1 to E by infection at rate beta; V1 to V2 by second-dose vaccination at rate nu2; V2 to E_V by infection at rate beta; E and E_V to I and I_V by onset of infectiousness at rate alpha; I and I_V to H and H_V by hospitalisation at rates eta and eta_V; I, I_V, H, H_V to D by death at rates omega and omega_V; I, I_V, H, H_V to R by recovery at rate gamma.
     Ev["E<sub>V</sub>"]:::vaccinated
     Iv["I<sub>V</sub>"]:::vaccinated
     Hv["H<sub>V</sub>"]:::vaccinated
@@ -210,7 +210,6 @@ flowchart LR
     H -->|"recovery (&gamma;)"| R
 
     classDef vaccinated fill:#808080,color:#fff
-# nolint end
 ```
 
 
@@ -394,7 +393,7 @@ output_vacamole %>%
   )
 ```
 
-<img src="fig/compare-interventions-rendered-unnamed-chunk-7-1.png" alt="" style="display: block; margin: auto;" />
+<img src="fig/compare-interventions-rendered-unnamed-chunk-6-1.png" alt="" style="display: block; margin: auto;" />
 
 
 
