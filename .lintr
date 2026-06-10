@@ -14,6 +14,7 @@ linters: linters_with_defaults(
     return_linter = NULL,
     cyclocomp_linter = NULL,
     object_usage_linter = NULL,
+    indentation_linter = NULL,
     undesirable_function_linter(
       modify_defaults(
         default_undesirable_functions,
