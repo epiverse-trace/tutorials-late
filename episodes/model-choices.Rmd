@@ -161,34 +161,11 @@ Consider the following questions:
 
 A deterministic SEIR model with age specific direct transmission. 
 
-```{r diagram, echo = FALSE, message = FALSE}
-DiagrammeR::grViz("digraph {
-
-  # graph statement
-  #################
-  graph [layout = dot,
-         rankdir = LR,
-         overlap = true,
-         fontsize = 10]
-
-  # nodes
-  #######
-  node [shape = square,
-       fixedsize = true
-       width = 1.3]
-
-       S
-       E
-       I
-       R
-
-  # edges
-  #######
-  S -> E [label = ' infection \n(transmissibility &beta;)']
-  E -> I [label = ' onset of infectiousness \n(infectiousness rate &alpha;)']
-  I -> R [label = ' recovery \n(recovery rate &gamma;)']
-
-}")
+```{mermaid}
+flowchart LR
+    S -->|"infection<br>(transmissibility &beta;)"| E
+    E -->|"onset of infectiousness<br>(infectiousness rate &alpha;)"| I
+    I -->|"recovery<br>(recovery rate &gamma;)"| R
 ```
 
 
@@ -208,45 +185,14 @@ The key parameters affecting the transition between states are:
 
 **Note:** the functional relationship between the preinfectious  period ($\rho^E$) and the transition rate between exposed and infectious ($\gamma^E$) is $\rho^E = k^E/\gamma^E$ where $k^E$ is the shape of the Erlang distribution. Similarly for the infectious period $\rho^I = k^I/\gamma^I$. For more detail on the stochastic model formulation refer to the section on [Discrete-time Ebola virus disease model](https://epiverse-trace.github.io/epidemics/articles/model_ebola.html#details-discrete-time-ebola-virus-disease-model) in the "Modelling responses to a stochastic Ebola virus epidemic" vignette. 
 
-```{r, echo = FALSE, message = FALSE}
-DiagrammeR::grViz("digraph {
-
-  # graph statement
-  #################
-  graph [layout = dot,
-  rankdir = LR,
-  overlap = true,
-  fontsize = 10]
-
-  # nodes
-  #######
-  node [shape = square,
-       fixedsize = true
-       width = 1.3]
-
-       S
-       E
-       I
-       H
-       F
-       R
-
-  # edges
-  #######
-  S -> E [label = ' infection (&beta;)']
-  E -> I [label = ' onset of \ninfectiousness (&gamma; E)']
-  I -> F [label = ' death (funeral) \n(&gamma; I)']
-  F -> R [label = ' safe burial (one timestep) ']
-  I -> H [label = ' hospitalisation (p hosp)']
-  H -> R [label = ' recovery or safe burial \n (&gamma; I)']
-
-  subgraph {
-    rank = same; I; F;
-  }
-  subgraph {
-    rank = same; H; R;
-  }
-}")
+```{mermaid}
+flowchart LR
+    S -->|"infection (&beta;)"| E
+    E -->|"onset of infectiousness (&gamma; E)"| I
+    I -->|"death funeral (&gamma; I)"| F
+    F -->|"safe burial (one timestep)"| R
+    I -->|"hospitalisation (p hosp)"| H
+    H -->|"recovery or safe burial (&gamma; I)"| R
 ```
 
 The model has additional parameters describing the transmission risk in hospital and funeral settings: 
