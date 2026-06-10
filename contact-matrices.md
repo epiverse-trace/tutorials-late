@@ -112,30 +112,49 @@ contacts_byage <- socialmixr::contact_matrix(
   symmetric = TRUE,
   return_demography = TRUE
 )
+```
+
+``` warning
+Warning: Automatic country population lookup in `contact_matrix()` was deprecated in
+socialmixr 0.6.0.
+When `countries` is given (or a `country` column is present) without
+`survey_pop`, contact_matrix() currently calls the soft-deprecated `wpp_age()`
+to look up population data. This automatic lookup will be removed in a future
+release: callers will then have to supply `survey_pop` whenever `symmetric`,
+`split`, `per_capita`, `weigh_age`, or `return_demography` is TRUE.
+ℹ Pass `survey_pop` explicitly to silence this warning, e.g. `survey_pop =
+  survey_country_population(survey, countries)` or a data frame from the
+  wpp2024 package.
+This warning is displayed once per session.
+Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+generated.
+```
+
+``` r
 contacts_byage
 ```
 
 ``` output
 $matrix
-         contact.age.group
-age.group   [0,20)  [20,40)      40+
-  [0,20)  7.883663 3.120220 3.063895
-  [20,40) 2.794154 4.854839 4.599893
-  40+     1.565665 2.624868 5.005571
+          contact.age.group
+age.group    [0,20)  [20,40) [40,Inf)
+  [0,20)   7.883663 3.120220 3.063895
+  [20,40)  2.794154 4.854839 4.599893
+  [40,Inf) 1.565665 2.624868 5.005571
 
 $demography
    age.group population proportion  year
       <char>      <num>      <num> <int>
 1:    [0,20)   14799290  0.2454816  2005
 2:   [20,40)   16526302  0.2741283  2005
-3:       40+   28961159  0.4803901  2005
+3:  [40,Inf)   28961159  0.4803901  2005
 
 $participants
    age.group participants proportion
       <char>        <int>      <num>
 1:    [0,20)          404  0.3996044
 2:   [20,40)          248  0.2453017
-3:       40+          359  0.3550940
+3:  [40,Inf)          359  0.3550940
 ```
 
 
@@ -260,22 +279,22 @@ contacts_byage_zambia
 
 ``` output
 $matrix
-         contact.age.group
-age.group   [0,20)      20+
-   [0,20) 3.766393 1.427100
-   20+    1.955162 2.642584
+          contact.age.group
+age.group    [0,20) [20,Inf)
+  [0,20)   3.766393 1.427100
+  [20,Inf) 1.955162 2.642584
 
 $demography
    age.group population proportion  year
       <char>      <num>      <num> <int>
 1:    [0,20)    8006201  0.5780636  2010
-2:       20+    5843835  0.4219364  2010
+2:  [20,Inf)    5843835  0.4219364  2010
 
 $participants
    age.group participants proportion
       <char>        <int>      <num>
 1:    [0,20)          244 0.08531469
-2:       20+         2616 0.91468531
+2:  [20,Inf)         2616 0.91468531
 ```
 
 ``` r
@@ -320,7 +339,14 @@ Whereas a contact matrix gives the average number of contacts that one groups ma
 
 Consider the SIR model where individuals are categorized as either susceptible $S$,  infected $I$ and recovered $R$. The schematic below shows the processes which describe the flow of individuals between the disease states $S$, $I$ and $R$ and the key parameters for each process.
 
-<img src="fig/contact-matrices-rendered-diagram-1.png" alt="" style="display: block; margin: auto;" />
+
+``` mermaid
+# nolint start
+flowchart LR
+    S -->|"infection<br>(transmission rate &beta;)"| I
+    I -->|"recovery<br>(recovery rate &gamma;)"| R
+# nolint end
+```
 
 The [differential equations](../learners/reference.md#ordinary) below describe how individuals move from one state to another [(Bjørnstad et al. 2020)](https://doi.org/10.1038/s41592-020-0822-z).
 

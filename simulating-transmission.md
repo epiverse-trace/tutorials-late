@@ -86,7 +86,15 @@ In this tutorial, we will use the default model in `{epidemics}`, called `model_
 The schematic below shows the processes which describe the flow of individuals between the disease states $S$, $E$, $I$ and $R$ and the key parameters for each process.
 
 
-<img src="fig/simulating-transmission-rendered-diagram-1.png" alt="" style="display: block; margin: auto;" />
+
+``` mermaid
+# nolint start
+flowchart LR
+    S -->|"infection<br>(transmission rate &beta;)"| E
+    E -->|"onset of infectiousness<br>(infectiousness rate &alpha;)"| I
+    I -->|"recovery<br>(recovery rate &gamma;)"| R
+# nolint end
+```
 
 
 ::::::::::::::::::::::::::::::::::::: callout
@@ -192,10 +200,10 @@ contacts_byage_matrix
 
 ``` output
                  age.group
-contact.age.group   [0,20)  [20,40)      40+
-          [0,20)  7.883663 2.794154 1.565665
-          [20,40) 3.120220 4.854839 2.624868
-          40+     3.063895 4.599893 5.005571
+contact.age.group   [0,20)  [20,40) [40,Inf)
+         [0,20)   7.883663 2.794154 1.565665
+         [20,40)  3.120220 4.854839 2.624868
+         [40,Inf) 3.063895 4.599893 5.005571
 ```
 
 Remember that the matrix satisfies the `symmetric = TRUE` condition at the level of total number of contacts.
@@ -208,11 +216,11 @@ contacts_byage$matrix * contacts_byage$demography$population
 ```
 
 ``` output
-         contact.age.group
-age.group    [0,20)  [20,40)       40+
-  [0,20)  116672620 46177038  45343471
-  [20,40)  46177038 80232531  76019216
-  40+      45343471 76019216 144967139
+          contact.age.group
+age.group     [0,20)  [20,40)  [40,Inf)
+  [0,20)   116672620 46177038  45343471
+  [20,40)   46177038 80232531  76019216
+  [40,Inf)  45343471 76019216 144967139
 ```
 
 :::::::::::::::::::::::::::::::::
@@ -285,10 +293,10 @@ initial_conditions
 ```
 
 ``` output
-               S E     I R V
-[0,20)  0.999999 0 1e-06 0 0
-[20,40) 1.000000 0 0e+00 0 0
-40+     1.000000 0 0e+00 0 0
+                S E     I R V
+[0,20)   0.999999 0 1e-06 0 0
+[20,40)  1.000000 0 0e+00 0 0
+[40,Inf) 1.000000 0 0e+00 0 0
 ```
 
 
@@ -308,7 +316,7 @@ demography_vector
 ```
 
 ``` output
-  [0,20)  [20,40)      40+ 
+  [0,20)  [20,40) [40,Inf) 
 14799290 16526302 28961159 
 ```
 
@@ -423,10 +431,10 @@ head(output)
    <num>           <char>      <char>    <num>
 1:     0           [0,20) susceptible 14799275
 2:     0          [20,40) susceptible 16526302
-3:     0              40+ susceptible 28961159
+3:     0         [40,Inf) susceptible 28961159
 4:     0           [0,20)     exposed        0
 5:     0          [20,40)     exposed        0
-6:     0              40+     exposed        0
+6:     0         [40,Inf)     exposed        0
 ```
 
 *Note: This model also has the functionality to include vaccination and tracks the number of vaccinated individuals through time. Even though we have not specified any vaccination, there is still a vaccinated compartment in the output (containing no individuals). We will cover the use of vaccination in future tutorials.*
@@ -490,7 +498,7 @@ epidemics::epidemic_peak(data = output)
              <char>      <char> <num>    <num>
 1:           [0,20)  infectious   315 651944.3
 2:          [20,40)  infectious   319 625863.8
-3:              40+  infectious   322 858259.1
+3:         [40,Inf)  infectious   322 858259.1
 ```
 
 Use `epidemics::epidemic_size()` to get the size of the epidemic at any stage between the start and the end. This is calculated as the number of individuals *recovered* from infection at that stage of the epidemic.
@@ -532,7 +540,7 @@ newinfections_bygroup %>%
   theme_bw()
 ```
 
-<img src="fig/simulating-transmission-rendered-unnamed-chunk-7-1.png" alt="" style="display: block; margin: auto;" />
+<img src="fig/simulating-transmission-rendered-unnamed-chunk-8-1.png" alt="" style="display: block; margin: auto;" />
 
 :::::::::::::::::::::::
 

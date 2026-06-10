@@ -337,10 +337,10 @@ contacts_byage_matrix
 
 ``` output
                  age.group
-contact.age.group    [0,15)  [15,65)       65+
-          [0,15)  6.8461538 1.655174 0.5892799
-          [15,65) 6.0737213 9.169207 4.1223575
-          65+     0.5258855 1.002545 1.7142857
+contact.age.group    [0,15)  [15,65)  [65,Inf)
+         [0,15)   6.8461538 1.655174 0.5892799
+         [15,65)  6.0737213 9.169207 4.1223575
+         [65,Inf) 0.5258855 1.002545 1.7142857
 ```
 
 There is higher levels of mixing within the 0-15 and 15-65 age groups than in the 65+ age group, so we expect that targeting different age groups will result in different disease trajectories. 
@@ -562,7 +562,7 @@ output_deaths <- rbind(baseline_deaths,
                        vaccinate_group_3_deaths)
 
 output_deaths %>%
-  filter(demography_group == "65+") %>%
+  filter(demography_group == "[65,Inf)") %>%
   ggplot() +
   ggtitle("Deaths") +
   geom_line(

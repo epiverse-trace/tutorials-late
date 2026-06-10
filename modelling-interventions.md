@@ -187,7 +187,7 @@ rownames(contacts_byage_matrix)
 ```
 
 ``` output
-[1] "[0,15)"  "[15,65)" "65+"    
+[1] "[0,15)"   "[15,65)"  "[65,Inf)"
 ```
 
 Therefore, we specify `reduction = matrix(c(0.5, 0.01, 0.01))`. We assume that the school closures start on day 50 and continue to be in place for a further 100 days. Therefore our intervention object is: 
@@ -398,7 +398,16 @@ Pharmaceutical interventions (PIs) are measures such as vaccination and mass tre
 
 The diagram below shows the SEIRV model implemented using `model_default()` where susceptible individuals are vaccinated and then move to the $V$ class.
 
-<img src="fig/modelling-interventions-rendered-diagram_SEIRV-1.png" alt="" style="display: block; margin: auto;" />
+
+``` mermaid
+# nolint start
+flowchart LR
+    S -->|"infection (&beta;)"| E
+    S -->|"vaccination (&nu;)"| V
+    E -->|"onset of infectiousness (&alpha;)"| I
+    I -->|"recovery (&gamma;)"| R
+# nolint end
+```
 
 
 
@@ -544,7 +553,7 @@ infections_baseline_interv %>%
   theme_bw()
 ```
 
-<img src="fig/modelling-interventions-rendered-unnamed-chunk-6-1.png" alt="" style="display: block; margin: auto;" />
+<img src="fig/modelling-interventions-rendered-unnamed-chunk-7-1.png" alt="" style="display: block; margin: auto;" />
 
 To get an age-stratified plot, keep the default `by_group = TRUE` and then add `linetype = demography_group` when declaring variables in `ggplot(aes(...))`.
 

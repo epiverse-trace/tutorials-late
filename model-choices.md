@@ -154,7 +154,15 @@ Consider the following questions:
 
 A deterministic SEIR model with age specific direct transmission. 
 
-<img src="fig/model-choices-rendered-diagram-1.png" alt="" style="display: block; margin: auto;" />
+
+``` mermaid
+# nolint start
+flowchart LR
+    S -->|"infection<br>(transmissibility &beta;)"| E
+    E -->|"onset of infectiousness<br>(infectiousness rate &alpha;)"| I
+    I -->|"recovery<br>(recovery rate &gamma;)"| R
+# nolint end
+```
 
 
 The model is capable of simulating an Ebola type outbreak, but as the model is deterministic, we are not able to explore stochastic variation in the early stages of the outbreak.
@@ -173,7 +181,18 @@ The key parameters affecting the transition between states are:
 
 **Note:** the functional relationship between the preinfectious  period ($\rho^E$) and the transition rate between exposed and infectious ($\gamma^E$) is $\rho^E = k^E/\gamma^E$ where $k^E$ is the shape of the Erlang distribution. Similarly for the infectious period $\rho^I = k^I/\gamma^I$. For more detail on the stochastic model formulation refer to the section on [Discrete-time Ebola virus disease model](https://epiverse-trace.github.io/epidemics/articles/model_ebola.html#details-discrete-time-ebola-virus-disease-model) in the "Modelling responses to a stochastic Ebola virus epidemic" vignette. 
 
-<img src="fig/model-choices-rendered-unnamed-chunk-1-1.png" alt="" style="display: block; margin: auto;" />
+
+``` mermaid
+# nolint start
+flowchart LR
+    S -->|"infection (&beta;)"| E
+    E -->|"onset of infectiousness (&gamma; E)"| I
+    I -->|"death funeral (&gamma; I)"| F
+    F -->|"safe burial (one timestep)"| R
+    I -->|"hospitalisation (p hosp)"| H
+    H -->|"recovery or safe burial (&gamma; I)"| R
+# nolint end
+```
 
 The model has additional parameters describing the transmission risk in hospital and funeral settings: 
 
@@ -303,7 +322,7 @@ output %>%
   )
 ```
 
-<img src="fig/model-choices-rendered-unnamed-chunk-3-1.png" alt="" style="display: block; margin: auto;" />
+<img src="fig/model-choices-rendered-unnamed-chunk-4-1.png" alt="" style="display: block; margin: auto;" />
 
 2. Run model 100 times and plot the mean, upper and lower 95% quantiles of the number of infectious individuals through time
 
@@ -348,7 +367,7 @@ output_replicates %>%
   )
 ```
 
-<img src="fig/model-choices-rendered-unnamed-chunk-4-1.png" alt="" style="display: block; margin: auto;" />
+<img src="fig/model-choices-rendered-unnamed-chunk-5-1.png" alt="" style="display: block; margin: auto;" />
 
 :::::::::::::::::::::::::::
 

@@ -181,7 +181,37 @@ The Vacamole model is a deterministic model based on a system of Ordinary Differ
 
 The diagram below describes the flow of individuals through the different compartments.
 
-<img src="fig/compare-interventions-rendered-unnamed-chunk-4-1.png" alt="" width="80%" style="display: block; margin: auto;" />
+
+``` mermaid
+# nolint start
+flowchart LR
+    Ev["E<sub>V</sub>"]:::vaccinated
+    Iv["I<sub>V</sub>"]:::vaccinated
+    Hv["H<sub>V</sub>"]:::vaccinated
+    V1["V<sub>1</sub>"]:::vaccinated
+    V2["V<sub>2</sub>"]:::vaccinated
+
+    S -->|"infection (&beta;)"| E
+    S -->|"vaccination (&nu;1)"| V1
+    V1 -->|"infection (&beta;)"| E
+    V1 -->|"vaccination 2nd dose (&nu;2)"| V2
+    V2 -->|"infection (&beta;)"| Ev
+    Ev -->|"onset of infectiousness (&alpha;)"| Iv
+    E -->|"onset of infectiousness (&alpha;)"| I
+    I -->|"hospitalisation (&eta;)"| H
+    Iv -->|"hospitalisation (&eta; V)"| Hv
+    I -->|"death (&omega;)"| D
+    I -->|"recovery (&gamma;)"| R
+    Iv -->|"death (&omega; V)"| D
+    Iv -->|"recovery (&gamma;)"| R
+    Hv -->|"death (&omega; V)"| D
+    Hv -->|"recovery (&gamma;)"| R
+    H -->|"death (&omega;)"| D
+    H -->|"recovery (&gamma;)"| R
+
+    classDef vaccinated fill:#808080,color:#fff
+# nolint end
+```
 
 
 ::::::::::::::::::::::::::::::::::::: challenge
@@ -502,15 +532,15 @@ intervention_effect
 ``` output
    scenario demography_group averted_median averted_lower averted_upper
       <int>           <char>          <num>         <num>         <num>
-1:        1              65+       405810.5      383340.3      414044.8
-2:        1           [0,15)      2890964.4     2577490.7     3082420.9
-3:        1          [15,65)      1288482.1     1257862.4     1290841.4
-4:        2              65+       900819.9      882242.1      912790.7
-5:        2           [0,15)       517742.8      478431.1      558631.8
-6:        2          [15,65)      2413423.7     2259624.9     2566010.9
-7:        3              65+      1004123.7      864726.7     1100018.0
-8:        3           [0,15)      1974788.9     1494800.2     2415088.5
-9:        3          [15,65)      2908140.6     2546313.2     3129329.3
+1:        1           [0,15)      2890964.4     2577490.7     3082420.9
+2:        1          [15,65)      1288482.1     1257862.4     1290841.4
+3:        1         [65,Inf)       405810.5      383340.3      414044.8
+4:        2           [0,15)       517742.8      478431.1      558631.8
+5:        2          [15,65)      2413423.7     2259624.9     2566010.9
+6:        2         [65,Inf)       900819.9      882242.1      912790.7
+7:        3           [0,15)      1974788.9     1494800.2     2415088.5
+8:        3          [15,65)      2908140.6     2546313.2     3129329.3
+9:        3         [65,Inf)      1004123.7      864726.7     1100018.0
 ```
 
 The output gives us the infections averted in each scenario compared to the baseline. To obtain the infections averted overall we specify `by_group = FALSE`:
