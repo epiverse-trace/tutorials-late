@@ -383,14 +383,12 @@ Pharmaceutical interventions (PIs) are measures such as vaccination and mass tre
 
 The diagram below shows the SEIRV model implemented using `model_default()` where susceptible individuals are vaccinated and then move to the $V$ class.
 
-```{mermaid}
-# nolint start
+```mermaid
 flowchart LR
     S -->|"infection (&beta;)"| E
     S -->|"vaccination (&nu;)"| V
     E -->|"onset of infectiousness (&alpha;)"| I
     I -->|"recovery (&gamma;)"| R
-# nolint end
 ```
 
 

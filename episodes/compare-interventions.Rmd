@@ -256,8 +256,7 @@ The Vacamole model is a deterministic model based on a system of Ordinary Differ
 
 The diagram below describes the flow of individuals through the different compartments.
 
-```{mermaid}
-# nolint start
+```mermaid
 flowchart LR
     Ev["E<sub>V</sub>"]:::vaccinated
     Iv["I<sub>V</sub>"]:::vaccinated
@@ -284,7 +283,6 @@ flowchart LR
     H -->|"recovery (&gamma;)"| R
 
     classDef vaccinated fill:#808080,color:#fff
-# nolint end
 ```
 
 
