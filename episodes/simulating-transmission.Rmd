@@ -89,34 +89,11 @@ In this tutorial, we will use the default model in `{epidemics}`, called `model_
 The schematic below shows the processes which describe the flow of individuals between the disease states $S$, $E$, $I$ and $R$ and the key parameters for each process.
 
 
-```{r diagram, echo = FALSE, message = FALSE}
-DiagrammeR::grViz("digraph {
-
-  # graph statement
-  #################
-  graph [layout = dot,
-         rankdir = LR,
-         overlap = true,
-         fontsize = 10]
-
-  # nodes
-  #######
-  node [shape = square,
-       fixedsize = true
-       width = 1.3]
-
-       S
-       E
-       I
-       R
-
-  # edges
-  #######
-  S -> E [label = ' infection \n(transmission rate &beta;)']
-  E -> I [label = ' onset of infectiousness \n(infectiousness rate &alpha;)']
-  I -> R [label = ' recovery \n(recovery rate &gamma;)']
-
-}")
+```{mermaid}
+flowchart LR
+    S -->|"infection<br>(transmission rate &beta;)"| E
+    E -->|"onset of infectiousness<br>(infectiousness rate &alpha;)"| I
+    I -->|"recovery<br>(recovery rate &gamma;)"| R
 ```
 
 
