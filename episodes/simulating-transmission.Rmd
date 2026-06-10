@@ -89,13 +89,11 @@ In this tutorial, we will use the default model in `{epidemics}`, called `model_
 The schematic below shows the processes which describe the flow of individuals between the disease states $S$, $E$, $I$ and $R$ and the key parameters for each process.
 
 
-```{mermaid}
-# nolint start
+```mermaid
 flowchart LR
     S -->|"infection<br>(transmission rate &beta;)"| E
     E -->|"onset of infectiousness<br>(infectiousness rate &alpha;)"| I
     I -->|"recovery<br>(recovery rate &gamma;)"| R
-# nolint end
 ```
 
 

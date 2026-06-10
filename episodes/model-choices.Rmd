@@ -161,13 +161,11 @@ Consider the following questions:
 
 A deterministic SEIR model with age specific direct transmission. 
 
-```{mermaid}
-# nolint start
+```mermaid
 flowchart LR
     S -->|"infection<br>(transmissibility &beta;)"| E
     E -->|"onset of infectiousness<br>(infectiousness rate &alpha;)"| I
     I -->|"recovery<br>(recovery rate &gamma;)"| R
-# nolint end
 ```
 
 
@@ -187,8 +185,7 @@ The key parameters affecting the transition between states are:
 
 **Note:** the functional relationship between the preinfectious  period ($\rho^E$) and the transition rate between exposed and infectious ($\gamma^E$) is $\rho^E = k^E/\gamma^E$ where $k^E$ is the shape of the Erlang distribution. Similarly for the infectious period $\rho^I = k^I/\gamma^I$. For more detail on the stochastic model formulation refer to the section on [Discrete-time Ebola virus disease model](https://epiverse-trace.github.io/epidemics/articles/model_ebola.html#details-discrete-time-ebola-virus-disease-model) in the "Modelling responses to a stochastic Ebola virus epidemic" vignette. 
 
-```{mermaid}
-# nolint start
+```mermaid
 flowchart LR
     S -->|"infection (&beta;)"| E
     E -->|"onset of infectiousness (&gamma; E)"| I
@@ -196,7 +193,6 @@ flowchart LR
     F -->|"safe burial (one timestep)"| R
     I -->|"hospitalisation (p hosp)"| H
     H -->|"recovery or safe burial (&gamma; I)"| R
-# nolint end
 ```
 
 The model has additional parameters describing the transmission risk in hospital and funeral settings: 
