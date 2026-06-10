@@ -90,10 +90,12 @@ The schematic below shows the processes which describe the flow of individuals b
 
 
 ```{mermaid}
+# nolint start
 flowchart LR
     S -->|"infection<br>(transmission rate &beta;)"| E
     E -->|"onset of infectiousness<br>(infectiousness rate &alpha;)"| I
     I -->|"recovery<br>(recovery rate &gamma;)"| R
+# nolint end
 ```
 
 
