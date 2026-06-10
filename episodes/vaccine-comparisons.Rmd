@@ -892,7 +892,7 @@ output_deaths <- rbind(baseline_deaths,
                        vaccinate_group_3_deaths)
 
 output_deaths %>%
-  filter(demography_group == "65+") %>%
+  filter(demography_group == "[65,Inf)") %>%
   ggplot() +
   ggtitle("Deaths") +
   geom_line(
