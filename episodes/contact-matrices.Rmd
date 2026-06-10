@@ -246,6 +246,8 @@ Consider the SIR model where individuals are categorized as either susceptible $
 
 ```mermaid
 flowchart LR
+    accTitle: SIR compartmental model
+    accDescr: Three compartments: S (Susceptible), I (Infectious), R (Recovered). Transitions: S to I by infection at transmission rate beta; I to R by recovery at rate gamma.
     S -->|"infection<br>(transmission rate &beta;)"| I
     I -->|"recovery<br>(recovery rate &gamma;)"| R
 ```
