@@ -343,7 +343,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Comparing public health outcomes of interventions</h1>
-        <p>Last updated on 2026-04-28 |
+        <p>Last updated on 2026-06-10 |
 
         <a href="https://github.com/epiverse-trace/tutorials-late/edit/main/episodes/compare-interventions.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -573,7 +573,35 @@ hospitalized while vaccinated (<span class="math inline">\(H_V\)</span>)</li>
 <li>Recovered (<span class="math inline">\(R\)</span>)</li>
 </ul><p>The diagram below describes the flow of individuals through the
 different compartments.</p>
-<figure><img src="../fig/compare-interventions-rendered-unnamed-chunk-4-1.png" alt="" width="80%" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure><div id="running-a-counterfactual-scenario-using-the-vacamole-model" class="callout challenge">
+<pre class="mermaid"><code># nolint start
+flowchart LR
+    Ev["E&lt;sub&gt;V&lt;/sub&gt;"]:::vaccinated
+    Iv["I&lt;sub&gt;V&lt;/sub&gt;"]:::vaccinated
+    Hv["H&lt;sub&gt;V&lt;/sub&gt;"]:::vaccinated
+    V1["V&lt;sub&gt;1&lt;/sub&gt;"]:::vaccinated
+    V2["V&lt;sub&gt;2&lt;/sub&gt;"]:::vaccinated
+
+    S --&gt;|"infection (&amp;beta;)"| E
+    S --&gt;|"vaccination (&amp;nu;1)"| V1
+    V1 --&gt;|"infection (&amp;beta;)"| E
+    V1 --&gt;|"vaccination 2nd dose (&amp;nu;2)"| V2
+    V2 --&gt;|"infection (&amp;beta;)"| Ev
+    Ev --&gt;|"onset of infectiousness (&amp;alpha;)"| Iv
+    E --&gt;|"onset of infectiousness (&amp;alpha;)"| I
+    I --&gt;|"hospitalisation (&amp;eta;)"| H
+    Iv --&gt;|"hospitalisation (&amp;eta; V)"| Hv
+    I --&gt;|"death (&amp;omega;)"| D
+    I --&gt;|"recovery (&amp;gamma;)"| R
+    Iv --&gt;|"death (&amp;omega; V)"| D
+    Iv --&gt;|"recovery (&amp;gamma;)"| R
+    Hv --&gt;|"death (&amp;omega; V)"| D
+    Hv --&gt;|"recovery (&amp;gamma;)"| R
+    H --&gt;|"death (&amp;omega;)"| D
+    H --&gt;|"recovery (&amp;gamma;)"| R
+
+    classDef vaccinated fill:#808080,color:#fff
+# nolint end</code></pre>
+<div id="running-a-counterfactual-scenario-using-the-vacamole-model" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
@@ -618,7 +646,7 @@ time</li>
 <p>We can run the Vacamole model with <a href="https://epiverse-trace.github.io/epidemics/articles/model_vacamole.html#model-epidemic-using-vacamole" class="external-link">default
 parameter values</a> by just specifying the population object and number
 of time steps to run the model for:</p>
-<div class="codewrapper sourceCode" id="cb4">
+<div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -639,7 +667,7 @@ of time steps to run the model for:</p>
 <div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <ol style="list-style-type: decimal"><li>Run the model</li>
-</ol><div class="codewrapper sourceCode" id="cb5">
+</ol><div class="codewrapper sourceCode" id="cb6">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -736,7 +764,7 @@ of time steps to run the model for:</p>
 <span><span class="op">)</span></span></code></pre>
 </div>
 <ol start="2" style="list-style-type: decimal"><li>Plot the cumulative number of deaths through time</li>
-</ol><div class="codewrapper sourceCode" id="cb6">
+</ol><div class="codewrapper sourceCode" id="cb7">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -786,7 +814,7 @@ while accounting for parameter uncertainty. Let’s extend our COVID-19
 example from <a href="modelling-interventions.html">Modelling
 interventions</a> to account for uncertainty in the basic reproduction
 number (<span class="math inline">\(R_0\)</span>).</p>
-<div class="codewrapper sourceCode" id="cb7">
+<div class="codewrapper sourceCode" id="cb8">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -815,7 +843,7 @@ number (<span class="math inline">\(R_0\)</span>).</p>
 <p>We use these parameter values alongside the population structure and
 contact matrix used in <a href="modelling-interventions.html">Modelling
 interventions</a> to run the model for the baseline scenario:</p>
-<div class="codewrapper sourceCode" id="cb8">
+<div class="codewrapper sourceCode" id="cb9">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -833,7 +861,7 @@ our comparison. We define our scenarios as follows:</p>
 <li>scenario 2: mask mandate</li>
 <li>scenario 3: close schools and mask mandate.</li>
 </ul><p>In R we specify this as:</p>
-<div class="codewrapper sourceCode" id="cb9">
+<div class="codewrapper sourceCode" id="cb10">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -852,7 +880,7 @@ our comparison. We define our scenarios as follows:</p>
 </div>
 <p>We use this list as our input to <code>intervention</code> in
 <code>model_default</code></p>
-<div class="codewrapper sourceCode" id="cb10">
+<div class="codewrapper sourceCode" id="cb11">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -903,7 +931,7 @@ averted in each scenario compared to the baseline. To use this function
 we specify the:</p>
 <ul><li>output of the baseline scenario</li>
 <li>outputs of the intervention scenario(s).</li>
-</ul><div class="codewrapper sourceCode" id="cb12">
+</ul><div class="codewrapper sourceCode" id="cb13">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -917,20 +945,20 @@ we specify the:</p>
 </h3>
 <pre class="output" tabindex="0"><code>   scenario demography_group averted_median averted_lower averted_upper
       &lt;int&gt;           &lt;char&gt;          &lt;num&gt;         &lt;num&gt;         &lt;num&gt;
-1:        1              65+       405810.5      383340.3      414044.8
-2:        1           [0,15)      2890964.4     2577490.7     3082420.9
-3:        1          [15,65)      1288482.1     1257862.4     1290841.4
-4:        2              65+       900819.9      882242.1      912790.7
-5:        2           [0,15)       517742.8      478431.1      558631.8
-6:        2          [15,65)      2413423.7     2259624.9     2566010.9
-7:        3              65+      1004123.7      864726.7     1100018.0
-8:        3           [0,15)      1974788.9     1494800.2     2415088.5
-9:        3          [15,65)      2908140.6     2546313.2     3129329.3</code></pre>
+1:        1           [0,15)      2890964.4     2577490.7     3082420.9
+2:        1          [15,65)      1288482.1     1257862.4     1290841.4
+3:        1         [65,Inf)       405810.5      383340.3      414044.8
+4:        2           [0,15)       517742.8      478431.1      558631.8
+5:        2          [15,65)      2413423.7     2259624.9     2566010.9
+6:        2         [65,Inf)       900819.9      882242.1      912790.7
+7:        3           [0,15)      1974788.9     1494800.2     2415088.5
+8:        3          [15,65)      2908140.6     2546313.2     3129329.3
+9:        3         [65,Inf)      1004123.7      864726.7     1100018.0</code></pre>
 </div>
 <p>The output gives us the infections averted in each scenario compared
 to the baseline. To obtain the infections averted overall we specify
 <code>by_group = FALSE</code>:</p>
-<div class="codewrapper sourceCode" id="cb14">
+<div class="codewrapper sourceCode" id="cb15">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1021,7 +1049,7 @@ may take several minutes to run.</em></p>
 </button>
 <div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
-<div class="codewrapper sourceCode" id="cb16">
+<div class="codewrapper sourceCode" id="cb17">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1107,7 +1135,7 @@ may take several minutes to run.</em></p>
 <pre class="warning" tabindex="0"><code>Warning: Running 2 scenarios and 100 parameter sets with 100 replicates each, for a
 total of 20000 model runs.</code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb18">
+<div class="codewrapper sourceCode" id="cb19">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -1213,9 +1241,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://epiverse-trace.github.io/tutorials-late/instructor/compare-interventions.html",
   "identifier": "https://epiverse-trace.github.io/tutorials-late/instructor/compare-interventions.html",
-  "dateCreated": "2026-03-23",
-  "dateModified": "2026-04-28",
-  "datePublished": "2026-05-12"
+  "dateCreated": "2026-06-10",
+  "dateModified": "2026-06-10",
+  "datePublished": "2026-06-10"
 }
 
   </script><script>

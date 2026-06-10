@@ -346,7 +346,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Comparing vaccination strategies</h1>
-        <p>Last updated on 2026-04-28 |
+        <p>Last updated on 2026-06-10 |
 
         <a href="https://github.com/epiverse-trace/tutorials-late/edit/main/episodes/vaccine-comparisons.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -776,10 +776,10 @@ trajectories.</p>
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="output" tabindex="0"><code>                 age.group
-contact.age.group    [0,15)  [15,65)       65+
-          [0,15)  6.8461538 1.655174 0.5892799
-          [15,65) 6.0737213 9.169207 4.1223575
-          65+     0.5258855 1.002545 1.7142857</code></pre>
+contact.age.group    [0,15)  [15,65)  [65,Inf)
+         [0,15)   6.8461538 1.655174 0.5892799
+         [15,65)  6.0737213 9.169207 4.1223575
+         [65,Inf) 0.5258855 1.002545 1.7142857</code></pre>
 </div>
 <p>There is higher levels of mixing within the 0-15 and 15-65 age groups
 than in the 65+ age group, so we expect that targeting different age
@@ -1021,7 +1021,7 @@ group (over 65 years of age).</p>
 <span>                       <span class="va">vaccinate_group_3_deaths</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">output_deaths</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">filter</span><span class="op">(</span><span class="va">demography_group</span> <span class="op">==</span> <span class="st">"65+"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">filter</span><span class="op">(</span><span class="va">demography_group</span> <span class="op">==</span> <span class="st">"[65,Inf)"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Deaths"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_line</span><span class="op">(</span></span>
@@ -1134,7 +1134,7 @@ Adapt the code below to lift the NPI after 20, 50 and 100 days</p>
   Output
   </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb17">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1323,9 +1323,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://epiverse-trace.github.io/tutorials-late/vaccine-comparisons.html",
   "identifier": "https://epiverse-trace.github.io/tutorials-late/vaccine-comparisons.html",
-  "dateCreated": "2026-03-23",
-  "dateModified": "2026-04-28",
-  "datePublished": "2026-05-12"
+  "dateCreated": "2026-06-10",
+  "dateModified": "2026-06-10",
+  "datePublished": "2026-06-10"
 }
 
   </script><script>
