@@ -5040,6 +5040,32 @@
       "NeedsCompilation": "no",
       "Repository": "CRAN"
     },
+    "wpp2024": {
+      "Package": "wpp2024",
+      "Version": "1.1-3",
+      "Source": "GitHub",
+      "Date": "2024-11-26",
+      "Title": "World Population Prospects 2024",
+      "Author": "United Nations Population Division",
+      "Maintainer": "Hana Sevcikova <hanas@uw.edu>",
+      "Depends": [
+        "R (>= 2.14.2)",
+        "data.table"
+      ],
+      "Suggests": [],
+      "Description": "Provides data from the United Nation's World Population Prospects 2024.",
+      "License": "file LICENSE",
+      "URL": "http://population.un.org/wpp",
+      "NeedsCompilation": "no",
+      "LazyData": "no",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteRepo": "wpp2024",
+      "RemoteUsername": "PPgp",
+      "RemotePkgRef": "PPgp/wpp2024",
+      "RemoteRef": "HEAD",
+      "RemoteSha": "2da7768ae64fc74105d3f9e98f9a74d37b62f99a"
+    },
     "xfun": {
       "Package": "xfun",
       "Version": "0.58",
