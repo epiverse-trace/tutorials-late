@@ -65,6 +65,7 @@ In this tutorial we are going to learn how to use the `{epidemics}` package to s
 library(epidemics)
 library(contactsurveys)
 library(socialmixr)
+library(wpp2024)
 library(tidyverse)
 ```
 

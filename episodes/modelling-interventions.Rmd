@@ -59,6 +59,7 @@ In this tutorial, we will learn how to use `{epidemics}` to model interventions 
 library(epidemics)
 library(contactsurveys)
 library(socialmixr)
+library(wpp2024)
 library(tidyverse)
 ```
 

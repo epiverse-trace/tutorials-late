@@ -42,6 +42,7 @@ In this tutorial we are going to learn how contact matrices can be used in diffe
 ```{r,message=FALSE,warning=FALSE}
 library(contactsurveys)
 library(socialmixr)
+library(wpp2024)
 library(tidyverse)
 ```
 
