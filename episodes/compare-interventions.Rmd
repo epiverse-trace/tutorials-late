@@ -7,6 +7,8 @@ exercises: 30 # exercise time in minutes
 
 ```{r setup, echo= FALSE, message = FALSE, warning = FALSE}
 library(epidemics)
+library(contactsurveys)
+library(wpp2024)
 
 # hidden seed for stable stochastic output in lesson
 set.seed(33)

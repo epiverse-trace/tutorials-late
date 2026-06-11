@@ -49,6 +49,7 @@ library(epiparameter)
 library(epidemics)
 library(contactsurveys)
 library(socialmixr)
+library(wpp2024)
 library(tidyverse)
 ```
 
