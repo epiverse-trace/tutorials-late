@@ -308,6 +308,18 @@ uk_population <- epidemics::population(
 )
 ```
 
+:::::::::::: checklist
+
+Print the `uk_population` object. 
+
+It must collect all the input information:
+
+- Population name
+- Demography
+- Contact matrix
+- Initial conditions
+
+::::::::::::
 
 :::::::::::::::::::::: instructor
 
