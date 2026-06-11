@@ -8,7 +8,7 @@
 # lc: Library Carpentry
 # cp: Carpentries (to use for instructor training for instance)
 # incubator: The Carpentries Incubator
-carpentry: 'epiverse-trace'
+carpentry: 'incubator'
 
 # Overall title for pages.
 title: 'Scenario modelling for outbreak analytics with R'
@@ -80,4 +80,4 @@ profiles:
 #
 # This space below is where custom yaml items (e.g. pinning
 # sandpaper and varnish versions) should live
-#varnish: epiverse-trace/varnish
+# varnish: epiverse-trace/varnish
