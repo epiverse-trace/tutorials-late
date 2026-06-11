@@ -12,21 +12,27 @@
       gtag('js', new Date());
 
       gtag('config', 'G-XZ471458FQ');
-    </script><!-- mathjax --><script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-      config: ["MMLorHTML.js"],
-      jax: ["input/TeX","input/MathML","output/HTML-CSS","output/NativeMML", "output/PreviewHTML"],
-      extensions: ["tex2jax.js","mml2jax.js","MathMenu.js","MathZoom.js", "fast-preview.js", "AssistiveMML.js", "a11y/accessibility-menu.js"],
-      TeX: {
-        extensions: ["AMSmath.js","AMSsymbols.js","noErrors.js","noUndefined.js"]
-      },
-      tex2jax: {
-        inlineMath: [['\\(', '\\)']],
-        displayMath: [ ['$$','$$'], ['\\[', '\\]'] ],
-        processEscapes: true
-      }
-    });
-    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><!-- Responsive Favicon for The Carpentries --><link rel="apple-touch-icon" sizes="180x180" href="favicons/epiverse-trace/apple-touch-icon.png">
+    </script><!-- mathjax --><!-- NOTE: https://docs.mathjax.org/en/latest/output/mathml.html#mathml-support --><!-- Changes from V2 to V4: https://mathjax.github.io/MathJax-demos-web/convert-configuration/convert-configuration.html
+        Jax output/NativeMML is not yet implemented
+        Jax output/PreviewHTML is not yet implemented
+        Extension fast-preview is not yet implemented (but may be in a future release)
+    --><script>
+    window.MathJax = {
+        tex: {
+            inlineMath: [['\\(', '\\)']],
+            displayMath: [ ['$$','$$'], ['\\[', '\\]'] ],
+            processEscapes: true,
+            packages: ['base', 'ams', 'noerrors', 'noundefined']
+        },
+        options: {
+            ignoreHtmlClass: 'tex2jax_ignore',
+            processHtmlClass: 'tex2jax_process'
+        },
+        loader: {
+            load: ['a11y/assistive-mml', '[tex]/noerrors']
+        }
+    };
+    </script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script><!-- Responsive Favicon for The Carpentries --><link rel="apple-touch-icon" sizes="180x180" href="favicons/epiverse-trace/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="favicons/epiverse-trace/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="favicons/epiverse-trace/favicon-16x16.png">
 <link rel="manifest" href="favicons/epiverse-trace/site.webmanifest">
@@ -53,8 +59,8 @@
       </div>
     </div>
     <div class="selector-container">
-      <div id="theme-selector">
-        <li class="nav-item dropdown" id="theme-button-list">
+      <menu class="theme-selector" id="theme-selector-menu">
+<li class="nav-item dropdown theme-button-list" id="theme-button-list-menu">
           <button class="btn btn-link nav-link px-0 px-lg-2 dropdown-toggle d-flex align-items-center" id="bd-theme" type="button" aria-expanded="false" data-bs-toggle="dropdown" data-bs-display="static" aria-label="Toggle theme (auto)">
             <svg class="bi my-1 theme-icon-active"><use href="#circle-half"></use></svg><i data-feather="chevron-down"></i>
           </button>
@@ -79,9 +85,8 @@
             </li>
           </ul>
 </li>
-      </div>
-
-      <div class="dropdown" id="instructor-dropdown">
+    </menu>
+<div class="dropdown" id="instructor-dropdown">
         <button class="btn btn-secondary dropdown-toggle bordered-button" type="button" id="dropdownMenu1" data-bs-toggle="dropdown" aria-expanded="false">
           <i aria-hidden="true" class="icon" data-feather="eye"></i> Learner View <i data-feather="chevron-down"></i>
         </button>
@@ -91,7 +96,7 @@
 </div>
     </div>
   </div>
-  <hr></header><nav class="navbar navbar-expand-xl bottom-nav epiverse-trace" aria-label="Main Navigation"><div class="container-fluid nav-container">
+</header><nav class="navbar navbar-expand-xl bottom-nav epiverse-trace" aria-label="Main Navigation"><div class="container-fluid nav-container">
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle Navigation">
       <span class="navbar-toggler-icon"></span>
       <span class="menu-title">Menu</span>
@@ -147,29 +152,18 @@
     <a id="search-button" class="btn btn-primary" href="aio.html" role="button" aria-label="Search the All In One page">Search the All In One page</a>
   </div>
 <!--/div.container-fluid -->
-</nav><div class="col-md-12 mobile-title">
-  Scenario modelling for outbreak analytics with R
-</div>
-
-<aside class="col-md-12 lesson-progress"><div style="width: %" class="percentage">
-    %
-  </div>
-  <div class="progress epiverse-trace">
-    <div class="progress-bar epiverse-trace" role="progressbar" style="width: %" aria-valuenow="" aria-label="Lesson Progress" aria-valuemin="0" aria-valuemax="100">
-    </div>
-  </div>
-</aside><div class="container">
+</nav><div class="container">
       <div class="row">
         <!-- START: inst/pkgdown/templates/navbar.html -->
 <div id="sidebar-col" class="col-lg-4">
   <div id="sidebar" class="sidebar">
-      <nav aria-labelledby="flush-headingEleven"><button role="button" aria-label="close menu" alt="close menu" aria-expanded="true" aria-controls="sidebar" class="collapse-toggle" data-collapse="Collapse " data-episodes="Episodes ">
+      <nav aria-labelledby="flush-collapse-chapters-toggle"><button role="button" aria-label="Collapse" alt="Collapse" aria-expanded="true" aria-controls="sidebar" class="collapse-toggle" data-collapse="Collapse " data-episodes="Episodes ">
           <i class="search-icon" data-feather="x" role="img"></i>
         </button>
         <div class="sidebar-inner">
           <div class="row mobile-row" id="theme-row-mobile">
-            <div class="col" id="theme-selector">
-              <li class="nav-item dropdown" id="theme-button-list">
+            <menu class="col theme-selector" id="theme-selector-sidebar">
+<li class="nav-item dropdown theme-button-list" id="theme-button-list-sidebar">
                 <button class="btn btn-link nav-link px-0 px-lg-2 dropdown-toggle d-flex align-items-center" id="bd-theme" type="button" aria-expanded="false" data-bs-toggle="dropdown" data-bs-display="static" aria-label="Toggle theme (auto)">
                   <svg class="bi my-1 theme-icon-active"><use href="#circle-half"></use></svg><span class="d-lg-none ms-1" id="bd-theme-text">Toggle Theme</span>
                 </button>
@@ -194,19 +188,19 @@
                   </li>
                 </ul>
 </li>
-            </div>
-          </div>
+            </menu>
+</div>
           <div class="row mobile-row">
             <div class="col">
               <div class="sidenav-view-selector">
-                <div class="accordion accordion-flush" id="accordionFlush9">
+                <div class="accordion accordion-flush" id="accordion-instructor-toggle">
                   <div class="accordion-item">
-                    <h2 class="accordion-header" id="flush-headingNine">
-                      <button class="accordion-button collapsed" id="instructor" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseNine" aria-expanded="false" aria-controls="flush-collapseNine">
+                    <h2 class="accordion-header" id="flush-heading-instructor-toggle">
+                      <button class="accordion-button collapsed" id="instructor" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-instructor-toggle" aria-expanded="false" aria-controls="flush-collapse-instructor-toggle">
                         <i id="eye" aria-hidden="true" class="icon" data-feather="eye"></i> Learner View
                       </button>
                     </h2>
-                    <div id="flush-collapseNine" class="accordion-collapse collapse" aria-labelledby="flush-headingNine" data-bs-parent="#accordionFlush2">
+                    <div id="flush-collapse-instructor-toggle" class="accordion-collapse collapse" data-bs-parent="#accordion-instructor-toggle">
                       <div class="accordion-body">
                         <a href="instructor/aio.html">Instructor View</a>
                       </div>
@@ -220,19 +214,18 @@
             </div>
 <!--/div.col -->
 
-            <hr>
-</div>
+          </div>
 <!--/div.mobile-row -->
 
-          <div class="accordion accordion-flush" id="accordionFlush11">
+          <div class="accordion accordion-flush" id="accordion-chapters-toggle">
             <div class="accordion-item">
 
-              <button id="chapters" class="accordion-button show" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseEleven" aria-expanded="false" aria-controls="flush-collapseEleven">
-                <h2 class="accordion-header chapters" id="flush-headingEleven">
+              <button id="chapters" class="accordion-button show" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-chapters-toggle" aria-expanded="false" aria-controls="flush-collapse-chapters-toggle">
+                <h2 class="accordion-header chapters" id="flush-heading-chapters-toggle">
                   EPISODES
                 </h2>
               </button>
-              <div id="flush-collapseEleven" class="accordion-collapse show collapse" aria-labelledby="flush-headingEleven" data-bs-parent="#accordionFlush11">
+              <div id="flush-collapse-chapters-toggle" class="accordion-collapse show collapse" data-bs-parent="#accordion-chapters-toggle">
 
                 <div class="accordion-body">
                   <div class="accordion accordion-flush" id="accordionFlush1">
@@ -336,14 +329,14 @@
             </div>
 
             <hr class="half-width">
-<div class="accordion accordion-flush lesson-resources" id="accordionFlush12">
+<div class="accordion accordion-flush lesson-resources" id="accordion-resources-toggle">
               <div class="accordion-item">
-                <h2 class="accordion-header" id="flush-headingTwelve">
-                  <button class="accordion-button collapsed" id="lesson-resources" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwelve" aria-expanded="false" aria-controls="flush-collapseTwelve">
+                <h2 class="accordion-header" id="flush-heading-resources-toggle">
+                  <button class="accordion-button collapsed" id="lesson-resources" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-resources-toggle" aria-expanded="false" aria-controls="flush-collapse-resources-toggle">
                     RESOURCES
                   </button>
                 </h2>
-                <div id="flush-collapseTwelve" class="accordion-collapse collapse" aria-labelledby="flush-headingTwelve" data-bs-parent="#accordionFlush12">
+                <div id="flush-collapse-resources-toggle" class="accordion-collapse collapse" data-bs-parent="#accordion-resources-toggle">
                   <div class="accordion-body">
                     <ul>
 <li>
@@ -384,11 +377,11 @@
         <!-- START: inst/pkgdown/templates/content-extra.html -->
   <div class="col-xl-8 col-lg-12 primary-content">
     <main id="main-content" class="main-content"><div class="container lesson-content">
-        
+        <h1>All in One View</h1>
         
 <section id="aio-contact-matrices"><p>Content from <a href="contact-matrices.html">Contact matrices</a></p>
 <hr>
-<p>Last updated on 2026-06-10 |
+<p>Last updated on 2026-06-11 |
 
         <a href="https://github.com/epiverse-trace/tutorials-late/edit/main/episodes/contact-matrices.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -472,6 +465,7 @@ heterogeneity in contact plays in infectious disease transmission.</p>
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
+<span class="callout-header">Callout</span>
 <div id="a-note-on-notation" class="callout-inner">
 <h3 class="callout-title">A Note on Notation</h3>
 <div class="callout-content">
@@ -516,6 +510,7 @@ download and load the POLYMOD survey data directly from Zenodo using
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
+<span class="callout-header">Callout</span>
 <div id="inspect-available-countries" class="callout-inner">
 <h3 class="callout-title">Inspect available countries</h3>
 <div class="callout-content">
@@ -611,8 +606,10 @@ corresponding section in the socialmixr documentation</a>.</p>
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
+<span class="callout-header">Callout</span>
 <div id="why-would-a-contact-matrix-be-non-symmetric" class="callout-inner">
-<h3 class="callout-title">Why would a contact matrix be non-symmetric?</h3>
+<h3 class="callout-title">Why would a contact matrix be
+non-symmetric?</h3>
 <div class="callout-content">
 <p>One of the arguments we gave the function
 <code>contact_matrix()</code> is <code>symmetric=TRUE</code>. This
@@ -694,6 +691,7 @@ Contact Data community</a>, or list them programmatically:</p>
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
+<span class="callout-header">Challenge</span>
 <div id="zambia-contact-matrix" class="callout-inner">
 <h3 class="callout-title">Zambia contact matrix</h3>
 <div class="callout-content">
@@ -752,6 +750,7 @@ dataframe, you can use the dollar-sign operator: <code>$</code></p>
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
+<span class="callout-header">Callout</span>
 <div id="synthetic-contact-matrices" class="callout-inner">
 <h3 class="callout-title">Synthetic contact matrices</h3>
 <div class="callout-content">
@@ -921,6 +920,7 @@ expected secondary cases would give us <span class="math inline">\(R_0\)</span>,
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
+<span class="callout-header">Callout</span>
 <div id="normalisation-using-socialmixr" class="callout-inner">
 <h3 class="callout-title">Normalisation using
 <code>socialmixr</code>
@@ -961,6 +961,7 @@ package vignette on splitting contact matrices.</a></p>
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
+<span class="callout-header">Callout</span>
 <div id="check-the-dimension-of-beta" class="callout-inner">
 <h3 class="callout-title">Check the dimension of <span class="math inline">\(\beta\)</span>
 </h3>
@@ -1005,8 +1006,8 @@ trajectories from mathematical models with contact matrices from
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
 </div>
+<span class="callout-header">Key Points</span>
 <div class="callout-inner">
-<h3 class="callout-title">Key Points</h3>
 <div class="callout-content">
 <ul>
 <li>Contact matrices quantify the mixing patterns between different
@@ -1029,7 +1030,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-simulating-transmission"><p>Content from <a href="simulating-transmission.html">Simulating transmission</a></p>
 <hr>
-<p>Last updated on 2026-06-10 |
+<p>Last updated on 2026-06-11 |
 
         <a href="https://github.com/epiverse-trace/tutorials-late/edit/main/episodes/simulating-transmission.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -1074,8 +1075,8 @@ package</li>
 <div class="callout-square">
 <i class="callout-icon" data-feather="check"></i>
 </div>
+<span class="callout-header">Prerequisite</span>
 <div class="callout-inner">
-<h3 class="callout-title">Prerequisite</h3>
 <div class="callout-content">
 <ul>
 <li>Complete tutorial on <a href="contact-matrices.html">contact
@@ -1099,7 +1100,7 @@ number</a>.</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler1" aria-expanded="false" aria-controls="collapseSpoiler1">
   <h3 class="accordion-header" id="headingSpoiler1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
 </button>
-<div id="collapseSpoiler1" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler1" aria-labelledby="headingSpoiler1">
+<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
 <div class="accordion-body">
 <p>Install these packages if their are not already installed</p>
 <div class="codewrapper sourceCode" id="cb1">
@@ -1172,6 +1173,7 @@ each process.</p>
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
+<span class="callout-header">Callout</span>
 <div id="model-parameters-rates" class="callout-inner">
 <h3 class="callout-title">Model parameters: rates</h3>
 <div class="callout-content">
@@ -1225,6 +1227,7 @@ period</a> =<span class="math inline">\(1/\alpha\)</span>), and</li>
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
+<span class="callout-header">Callout</span>
 <div id="exposed-infected-infectious" class="callout-inner">
 <h3 class="callout-title">Exposed, infected, infectious</h3>
 <div class="callout-content">
@@ -1266,6 +1269,7 @@ al. 2008)</a>.</p>
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
+<span class="callout-header">Challenge</span>
 <div id="load-contact-and-population-data" class="callout-inner">
 <h3 class="callout-title">Load contact and population data</h3>
 <div class="callout-content">
@@ -1286,7 +1290,7 @@ matrix for the United Kingdom for the year age bins:</p>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint1" aria-expanded="false" aria-controls="collapseHint1">
   <h4 class="accordion-header" id="headingHint1"> Give me a hint </h4>
 </button>
-<div id="collapseHint1" class="accordion-collapse collapse" data-bs-parent="#accordionHint1" aria-labelledby="headingHint1">
+<div id="collapseHint1" class="accordion-collapse collapse" aria-labelledby="headingHint1" data-bs-parent="#accordionHint1">
 <div class="accordion-body">
 <ul>
 <li>Complete tutorial on <a href="contact-matrices.html">Contact
@@ -1301,7 +1305,7 @@ matrices</a>.</li>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1370,6 +1374,7 @@ be formatted as a matrix to be used in <code>epidemics</code>.</p>
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
+<span class="callout-header">Callout</span>
 <div id="normalisation" class="callout-inner">
 <h3 class="callout-title">Normalisation</h3>
 <div class="callout-content">
@@ -1537,6 +1542,7 @@ will be:</p>
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
+<span class="callout-header">Callout</span>
 <div id="the-basic-reproduction-number-r_0" class="callout-inner">
 <h3 class="callout-title">The basic reproduction number <span class="math inline">\(R_0\)</span>
 </h3>
@@ -1557,6 +1563,7 @@ will be:</p>
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
+<span class="callout-header">Callout</span>
 <div id="running-solving-the-model" class="callout-inner">
 <h3 class="callout-title">Running (solving) the model</h3>
 <div class="callout-content">
@@ -1647,6 +1654,7 @@ infectious individuals only (those in the <span class="math inline">\(I\)</span>
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
+<span class="callout-header">Callout</span>
 <div id="time-increments" class="callout-inner">
 <h3 class="callout-title">Time increments</h3>
 <div class="callout-content">
@@ -1674,8 +1682,8 @@ month.</li>
 <div class="callout-square">
 <i class="callout-icon" data-feather="heart"></i>
 </div>
+<span class="callout-header">Testimonial</span>
 <div class="callout-inner">
-<h3 class="callout-title">Testimonial</h3>
 <div class="callout-content">
 <p><strong>Two helper functions in <code>{epidemics}</code></strong></p>
 <p>Use <code>epidemics::epidemic_peak()</code> to get the time and size
@@ -1728,7 +1736,7 @@ incidence.</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler2" aria-expanded="false" aria-controls="collapseSpoiler2">
   <h3 class="accordion-header" id="headingSpoiler2">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
 </button>
-<div id="collapseSpoiler2" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler2" aria-labelledby="headingSpoiler2">
+<div id="collapseSpoiler2" class="accordion-collapse collapse" aria-labelledby="headingSpoiler2" data-bs-parent="#accordionSpoiler2">
 <div class="accordion-body">
 <p>Notice that the number of new infected individuals at each time (as
 in the figure below) is lower than the cumulative number of infectious
@@ -1859,6 +1867,7 @@ disease modelling.</p>
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
+<span class="callout-header">Challenge</span>
 <div class="callout-inner">
 <h3 class="callout-title">Challenge</h3>
 <div class="callout-content">
@@ -1878,7 +1887,7 @@ these changes expected? Explain briefly.</p></li>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint2" aria-expanded="false" aria-controls="collapseHint2">
   <h4 class="accordion-header" id="headingHint2"> Give me a hint </h4>
 </button>
-<div id="collapseHint2" class="accordion-collapse collapse" data-bs-parent="#accordionHint2" aria-labelledby="headingHint2">
+<div id="collapseHint2" class="accordion-collapse collapse" aria-labelledby="headingHint2" data-bs-parent="#accordionHint2">
 <div class="accordion-body">
 <p>To interpret the output based on location (time) and size of the peak
 infection, you can find a guide in this two-page paper introduction to
@@ -1905,8 +1914,8 @@ right model for different tasks.</p>
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
 </div>
+<span class="callout-header">Key Points</span>
 <div class="callout-inner">
-<h3 class="callout-title">Key Points</h3>
 <div class="callout-content">
 <ul>
 <li>Disease trajectories can be generated using the R package
@@ -1924,7 +1933,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-model-choices"><p>Content from <a href="model-choices.html">Choosing an appropriate model</a></p>
 <hr>
-<p>Last updated on 2026-06-10 |
+<p>Last updated on 2026-06-11 |
 
         <a href="https://github.com/epiverse-trace/tutorials-late/edit/main/episodes/model-choices.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -1961,8 +1970,8 @@ question</li>
 <div class="callout-square">
 <i class="callout-icon" data-feather="check"></i>
 </div>
+<span class="callout-header">Prerequisite</span>
 <div class="callout-inner">
-<h3 class="callout-title">Prerequisite</h3>
 <div class="callout-content">
 <ul>
 <li>Complete tutorial <a href="simulating-transmission.html">simulating
@@ -1984,6 +1993,7 @@ model to complete a given task.</p>
 <div class="callout-square">
 <i class="callout-icon" data-feather="message-circle"></i>
 </div>
+<span class="callout-header">Discussion</span>
 <div id="choosing-a-model" class="callout-inner">
 <h3 class="callout-title">Choosing a model</h3>
 <div class="callout-content">
@@ -2117,6 +2127,7 @@ on “Guides to library models”</a>.</p>
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
+<span class="callout-header">Challenge</span>
 <div id="what-model" class="callout-inner">
 <h3 class="callout-title">What model?</h3>
 <div class="callout-content">
@@ -2143,8 +2154,8 @@ task:</p>
 <div class="callout-square">
 <i class="callout-icon" data-feather="check-square"></i>
 </div>
+<span class="callout-header">Checklist</span>
 <div class="callout-inner">
-<h3 class="callout-title">Checklist</h3>
 <div class="callout-content">
 <ul>
 <li>What is the infection/disease of interest?</li>
@@ -2262,6 +2273,7 @@ stages of an Ebola outbreak.</p>
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
+<span class="callout-header">Callout</span>
 <div id="do-i-need-to-use-a-mathematical-model" class="callout-inner">
 <h3 class="callout-title">Do I need to use a mathematical model?</h3>
 <div class="callout-content">
@@ -2289,6 +2301,7 @@ to calculate epidemic size.</p>
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
+<span class="callout-header">Challenge</span>
 <div id="running-the-model" class="callout-inner">
 <h3 class="callout-title">Running the model</h3>
 <div class="callout-content">
@@ -2482,8 +2495,8 @@ values.</p>
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
 </div>
+<span class="callout-header">Key Points</span>
 <div class="callout-inner">
-<h3 class="callout-title">Key Points</h3>
 <div class="callout-content">
 <ul>
 <li>Existing mathematical models should be selected according to the
@@ -2500,7 +2513,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-modelling-interventions"><p>Content from <a href="modelling-interventions.html">Modelling interventions</a></p>
 <hr>
-<p>Last updated on 2026-06-10 |
+<p>Last updated on 2026-06-11 |
 
         <a href="https://github.com/epiverse-trace/tutorials-late/edit/main/episodes/modelling-interventions.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -2537,8 +2550,8 @@ trajectories?</li>
 <div class="callout-square">
 <i class="callout-icon" data-feather="check"></i>
 </div>
+<span class="callout-header">Prerequisite</span>
 <div class="callout-inner">
-<h3 class="callout-title">Prerequisite</h3>
 <div class="callout-content">
 <ul>
 <li>Complete tutorial on <a href="simulating-transmission.html">Simulating transmission</a>.</li>
@@ -2558,7 +2571,7 @@ types</a>.</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler1" aria-expanded="false" aria-controls="collapseSpoiler1">
   <h3 class="accordion-header" id="headingSpoiler1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
 </button>
-<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
+<div id="collapseSpoiler1" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler1" aria-labelledby="headingSpoiler1">
 <div class="accordion-body">
 <p>Install packages if their are not already installed</p>
 <div class="codewrapper sourceCode" id="cb1">
@@ -2758,6 +2771,7 @@ further 100 days. Therefore our intervention object is:</p>
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
+<span class="callout-header">Callout</span>
 <div id="effect-of-interventions-on-contacts" class="callout-inner">
 <h3 class="callout-title">Effect of interventions on contacts</h3>
 <div class="callout-content">
@@ -2958,6 +2972,7 @@ in place for 200 days.</p>
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
+<span class="callout-header">Callout</span>
 <div id="intervention-types" class="callout-inner">
 <h3 class="callout-title">Intervention types</h3>
 <div class="callout-content">
@@ -3061,6 +3076,7 @@ be in place for 150 days.</p>
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
+<span class="callout-header">Challenge</span>
 <div id="compare-interventions" class="callout-inner">
 <h3 class="callout-title">Compare interventions</h3>
 <div class="callout-content">
@@ -3075,7 +3091,7 @@ reduces the peak number of infectious individuals the most?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb18">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -3133,7 +3149,7 @@ infections.</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler2" aria-expanded="false" aria-controls="collapseSpoiler2">
   <h3 class="accordion-header" id="headingSpoiler2">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
 </button>
-<div id="collapseSpoiler2" class="accordion-collapse collapse" aria-labelledby="headingSpoiler2" data-bs-parent="#accordionSpoiler2">
+<div id="collapseSpoiler2" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler2" aria-labelledby="headingSpoiler2">
 <div class="accordion-body">
 <p>Note that if we add <code>by_group = FALSE</code> in
 <code>epidemics::new_infections()</code>, we get a summary of the new
@@ -3199,8 +3215,8 @@ health outcomes of interventions</a>.</p>
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
 </div>
+<span class="callout-header">Key Points</span>
 <div class="callout-inner">
-<h3 class="callout-title">Key Points</h3>
 <div class="callout-content">
 <ul>
 <li>The effect of NPIs can be modelled as reducing contact rates between
@@ -3233,7 +3249,7 @@ Place links that you need to refer to multiple times across pages here. Delete
 any links that you are not going to use.
  --></section></section><section id="aio-compare-interventions"><p>Content from <a href="compare-interventions.html">Comparing public health outcomes of interventions</a></p>
 <hr>
-<p>Last updated on 2026-06-10 |
+<p>Last updated on 2026-06-11 |
 
         <a href="https://github.com/epiverse-trace/tutorials-late/edit/main/episodes/compare-interventions.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -3268,8 +3284,8 @@ any links that you are not going to use.
 <div class="callout-square">
 <i class="callout-icon" data-feather="check"></i>
 </div>
+<span class="callout-header">Prerequisite</span>
 <div class="callout-inner">
-<h3 class="callout-title">Prerequisite</h3>
 <div class="callout-content">
 <ul>
 <li>Complete tutorials <a href="simulating-transmission.html">Simulating
@@ -3491,8 +3507,10 @@ different compartments.</p>
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
+<span class="callout-header">Challenge</span>
 <div id="running-a-counterfactual-scenario-using-the-vacamole-model" class="callout-inner">
-<h3 class="callout-title">Running a counterfactual scenario using the Vacamole model</h3>
+<h3 class="callout-title">Running a counterfactual scenario using the
+Vacamole model</h3>
 <div class="callout-content">
 <ol style="list-style-type: decimal">
 <li>Run the model with the default parameter values for the UK
@@ -3892,6 +3910,7 @@ to the baseline. To obtain the infections averted overall we specify
 <div class="callout-square">
 <i class="callout-icon" data-feather="heart"></i>
 </div>
+<span class="callout-header">Testimonial</span>
 <div id="package-vignettes" class="callout-inner">
 <h3 class="callout-title">Package vignettes</h3>
 <div class="callout-content">
@@ -3906,6 +3925,7 @@ African EVD outbreak.</p>
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
+<span class="callout-header">Challenge</span>
 <div id="challenge-ebola-outbreak-analysis" class="callout-inner">
 <h3 class="callout-title">Challenge: Ebola outbreak analysis</h3>
 <div class="callout-content">
@@ -4083,8 +4103,8 @@ outbreak.</strong></p>
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
 </div>
+<span class="callout-header">Key Points</span>
 <div class="callout-inner">
-<h3 class="callout-title">Key Points</h3>
 <div class="callout-content">
 <ul>
 <li>A counterfactual (baseline) scenario must be clearly defined for
@@ -4105,7 +4125,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-vaccine-comparisons"><p>Content from <a href="vaccine-comparisons.html">Comparing vaccination strategies</a></p>
 <hr>
-<p>Last updated on 2026-06-10 |
+<p>Last updated on 2026-06-11 |
 
         <a href="https://github.com/epiverse-trace/tutorials-late/edit/main/episodes/vaccine-comparisons.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -4145,8 +4165,8 @@ any links that you are not going to use.
 <div class="callout-square">
 <i class="callout-icon" data-feather="check"></i>
 </div>
+<span class="callout-header">Prerequisite</span>
 <div class="callout-inner">
-<h3 class="callout-title">Prerequisite</h3>
 <div class="callout-content">
 <ul>
 <li>Complete tutorials <a href="simulating-transmission.html">Simulating
@@ -4268,10 +4288,10 @@ more people that are vaccinated.</p>
 </button>
 </div>
 </nav><div id="nav-tabContent-1" class="tab-content">
-<div id="nav-tabpanel-1-1" class="tab-pane show active" role="tabpanel" aria-labelledby="nav-tab-1-1">
+<div id="nav-tabpanel-1-1" class="tab-pane show active" aria-labelledby="nav-tab-1-1" role="tabpanel">
 <figure><img src="fig/vaccine-comparisons-rendered-unnamed-chunk-4-1.png" alt="" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure>
 </div>
-<div id="nav-tabpanel-1-2" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-1-2">
+<div id="nav-tabpanel-1-2" class="tab-pane" aria-labelledby="nav-tab-1-2" role="tabpanel">
 <div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -4398,10 +4418,10 @@ demographic group separately.</li>
 </button>
 </div>
 </nav><div id="nav-tabContent-2" class="tab-content">
-<div id="nav-tabpanel-2-1" class="tab-pane show active" role="tabpanel" aria-labelledby="nav-tab-2-1">
+<div id="nav-tabpanel-2-1" class="tab-pane show active" aria-labelledby="nav-tab-2-1" role="tabpanel">
 <figure><img src="fig/vaccine-comparisons-rendered-unnamed-chunk-7-1.png" alt="" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure>
 </div>
-<div id="nav-tabpanel-2-2" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-2-2">
+<div id="nav-tabpanel-2-2" class="tab-pane" aria-labelledby="nav-tab-2-2" role="tabpanel">
 <div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -4515,6 +4535,7 @@ infection numbers is by several orders of magnitude.</p>
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
+<span class="callout-header">Callout</span>
 <div id="herd-immunity-threshold" class="callout-inner">
 <h3 class="callout-title">Herd immunity threshold</h3>
 <div class="callout-content">
@@ -4582,10 +4603,10 @@ following scenarios:</p>
 </button>
 </div>
 </nav><div id="nav-tabContent-3" class="tab-content">
-<div id="nav-tabpanel-3-1" class="tab-pane show active" role="tabpanel" aria-labelledby="nav-tab-3-1">
+<div id="nav-tabpanel-3-1" class="tab-pane show active" aria-labelledby="nav-tab-3-1" role="tabpanel">
 <figure><img src="fig/vaccine-comparisons-rendered-unnamed-chunk-11-1.png" alt="" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure>
 </div>
-<div id="nav-tabpanel-3-2" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-3-2">
+<div id="nav-tabpanel-3-2" class="tab-pane" aria-labelledby="nav-tab-3-2" role="tabpanel">
 <div class="codewrapper sourceCode" id="cb10">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -4904,6 +4925,7 @@ simply just implementing the vaccine late (<code>late vacc</code>).</p>
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
+<span class="callout-header">Challenge</span>
 <div id="lifting-npi-measures" class="callout-inner">
 <h3 class="callout-title">Lifting NPI measures</h3>
 <div class="callout-content">
@@ -4919,7 +4941,7 @@ Adapt the code below to lift the NPI after 20, 50 and 100 days</p>
   Output
   </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb17">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -5039,8 +5061,8 @@ part of health economic analyses.</p>
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
 </div>
+<span class="callout-header">Key Points</span>
 <div class="callout-inner">
-<h3 class="callout-title">Key Points</h3>
 <div class="callout-content">
 <ul>
 <li>Herd immunity is a indirect effect of vaccination programs</li>
@@ -5058,7 +5080,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-disease-burden"><p>Content from <a href="disease-burden.html">Modelling disease burden</a></p>
 <hr>
-<p>Last updated on 2026-06-10 |
+<p>Last updated on 2026-06-11 |
 
         <a href="https://github.com/epiverse-trace/tutorials-late/edit/main/episodes/disease-burden.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -5096,8 +5118,8 @@ burden model</li>
 <div class="callout-square">
 <i class="callout-icon" data-feather="check"></i>
 </div>
+<span class="callout-header">Prerequisite</span>
 <div class="callout-inner">
-<h3 class="callout-title">Prerequisite</h3>
 <div class="callout-content">
 <ul>
 <li>Complete tutorial on <a href="simulating-transmission.html">Simulating transmission</a>
@@ -5255,8 +5277,10 @@ distributions for these processes.</p>
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
+<span class="callout-header">Challenge</span>
 <div id="define-distribution-for-admission-to-discharge" class="callout-inner">
-<h3 class="callout-title">Define distribution for admission to discharge</h3>
+<h3 class="callout-title">Define distribution for admission to
+discharge</h3>
 <div class="callout-content">
 <p>Using the function <code>epiparameter()</code> define the
 distribution for admission to discharge as a Gamma distribution with
@@ -5269,7 +5293,7 @@ shape = 10 and scale = 2 and plot the density of this distribution.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb7">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -5343,6 +5367,7 @@ convolution.</p>
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
+<span class="callout-header">Callout</span>
 <div id="what-is-convolution" class="callout-inner">
 <h3 class="callout-title">What is convolution?</h3>
 <div class="callout-content">
@@ -5480,8 +5505,8 @@ from reported hospitalizations or deaths over time.</p>
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
 </div>
+<span class="callout-header">Key Points</span>
 <div class="callout-inner">
-<h3 class="callout-title">Key Points</h3>
 <div class="callout-content">
 <ul>
 <li>Transmission models should include disease burden when it affects
@@ -5518,15 +5543,17 @@ any links that you are not going to use.
 	
         | <a href="https://github.com/epiverse-trace/tutorials-late/blob/main/CONTRIBUTING.md" class="external-link">Contributing</a>
         | <a href="https://github.com/epiverse-trace/tutorials-late/" class="external-link">Source</a></p>
-				<p><a href="https://github.com/epiverse-trace/tutorials-late/blob/main/CITATION.cff" class="external-link">Cite</a> | <a href="mailto:andree.valle-campos@lshtm.ac.uk">Contact</a> | <a href="https://carpentries.org/about/" class="external-link">About</a></p>
-			</div>
-			<div class="col-md-6">
+        <p>
+        <a href="citation.html">Cite</a>
+        | <a href="mailto:andree.valle-campos@lshtm.ac.uk">Contact</a> | <a href="https://carpentries.org/about/" class="external-link">About</a></p>
+		</div>
+		<div class="col-md-6">
 
         <p>Materials licensed under <a href="LICENSE.html">CC-BY 4.0</a> by the authors</p>
 
         <p>Template licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">CC-BY 4.0</a> by <a href="https://carpentries.org/" class="external-link">The Carpentries</a></p>
-        <p>Built with <a href="https://github.com/epiverse-trace/sandpaper/tree/patch-renv-github-bug" class="external-link">sandpaper (0.16.13.9000)</a>, <a href="https://github.com/carpentries/pegboard/tree/7dc6acfdd6233c0d124a0ecf288325edc40dd96d" class="external-link">pegboard (0.7.9)</a>, and <a href="https://github.com/epiverse-trace/varnish/tree/epiversetheme" class="external-link">varnish (1.0.7.9000)</a></p>
-			</div>
+        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/" class="external-link">sandpaper (0.20.2)</a>, <a href="https://github.com/carpentries/pegboard/tree/" class="external-link">pegboard (0.7.9)</a>, and <a href="https://github.com/epiverse-trace/varnish/tree/epiversetheme" class="external-link">varnish (1.1.1)</a></p>
+		</div>
 		</footer>
 </div> <!-- / div.container -->
 	<div id="to-top">
@@ -5547,9 +5574,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://epiverse-trace.github.io/tutorials-late/aio.html",
   "identifier": "https://epiverse-trace.github.io/tutorials-late/aio.html",
-  "dateCreated": "2026-06-10",
-  "dateModified": "2026-06-10",
-  "datePublished": "2026-06-10"
+  "dateCreated": "2026-06-11",
+  "dateModified": "2026-06-11",
+  "datePublished": "2026-06-11"
 }
 
   </script><script>
