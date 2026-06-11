@@ -328,6 +328,7 @@ contact_data_split <- socialmixr::contact_matrix(
   countries = "United Kingdom",
   age_limits = c(0, 20, 40),
   symmetric = TRUE,
+  survey_pop = uk_pop,
   split = TRUE
 )
 
