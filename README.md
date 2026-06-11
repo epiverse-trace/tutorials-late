@@ -45,11 +45,6 @@ Current maintainers of these tutorials are:
 
 - [Andree Valle-Campos](https://github.com/avallecam/)
 
-<!--
-Former maintainers:
-&#10;- [Andree Valle-Campos](https://github.com/avallecam/) 
-&#10;-->
-<!--## Acknowledgements-->
 
 ## Related
 
