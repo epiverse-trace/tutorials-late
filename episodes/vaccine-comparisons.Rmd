@@ -42,6 +42,7 @@ library(ggplot2)
 library(epidemics)
 library(contactsurveys)
 library(socialmixr)
+library(wpp2024)
 library(dplyr)
 library(purrr)
 ```
