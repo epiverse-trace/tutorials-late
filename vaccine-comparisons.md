@@ -43,6 +43,7 @@ library(ggplot2)
 library(epidemics)
 library(contactsurveys)
 library(socialmixr)
+library(wpp2024)
 library(dplyr)
 library(purrr)
 ```
@@ -304,9 +305,9 @@ purrr::map_dfr(interventions, find_cumsum)
 
 ``` output
   intervention_type cumulative_sum
-1          baseline    53478987.43
-2   vaccinate 0.001    44803629.65
-3    vaccinate 0.01       34550.52
+1          baseline    60479437.23
+2   vaccinate 0.001    50592060.68
+3    vaccinate 0.01       38882.56
 ```
 
 
@@ -338,9 +339,9 @@ contacts_byage_matrix
 ``` output
                  age.group
 contact.age.group    [0,15)  [15,65)  [65,Inf)
-         [0,15)   6.8461538 1.655174 0.5892799
-         [15,65)  6.0737213 9.169207 4.1223575
-         [65,Inf) 0.5258855 1.002545 1.7142857
+         [0,15)   6.8461538 1.656868 0.5582018
+         [15,65)  6.0667648 9.169207 3.8648027
+         [65,Inf) 0.6264137 1.184481 1.7142857
 ```
 
 There is higher levels of mixing within the 0-15 and 15-65 age groups than in the 65+ age group, so we expect that targeting different age groups will result in different disease trajectories. 
@@ -505,11 +506,11 @@ purrr::map_dfr(interventions_targetted, find_cumsum)
 
 ``` output
   intervention_type cumulative_sum
-1          baseline       53478987
-2   vaccinate 0.001       44803630
-3 vaccinate group 1       50436402
-4 vaccinate group 2       42064335
-5 vaccinate group 3       51638432
+1          baseline       60479437
+2   vaccinate 0.001       50592061
+3 vaccinate group 1       57108538
+4 vaccinate group 2       47713751
+5 vaccinate group 3       58018791
 ```
 
 ### Age-specific infection-fatality-risk 

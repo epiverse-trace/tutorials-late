@@ -6,6 +6,52 @@ exercises: 30 # exercise time in minutes
 ---
 
 
+``` error
+Error in `popAge1dt %>% dplyr::filter(name == "United Kingdom", year == max(year)) %>%
+    dplyr::select(lower.age.limit = age, population = pop) %>% dplyr::mutate(
+    population = population * 1000)`:
+! could not find function "%>%"
+```
+
+``` error
+Error:
+! object 'uk_pop' not found
+```
+
+``` error
+Error:
+! object 'contacts_byage' not found
+```
+
+``` error
+Error:
+! object 'contacts_byage' not found
+```
+
+``` error
+Error:
+! object 'contacts_byage_matrix' not found
+```
+
+``` error
+Error:
+! object 'contacts_byage_matrix' not found
+```
+
+``` error
+Error:
+! object 'contacts_byage_matrix' not found
+```
+
+``` error
+Error:
+! object 'contacts_byage_matrix' not found
+```
+
+``` error
+Error:
+! object 'uk_population' not found
+```
 
 
 :::::::::::::::::::::::::::::::::::::: questions 
@@ -74,7 +120,14 @@ output_baseline <- epidemics::model_default(
   recovery_rate = recovery_rate,
   time_end = 300, increment = 1.0
 )
+```
 
+``` error
+Error:
+! object 'uk_population' not found
+```
+
+``` r
 output_school <- epidemics::model_default(
   # population
   population = uk_population,
@@ -87,12 +140,42 @@ output_school <- epidemics::model_default(
   # time
   time_end = 300, increment = 1.0
 )
+```
 
+``` error
+Error:
+! object 'uk_population' not found
+```
+
+``` r
 # create intervention_type column for plotting
 output_school$intervention_type <- "school closure"
-output_baseline$intervention_type <- "baseline"
-output <- rbind(output_school, output_baseline)
+```
 
+``` error
+Error:
+! object 'output_school' not found
+```
+
+``` r
+output_baseline$intervention_type <- "baseline"
+```
+
+``` error
+Error:
+! object 'output_baseline' not found
+```
+
+``` r
+output <- rbind(output_school, output_baseline)
+```
+
+``` error
+Error:
+! object 'output_school' not found
+```
+
+``` r
 output %>%
   filter(compartment == "infectious") %>%
   ggplot() +
@@ -124,7 +207,10 @@ output %>%
   )
 ```
 
-<img src="fig/compare-interventions-rendered-unnamed-chunk-2-1.png" alt="" style="display: block; margin: auto;" />
+``` error
+Error:
+! object 'output' not found
+```
 
 If we wanted to quantify the impact of the intervention over the model output through time, we could consider the cumulative number of infectious people in the baseline scenario compared to the intervention scenario: 
 
@@ -163,7 +249,10 @@ output %>%
   )
 ```
 
-<img src="fig/compare-interventions-rendered-unnamed-chunk-3-1.png" alt="" style="display: block; margin: auto;" />
+``` error
+Error:
+! object 'output' not found
+```
 
 
 ### Vacamole model
@@ -271,12 +360,19 @@ survey_files_uk <- contactsurveys::download_survey(
 )
 survey_load_uk <- socialmixr::load_survey(files = survey_files_uk)
 
+data(popAge1dt, package = "wpp2024")
+
+uk_pop <- popAge1dt %>%
+  dplyr::filter(name == "United Kingdom", year == max(year)) %>%
+  dplyr::select(lower.age.limit = age, population = pop) %>%
+  dplyr::mutate(population = population * 1000)
+
 contacts_byage_uk <- socialmixr::contact_matrix(
   survey = survey_load_uk,
   countries = "United Kingdom",
   age_limits = c(0, 20, 40),
   symmetric = TRUE,
-  return_demography = TRUE
+  survey_pop = uk_pop
 )
 # prepare contact matrix
 contacts_byage_matrix_uk <- t(contacts_byage_uk$matrix)
@@ -447,6 +543,11 @@ output_baseline <- epidemics::model_default(
 )
 ```
 
+``` error
+Error:
+! object 'uk_population' not found
+```
+
 
 Then, we create a list of all the interventions we want to include in our comparison. We define our scenarios as follows:
 
@@ -483,34 +584,20 @@ output <- epidemics::model_default(
   time_end = 300, increment = 1.0,
   intervention = intervention_scenarios
 )
+```
+
+``` error
+Error:
+! object 'uk_population' not found
+```
+
+``` r
 head(output)
 ```
 
-``` output
-   transmission_rate infectiousness_rate recovery_rate time_end param_set
-               <num>               <num>         <num>    <num>     <int>
-1:         0.4852141                0.25     0.1818182      300         1
-2:         0.4852141                0.25     0.1818182      300         1
-3:         0.4852141                0.25     0.1818182      300         1
-4:         0.4925786                0.25     0.1818182      300         2
-5:         0.4925786                0.25     0.1818182      300         2
-6:         0.4925786                0.25     0.1818182      300         2
-        population intervention vaccination time_dependence increment scenario
-            <list>       <list>      <list>          <list>     <num>    <int>
-1: <population[4]>    <list[1]>      [NULL]       <list[1]>         1        1
-2: <population[4]>    <list[1]>      [NULL]       <list[1]>         1        2
-3: <population[4]>    <list[2]>      [NULL]       <list[1]>         1        3
-4: <population[4]>    <list[1]>      [NULL]       <list[1]>         1        1
-5: <population[4]>    <list[1]>      [NULL]       <list[1]>         1        2
-6: <population[4]>    <list[2]>      [NULL]       <list[1]>         1        3
-                   data
-                 <list>
-1: <data.table[4515x4]>
-2: <data.table[4515x4]>
-3: <data.table[4515x4]>
-4: <data.table[4515x4]>
-5: <data.table[4515x4]>
-6: <data.table[4515x4]>
+``` error
+Error:
+! object 'output' not found
 ```
 
 Now that we have our model output for all of our scenarios, we want to compare the outputs of the interventions to our baseline. 
@@ -525,21 +612,20 @@ We can do this using `outcomes_averted()` in `{epidemics}`. This function calcul
 intervention_effect <- epidemics::outcomes_averted(
   baseline = output_baseline, scenarios = output
 )
+```
+
+``` error
+Error:
+! object 'output_baseline' not found
+```
+
+``` r
 intervention_effect
 ```
 
-``` output
-   scenario demography_group averted_median averted_lower averted_upper
-      <int>           <char>          <num>         <num>         <num>
-1:        1           [0,15)      2890964.4     2577490.7     3082420.9
-2:        1          [15,65)      1288482.1     1257862.4     1290841.4
-3:        1         [65,Inf)       405810.5      383340.3      414044.8
-4:        2           [0,15)       517742.8      478431.1      558631.8
-5:        2          [15,65)      2413423.7     2259624.9     2566010.9
-6:        2         [65,Inf)       900819.9      882242.1      912790.7
-7:        3           [0,15)      1974788.9     1494800.2     2415088.5
-8:        3          [15,65)      2908140.6     2546313.2     3129329.3
-9:        3         [65,Inf)      1004123.7      864726.7     1100018.0
+``` error
+Error:
+! object 'intervention_effect' not found
 ```
 
 The output gives us the infections averted in each scenario compared to the baseline. To obtain the infections averted overall we specify `by_group = FALSE`:
@@ -550,15 +636,20 @@ intervention_effect <- epidemics::outcomes_averted(
   baseline = output_baseline, scenarios = output,
   by_group = FALSE
 )
+```
+
+``` error
+Error:
+! object 'output_baseline' not found
+```
+
+``` r
 intervention_effect
 ```
 
-``` output
-   scenario averted_median averted_lower averted_upper
-      <int>          <num>         <num>         <num>
-1:        1        4587505       4220698       4770734
-2:        2        3831986       3620298       4037433
-3:        3        5887053       4905840       6644436
+``` error
+Error:
+! object 'intervention_effect' not found
 ```
 
 

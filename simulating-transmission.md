@@ -62,6 +62,7 @@ In this tutorial we are going to learn how to use the `{epidemics}` package to s
 library(epidemics)
 library(contactsurveys)
 library(socialmixr)
+library(wpp2024)
 library(tidyverse)
 ```
 
@@ -181,13 +182,20 @@ survey_files <- contactsurveys::download_survey(
 )
 survey_load <- socialmixr::load_survey(files = survey_files)
 
+data(popAge1dt, package = "wpp2024")
+
+uk_pop <- popAge1dt %>%
+  dplyr::filter(name == "United Kingdom", year == max(year)) %>%
+  dplyr::select(lower.age.limit = age, population = pop) %>%
+  dplyr::mutate(population = population * 1000)
+
 # Generate the contact matrix
 contacts_byage <- socialmixr::contact_matrix(
   survey = survey_load,
   countries = "United Kingdom",
   age_limits = c(0, 20, 40),
   symmetric = TRUE,
-  return_demography = TRUE
+  survey_pop = uk_pop
 )
 
 # prepare contact matrix
@@ -200,9 +208,9 @@ contacts_byage_matrix
 ``` output
                  age.group
 contact.age.group   [0,20)  [20,40) [40,Inf)
-         [0,20)   7.883663 2.794154 1.565665
-         [20,40)  3.120220 4.854839 2.624868
-         [40,Inf) 3.063895 4.599893 5.005571
+         [0,20)   7.883663 2.806513 1.488256
+         [20,40)  3.105519 4.854839 2.495156
+         [40,Inf) 3.290997 4.986325 5.005571
 ```
 
 Remember that the matrix satisfies the `symmetric = TRUE` condition at the level of total number of contacts.
@@ -217,9 +225,9 @@ contacts_byage$matrix * contacts_byage$demography$population
 ``` output
           contact.age.group
 age.group     [0,20)  [20,40)  [40,Inf)
-  [0,20)   116672620 46177038  45343471
-  [20,40)   46177038 80232531  76019216
-  [40,Inf)  45343471 76019216 144967139
+  [0,20)   125841755 49571366  52532033
+  [20,40)   49571366 85750900  88073331
+  [40,Inf)  52532033 88073331 176685255
 ```
 
 :::::::::::::::::::::::::::::::::
@@ -316,7 +324,7 @@ demography_vector
 
 ``` output
   [0,20)  [20,40) [40,Inf) 
-14799290 16526302 28961159 
+15962345 17662976 35297722 
 ```
 
 To create our population object, from the `{epidemics}` package we call the function `epidemics::population()` specifying a name, the contact matrix, the demography vector and the initial conditions.
@@ -333,6 +341,18 @@ uk_population <- epidemics::population(
 )
 ```
 
+:::::::::::: checklist
+
+Print the `uk_population` object. 
+
+It must collect all the input information:
+
+- Population name
+- Demography
+- Contact matrix
+- Initial conditions
+
+::::::::::::
 
 :::::::::::::::::::::: instructor
 
@@ -428,9 +448,9 @@ head(output)
 ``` output
     time demography_group compartment    value
    <num>           <char>      <char>    <num>
-1:     0           [0,20) susceptible 14799275
-2:     0          [20,40) susceptible 16526302
-3:     0         [40,Inf) susceptible 28961159
+1:     0           [0,20) susceptible 15962329
+2:     0          [20,40) susceptible 17662976
+3:     0         [40,Inf) susceptible 35297722
 4:     0           [0,20)     exposed        0
 5:     0          [20,40)     exposed        0
 6:     0         [40,Inf)     exposed        0
@@ -493,11 +513,11 @@ epidemics::epidemic_peak(data = output)
 ```
 
 ``` output
-   demography_group compartment  time    value
-             <char>      <char> <num>    <num>
-1:           [0,20)  infectious   315 651944.3
-2:          [20,40)  infectious   319 625863.8
-3:         [40,Inf)  infectious   322 858259.1
+   demography_group compartment  time     value
+             <char>      <char> <num>     <num>
+1:           [0,20)  infectious   315  706152.8
+2:          [20,40)  infectious   319  677517.5
+3:         [40,Inf)  infectious   323 1013617.2
 ```
 
 Use `epidemics::epidemic_size()` to get the size of the epidemic at any stage between the start and the end. This is calculated as the number of individuals *recovered* from infection at that stage of the epidemic.
@@ -508,7 +528,7 @@ epidemics::epidemic_size(data = output)
 ```
 
 ``` output
-[1]  9285873  9040679 12540088
+[1] 10065475  9794669 14847733
 ```
 
 These summary functions can help you get outputs relevant to scenario comparisons or any other downstream analysis.

@@ -31,13 +31,17 @@ exercises: 10
 
 ## Introduction
 
-Some groups of individuals have more contacts than others; the average schoolchild has many more daily contact than the average elderly person, for example. This heterogeneity of contact patterns between different groups can affect disease transmission, because certain groups are more likely to transmit to others within that group, as well as to other groups. The rate at which individuals within and between groups make contact with others can be summarised in a contact matrix. In this tutorial we are going to learn how contact matrices can be used in different analyses and how the `{socialmixr}` package can be used to estimate contact matrices. 
+Some groups of individuals have more contacts than others; the average schoolchild has many more daily contact than the average elderly person, for example. This heterogeneity of contact patterns between different groups can affect disease transmission, because certain groups are more likely to transmit to others within that group, as well as to other groups. The rate at which individuals within and between groups make contact with others can be summarised in a contact matrix. 
+
+In this tutorial we are going to learn how contact matrices can be used in different analyses, how the package `{contactsurveys}` can be used to access survey data from different countries, and how the `{socialmixr}` package can be used to estimate contact matrices. We'll use `{dplyr}`, `{ggplot2}` and the pipe `%>%` to connect some of their functions, so let's also call to the `{tidyverse}` package:
 
 
 
 ``` r
 library(contactsurveys)
 library(socialmixr)
+library(wpp2024)
+library(tidyverse)
 ```
 
 ## The contact matrix
@@ -101,36 +105,24 @@ levels(survey_load$participants$country)
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
-We obtain the contact matrix for the United Kingdom — passing `countries = "United Kingdom"` to select data from the intended country, `age_limits` to define age categories, and `return_demography = TRUE` to include demographic information required by `{epidemics}`.
+We obtain the contact matrix for the United Kingdom — passing `countries = "United Kingdom"` to select data from the intended country, `age_limits` to define age categories, and `survey_pop` to supply the population structure from `{wpp2024}` required by `{socialmixr}`.
 
 
 ``` r
+data(popAge1dt, package = "wpp2024")
+
+uk_pop <- popAge1dt %>%
+  dplyr::filter(name == "United Kingdom", year == max(year)) %>%
+  dplyr::select(lower.age.limit = age, population = pop) %>%
+  dplyr::mutate(population = population * 1000)
+
 contacts_byage <- socialmixr::contact_matrix(
   survey = survey_load,
   countries = "United Kingdom",
   age_limits = c(0, 20, 40),
   symmetric = TRUE,
-  return_demography = TRUE
+  survey_pop = uk_pop
 )
-```
-
-``` warning
-Warning: Automatic country population lookup in `contact_matrix()` was deprecated in
-socialmixr 0.6.0.
-When `countries` is given (or a `country` column is present) without
-`survey_pop`, contact_matrix() currently calls the soft-deprecated `wpp_age()`
-to look up population data. This automatic lookup will be removed in a future
-release: callers will then have to supply `survey_pop` whenever `symmetric`,
-`split`, `per_capita`, `weigh_age`, or `return_demography` is TRUE.
-ℹ Pass `survey_pop` explicitly to silence this warning, e.g. `survey_pop =
-  survey_country_population(survey, countries)` or a data frame from the
-  wpp2024 package.
-This warning is displayed once per session.
-Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
-generated.
-```
-
-``` r
 contacts_byage
 ```
 
@@ -138,16 +130,16 @@ contacts_byage
 $matrix
           contact.age.group
 age.group    [0,20)  [20,40) [40,Inf)
-  [0,20)   7.883663 3.120220 3.063895
-  [20,40)  2.794154 4.854839 4.599893
-  [40,Inf) 1.565665 2.624868 5.005571
+  [0,20)   7.883663 3.105519 3.290997
+  [20,40)  2.806513 4.854839 4.986325
+  [40,Inf) 1.488256 2.495156 5.005571
 
 $demography
    age.group population proportion  year
       <char>      <num>      <num> <int>
-1:    [0,20)   14799290  0.2454816  2005
-2:   [20,40)   16526302  0.2741283  2005
-3:  [40,Inf)   28961159  0.4803901  2005
+1:    [0,20)   15962345  0.2315966    NA
+2:   [20,40)   17662976  0.2562710    NA
+3:  [40,Inf)   35297722  0.5121324    NA
 
 $participants
    age.group participants proportion
@@ -255,13 +247,20 @@ Similar to the code above, to access vector values within a dataframe, you can u
 
 
 ``` r
+data(popAge1dt, package = "wpp2024")
+
+zambia_pop <- popAge1dt %>%
+  dplyr::filter(name == "Zambia", year == max(year)) %>%
+  dplyr::select(lower.age.limit = age, population = pop) %>%
+  dplyr::mutate(population = population * 1000)
+
 # Generate the contact matrix for Zambia only
 contacts_byage_zambia <- socialmixr::contact_matrix(
   survey = survey_load_zambia,
   countries = "Zambia", # key argument
   age_limits = c(0, 20),
   symmetric = TRUE,
-  return_demography = TRUE
+  survey_pop = zambia_pop
 )
 ```
 
@@ -281,14 +280,14 @@ contacts_byage_zambia
 $matrix
           contact.age.group
 age.group    [0,20) [20,Inf)
-  [0,20)   3.766393 1.427100
-  [20,Inf) 1.955162 2.642584
+  [0,20)   3.766393 1.606167
+  [20,Inf) 1.807909 2.642584
 
 $demography
    age.group population proportion  year
       <char>      <num>      <num> <int>
-1:    [0,20)    8006201  0.5780636  2010
-2:  [20,Inf)    5843835  0.4219364  2010
+1:    [0,20)   11129748  0.5295455    NA
+2:  [20,Inf)    9887800  0.4704545    NA
 
 $participants
    age.group participants proportion
@@ -303,7 +302,7 @@ contacts_byage_zambia$demography$population
 ```
 
 ``` output
-[1] 8006201 5843835
+[1] 11129748  9887800
 ```
 :::::::::::::::::::::::::::::::::
 
@@ -419,7 +418,25 @@ contact_data_split <- socialmixr::contact_matrix(
   symmetric = TRUE,
   split = TRUE
 )
+```
 
+``` warning
+Warning: Automatic country population lookup in `contact_matrix()` was deprecated in
+socialmixr 0.6.0.
+When `countries` is given (or a `country` column is present) without
+`survey_pop`, contact_matrix() currently calls the soft-deprecated `wpp_age()`
+to look up population data. This automatic lookup will be removed in a future
+release: callers will then have to supply `survey_pop` whenever `symmetric`,
+`split`, `per_capita`, `weigh_age`, or `return_demography` is TRUE.
+ℹ Pass `survey_pop` explicitly to silence this warning, e.g. `survey_pop =
+  survey_country_population(survey, countries)` or a data frame from the
+  wpp2024 package.
+This warning is displayed once per session.
+Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+generated.
+```
+
+``` r
 # extract components of the contact matrix
 contacts_d <- contact_data_split$contacts
 matrix_a <- contact_data_split$matrix
