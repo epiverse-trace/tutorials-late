@@ -3,17 +3,30 @@
 # load packages
 library(epidemics)
 library(socialmixr)
+library(contactsurveys)
 library(tidyverse)
 
 # load survey data
-survey_data <- socialmixr::polymod
+survey_files <- contactsurveys::download_survey(
+  survey = "https://doi.org/10.5281/zenodo.3874557",
+  verbose = FALSE
+)
+survey_load <- socialmixr::load_survey(files = survey_files)
+
+data(popAge1dt, package = "wpp2024")
+
+uk_pop <- popAge1dt %>%
+  dplyr::filter(name == "United Kingdom", year == max(year)) %>%
+  dplyr::select(lower.age.limit = age, population = pop) %>%
+  dplyr::mutate(population = population * 1000)
 
 # generate contact matrix
 cm_results <- socialmixr::contact_matrix(
-  survey = survey_data,
+  survey = survey_load,
   countries = "United Kingdom",
-  age.limits = c(0, 15, 65),
-  symmetric = TRUE
+  age_limits = c(0, 15, 65),
+  symmetric = TRUE,
+  survey_pop = uk_pop
 )
 
 # transpose contact matrix
