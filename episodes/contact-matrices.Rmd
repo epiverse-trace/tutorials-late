@@ -4,11 +4,6 @@ teaching: 40
 exercises: 10
 ---
 
-```{r setup, echo= FALSE, message = FALSE, warning = FALSE}
-# we need {webshot} to print {DiagrammeR} outputs
-webshot::install_phantomjs(force = TRUE)
-```
-
 :::::::::::::::::::::::::::::::::::::: questions 
 
 - What is a contact matrix?
