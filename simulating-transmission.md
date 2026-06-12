@@ -4,8 +4,6 @@ teaching: 45 # teaching time in minutes
 exercises: 30 # exercise time in minutes 
 ---
 
-
-
 :::::::::::::::::::::::::::::::::::::: questions 
 
 - How do I simulate disease spread using a mathematical model?

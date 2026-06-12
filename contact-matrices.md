@@ -4,8 +4,6 @@ teaching: 40
 exercises: 10
 ---
 
-
-
 :::::::::::::::::::::::::::::::::::::: questions 
 
 - What is a contact matrix?
