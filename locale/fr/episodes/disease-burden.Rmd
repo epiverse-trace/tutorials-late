@@ -1,0 +1,348 @@
+---
+title: Modélisation de la charge de morbidité
+teaching: 40
+exercises: 10
+---
+
+:::::::::::::::::::::::::::::::::::::: questions
+
+- Comment modéliser la charge de morbidité et la demande de soins de santé ?
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::: objectives
+
+- Comprendre quand les modèles mathématiques de transmission peuvent être séparés des modèles de charge de morbidité
+- Produire des estimations de la charge de morbidité et de la demande de soins de santé à l'aide d'un modèle de charge de morbidité
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::: prereq
+
+- Tutoriel complet sur [Simuler la transmission](../episodes/simulating-transmission.md)
+
+:::::::::::::::::::::::::::::::::
+
+## Introduction
+
+Dans les tutoriels précédents, nous avons utilisé des modèles mathématiques pour générer des trajectoires d'infections, mais nous pouvons également être intéressés par des mesures de la charge de morbidité. Ces mesures peuvent inclure
+
+- les résultats sanitaires dans la population (par exemple, les infections légères par rapport aux infections graves)
+- Impacts sur le système de santé (par exemple, hospitalisations, admissions en soins intensifs)
+- Impacts économiques (perte de productivité, coûts des soins de santé)
+
+Dans les modèles mathématiques, nous pouvons suivre la charge de morbidité de différentes manières :
+
+1. **Approche intégrée** Approche intégrée : Inclure les compartiments de la charge directement dans le modèle de transmission (par exemple, les compartiments hospitaliers dans les modèles ODE).
+2. **Approche séparée** Approche séparée : Simuler d'abord la transmission, puis utiliser les résultats pour estimer la charge.
+
+Le choix entre ces approches dépend de l'influence de la charge sur la transmission. Par exemple, le choix entre ces deux approches dépend de l'influence de la charge sur la transmission :
+
+- Dans le cas d'Ebola, les hospitalisations sont importantes pour la transmission en raison des établissements de santé à haut risque.
+- Pour de nombreuses infections respiratoires, la maladie grave survient généralement après la période infectieuse, de sorte que la charge peut être modélisée séparément.
+
+Dans ce tutoriel, nous nous concentrerons sur l'approche séparée, dans laquelle nous exécutons d'abord un modèle épidémique pour simuler les infections, puis nous utilisons ces valeurs pour estimer la charge de morbidité dans le cadre d'une analyse complémentaire. Nous utiliserons `{epidemics}` pour simuler les trajectoires des maladies, `{socialmixr}` pour les données sur les contacts sociaux, et `{tidyverse}` pour la manipulation et la représentation graphique des données.
+
+```{r, warning=FALSE, message=FALSE}
+library(epiparameter)
+library(epidemics)
+library(socialmixr)
+library(tidyverse)
+```
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: instructor
+
+Les notes de l'instructeur en ligne peuvent aider à informer les instructeurs des difficultés de synchronisation.
+associés aux leçons. Elles apparaissent dans la "Vue instructeur".
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+## Un modèle de charge
+
+Nous allons étendre l'exemple de la grippe de la [Simulation de la transmission](../episodes/simulating-transmission.md) pour calculer les hospitalisations au fil du temps. Notre approche se compose de deux éléments principaux :
+
+1. **Le modèle de transmission** Modèle de transmission : Un modèle SEIR qui génère de nouvelles infections au fil du temps.
+2. **Modèle de charge** Convertit les nouvelles infections en hospitalisations en tenant compte des délais entre l'infection et l'hospitalisation.
+
+Pour convertir les infections en hospitalisations, nous devons prendre en compte les éléments suivants :
+
+- la probabilité qu'une infection conduise à une hospitalisation (ratio infection-hospitalisation, RHI)
+- Le délai entre l'infection et l'admission à l'hôpital
+- Le temps passé à l'hôpital avant la sortie
+
+Nous utiliserons `{epiparameter}` pour définir ces distributions de délais. La distribution Gamma est couramment utilisée pour ces délais car :
+
+- elle est flexible et peut modéliser différentes formes
+- Il est limité à zéro (les retards négatifs n'ont pas de sens)
+- Elle est étayée par des données empiriques pour de nombreuses maladies infectieuses.
+
+```{r, echo=FALSE, message=FALSE}
+# load contact and population data from socialmixr::polymod
+polymod <- socialmixr::polymod
+contact_data <- socialmixr::contact_matrix(
+  polymod,
+  countries = "United Kingdom",
+  age.limits = c(0, 20, 40),
+  symmetric = TRUE
+)
+
+# prepare contact matrix
+contact_matrix <- t(contact_data$matrix)
+
+# prepare the demography vector
+demography_vector <- contact_data$demography$population
+names(demography_vector) <- rownames(contact_matrix)
+
+# initial conditions: one in every 1 million is infected
+initial_i <- 1e-6
+initial_conditions_inf <- c(
+  S = 1 - initial_i, E = 0, I = initial_i, R = 0, V = 0
+)
+
+initial_conditions_free <- c(
+  S = 1, E = 0, I = 0, R = 0, V = 0
+)
+
+# build for all age groups
+initial_conditions <- rbind(
+  initial_conditions_inf,
+  initial_conditions_free,
+  initial_conditions_free
+)
+rownames(initial_conditions) <- rownames(contact_matrix)
+
+# prepare the population to model as affected by the epidemic
+uk_population <- epidemics::population(
+  name = "UK",
+  contact_matrix = contact_matrix,
+  demography_vector = demography_vector,
+  initial_conditions = initial_conditions
+)
+
+# time periods
+preinfectious_period <- 3.0
+infectious_period <- 7.0
+basic_reproduction <- 1.46
+
+# rates
+infectiousness_rate <- 1.0 / preinfectious_period
+recovery_rate <- 1.0 / infectious_period
+transmission_rate <- basic_reproduction / infectious_period
+
+# run an epidemic model using `epidemic()`
+output_plot <- epidemics::model_default(
+  population = uk_population,
+  transmission_rate = transmission_rate,
+  infectiousness_rate = infectiousness_rate,
+  recovery_rate = recovery_rate,
+  time_end = 600, increment = 1.0
+)
+
+```
+
+```{r}
+new_cases <- new_infections(output_plot, by_group = FALSE)
+head(new_cases)
+```
+
+Pour convertir les nouvelles infections en hospitalisations, nous avons besoin de distributions de paramètres pour décrire les processus suivants :
+
+- le temps écoulé entre l'infection et l'admission à l'hôpital,
+
+- le délai entre l'admission et la sortie de l'hôpital.
+
+Nous utiliserons la fonction `epiparameter()` de `{epiparameter}` pour définir et stocker les distributions de paramètres pour ces processus.
+
+```{r, message=FALSE}
+# define delay parameters
+infection_to_admission <- epiparameter(
+  disease = "COVID-19",
+  epi_name = "infection to admission",
+  prob_distribution = create_prob_distribution(
+    prob_distribution = "gamma",
+    prob_distribution_params = c(shape = 5, scale = 4),
+    discretise = TRUE
+  )
+)
+
+# The shape and scale parameters were chosen based on data from COVID-19 studies
+# showing a median time from infection to hospitalization of around 10 days
+# with right-skewed distribution reflecting variability in disease progression
+```
+
+Pour visualiser cette distribution, nous pouvons créer un graphique de densité :
+
+```{r}
+x_range <- seq(0, 60, by = 0.1)
+density_df <- data.frame(days = x_range,
+                         density_admission = density(infection_to_admission,
+                                                     x_range))
+
+ggplot(data = density_df, aes(x = days, y = density_admission))  +
+  geom_line(linewidth = 1.2) +
+  theme_bw() +
+  labs(
+    x = "infection to admission (days)",
+    y = "pdf"
+  )
+
+```
+
+::::::::::::::::::::::::::::::::::::: challenge
+
+## Définir la distribution de l'admission à la sortie
+
+En utilisant la fonction `epiparameter()` définissez la distribution pour l'admission à la sortie comme une distribution Gamma avec forme = 10 et échelle = 2 et tracez la densité de cette distribution.
+
+:::::::::::::::::::::::: solution
+
+```{r, message=FALSE}
+admission_to_discharge <- epiparameter(
+  disease = "COVID-19",
+  epi_name = "admission to discharge",
+  prob_distribution = create_prob_distribution(
+    prob_distribution = "gamma",
+    prob_distribution_params = c(shape = 10, scale = 2),
+    discretise = TRUE
+  )
+)
+
+x_range <- seq(0, 60, by = 0.1)
+density_df <- data.frame(days = x_range,
+                         density_discharge = density(admission_to_discharge,
+                                                     x_range))
+
+
+ggplot(data = density_df, aes(x = days, y = density_discharge)) +
+  geom_line(linewidth = 1.2) +
+  theme_bw() +
+  labs(
+    x = "admission to discharge (days)",
+    y = "pdf"
+  )
+
+```
+
+:::::::::::::::::::::::::::::::::
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+Pour convertir les nouvelles infections en nombre d'hospitalisations au fil du temps, nous procéderons comme suit :
+
+1. Calculez le nombre attendu de nouvelles infections qui seront hospitalisées en utilisant le ratio d'hospitalisation pour cause d'infection (RSI).
+2. Calculez le nombre estimé de nouvelles hospitalisations à chaque moment en utilisant la distribution des infections par rapport aux admissions.
+3. Calculez le nombre estimé de sorties à chaque moment en utilisant la distribution entre les admissions et les sorties.
+4. Calculez le nombre de personnes hospitalisées à chaque moment en faisant la différence entre la somme cumulée des admissions à l'hôpital et la somme cumulée des sorties jusqu'à présent.
+
+#### 1\. Calculez le nombre attendu de nouvelles hospitalisations à l'aide du ratio d'hospitalisation pour cause d'infection (RSI).
+
+```{r}
+ihr <- 0.1 # infection-hospitalisation ratio
+# This value is based on estimates from early COVID-19 data
+# and represents the proportion of infections that require hospitalization
+
+# calculate expected numbers with convolution:
+hosp <- new_cases$new_infections * ihr
+```
+
+#### 2\. Calculer le nombre estimé de nouvelles hospitalisations à l'aide de la distribution entre l'infection et l'admission.
+
+Pour estimer le nombre de nouvelles hospitalisations, nous utilisons une méthode appelée convolution.
+
+::::::::::::::::::::::::::::::::::::: callout
+
+### Qu'est-ce que la convolution ?
+
+Si nous voulons savoir comment les personnes sont admises à l'hôpital le jour de l'hospitalisation, nous devons savoir comment les personnes sont admises à l'hôpital le jour de l'hospitalisation. $t$ nous devons additionner le nombre de personnes admises le jour $t$ mais infectées le jour $t-1$ jour $t-2$ jour $t-3$ etc. Nous devons donc faire la somme de la distribution des délais entre l'infection et l'admission. Si $f_j$ est la probabilité qu'une personne infectée qui sera hospitalisée soit admise à l'hôpital $j$ jours plus tard, et $I_{t-j}$ est le nombre de personnes infectées le jour $t-j$ alors le nombre total d'admissions le jour $t$ est égal à $\sum_j I_{t-j} f_j$.  Ce type de calcul de roulement est connu sous le nom de convolution (voir cette [article de Wolfram](https://mathworld.wolfram.com/Convolution.html) pour plus de détails mathématiques). Il existe différentes méthodes pour calculer les convolutions, mais nous utiliserons la fonction intégrée de R `convolve()`pour effectuer efficacement la sommation à partir du nombre d'infections et de la distribution des délais.
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+La fonction `convolve()` nécessite en entrée deux vecteurs qui seront convolués et `type`. Nous spécifierons ici `type = "open"`, ce qui remplit les vecteurs avec des 0 pour s'assurer qu'ils sont de la même longueur.
+
+Les entrées à combiner sont le nombre attendu d'infections qui aboutiront à une hospitalisation (`hosp`) et les valeurs de densité de la distribution des délais entre l'infection et l'admission. Nous calculerons la densité pour la valeur minimale possible (0 jour) jusqu'à la queue de la distribution (définie ici comme le 99,9e quantile, c'est-à-dire qu'il est très peu probable qu'un cas soit hospitalisé après un délai aussi long).
+
+La convolution nécessite l'inversion de l'une des entrées. Dans notre cas, nous inverserons la distribution de la densité des temps d'infection et d'admission. En effet, si des personnes infectées plus tôt sont admises aujourd'hui, cela signifie qu'elles ont eu un délai plus long entre l'infection et l'admission qu'une personne infectée plus récemment. En fait, le délai entre l'infection et l'admission nous indique jusqu'où nous devons "remonter" le temps pour trouver les nouvelles infections qui se manifestent aujourd'hui par des admissions à l'hôpital.
+
+```{r}
+# define tail of the delay distribution
+tail_value_admission <- quantile(infection_to_admission, 0.999)
+
+hospitalisations <- convolve(hosp,
+                             rev(density(infection_to_admission,
+                                         0:tail_value_admission)),
+                             type = "open")[seq_along(hosp)]
+```
+
+#### 3\. Calculez le nombre estimé de sorties
+
+En utilisant la même approche que ci-dessus, nous convolons les hospitalisations avec la distribution des temps d'admission à la sortie pour obtenir le nombre estimé de nouvelles sorties.
+
+```{r}
+tail_value_discharge <- quantile(admission_to_discharge, 0.999)
+discharges <- convolve(hospitalisations, rev(density(admission_to_discharge,
+                                                     0:tail_value_discharge)),
+                       type = "open")[seq_along(hospitalisations)]
+```
+
+#### 4\. Calculez le nombre d'hospitalisations comme la différence entre la somme cumulée des hospitalisations et la somme cumulée des sorties.
+
+Nous pouvons utiliser la fonction R `cumsum()` pour calculer le nombre cumulé d'hospitalisations et de sorties. La différence entre ces deux quantités nous donne le nombre actuel de personnes hospitalisées à chaque point dans le temps.
+
+```{r}
+# calculate the current number in hospital
+in_hospital <- cumsum(hospitalisations) - cumsum(discharges)
+```
+
+Nous créons un cadre de données pour représenter nos résultats à l'aide de `pivot_longer()`:
+
+```{r}
+# create data frame
+hosp_df <- cbind(new_cases, in_hospital = in_hospital,
+                 hospitalisations = hospitalisations)
+# pivot longer for plotting
+hosp_df_long <- pivot_longer(hosp_df, cols = new_infections:hospitalisations,
+                             names_to = "outcome", values_to = "value")
+
+
+ggplot(data = hosp_df_long) +
+  geom_line(
+    aes(
+      x = time,
+      y = value,
+      colour = outcome
+    ),
+    linewidth = 1.2
+  ) +
+  theme_bw() +
+  labs(
+    x = "Time (days)",
+    y = "Individuals"
+  )
+```
+
+## Résumé
+
+Dans ce tutoriel, nous avons appris à estimer les hospitalisations sur la base des nouvelles infections quotidiennes à partir d'un modèle de transmission. Cette approche peut être étendue à d'autres mesures de la charge de morbidité, telles que :
+
+- les admissions en USI
+- Décès
+- Années de vie corrigées de l'incapacité (AVCI)
+- Coût des soins de santé
+
+Ces estimations de la charge de morbidité sont précieuses pour :
+
+- la planification des systèmes de santé
+- Analyses économiques de la santé
+- Prise de décision politique
+
+Dans la foulée, vous pourriez être intéressé par [ce guide pratique](https://epiverse-trace.github.io/howto/analyses/reconstruct_transmission/estimate_infections.html) qui montre comment estimer les événements d'infection initiale à partir des hospitalisations ou des décès déclarés au fil du temps.
+
+::::::::::::::::::::::::::::::::::::: keypoints
+
+- Les modèles de transmission devraient inclure la charge de morbidité lorsqu'elle affecte la transmission ultérieure.
+- Les résultats des modèles de transmission peuvent être utilisés pour les modèles de charge de morbidité.
+- La distribution Gamma est couramment utilisée pour modéliser les retards dans la progression de la maladie.
+- La convolution est un outil puissant pour estimer la charge de morbidité à partir des résultats des modèles de transmission.
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+

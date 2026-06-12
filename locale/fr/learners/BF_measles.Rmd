@@ -1,0 +1,888 @@
+---
+title: Introduction à la modélisation mathématique des maladies infectieuses
+fig_caption: true
+code_folding: show
+---
+
+# Préface
+
+Ce document est préparé pour les participants au cours Outbreak Analytics in R,
+organisé par l'équipe Epiverse-TRACE. Il a pour but de fournir une
+une introduction concise à la théorie mathématique qui sous-tend la modélisation des épidémies infectieuses.
+Nous utiliserons le modèle Susceptible, Exposé, Infecté et Récupéré (**SEIR**),
+applicable à des maladies telles que la rougeole, les oreillons et la rubéole, par exemple.
+
+# Scénario
+
+Supposons qu'une nouvelle infection ait été détectée dans une communauté fermée de
+$\mathbf{N}$ individus, l'infection ayant été diagnostiquée chez un seul d'entre eux.
+individu. Les autres $\mathbf{N-1}$ individus sont tous exposés au risque de
+de contracter l'infection et sont considérés comme sensibles ($\mathbf{S}$). Un
+personne infectée fabrique des $k$ contacts et a une probabilité $p$ d'infecter
+chacun d'entre eux s'il est sensible, et nous pouvons appeler cela $\beta$ en abrégé. Il s'agit du taux moyen auquel
+un individu infecté peut transmettre l'infection à un individu sensible.
+sensible.
+
+Selon la nature de la maladie, un individu nouvellement infecté peut prendre
+un certain temps avant de présenter des symptômes, ce que l'on appelle la période d'incubation (temps écoulé entre l'infection et l'apparition des symptômes).
+symptômes), et un certain temps pour devenir infectieux, appelé période de latence (temps écoulé entre l'infection et les symptômes), et un certain temps pour devenir infectieux, appelé période de latence.
+l'infection à la contagiosité). La période de latence est importante pour les modèles de type SEIR.
+Les personnes sensibles qui entrent en contact avec une personne infectée par le virus de l'immunodéficience humaine (VIH) ont une période de latence de trois mois.
+et contractent l'infection passent d'abord par un état intermédiaire
+appelé "exposé" ($\mathbf{E}$). Là, ils passent en moyenne
+$\frac{1}{\alpha}$ unités de temps (la période de latence) et se déplacent ensuite vers
+la classe infectée ($\mathbf{I}$) à un rythme constant $\alpha$. Les classes
+sont retirés (soit par guérison, soit par mort) de la population de l $I$ à un
+taux constant $\gamma$ avec $\frac{1}{\gamma}$ représentant la moyenne des
+durée de récupération. Une fois rétablis, ils acquièrent une immunité à vie contre les maladies suivantes
+l'infection en cours, ce qui signifie qu'ils ne seront plus jamais sensibles, et
+ils passent dans la classe des personnes guéries ($\mathbf{R}$) (voir
+[Figure 1](#fig-seir)). Il s'agit d'hypothèses à des fins de modélisation et
+ne reflètent pas nécessairement les processus biologiques sous-jacents.
+
+![](fig/t0.drawio.png){ref-parent="fig-seir"}
+![](fig/t1.drawio.png){ref-parent="fig-seir"}
+![](fig/t2.drawio.png){ref-parent="fig-seir"}
+![](fig/t3.drawio.png){ref-parent="fig-seir"}
+
+Les quatre classes S-E-I-R considérées dans l'étude de la $\mathbf{SEIR}$ modèle.
+Le nombre d'individus dans chaque
+changent au fil du temps et sont donc des fonctions du temps $t$ et
+la population totale à tout moment $t$ est
+$N(t)=  S(t) + E(t) + I(t)+ R(t)$. Les taux de variation entre ces
+Les taux de changement entre ces classes sont saisis mathématiquement par quatre équations différentielles
+comme suit :
+
+[$$
+\begin{eqnarray}
+\frac{dS}{dt} &=& -\beta \frac{S.I}{N} & & \
+\frac{dE}{dt} &=&\beta \frac{S.I}{N} &-& \alpha E\
+\frac{dI}{dt} &=& \alpha E &-& \gamma I \
+\frac{dR}{dt} &=& \gamma I  & &\
+\end{eqnarray}
+\qquad(1)$$]{#eq-s1}
+
+Au moment $t_0=0$ nous supposons qu'il y a une personne infectée ($\mathbf{I}_0 =1$) ;
+aucune personne exposée ($\mathbf{E}_0 = 0$) ou de récupération ($\mathbf{R}_0 = 0$). et pendant que
+tous les autres individus restent sensibles
+($\mathbf{S}_0= \mathbf{N} -\mathbf{I}_0 = \mathbf{N} -1$). C'est ce que l'on appelle les valeurs initiales du système
+en [Équation 1](#eq-s1).
+
+Comme les compartiments représentent des individus, leur
+valeurs doivent toujours être non négatives. Cette caractéristique est appelée
+la positivité de la solution.
+Avant d'entrer dans les détails mathématiques de la résolution d'un problème de
+[l'équation 1](#eq-s1) quelques observations essentielles peuvent être faites :
+
+1. Au début d'une épidémie, le nombre d'individus susceptibles d'être infectés par le virus de l'immunodéficience humaine (VIH) est très élevé.
+  commence à diminuer de manière exponentielle, tandis que le nombre d'individus exposés et de
+  infectieux augmente. Au fur et à mesure que l'épidémie progresse, le
+  la population sensible s'épuise, et les individus exposés et infectieux
+  infectieux atteignent leur maximum avant de commencer à décliner.
+  Pendant ce temps, le nombre de personnes guéries continue d'augmenter
+  sans diminuer. (Notez que ces observations ne sont valables que lorsque
+  $\mathcal{R}_0 > 1$ comme nous le verrons plus loin dans ce document).
+
+2. L'infection ne commencera à se propager dans la communauté que lorsque $\frac{\mathbf{dE}}{dt} > 0$
+  ou $\frac{\mathbf{dI}}{dt} > 0$ et en prenant les valeurs de ces deux
+  de [équation 1](#eq-s1) conduit à
+
+[$$
+\begin{eqnarray}
+\beta .\frac{S.I}{N} &-& \alpha .E > 0\
+\alpha. E &-& \gamma .I > 0.
+\end{eqnarray}
+\qquad(2)$$]{#eq-s2}
+
+En ajoutant les deux équations en [Équation 2](#eq-s2) donne
+$\frac{\beta}{\gamma} > \frac{\mathbf{N}}{\mathbf{S}}$. Au moment $t=0$,
+nous avons $\mathbf{S} = \mathbf{N}-1 \approx  \mathbf{N}$. Par conséquent, le
+décollera si $\frac{\beta}{\gamma} > 1$. Il s'agit d'une
+intéressante -- Elle indique que l'épidémie augmente si les nouvelles infections
+sont générées à un rythme plus élevé que les infections existantes ne se rétablissent.
+
+3. Le ratio $\frac{\beta}{\gamma}$ représente la reproduction de base
+  de base, $\mathcal{R}_0$ qui est défini comme le nombre moyen de
+  nouvelles infections causées par un seul individu infecté dans un pays entièrement
+  totalement sensible. Intuitivement, $\beta$ ne décrit à lui seul que le taux
+  de nouvelles infections, sans tenir compte de la durée de vie de chaque individu infecté.
+  contribue à la transmission. En tenant compte de la période infectieuse
+  $\frac{1}{\gamma}$ nous obtenons une mesure complète de chaque
+  l'impact de chaque individu infecté sur la transmission pendant toute la durée de la contagion. $\mathcal{R}_0$ est une mesure cruciale pour l'évaluation de l'impact de l'infection sur la transmission.
+  pour comprendre la transmissibilité d'une maladie infectieuse. A
+  valeur élevée de $\mathcal{R}_0$ indique une maladie infectieuse plus transmissible.
+  transmissible.
+
+4. La taille finale d'une épidémie, c'est-à-dire le nombre total d'individus qui seront infectés par la maladie, est déterminée en fonction de l'âge et du sexe de l'individu.
+  seront finalement infectés - est le nombre cumulé d'infections en tant que
+  prédit par le modèle. Cependant, si seul le $\mathcal{R}_0$  est connu, il
+  peut encore fournir des indications sur la taille finale de l'épidémie par le biais de
+  l'équation suivante :
+
+[$$
+\begin{equation}
+z = 1 - e^{-\mathcal{R}_0 .z}
+\end{equation}
+\qquad(3)$$]{#eq-fs}
+
+Où :
+
+- $z$ est la taille finale (la fraction de la population infectée),
+
+- $\mathcal{R}_0$ est le nombre de reproduction de base, et
+
+- $e$ est la base du logarithme naturel.
+
+Pour une dérivation détaillée et des informations théoriques sur l'équation de la taille finale,
+veuillez vous référer à [cet article](https://epiverse-trace.github.io/finalsize/articles/theoretical_background.html).
+
+5. En outre, le numéro de reproduction de base $\mathcal{R}_0$ est
+  crucial pour déterminer le seuil d'immunité du troupeau (TIS), qui
+  représente la proportion minimale de la population qui doit être immunisée.
+  être immunisée (soit par la vaccination, soit par une infection antérieure) pour
+  pour contenir l'épidémie et empêcher une transmission à grande échelle. Le taux d'immunité de la
+  formule du seuil d'immunité collective est la suivante :
+   [$$ HIT = 1 - \frac{1}{\mathcal{R}_0} \qquad(4)$$] {#eq-hit}
+
+Où :
+
+- HIT est la proportion de la population qui doit être immunisée contre les maladies infectieuses.
+  pour atteindre l'immunité de groupe,
+
+En tant que $\mathcal{R}_0$ augmente, le seuil d'immunité du troupeau augmente également
+augmente, ce qui signifie qu'une plus grande proportion de la population doit être immunisée.
+pour empêcher l'épidémie de se propager.
+
+Pour comprendre la logique de la formule HIT, notez qu'au fur et à mesure que le temps passe,
+l'immunité se développe dans la population. Cela réduit le nombre de personnes susceptibles d'être infectées.
+de personnes sensibles, ce qui diminue le nombre réel de cas secondaires qu'un pays est en droit d'attendre.
+une personne infectée typique peut produire. Ce nombre est appelé le taux d'efficacité de l'infection.
+nombre de reproduction efficace ($\mathcal{R}_{eff}$), et il est donné par la formule suivante
+
+$$ \mathcal{R}_{eff} = \mathcal{R}_0 \times \mathbf{S}.$$
+
+Pour qu'une épidémie cesse de se propager, chaque personne infectée doit, en moyenne,
+infecter moins d'une autre personne, ce qui signifie que nous avons besoin de $\mathcal{R}<1$.
+Cette condition conduit à :
+
+$$\mathbf{S} < \frac{1}{\mathcal{R}_0}$$
+
+Ainsi, si nous pouvons réduire la proportion sensible $\mathbf{S}$ en dessous de
+$\frac{1}{\mathcal{R}_0}$ le nombre de reproduction effectif $\mathcal{R}_{eff}$
+tombe en dessous de 1, ce qui entraîne l'arrêt de la croissance moyenne de l'épidémie.
+
+# Épidémie de rougeole au Burkina Faso
+
+## Contexte
+
+La rougeole est une maladie virale très contagieuse qui se propage rapidement,
+en particulier dans les environnements où les gens vivent ou se rassemblent à proximité les uns des autres.
+comme les écoles, les établissements de santé ou les zones densément peuplées.
+densément peuplées. La transmission se fait par l'intermédiaire de gouttelettes respiratoires lorsqu'un
+une personne infectée tousse ou éternue, et le virus peut rester viable dans l'air ambiant.
+dans l'air jusqu'à deux heures. Des vaccins efficaces sont disponibles, offrant
+une efficacité de 93 % à 97 % ([À propos de la rougeole, CDC](https://www.cdc.gov/measles/about/index.html)), ce qui fait de la vaccination un outil clé dans la lutte contre la
+les épidémies de rougeole.
+
+Compte tenu de la grande transmissibilité du virus, même un seul cas de rougeole introduit dans l'Union européenne peut être considéré comme une menace pour la santé publique.
+peut déclencher d'importantes épidémies, en particulier dans les régions où le taux de vaccination est faible.
+faible. La période de latence (pré-infectieuse) de la rougeole est de
+est généralement d'environ 8 jours, tandis que la période infectieuse est en moyenne de 5 jours ([Masters et al, 2023](https://www.thelancet.com/journals/lanpub/article/PIIS2468-2667\(23\)00130-5/fulltext)). Le modèle SEIR en
+[l'équation 1](#eq-s1) peut être utilisé pour simuler le
+dynamique des épidémies de rougeole et d'évaluer les mesures de contrôle telles que les mesures de lutte contre la rougeole.
+la vaccination.
+
+## Situation du Burkina Faso en janvier 2024
+
+Le Burkina Faso est confronté à des problèmes récurrents
+récurrentes de rougeole. Cette situation peut être attribuée à des facteurs tels que l'insuffisance des
+l'accès aux soins de santé, une couverture vaccinale insuffisante et une
+systèmes de santé fragiles. En 2023, le Burkina Faso a connu un taux de mortalité particulièrement élevé.
+particulièrement grave, avec plus de 2 000 cas suspects signalés
+([Crisis24, 2024](https://crisis24.garda.com/alerts/2024/02/burkina-faso-elevated-measles-activity-reported-in-multiple-areas-in-february)),
+les autorités sanitaires et les organisations internationales à intensifier leur action.
+campagnes de vaccination pour tenter d'enrayer la propagation de la maladie.
+([Save the Children, 2024](https://www.savethechildren.net/news/burkina-faso-over-2000-children-diagnosed-suspected-measles-nationwide-outbreak); [Le Câble, 2024](https://www.thecable.ng/burkina-faso-records-2000-suspected-cases-as-country-battles-measles-outbreak/)).
+
+Nous simulerons l'épidémie de rougeole au Burkina Faso à l'aide du SEIR
+en [Équation 1](#eq-s1). Cela nous permettra de
+d'explorer la dynamique de l'épidémie avec et sans intervention. Pour ce faire, le
+nous utiliserons l'outil **R** et le paquetage `{epidemics}` qui est conçu pour
+pour modéliser la propagation des maladies infectieuses. Dans ces simulations, nous nous concentrerons sur
+spécifiquement sur le nombre d'infections, qui représente un sous-ensemble de l'ensemble des cas suspects déclarés.
+
+## Modèle de base
+
+**Hypothèses et paramètres du modèle**
+
+1. **Population totale** La population du Burkina Faso est de
+  d'environ $N\approx 22.67$ millions d'habitants.
+
+2. **Structure de la population**:
+  
+  - **Pas de stratification par âge** La stratification par âge : Supposez que la population est homogène
+    par rapport à l'âge. Cela signifie que tous les individus, quel que soit
+    l'âge, ont la même susceptibilité à la rougeole et contribuent à la propagation de la maladie.
+    à la dynamique de transmission.
+
+3. **Conditions initiales**:
+  
+  - Un seul cas infectieux est introduit dans la population :
+    $I_0 = 1$.
+  - L'ensemble de la population, à l'exception de ce cas, est initialement
+    sensible : $S_0 = N - 1$. Ce cas
+    Cette hypothèse simplifie le modèle et nous permet d'explorer la propagation de l'épidémie.
+    l'infection en l'absence d'immunité. Bien que les populations réelles
+    ont une certaine immunité due à la vaccination ou à une infection antérieure.
+  - Aucun individu n'est au stade exposé au départ : $E_0 = 0$.
+  - Aucun individu ne s'est rétabli : $R_0 = 0$.
+
+4. **Période de latence** La période de latence moyenne de la rougeole est de
+  d'environ 8 jours (le temps écoulé entre l'exposition et le début de la
+  infectieuse), de sorte que le taux de transition entre l'exposition et l'infectiosité est d'environ 1,5 million d'euros.
+  est donc de : $\alpha = \frac{1}{8}$.
+
+5. **Période infectieuse** Période infectieuse : La période infectieuse moyenne est de 5
+  jours, ce qui signifie que le taux de guérison est de : $\gamma = \frac{1}{5}$.
+
+6. **Numéro de reproduction de base** $\mathcal{R}_0$:
+  
+  - $\mathcal{R}_0 =15$. Pour la rougeole, cette valeur est généralement comprise entre
+    de 12 à 18, voire plus [Fiona, et al](https://www.thelancet.com/journals/laninf/article/PIIS1473-3099\(17\)30307-9/abstract).
+  - Le taux de transmission est donc de
+    $\beta = \mathcal{R}_0 \gamma = 3$\-- ce qui signifie que chaque individu infectieux provoque 3 nouvelles infections
+    par jour dans une population totalement sensible.
+
+En appliquant ces hypothèses et paramètres à l
+[l'équation 1](#eq-s1) nous pouvons simuler le potentiel
+de l'épidémie de rougeole à l'aide de la syntaxe fournie par l'Agence européenne pour la sécurité et la santé au travail.
+{epidemics} comme le montre le morceau de code ci-dessous.
+
+```{r, warning=FALSE, message=FALSE}
+# Loading libraries
+library(dplyr)
+library(ggplot2)
+library(epidemics)
+```
+
+```{r}
+# Define the population structure for Burkina Faso
+bfaso <- epidemics::population(
+  name = "Burkina Faso",
+  contact_matrix = matrix(1), # Well-mixed population
+  demography_vector = 22.67e6, # Population size
+  # Initial conditions: Susceptible, exposed, Infectious, vaccinated, recovered
+  initial_conditions = matrix(
+    c(1 - 1 / 22.67e6, 1 / 22.67e6, 0, 0, 0),
+    nrow = 1, ncol = 5
+  )
+)
+
+# Run the SEIR model simulation
+output <- epidemics::model_default(
+  population = bfaso,
+  transmission_rate = 15 / 5, # R0/infectious period = 15/5 = 3
+  infectiousness_rate = 1 / 8, # 1/latent period (pre-infectious phase)
+  recovery_rate = 1 / 5, # 1/infectious period
+  time_end = 120, # Simulation over 120 days
+  increment = 1 # Daily increments
+)
+
+# Plot the epidemic curve for susceptible, exposed, infectious, and recovered
+output %>%
+  filter(compartment %in% c("exposed", "infectious")) %>%
+  ggplot(aes(
+    x = time,
+    y = value / 10^6, # Scale to millions
+    col = compartment,
+    linetype = compartment
+  )) +
+  geom_line(linewidth = 1.5) +
+  theme_bw() +
+  theme(
+    legend.position = "top"
+  ) +
+  labs(
+    x = "Simulation Time (days)",
+    y = "Individuals (in millions)",
+    caption = expression(
+      paste(
+        "The dynamics of SEIR model with ",
+        italic(R)[0], "= 15, ",
+        "showing the trajectories of number of exposed and infected individuals"
+      )
+    )
+  )
+```
+
+## Taille prévue de l'épidémie et immunité du troupeau
+
+L'immunité `{finalsize}` met en œuvre
+[Equation 3](#eq-fs) pour calculer la proportion attendue
+de la population qui sera infectée compte tenu d'un niveau de base spécifié.
+de reproduction de base $(\mathcal{R}_0)$. Le calcul peut être effectué comme suit
+comme suit :
+
+```{r}
+finalsize::final_size(r0 = 10)
+```
+
+Pour $\mathcal{R}_0 \geq 10$ les résultats indiquent que la quasi-totalité des
+devrait être infectée par la rougeole. Les $HIT$ nécessaires pour
+d'endiguer l'épidémie est d'environ $93%$ en utilisant la formule donnée dans
+[équation 4](#eq-hit).
+
+# Modèle structuré par âge
+
+La structure par âge du Burkina Faso est caractéristique d'un pays jeune.
+avec une majorité de la population âgée de moins de 25 ans.
+Selon des estimations récentes ([Nations unies, 2023](https://population.un.org/wpp/);
+[Agence centrale de renseignements, 2023](https://www.cia.gov/the-world-factbook/countries/burkina-faso/);
+[Banque mondiale, 2023](https://data.worldbank.org/indicator/SP.POP.TOTL?locations=BF)), la structure par âge
+se décompose comme suit :
+
+- $[0\to15)$ ans : ~ 44 (43-45) % de la population
+- $[15\to 25)$ ans : ~19.5 (19-20)%
+- $[25\to 55)$ ans : ~29 (28-30)%
+- $[55\to 65)$ ans : ~5 (3-5)%
+- $65+$ années : ~2,5 (2-3)%
+
+## **Contact Matrix**
+
+Une matrice de contacts se compose généralement de lignes et de colonnes représentant
+différents groupes d'âge, où chaque cellule indique le nombre moyen de contacts.
+contacts entre les individus du groupe d'âge correspondant à cette ligne
+et à la colonne.
+
+Bien que nous n'ayons pas d'accès direct à la matrice des contacts pour le Burkina
+Faso, nous pouvons recourir à une matrice de contact hypothétique basée sur des données générales.
+sur des hypothèses générales concernant des taux de contact élevés parmi les populations jeunes et des taux de contact plus faibles parmi les populations âgées.
+plus faibles dans les groupes d'âge plus avancés :
+
+***
+
+```
+             **\[0-15)**   **\[15-25)**   **\[25-54)**   **\[55-65)**   **65+**
+```
+
+***
+
+**\[0-15)**    20 10 5 2 1
+
+**\[15-25)**   10 15 10 4 2
+
+**\[25-55)**   5 10 15 6 3
+
+**\[55-65)**   2 4 6 10 5
+
+## **$65+$**       1 2 3 5 10
+
+ Tableau : Tableau pour un **hypothétique** moyenne des contacts entre différents âges
+dans la population du Burkina Faso.
+
+```{r}
+# Initial conditions: one in every 1 million is infected
+bf_pop <- 22.67e6
+contact_matrix <- matrix(
+  c(
+    20, 10, 5, 2, 1, # Contacts from 0-14 years
+    10, 15, 10, 4, 2, # Contacts from 15-24 years
+    5, 10, 15, 6, 3, # Contacts from 25-54 years
+    2, 4, 6, 10, 5, # Contacts from 55-64 years
+    1, 2, 3, 5, 10
+  ), # Contacts from 65+ years
+  nrow = 5, # Number of rows
+  byrow = TRUE, # Fill the matrix by rows
+  dimnames = list(
+    c("[0-15)", "[15-25)", "[25-55)", "[55-65)", "65+"),
+    c("[0-15)", "[15-25)", "[25-55)", "[55-65)", "65+")
+  )
+)
+# Define the demography vector for Burkina Faso
+demography_vector <- c(0.44, 0.195, 0.29, 0.05, 0.025) * bf_pop
+names(demography_vector) <- rownames(contact_matrix)
+
+demography_vector
+```
+
+```{r}
+# scale the contact matrix so the largest eigenvalue is 1.0
+# this is to ensure that the overall epidemic dynamics correctly reflect
+# the assumed value of R0
+contact_matrix <- contact_matrix / max(Re(eigen(contact_matrix)$values))
+
+# divide each row of the contact matrix by the corresponding demography
+# this reflects the assumption that each individual in group {j} make contacts
+# at random with individuals in group {i}
+contact_matrix <- contact_matrix / demography_vector
+
+# Print the contact matrix
+# contact_matrix
+
+# Define the population structure for Burkina Faso
+initial_i <- 1 / bf_pop
+initial_conditions <- c(S = 1 - initial_i, E = 0, I = initial_i, R = 0, V = 0)
+
+# Replicate initial conditions for all age groups
+initial_conditions_matrix <- rbind(
+  initial_conditions,
+  initial_conditions,
+  initial_conditions,
+  initial_conditions,
+  initial_conditions
+)
+
+rownames(initial_conditions_matrix) <- rownames(contact_matrix)
+
+# Print the initial conditions
+# initial_conditions_matrix
+
+# Create the population object
+bf_population <- epidemics::population(
+  name = "Burkina Faso",
+  contact_matrix = contact_matrix,
+  demography_vector = demography_vector,
+  initial_conditions = initial_conditions_matrix
+)
+
+# Print the population object
+# bf_population
+```
+
+```{r}
+# Run the epidemic model
+output1 <- epidemics::model_default(
+  population = bf_population,
+  transmission_rate = 15 / 5, # R0/infectious period = 15/5 = 3
+  infectiousness_rate = 1 / 8, # 1/latent period (pre-infectious phase)
+  recovery_rate = 1 / 5, # 1/infectious period
+  time_end = 120, # Simulation over 120 days
+  increment = 1 # Daily increments
+)
+
+# Plot the epidemic curve
+output1 %>%
+  filter(compartment %in% c("exposed", "infectious")) %>%
+  ggplot(aes(
+    x = time,
+    y = value,
+    col = demography_group,
+    linetype = compartment
+  )) +
+  geom_line(linewidth = 1.2) +
+  scale_y_continuous(labels = scales::comma) +
+  scale_colour_brewer(palette = "Dark2", name = "Age group") +
+  expand_limits(y = c(0, 500e3)) +
+  coord_cartesian(expand = FALSE) +
+  theme_bw() +
+  theme(
+    legend.position = "top",
+    legend.text = element_text(size = 10, hjust = 0, lineheight = 121)
+  ) +
+  labs(
+    x = "Simulation time (days)",
+    linetype = "Compartment",
+    y = "Individuals",
+    caption =
+      expression(
+        paste(
+          "SEIR model showing the trajectories of the number of ",
+          "exposed and infected individuals ",
+          italic(R)[0], " = 15 for different age groups."
+        )
+      )
+  ) +
+  guides(
+    color = guide_legend(nrow = 2)
+  )
+```
+
+## Nombre effectif de reproduction ($\mathcal{R}_{eff}$)
+
+Les modèles structurés par âge tiennent compte des caractéristiques hétérogènes de la population.
+population, telles que :
+
+- les différences démographiques dans les contacts sociaux,
+- Variations dans la distribution démographique, et
+- les différences de susceptibilité à l'infection.
+
+*Ces facteurs se traduisent par des différences de $.\mathcal{R}0$ values for each age
+différents. Les **nombre effectif de reproduction*** $\mathcal{R}{eff}$
+représente l'indice de reproduction global pour tous les groupes d'âge, tandis que
+en tenant compte de ces différences. Il est calculé à l'aide de la formule suivante
+formule suivante :
+
+[$$
+\begin{equation}
+\mathcal{R}_{eff} = \rho(C) \lambda \gamma
+\end{equation}
+\qquad(5)$$]{#eq-reff}
+
+Où :
+
+- $\rho(C)$ est le **la plus grande valeur propre** de la matrice de contact $C$,
+  qui est dérivée des schémas de contacts sociaux, échelonnée par l'indice
+  distribution de la population à travers différents groupes démographiques et
+  groupes de susceptibilité.
+
+- $\lambda$ est le **force de l'infection** qui mesure le taux de
+  les personnes sensibles sont infectées. Elle se distingue de la
+  le taux de transmission effectif, souvent désigné par $\beta$.
+
+- $\gamma$ représente le **période infectieuse** qui est la moyenne
+  durée moyenne pendant laquelle un individu reste infectieux.
+
+La durée `{finalsize}`met en œuvre
+[Equation 5](#eq-reff) et nous pouvons l'utiliser pour calculer la
+$\mathcal{R}_{eff}$ pour notre modèle structuré par âge, comme suit :
+
+```{r}
+r0 <- 15 #  basic reproduction number
+
+# define the number of age and susceptibility groups
+n_demo_grps <- length(demography_vector)
+n_risk_grps <- 5
+
+# In this example, risk varies across groups
+susceptibility <- matrix(
+  data = c(0.80, 0.5, 0.3, 0.2, 0.1), nrow = n_demo_grps, ncol = n_risk_grps
+)
+
+# risk does not vary within groups
+p_susceptibility <- matrix(
+  data = 1, nrow = n_demo_grps, ncol = n_risk_grps
+)
+
+# p_susceptibility rows must sum to 1.0
+p_susceptibility <- p_susceptibility / rowSums(p_susceptibility)
+
+
+reff <- finalsize::r_eff(
+  r0 = r0,
+  contact_matrix = contact_matrix,
+  demography_vector = demography_vector,
+  susceptibility = susceptibility,
+  p_susceptibility = p_susceptibility
+)
+
+reff
+```
+
+::: {.alert .alert-secondary}
+
+### Question
+
+$\mathcal{R}_{eff}$ vs $\\mathcal{R}*0$ : Quelle est la différence entre la $\\mathcal{R}*{eff} Valeur en $ de $\mathcal{R}_0$?
+:::
+
+$\mathcal{R}_{eff}$ reflète plus fidèlement la transmission
+car elle tient compte à la fois de la transmissibilité inhérente à l'agent pathogène et de la sensibilité réelle de la population.
+
+# Modèles d'intervention
+
+Les interventions contre la rougeole comprennent la prévention, le contrôle et la lutte contre la maladie.
+le traitement. Pour enrayer la propagation de la maladie, il faut combiner les mesures suivantes
+de santé publique, telles que la réduction des contacts (par exemple, le couvre-feu et la fermeture des écoles dans les pays de l'Union européenne).
+[Samoa](https://en.wikipedia.org/wiki/2019_Samoa_measles_outbreak)),
+et la vaccination. Dans cette section, nous simulerons
+le modèle SEIR avec des interventions à l'aide de la `{epidemics}` paquet.
+
+## Modèle de réduction des contacts
+
+La réduction des contacts d'un certain pourcentage a un impact sur la
+taux de transmission. Cette réduction peut être obtenue par
+mesures telles que la quarantaine, la limitation des rassemblements publics et l'utilisation régulière de l'ordinateur.
+dépistage régulier dans les établissements de santé. L'inclusion de ces interventions dans le
+modèle SEIR de base, le `{epidemics}` fournit un objet appelé
+`interventions` qui est ajouté à la définition du modèle, comme le montre la figure ci-dessous.
+ci-dessous.
+Nous supposons qu'une fermeture d'école réduira la fréquence des contacts au sein des différents groupes d'âge et entre eux. Nous supposons que les fermetures d'écoles réduiront de 0,5 les contacts entre les enfants d'âge scolaire (âgés de 0 à 15 ans) et entraîneront une légère réduction (0,01) des contacts entre les adultes (âgés de 15 ans et plus).
+
+```{r}
+reduced_contacts <- epidemics::intervention(
+  name = "school closure",
+  type = "contacts",
+  time_begin = 30,
+  time_end = 30 + 60,
+  reduction = matrix(c(0.5, 0.01, 0.01, 0.01, 0.01))
+)
+
+# Run the epidemic model
+output2 <- epidemics::model_default(
+  population = bf_population,
+  transmission_rate = 15 / 5, # R0/infectious period = 15/5 = 3
+  infectiousness_rate = 1 / 8, # 1/latent period (pre-infectious phase)
+  recovery_rate = 1 / 5, # 1/infectious period
+  intervention = list(contacts = reduced_contacts),
+  time_end = 120, # Number of days to simulate
+  increment = 1 # Daily increments
+)
+```
+
+Examiner l'effet de la mise en œuvre d'une réduction des contacts sur
+sur le nombre quotidien de nouvelles infections, nous représentons graphiquement les résultats des deux
+modèles.
+
+```{r}
+# Extract new infections data for each scenario
+data_baseline <- epidemics::new_infections(output1, by_group = TRUE)
+data_reduced <- epidemics::new_infections(output2, by_group = TRUE)
+
+# Assign scenario names
+data_baseline$scenario <- "Baseline"
+data_reduced$scenario <- "Reduced Contact"
+
+# Combine the data from both scenarios
+data_combined <- bind_rows(data_baseline, data_reduced)
+
+# Plot new infections over time with scenario and demographic groups
+ggplot(data_combined) +
+  geom_line(
+    aes(
+      x = time, y = new_infections,
+      col = demography_group, linetype = scenario
+    )
+  ) +
+  # Set axis scaling and formatting
+  scale_y_continuous(labels = scales::comma) +
+  scale_linetype_manual(
+    name = "Scenario",
+    values = c(
+      Baseline = "dashed",
+      "Reduced Contact" = "solid"
+    )
+  ) +
+  scale_colour_brewer(
+    palette = "Dark2",
+    name = "Age Group"
+  ) +
+  expand_limits(y = c(0, 1e3)) +
+  coord_cartesian(expand = FALSE) +
+  theme_bw() +
+  theme(
+    legend.position = "top"
+  ) +
+  labs(
+    x = "Simulation Time (days)",
+    y = "New Infections",
+    linetype = "Scenario",
+    caption =
+      expression(
+        paste(
+          "New infections under baseline and reduced transmission rate (",
+          beta,
+          ") for different age groups."
+        )
+      )
+  ) +
+  # Adjust legend display to fit in two rows
+  guides(
+    color = guide_legend(nrow = 2)
+  )
+```
+
+## Modèle de vaccination
+
+Il existe un vaccin efficace contre la rougeole, connue sous le nom de rougeole, oreillons,
+et la rubéole (ROR), et de nombreux pays, y compris l'Allemagne, l'Italie et la France, ont mis au point un vaccin efficace contre la rougeole.
+[le Burkina Faso](https://www.unicef.org/media/155306/file/Burkina-Faso-Humanitarian-SitRep-31-March-2024.pdf),
+l'incorpore dans son programme de formation.
+stratégie nationale d'immunisation. L'effet de la vaccination par
+ROR varie légèrement en fonction du taux de vaccination par âge auquel il est administré.
+administré et du nombre de doses reçues. Par exemple, disons que le vaccin ROR à 2 doses
+à 2 doses est d'environ $0.01$, $0.02$, $0.03$, $0.04$ et
+$0.05$ pour les groupes d'âge $[0\to 15)$, $[15\to 25)$, $[25\to 55)$,
+$[55\to 65)$ et $65+$ respectivement. Les `{epidemics}` permet à
+l'incorporation des interventions de vaccination dans la modélisation, en tant que
+comme le montre le morceau de code ci-dessous.
+
+```{r}
+vaccinate_elders <- epidemics::vaccination(
+  name = "Vaccination compaign",
+  time_begin = matrix(30, nrow(contact_matrix)),
+  time_end = matrix(90, nrow(contact_matrix)),
+  nu = matrix(c(0.01, 0.02, 0.03, 0.04, 0.05))
+)
+
+# Run the epidemic model
+output3 <- epidemics::model_default(
+  population = bf_population,
+  transmission_rate = 15 / 5, # R0/infectious period = 15/5 = 3
+  infectiousness_rate = 1 / 8, # 1/latent period (pre-infectious phase)
+  recovery_rate = 1 / 5, # 1/infectious period
+  vaccination = vaccinate_elders,
+  time_end = 120, # Simulation over 120 days
+  increment = 1 # Daily increments
+)
+
+# Plot the epidemic curve
+output3 %>%
+  filter(compartment %in% c("exposed", "infectious")) %>%
+  ggplot(aes(
+    x = time,
+    y = value,
+    col = demography_group,
+    linetype = compartment
+  )) +
+  geom_line(linewidth = 1.2) +
+  scale_y_continuous(labels = scales::comma) +
+  scale_colour_brewer(palette = "Dark2", name = "Age group") +
+  expand_limits(y = c(0, 3e3)) +
+  coord_cartesian(expand = FALSE) +
+  theme_bw() +
+  theme(
+    legend.position = "top",
+    legend.text = element_text(size = 10, hjust = 0, lineheight = 121)
+  ) +
+  labs(
+    x = "Simulation time (days)",
+    linetype = "Compartment",
+    y = "Individuals",
+    caption =
+      expression(
+        paste(
+          "SEIR with vaccine  showing the trajectories of the number of ",
+          "exposed and infected individuals for different age groups."
+        )
+      )
+  ) +
+  guides(
+    color = guide_legend(nrow = 2)
+  )
+```
+
+Nous pouvons visualiser les résultats du modèle de base et du modèle de l
+d'intervention vaccinale pour mettre en évidence les différences en matière d'infection.
+de l'infection. Cette comparaison nous permet d'observer l'impact de la vaccination sur les
+l'impact de la vaccination sur la propagation de la maladie, notamment en termes de réduction des nouvelles infections.
+nouvelles infections, de modification de la courbe épidémique et de prévention potentielle de la maladie.
+les épidémies dans les différents groupes d'âge. En opposant ces deux modèles,
+nous pouvons mieux comprendre l'efficacité des stratégies de vaccination dans les pays en voie de développement.
+contrôler l'épidémie.
+
+```{r}
+# Load new infections data for each scenario
+data_vaccine <- epidemics::new_infections(
+  output3,
+  compartments_from_susceptible = "vaccinated",
+  by_group = TRUE
+)
+
+# Assign scenario names
+data_vaccine$scenario <- "Vaccination"
+
+# Combine the data from both scenarios (baseline and vaccination)
+data_combined2 <- bind_rows(data_baseline, data_vaccine)
+# Plot new infections over time by scenario and demographic groups
+ggplot(data_combined2) +
+  # Plot new infections with lines for each demographic group and scenario
+  geom_line(
+    aes(
+      x = time,
+      y = new_infections,
+      col = demography_group,
+      linetype = scenario
+    )
+  ) +
+  # Scale the y-axis with comma-formatted labels
+  scale_y_continuous(labels = scales::comma) +
+  # Define custom line types for scenarios
+  scale_linetype_manual(
+    name = "Scenario",
+    values = c(
+      Baseline = "dashed",
+      Vaccination = "solid"
+    )
+  ) +
+  # Use a color palette for age groups
+  scale_colour_brewer(
+    palette = "Dark2",
+    name = "Age Group"
+  ) +
+  # Set axis limits and disable automatic expansion
+  expand_limits(y = c(0, 1e3)) +
+  coord_cartesian(expand = FALSE) +
+  # Apply a clean white background theme
+  theme_bw() +
+  # Customize theme for better aesthetics
+  theme(
+    legend.position = "top", # Position legend at the top
+    legend.text = element_text(size = 10), # Adjust legend text size
+    plot.caption = element_text(hjust = 0.5) # Center align the caption
+  ) +
+  # Add axis labels and caption for the plot
+  labs(
+    x = "Simulation Time (days)", # x-axis label
+    y = "New Infections", # y-axis label
+    linetype = "Scenario", # Legend title for line types
+    caption = expression(
+      paste(
+        "New infections under baseline and vaccine-induced immunity",
+        "with varying efficacy (",
+        nu, ") across different age groups."
+      )
+    )
+  ) +
+  # Adjust legend display for better readability
+  guides(
+    color = guide_legend(nrow = 2) # Split legend into two rows
+  )
+```
+
+## Combiner les interventions
+
+Les `{epidemics}` permet l'intégration de plusieurs
+interventions, telles que la vaccination et la réduction des contacts, dans le cadre d'un programme d'éducation et de formation.
+dans un seul modèle, ce qui permet des simulations plus complètes de la maladie.
+de contrôle des maladies. Le morceau de code ci-dessous montre comment combiner
+ensemble.
+
+```{r}
+# Run the epidemic model
+output4 <- epidemics::model_default(
+  population = bf_population,
+  transmission_rate = 15 / 5, # R0 / infectious period = 3
+  infectiousness_rate = 1 / 8, # 1 / latent period (pre-infectious phase)
+  recovery_rate = 1 / 5, # 1 / infectious period
+  intervention = list(contacts = reduced_contacts),
+  vaccination = vaccinate_elders,
+  time_end = 120, # Number of days to simulate
+  increment = 1 # Daily increments
+)
+
+# Plot the epidemic curve (infectious individuals)
+output4 %>%
+  filter(compartment == "infectious") %>% # Filter for infectious individuals
+  ggplot(aes(
+    x = time, # Time on the x-axis
+    y = value, # Number of infectious individuals on the y-axis
+    col = demography_group # Color by demographic group (age)
+  )) +
+  geom_line(linewidth = 1.2) + # Line width for better visibility
+  # Format y-axis with commas for thousands
+  scale_y_continuous(labels = scales::comma) +
+  # Color palette for age groups
+  scale_colour_brewer(palette = "Dark2", name = "Age Group") +
+  # Ensure the y-axis starts from 0 and goes up to 500,000
+  expand_limits(y = c(0, 1.5e3)) +
+  coord_cartesian(expand = FALSE) + # Disable axis expansion
+  theme_bw() + # Clean, white background theme
+  theme(
+    legend.position = "top", # Place legend at the top
+    # Adjust text size and line height
+    legend.text = element_text(size = 10, hjust = 0, lineheight = 1.1),
+    plot.caption = element_text(hjust = 0.5) # Center align the caption
+  ) +
+  labs(
+    x = "Simulation Time (Days)", # x-axis label
+    y = "Number of Infectious Individuals", # y-axis label
+    caption = "SEIR model with vaccination and contact reduction:
+    Number of infectious individuals by age group"
+  ) +
+  # Split the legend into two rows for compactness
+  guides(
+    color = guide_legend(nrow = 2)
+  )
+```
+
+
