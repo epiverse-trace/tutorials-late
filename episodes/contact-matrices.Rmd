@@ -34,12 +34,16 @@ webshot::install_phantomjs(force = TRUE)
 
 ## Introduction
 
-Some groups of individuals have more contacts than others; the average schoolchild has many more daily contact than the average elderly person, for example. This heterogeneity of contact patterns between different groups can affect disease transmission, because certain groups are more likely to transmit to others within that group, as well as to other groups. The rate at which individuals within and between groups make contact with others can be summarised in a contact matrix. In this tutorial we are going to learn how contact matrices can be used in different analyses and how the `{socialmixr}` package can be used to estimate contact matrices. 
+Some groups of individuals have more contacts than others; the average schoolchild has many more daily contact than the average elderly person, for example. This heterogeneity of contact patterns between different groups can affect disease transmission, because certain groups are more likely to transmit to others within that group, as well as to other groups. The rate at which individuals within and between groups make contact with others can be summarised in a contact matrix. 
+
+In this tutorial we are going to learn how contact matrices can be used in different analyses, how the package `{contactsurveys}` can be used to access survey data from different countries, and how the `{socialmixr}` package can be used to estimate contact matrices. We'll use `{dplyr}`, `{ggplot2}` and the pipe `%>%` to connect some of their functions, so let's also call to the `{tidyverse}` package:
 
 
 ```{r,message=FALSE,warning=FALSE}
 library(contactsurveys)
 library(socialmixr)
+library(wpp2024)
+library(tidyverse)
 ```
 
 ## The contact matrix
@@ -96,15 +100,22 @@ levels(survey_load$participants$country)
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
-We obtain the contact matrix for the United Kingdom — passing `countries = "United Kingdom"` to select data from the intended country, `age_limits` to define age categories, and `return_demography = TRUE` to include demographic information required by `{epidemics}`.
+We obtain the contact matrix for the United Kingdom — passing `countries = "United Kingdom"` to select data from the intended country, `age_limits` to define age categories, and `survey_pop` to supply the population structure from `{wpp2024}` required by `{socialmixr}`.
 
 ```{r polymod_uk, echo = TRUE}
+data(popAge1dt, package = "wpp2024")
+
+uk_pop <- popAge1dt %>%
+  dplyr::filter(name == "United Kingdom", year == max(year)) %>%
+  dplyr::select(lower.age.limit = age, population = pop) %>%
+  dplyr::mutate(population = population * 1000)
+
 contacts_byage <- socialmixr::contact_matrix(
   survey = survey_load,
   countries = "United Kingdom",
   age_limits = c(0, 20, 40),
   symmetric = TRUE,
-  return_demography = TRUE
+  survey_pop = uk_pop
 )
 contacts_byage
 ```
@@ -195,13 +206,20 @@ Similar to the code above, to access vector values within a dataframe, you can u
 :::::::::::::::::::::::: instructor 
 
 ```{r zambia_solution}
+data(popAge1dt, package = "wpp2024")
+
+zambia_pop <- popAge1dt %>%
+  dplyr::filter(name == "Zambia", year == max(year)) %>%
+  dplyr::select(lower.age.limit = age, population = pop) %>%
+  dplyr::mutate(population = population * 1000)
+
 # Generate the contact matrix for Zambia only
 contacts_byage_zambia <- socialmixr::contact_matrix(
   survey = survey_load_zambia,
   countries = "Zambia", # key argument
   age_limits = c(0, 20),
   symmetric = TRUE,
-  return_demography = TRUE
+  survey_pop = zambia_pop
 )
 
 # Print the contact matrix for Zambia only
@@ -315,6 +333,7 @@ contact_data_split <- socialmixr::contact_matrix(
   countries = "United Kingdom",
   age_limits = c(0, 20, 40),
   symmetric = TRUE,
+  survey_pop = uk_pop,
   split = TRUE
 )
 

@@ -65,6 +65,7 @@ In this tutorial we are going to learn how to use the `{epidemics}` package to s
 library(epidemics)
 library(contactsurveys)
 library(socialmixr)
+library(wpp2024)
 library(tidyverse)
 ```
 
@@ -183,13 +184,20 @@ survey_files <- contactsurveys::download_survey(
 )
 survey_load <- socialmixr::load_survey(files = survey_files)
 
+data(popAge1dt, package = "wpp2024")
+
+uk_pop <- popAge1dt %>%
+  dplyr::filter(name == "United Kingdom", year == max(year)) %>%
+  dplyr::select(lower.age.limit = age, population = pop) %>%
+  dplyr::mutate(population = population * 1000)
+
 # Generate the contact matrix
 contacts_byage <- socialmixr::contact_matrix(
   survey = survey_load,
   countries = "United Kingdom",
   age_limits = c(0, 20, 40),
   symmetric = TRUE,
-  return_demography = TRUE
+  survey_pop = uk_pop
 )
 
 # prepare contact matrix
@@ -301,6 +309,18 @@ uk_population <- epidemics::population(
 )
 ```
 
+:::::::::::: checklist
+
+Print the `uk_population` object. 
+
+It must collect all the input information:
+
+- Population name
+- Demography
+- Contact matrix
+- Initial conditions
+
+::::::::::::
 
 :::::::::::::::::::::: instructor
 
