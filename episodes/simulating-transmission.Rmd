@@ -4,12 +4,6 @@ teaching: 45 # teaching time in minutes
 exercises: 30 # exercise time in minutes 
 ---
 
-```{r setup, echo= FALSE, message = FALSE, warning = FALSE}
-library(DiagrammeR)
-library(webshot)
-webshot::install_phantomjs(force = TRUE)
-```
-
 :::::::::::::::::::::::::::::::::::::: questions 
 
 - How do I simulate disease spread using a mathematical model?
