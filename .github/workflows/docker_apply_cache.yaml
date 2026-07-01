@@ -195,7 +195,7 @@ jobs:
 
       - name: "Upload cache object to S3"
         id: upload-cache
-        uses: tespkg/actions-cache@v1.10.0
+        uses: tespkg/actions-cache@v1.10.2
         with:
           accessKey: ${{ steps.aws-creds.outputs.aws-access-key-id }}
           secretKey: ${{ steps.aws-creds.outputs.aws-secret-access-key }}

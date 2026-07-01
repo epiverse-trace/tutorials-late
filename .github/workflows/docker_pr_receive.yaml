@@ -213,7 +213,7 @@ jobs:
 
       - name: Get cache object from S3
         id: s3-cache
-        uses: tespkg/actions-cache/restore@v1.10.0
+        uses: tespkg/actions-cache/restore@v1.10.2
         if: needs.check-renv.outputs.renv-needed == 'true'
         with:
           # insecure: false # optional, use http instead of https. default false
