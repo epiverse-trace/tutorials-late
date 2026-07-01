@@ -26,7 +26,7 @@ jobs:
       branch-exists: ${{ steps.check.outputs.exists }}
     steps:
       - name: "Checkout Lesson"
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: "Check if md-outputs branch exists"
         id: check
@@ -109,7 +109,7 @@ jobs:
       renv-cache-hashsum: ${{ steps.renv-check.outputs.renv-cache-hashsum }}
     steps:
       - name: "Checkout Lesson"
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: "Is renv required?"
         id: renv-check
@@ -153,10 +153,10 @@ jobs:
       workbench-update: ${{ steps.wb-vers.outputs.workbench-update }}
       build-site: ${{ steps.build-site.outcome }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: "Check Out Staging Branch"
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           ref: md-outputs
           path: ${{ env.GHWMD }}
