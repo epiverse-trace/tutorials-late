@@ -31,17 +31,17 @@ Learners should familiarise themselves with following concept dependencies befor
 
 **Epidemic theory**: [Transmission](https://doi.org/10.1155/2011/267049), [Reproduction number](https://doi.org/10.3201/eid2501.171901).
 
-**R packages installed**: `{epidemics}`, `{socialmixr}`, `{scales}`, `{tidyverse}`.
+**R packages installed**: `{epidemics}`, `{contactsurveys}`, `{socialmixr}`, `{scales}`, `{tidyverse}`.
 
 :::::::::::::::::::::::::::::::::
 
 :::::::::: spoiler
 
-Install these packages if their are not already installed
+Install these packages if they are not already installed
 
 ```r
 if (!base::require("pak")) install.packages("pak")
-pak::pak(c("epiverse-trace/epidemics", "socialmixr", "scales", "tidyverse"))
+pak::pak(c("epiverse-trace/epidemics", "contactsurveys", "socialmixr", "scales", "tidyverse"))
 ```
 
 If you have any error message,

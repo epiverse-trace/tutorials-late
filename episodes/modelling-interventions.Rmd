@@ -29,17 +29,17 @@ Learners should also familiarise themselves with following concept dependencies 
 
 **Outbreak response**: [Intervention types](https://www.cdc.gov/nonpharmaceutical-interventions/).
 
-**R packages installed**: `{epidemics}`, `{socialmixr}`, `{scales}`, `{tidyverse}`.
+**R packages installed**: `{epidemics}`, `{contactsurveys}`, `{socialmixr}`, `{scales}`, `{tidyverse}`.
 
 :::::::::::::::::::::::::::::::::
 
 :::::::::: spoiler
 
-Install packages if their are not already installed
+Install packages if they are not already installed
 
 ```r
 if (!base::require("pak")) install.packages("pak")
-pak::pak(c("epiverse-trace/epidemics", "socialmixr", "scales", "tidyverse"))
+pak::pak(c("epiverse-trace/epidemics", "contactsurveys", "socialmixr", "scales", "tidyverse"))
 ```
 
 If you have any error message,
