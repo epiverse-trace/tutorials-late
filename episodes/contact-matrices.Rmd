@@ -67,6 +67,7 @@ In a contact matrix, the entry $C[i,j]$, at row $i$ and column $j$:
 
 -  Represents the average number of contacts an individual in group $i$ has with individuals in group $j$
 - This  is calculated by dividing the total number of contacts between groups $i$ and $j$ by the size of group $i$
+
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ## Using `socialmixr`
@@ -85,6 +86,7 @@ survey_load <- socialmixr::load_survey(files = survey_files)
 ```
 
 ::::::::::::::::::::::::::::::::::::: callout
+
 ### Inspect available countries
 
 A single survey file can contain data from multiple countries. You can inspect the available countries with:
@@ -115,7 +117,7 @@ contacts_byage <- socialmixr::contact_matrix(
 contacts_byage
 ```
 
-::::::::::::::: spoiler
+### Symmetric contact matrices
 
 Although the contact matrix `contacts_byage$matrix` is not itself mathematically symmetric, it satisfies the condition that the total number of contacts of one group with another is the same as the reverse. 
 
@@ -126,11 +128,79 @@ In other words:
 contacts_byage$matrix * contacts_byage$demography$population
 ```
 
-For the mathematical explanation see [the corresponding section in the socialmixr documentation](https://epiforecasts.io/socialmixr/articles/socialmixr.html#symmetric-contact-matrices).
+For the mathematical explanation, see the worked example below.
 
-:::::::::::::::
+::::::::::::::::::: spoiler
+
+### Worked example
+
+Recall the hypothetical contact matrix from earlier, representing the average number of contacts per day between children and adults:
+
+$$
+C =
+\begin{bmatrix}
+2 & 2\\
+1 & 3
+\end{bmatrix}
+$$
+
+i.e. a child has, on average, 2 contacts with other children and 2 contacts with adults per day; an adult has, on average, 1 contact with children and 3 contacts with other adults per day. Suppose the child population is $N_{child} = x$ and the adult population is $N_{adult} = 3x$.
+
+To get the total number of contacts, we redistribute the average number of contacts by the population size per group: $T_{ij} = m_{ij} N_i$
+
+$$
+T =
+\begin{bmatrix}
+2 \times x & 2 \times x\\
+1 \times 3x & 3 \times 3x
+\end{bmatrix}
+=
+\begin{bmatrix}
+2x & 2x\\
+3x & 9x
+\end{bmatrix}
+$$
+
+Conceivably, the total number of contacts should be the same in both directions, i.e. $T_{1,2} = T_{2,1}$. Here $T_{1,2} = 2x$ but $T_{2,1} = 3x$: they disagree, so this toy example is *not* reciprocal — exactly the situation described above, where sampling variation means these totals usually don't match exactly.
+
+$T_{1,2}$ and $T_{2,1}$ are two different, noisy "measurements" of the same underlying number of contact events between children and adults — one reported from the child side, one from the adult side. Neither alone is more trustworthy than the other. Just as we would average repeated measurements of a quantity to approximate its true value, we pool the two totals and take their mean:
+
+$$
+\frac{T_{1,2}+T_{2,1}}{2} = \frac{2x+3x}{2} = 2.5x
+$$
+
+This pooled value, $2.5x$, is our best single estimate of the true (symmetric) total number of contacts between the two groups — the same value regardless of which direction we started from. To turn it back into a per-capita rate, we divide by the population size of the *reporting* group for each direction:
+
+$$
+m'_{1,2} = \frac{2.5x}{N_{child}} = \frac{2.5x}{x} = 2.5 \qquad\qquad m'_{2,1} = \frac{2.5x}{N_{adult}} = \frac{2.5x}{3x} = \frac{5}{6}
+$$
+
+At the level of total contacts, this gives the symmetric matrix
+
+$$
+T' =
+\begin{bmatrix}
+2x & 2.5x\\
+2.5x & 9x
+\end{bmatrix}
+$$
+
+and, converted back to per-capita rates, the symmetrized contact matrix
+
+$$
+C' =
+\begin{bmatrix}
+2 & 2.5\\
+5/6 & 3
+\end{bmatrix}
+$$
+
+This pool-and-redistribute procedure is expressed as a single formula in [the corresponding section in the `socialmixr` documentation](https://epiforecasts.io/socialmixr/articles/socialmixr.html#symmetric-contact-matrices).
+
+:::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: callout
+
 ### Why would a contact matrix be non-symmetric?
 
 One of the arguments we gave the function `contact_matrix()` is `symmetric=TRUE`. This ensures that the total number of contacts from one group to another is equal to the total from the second group back to the first (see the `socialmixr` [vignette](https://cran.r-project.org/web/packages/socialmixr/vignettes/socialmixr.html) for more detail). 
@@ -158,9 +228,9 @@ survey_files_zambia <- contactsurveys::download_survey(
 survey_load_zambia <- socialmixr::load_survey(files = survey_files_zambia)
 ```
 
-:::::::::::::::::: spoiler
 
-**Find a survey DOI with contactsurveys**
+
+### Find a survey DOI with {contactsurveys}
 
 Browse available surveys in the [Zenodo Social Contact Data community](https://zenodo.org/communities/social_contact_data/), or list them programmatically:
 
@@ -174,7 +244,7 @@ contactsurveys::list_surveys() %>%
   dplyr::pull(url)
 ```
 
-::::::::::::::::::
+
 
 
 ::::::::::::::::::::::::::::::::::::: challenge 
@@ -234,6 +304,7 @@ contacts_byage_zambia$demography$population
 :::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: callout
+
 ## Synthetic contact matrices
 
 Contact matrices can be estimated from data obtained from diary (such as POLYMOD), survey or contact data, or synthetic ones can be used. [Prem et al. 2021](https://doi.org/10.1371/journal.pcbi.1009098) used the POLYMOD data within a Bayesian hierarchical model to project contact matrices for 177 other countries.
