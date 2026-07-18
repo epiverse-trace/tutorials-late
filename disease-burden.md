@@ -50,6 +50,7 @@ library(epiparameter)
 library(epidemics)
 library(contactsurveys)
 library(socialmixr)
+library(wpp2024)
 library(tidyverse)
 ```
 
@@ -93,12 +94,19 @@ survey_files <- contactsurveys::download_survey(
 )
 survey_load <- socialmixr::load_survey(files = survey_files)
 
+data(popAge1dt, package = "wpp2024")
+
+uk_pop <- popAge1dt %>%
+  dplyr::filter(name == "United Kingdom", year == 2020) %>%
+  dplyr::select(lower.age.limit = age, population = pop) %>%
+  dplyr::mutate(population = population * 1000)
+
 contacts_byage <- socialmixr::contact_matrix(
   survey = survey_load,
   countries = "United Kingdom",
   age_limits = c(0, 20, 40),
   symmetric = TRUE,
-  return_demography = TRUE
+  survey_pop = uk_pop
 )
 
 # prepare contact matrix
@@ -167,11 +175,11 @@ Key: <time>
     time new_infections
    <num>          <num>
 1:     0       0.000000
-2:     1       3.468452
-3:     2       3.206039
-4:     3       3.110541
-5:     4       3.115967
-6:     5       3.183338
+2:     1       3.745722
+3:     2       3.463059
+4:     3       3.361054
+5:     4       3.368247
+6:     5       3.442438
 ```
 
 To convert the new infections to hospitalisations we need to parameter distributions to describe the following processes:

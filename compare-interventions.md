@@ -271,12 +271,19 @@ survey_files_uk <- contactsurveys::download_survey(
 )
 survey_load_uk <- socialmixr::load_survey(files = survey_files_uk)
 
+data(popAge1dt, package = "wpp2024")
+
+uk_pop <- popAge1dt %>%
+  dplyr::filter(name == "United Kingdom", year == 2020) %>%
+  dplyr::select(lower.age.limit = age, population = pop) %>%
+  dplyr::mutate(population = population * 1000)
+
 contacts_byage_uk <- socialmixr::contact_matrix(
   survey = survey_load_uk,
   countries = "United Kingdom",
   age_limits = c(0, 20, 40),
   symmetric = TRUE,
-  return_demography = TRUE
+  survey_pop = uk_pop
 )
 # prepare contact matrix
 contacts_byage_matrix_uk <- t(contacts_byage_uk$matrix)
@@ -531,15 +538,15 @@ intervention_effect
 ``` output
    scenario demography_group averted_median averted_lower averted_upper
       <int>           <char>          <num>         <num>         <num>
-1:        1           [0,15)      2890964.4     2577490.7     3082420.9
-2:        1          [15,65)      1288482.1     1257862.4     1290841.4
-3:        1         [65,Inf)       405810.5      383340.3      414044.8
-4:        2           [0,15)       517742.8      478431.1      558631.8
-5:        2          [15,65)      2413423.7     2259624.9     2566010.9
-6:        2         [65,Inf)       900819.9      882242.1      912790.7
-7:        3           [0,15)      1974788.9     1494800.2     2415088.5
-8:        3          [15,65)      2908140.6     2546313.2     3129329.3
-9:        3         [65,Inf)      1004123.7      864726.7     1100018.0
+1:        1           [0,15)      3256059.1     2906086.4     3470543.9
+2:        1          [15,65)      1375225.1     1343075.7     1377908.2
+3:        1         [65,Inf)       536246.3      505597.3      548324.3
+4:        2           [0,15)       585880.5      541809.8      631634.1
+5:        2          [15,65)      2567671.4     2402035.7     2732428.0
+6:        2         [65,Inf)      1179972.5     1158510.6     1192527.1
+7:        3           [0,15)      2232937.8     1695740.7     2724009.9
+8:        3          [15,65)      3106825.7     2726770.7     3337422.9
+9:        3         [65,Inf)      1318152.4     1135368.7     1444854.6
 ```
 
 The output gives us the infections averted in each scenario compared to the baseline. To obtain the infections averted overall we specify `by_group = FALSE`:
@@ -556,9 +563,9 @@ intervention_effect
 ``` output
    scenario averted_median averted_lower averted_upper
       <int>          <num>         <num>         <num>
-1:        1        4587505       4220698       4770734
-2:        2        3831986       3620298       4037433
-3:        3        5887053       4905840       6644436
+1:        1        5170193       4758576       5377817
+2:        2        4333525       4102356       4556589
+3:        3        6657916       5557880       7506287
 ```
 
 

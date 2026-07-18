@@ -27,7 +27,7 @@ exercises: 30 # exercise time in minutes
 
 Learners should familiarise themselves with the following concept dependencies before working through this tutorial: 
 
-**Mathematical Modelling**: [Introduction to infectious disease models](https://doi.org/10.1038/s41592-020-0856-2), [state variables](../learners/reference.md#state), [model parameters](../learners/reference.md#parsode), [initial conditions](../learners/reference.md#initial), [differential equations](../learners/reference.md#ordinary).
+**Mathematical Modelling**: [Introduction to infectious disease models](https://doi.org/10.1038/s41592-020-0822-z), [state variables](../learners/reference.md#state), [model parameters](../learners/reference.md#parsode), [initial conditions](../learners/reference.md#initial), [differential equations](../learners/reference.md#ordinary).
 
 **Epidemic theory**: [Transmission](https://doi.org/10.1155/2011/267049), [Reproduction number](https://doi.org/10.3201/eid2501.171901).
 
@@ -60,6 +60,7 @@ In this tutorial we are going to learn how to use the `{epidemics}` package to s
 library(epidemics)
 library(contactsurveys)
 library(socialmixr)
+library(wpp2024)
 library(tidyverse)
 ```
 
@@ -179,13 +180,20 @@ survey_files <- contactsurveys::download_survey(
 )
 survey_load <- socialmixr::load_survey(files = survey_files)
 
+data(popAge1dt, package = "wpp2024")
+
+uk_pop <- popAge1dt %>%
+  dplyr::filter(name == "United Kingdom", year == 2020) %>%
+  dplyr::select(lower.age.limit = age, population = pop) %>%
+  dplyr::mutate(population = population * 1000)
+
 # Generate the contact matrix
 contacts_byage <- socialmixr::contact_matrix(
   survey = survey_load,
   countries = "United Kingdom",
   age_limits = c(0, 20, 40),
   symmetric = TRUE,
-  return_demography = TRUE
+  survey_pop = uk_pop
 )
 
 # prepare contact matrix
@@ -198,9 +206,9 @@ contacts_byage_matrix
 ``` output
                  age.group
 contact.age.group   [0,20)  [20,40) [40,Inf)
-         [0,20)   7.883663 2.794154 1.565665
-         [20,40)  3.120220 4.854839 2.624868
-         [40,Inf) 3.063895 4.599893 5.005571
+         [0,20)   7.883663 2.799168 1.507146
+         [20,40)  3.114224 4.854839 2.529653
+         [40,Inf) 3.230298 4.873347 5.005571
 ```
 
 Remember that the matrix satisfies the `symmetric = TRUE` condition at the level of total number of contacts.
@@ -215,9 +223,9 @@ contacts_byage$matrix * contacts_byage$demography$population
 ``` output
           contact.age.group
 age.group     [0,20)  [20,40)  [40,Inf)
-  [0,20)   116672620 46177038  45343471
-  [20,40)   46177038 80232531  76019216
-  [40,Inf)  45343471 76019216 144967139
+  [0,20)   124893484 49335724  51174588
+  [20,40)   49335724 85567212  85893423
+  [40,Inf)  51174588 85893423 169962327
 ```
 
 :::::::::::::::::::::::::::::::::
@@ -225,11 +233,11 @@ age.group     [0,20)  [20,40)  [40,Inf)
 
 The result is a square matrix with rows and columns for each age group. Contact matrices can be loaded from other sources, but they must be formatted as a matrix to be used in `epidemics`.
 
-::::::::::::::::::::::::::::::::::::: callout
+::::::::::::::::::::::::::::::::::::: spoiler
 
 ### Normalisation
 
-In `{epidemics}` the contact matrix normalisation happens within the function call, so we don't need to normalise the contact matrix before we pass it to `epidemics::population()` (see section 3. Population Structure). For details on normalisation, see the tutorial on [Contact matrices](../episodes/contact-matrices.md).
+In `{epidemics}` the contact matrix normalisation happens within the function call, so we don't need to normalise the contact matrix before we pass it to `epidemics::population()` (see section 3. Population Structure). For details on normalisation, see the optional episode on [Contact matrix normalization](../learners/contact-normalization.md).
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -314,7 +322,7 @@ demography_vector
 
 ``` output
   [0,20)  [20,40) [40,Inf) 
-14799290 16526302 28961159 
+15842062 17625140 33954633 
 ```
 
 To create our population object, from the `{epidemics}` package we call the function `epidemics::population()` specifying a name, the contact matrix, the demography vector and the initial conditions.
@@ -331,6 +339,18 @@ uk_population <- epidemics::population(
 )
 ```
 
+:::::::::::: checklist
+
+Print the `uk_population` object. 
+
+It must collect all the input information:
+
+- Population name
+- Demography
+- Contact matrix
+- Initial conditions
+
+::::::::::::
 
 :::::::::::::::::::::: instructor
 
@@ -426,9 +446,9 @@ head(output)
 ``` output
     time demography_group compartment    value
    <num>           <char>      <char>    <num>
-1:     0           [0,20) susceptible 14799275
-2:     0          [20,40) susceptible 16526302
-3:     0         [40,Inf) susceptible 28961159
+1:     0           [0,20) susceptible 15842046
+2:     0          [20,40) susceptible 17625140
+3:     0         [40,Inf) susceptible 33954633
 4:     0           [0,20)     exposed        0
 5:     0          [20,40)     exposed        0
 6:     0         [40,Inf)     exposed        0
@@ -493,9 +513,9 @@ epidemics::epidemic_peak(data = output)
 ``` output
    demography_group compartment  time    value
              <char>      <char> <num>    <num>
-1:           [0,20)  infectious   315 651944.3
-2:          [20,40)  infectious   319 625863.8
-3:         [40,Inf)  infectious   322 858259.1
+1:           [0,20)  infectious   315 700275.9
+2:          [20,40)  infectious   319 673306.3
+3:         [40,Inf)  infectious   323 983140.5
 ```
 
 Use `epidemics::epidemic_size()` to get the size of the epidemic at any stage between the start and the end. This is calculated as the number of individuals *recovered* from infection at that stage of the epidemic.
@@ -506,7 +526,7 @@ epidemics::epidemic_size(data = output)
 ```
 
 ``` output
-[1]  9285873  9040679 12540088
+[1]  9979758  9732524 14392091
 ```
 
 These summary functions can help you get outputs relevant to scenario comparisons or any other downstream analysis.
