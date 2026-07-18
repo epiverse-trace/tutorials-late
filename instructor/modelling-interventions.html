@@ -339,7 +339,7 @@
       </div>
     </nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Modelling interventions</h1>
-        <p>Last updated on 2026-07-14 |
+        <p>Last updated on 2026-07-18 |
 
         <a href="https://github.com/epiverse-trace/tutorials-late/edit/main/episodes/modelling-interventions.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -384,8 +384,8 @@ trajectories?</li>
 <div class="callout-inner">
 <div class="callout-content">
 <ul><li>Complete tutorial on <a href="simulating-transmission.html">Simulating transmission</a>.</li>
-</ul><p>Learners should also familiarise themselves with following concept
-dependencies before working through this tutorial:</p>
+</ul><p>Learners should also familiarise themselves with the following
+concept dependencies before working through this tutorial:</p>
 <p><strong>Outbreak response</strong>: <a href="https://www.cdc.gov/nonpharmaceutical-interventions/" class="external-link">Intervention
 types</a>.</p>
 <p><strong>R packages installed</strong>: <code>{epidemics}</code>,
@@ -872,13 +872,13 @@ on modelling overlapping interventions</a> for more detail.</p>
 </section><section><h2 class="section-heading" id="pharmaceutical-interventions">Pharmaceutical interventions<a class="anchor" aria-label="anchor" href="#pharmaceutical-interventions"></a></h2>
 <hr class="half-width"><p>Pharmaceutical interventions (PIs) are measures such as vaccination
 and mass treatment programs. In the previous section, we integrated the
-interventions into the model by reducing parameter values during
-specific period of time window in which these intervention set to take
-place. In the case of vaccination, we assume that after the
-intervention, individuals are no longer susceptible and should be
-classified into a different disease state. Therefore, we specify the
-rate at which individuals are vaccinated and track the number of
-vaccinated individuals over time.</p>
+interventions into the model by reducing parameter values during a
+specific time period in which these intervention are set to take place.
+In the case of vaccination, we assume that after the intervention, some
+or all individuals are no longer susceptible and should be classified
+into a different disease state. Therefore, we specify the rate at which
+individuals are vaccinated and track the number of vaccinated
+individuals over time.</p>
 <p>The diagram below shows the SEIRV model implemented using
 <code>model_default()</code> where susceptible individuals are
 vaccinated and then move to the <span class="math inline">\(V\)</span>
@@ -909,8 +909,8 @@ other SEIR components of these equations are described in the tutorial
 transmission</a>.</p>
 <p>To explore the effect of vaccination we need to create a vaccination
 object to pass as an input into <code>model_default()</code> that
-includes age groups specific vaccination rate <code>nu</code> and age
-groups specific start and end times of the vaccination program
+includes age-group-specific vaccination rate <code>nu</code> and
+age-group-specific start and end times of the vaccination program
 (<code>time_begin</code> and <code>time_end</code>).</p>
 <p>Here we will assume all age groups are vaccinated at the same rate
 0.01 and that the vaccination program starts on day 40 and continue to
@@ -1087,6 +1087,27 @@ infections in the population.</p>
 </div>
 </div>
 </div>
+<div id="testimonial1" class="callout testimonial">
+<div class="callout-square">
+<i class="callout-icon" data-feather="heart"></i>
+</div>
+<span class="callout-header">Testimonial</span>
+<div class="callout-inner">
+<div class="callout-content">
+<p><strong>Want to build an interactive dashboard so others can explore
+epidemic scenarios?</strong></p>
+<p>We can use Shiny to overlay plots with a drag-and-drop approach. Now,
+with <a href="https://github.com/nicholasdavies/overshiny" class="external-link">overshiny</a>, you can do this with much more
+flexibility. You can combine <code>{epidemics}</code> and
+<a href="https://github.com/nicholasdavies/overshiny" class="external-link">overshiny</a> to explore the effect of different
+interventions like vaccines and social distancing with a common set of
+parameters.</p>
+<p>Read this tutorial on <a href="https://nicholasdavies.github.io/overshiny/articles/epidemics.html" class="external-link">how
+to overlay multiple interventions in epidemic modelling with a
+drag-and-drop approach</a>.</p>
+</div>
+</div>
+</div>
 </section><section><h2 class="section-heading" id="summary">Summary<a class="anchor" aria-label="anchor" href="#summary"></a></h2>
 <hr class="half-width"><p>Different types of intervention can be implemented using mathematical
 modelling. Modelling interventions requires assumptions of which model
@@ -1185,9 +1206,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://epiverse-trace.github.io/tutorials-late/instructor/modelling-interventions.html",
   "identifier": "https://epiverse-trace.github.io/tutorials-late/instructor/modelling-interventions.html",
-  "dateCreated": "2026-07-02",
-  "dateModified": "2026-07-14",
-  "datePublished": "2026-07-14"
+  "dateCreated": "2026-07-18",
+  "dateModified": "2026-07-18",
+  "datePublished": "2026-07-18"
 }
 
   </script><script>

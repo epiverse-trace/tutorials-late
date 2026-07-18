@@ -381,7 +381,7 @@
         
 <section id="aio-contact-matrices"><p>Content from <a href="contact-matrices.html">Contact matrices</a></p>
 <hr>
-<p>Last updated on 2026-07-14 |
+<p>Last updated on 2026-07-18 |
 
         <a href="https://github.com/epiverse-trace/tutorials-late/edit/main/episodes/contact-matrices.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -627,7 +627,7 @@ remember and report contacts accurately</li>
 their contacts</li>
 <li>Sampling uncertainty: Limited sample sizes can lead to statistical
 variations <a href="https://doi.org/10.1371/journal.pcbi.1009098" class="external-link">(Prem
-et al 2021)</a>
+et al. 2021)</a>
 </li>
 </ul>
 <p>If <code>symmetric</code> is set to TRUE, the
@@ -661,7 +661,7 @@ Africa contact survey:</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler1" aria-expanded="false" aria-controls="collapseSpoiler1">
   <h3 class="accordion-header" id="headingSpoiler1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
 </button>
-<div id="collapseSpoiler1" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler1" aria-labelledby="headingSpoiler1">
+<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
 <div class="accordion-body">
 <p><strong>Find a survey DOI with contactsurveys</strong></p>
 <p>Browse available surveys in the <a href="https://zenodo.org/communities/social_contact_data/" class="external-link">Zenodo Social
@@ -721,7 +721,7 @@ output.</p></li>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint1" aria-expanded="false" aria-controls="collapseHint1">
   <h4 class="accordion-header" id="headingHint1"> Give me a hint </h4>
 </button>
-<div id="collapseHint1" class="accordion-collapse collapse" data-bs-parent="#accordionHint1" aria-labelledby="headingHint1">
+<div id="collapseHint1" class="accordion-collapse collapse" aria-labelledby="headingHint1" data-bs-parent="#accordionHint1">
 <div class="accordion-body">
 <p>The survey object <code>survey_load_zambia</code> contains data from
 two countries. If you need to estimate the social contact matrix from
@@ -777,7 +777,7 @@ between pre and post intervention contact matrices to calculate the
 relative difference in <span class="math inline">\(R_0\)</span> <a href="https://doi.org/10.1186/s12916-020-01597-8" class="external-link">(Jarvis et
 al. 2020)</a>,</li>
 <li>and in mathematical models of transmission within a population, to
-account for group specific contact patterns.</li>
+account for group-specific contact patterns.</li>
 </ul>
 <p>However, all of these applications require us to perform some
 additional calculations using the contact matrix. Specifically, there
@@ -881,11 +881,12 @@ specified valued of <span class="math inline">\(R_0\)</span>. If the
 entry of the contact matrix <span class="math inline">\(C[i,j]\)</span>
 represents the contacts of population <span class="math inline">\(i\)</span> with <span class="math inline">\(j\)</span>, it is equivalent to
 <code>contacts_byage$matrix[i,j]</code>, and the maximum eigenvalue of
-this matrix represents the typical magnitude of contacts, not typical
-magnitude of transmission. We must therefore normalise the matrix <span class="math inline">\(C\)</span> so the maximum eigenvalue is one; we
-call this matrix <span class="math inline">\(C_{normalised}\)</span>.
-Because the rate of recovery is <span class="math inline">\(\gamma\)</span>, individuals will be infectious on
-average for <span class="math inline">\(1/\gamma\)</span> days. So <span class="math inline">\(\beta\)</span> as a model input is calculated from
+this matrix represents the typical magnitude of contacts, not the
+typical magnitude of transmission. We must therefore normalise the
+matrix <span class="math inline">\(C\)</span> so the maximum eigenvalue
+is one; we call this matrix <span class="math inline">\(C_{normalised}\)</span>. Because the rate of
+recovery is <span class="math inline">\(\gamma\)</span>, individuals
+will be infectious on average for <span class="math inline">\(1/\gamma\)</span> days. So <span class="math inline">\(\beta\)</span> as a model input is calculated from
 <span class="math inline">\(R_0\)</span>, the scaling factor and the
 value of <span class="math inline">\(\gamma\)</span>
 (i.e. mathematically we use the fact that the dominant eigenvalue of the
@@ -984,10 +985,10 @@ transmission</a> for examples and an introduction to
 <h3 id="contact-groups">Contact groups<a class="anchor" aria-label="anchor" href="#contact-groups"></a>
 </h3>
 <p>In the example above the dimension of the contact matrix will be the
-same as the number of age groups i.e. if there are 3 age groups then the
-contact matrix will have 3 rows and 3 columns. Contact matrices can be
-used for other groups as long as the dimension of the matrix matches the
-number of groups.</p>
+same as the number of age groups, i.e. if there are 3 age groups then
+the contact matrix will have 3 rows and 3 columns. Contact matrices can
+be used for other groups as long as the dimension of the matrix matches
+the number of groups.</p>
 <p>For example, we might have a meta population model with two
 geographic areas. Then our contact matrix would be a 2 x 2 matrix with
 entries representing the contact between and within the geographic
@@ -998,9 +999,10 @@ areas.</p>
 <hr class="half-width">
 <p>In this tutorial, we have learnt the definition of the contact
 matrix, how they are estimated and how to access social contact data
-from <code>socialmixr</code>. In the next tutorial, we will learn how to
-use the R package <code>{epidemics}</code> to generate disease
-trajectories from mathematical models with contact matrices from
+using <a href="https://github.com/epiforecasts/contactsurveys" class="external-link">contactsurveys</a> and <a href="https://github.com/epiforecasts/socialmixr" class="external-link">socialmixr</a>. In
+the next tutorial, we will learn how to use the R package
+<code>{epidemics}</code> to generate disease trajectories from
+mathematical models, with contact matrices using
 <code>socialmixr</code>.</p>
 <div id="keypoints1" class="callout keypoints">
 <div class="callout-square">
@@ -1030,7 +1032,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-simulating-transmission"><p>Content from <a href="simulating-transmission.html">Simulating transmission</a></p>
 <hr>
-<p>Last updated on 2026-07-14 |
+<p>Last updated on 2026-07-18 |
 
         <a href="https://github.com/epiverse-trace/tutorials-late/edit/main/episodes/simulating-transmission.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -1082,7 +1084,7 @@ package</li>
 <li>Complete tutorial on <a href="contact-matrices.html">contact
 matrices</a>.</li>
 </ul>
-<p>Learners should familiarise themselves with following concept
+<p>Learners should familiarise themselves with the following concept
 dependencies before working through this tutorial:</p>
 <p><strong>Mathematical Modelling</strong>: <a href="https://doi.org/10.1038/s41592-020-0856-2" class="external-link">Introduction to
 infectious disease models</a>, <a href="reference.html#state">state
@@ -1100,7 +1102,7 @@ number</a>.</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler1" aria-expanded="false" aria-controls="collapseSpoiler1">
   <h3 class="accordion-header" id="headingSpoiler1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
 </button>
-<div id="collapseSpoiler1" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler1" aria-labelledby="headingSpoiler1">
+<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
 <div class="accordion-body">
 <p>Install these packages if they are not already installed</p>
 <div class="codewrapper sourceCode" id="cb1">
@@ -1118,9 +1120,9 @@ number</a>.</p>
 <section><h2 class="section-heading" id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
 <hr class="half-width">
-<p>Mathematical models are useful tools for generating future
-trajectories of disease spread. In this tutorial, we will use the R
-package <code>{epidemics}</code> to generate disease trajectories of an
+<p>Mathematical models are useful tools for generating trajectories of
+disease spread. In this tutorial, we will use the R package
+<code>{epidemics}</code> to generate disease trajectories of an
 influenza strain with pandemic potential. By the end of this tutorial,
 you will be able to generate the trajectory below showing the number of
 infectious individuals in different age categories over time.</p>
@@ -1206,9 +1208,9 @@ infectious individuals in all groups <span class="math inline">\(\beta
 S_i \sum_j C_{i,j} I_j/N_j\)</span>. The contact matrix <span class="math inline">\(C\)</span> allows for heterogeneity in contacts
 between age groups. They then move to the infectious state at a rate
 <span class="math inline">\(\alpha\)</span> and recover at a rate <span class="math inline">\(\gamma\)</span>. Note that this model assumes no
-loss of immunity (there are no flows out of the recovered state), which
-may not be applicable for all diseases as some allow for
-reinfection.</p>
+loss of immunity (meaning there are no flows out of the recovered
+state), which may not be applicable to all diseases. Immunity wanes more
+rapidly for certain infections, allowing for reinfection.</p>
 <p>The model parameters are:</p>
 <ul>
 <li>transmission rate <span class="math inline">\(\beta\)</span>
@@ -1290,7 +1292,7 @@ matrix for the United Kingdom for the year age bins:</p>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint1" aria-expanded="false" aria-controls="collapseHint1">
   <h4 class="accordion-header" id="headingHint1"> Give me a hint </h4>
 </button>
-<div id="collapseHint1" class="accordion-collapse collapse" data-bs-parent="#accordionHint1" aria-labelledby="headingHint1">
+<div id="collapseHint1" class="accordion-collapse collapse" aria-labelledby="headingHint1" data-bs-parent="#accordionHint1">
 <div class="accordion-body">
 <ul>
 <li>Complete tutorial on <a href="contact-matrices.html">Contact
@@ -1305,7 +1307,7 @@ matrices</a>.</li>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1432,9 +1434,9 @@ conditions are <span class="math inline">\(S(0)=1\)</span>, <span class="math in
 <pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># combine the initial conditions into a matrix class object</span></span>
 <span><span class="va">initial_conditions</span> <span class="op">&lt;-</span> <span class="fu">rbind</span><span class="op">(</span></span>
-<span>  <span class="va">initial_conditions_inf</span>, <span class="co"># age group 1 (only group with infectious)</span></span>
-<span>  <span class="va">initial_conditions_free</span>, <span class="co"># age group 2</span></span>
-<span>  <span class="va">initial_conditions_free</span> <span class="co"># age group 3</span></span>
+<span>  <span class="va">initial_conditions_inf</span>, <span class="co"># age group [0,20) (only group with infectious)</span></span>
+<span>  <span class="va">initial_conditions_free</span>, <span class="co"># age group [20, 40)</span></span>
+<span>  <span class="va">initial_conditions_free</span> <span class="co"># age group 40+</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># use contact matrix to assign age group names</span></span>
@@ -1736,7 +1738,7 @@ incidence.</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler2" aria-expanded="false" aria-controls="collapseSpoiler2">
   <h3 class="accordion-header" id="headingSpoiler2">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
 </button>
-<div id="collapseSpoiler2" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler2" aria-labelledby="headingSpoiler2">
+<div id="collapseSpoiler2" class="accordion-collapse collapse" aria-labelledby="headingSpoiler2" data-bs-parent="#accordionSpoiler2">
 <div class="accordion-body">
 <p>Notice that the number of new infected individuals at each time (as
 in the figure below) is lower than the cumulative number of infectious
@@ -1887,7 +1889,7 @@ these changes expected? Explain briefly.</p></li>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint2" aria-expanded="false" aria-controls="collapseHint2">
   <h4 class="accordion-header" id="headingHint2"> Give me a hint </h4>
 </button>
-<div id="collapseHint2" class="accordion-collapse collapse" data-bs-parent="#accordionHint2" aria-labelledby="headingHint2">
+<div id="collapseHint2" class="accordion-collapse collapse" aria-labelledby="headingHint2" data-bs-parent="#accordionHint2">
 <div class="accordion-body">
 <p>To interpret the output based on location (time) and size of the peak
 infection, you can find a guide in this two-page paper introduction to
@@ -1933,7 +1935,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-model-choices"><p>Content from <a href="model-choices.html">Choosing an appropriate model</a></p>
 <hr>
-<p>Last updated on 2026-07-14 |
+<p>Last updated on 2026-07-18 |
 
         <a href="https://github.com/epiverse-trace/tutorials-late/edit/main/episodes/model-choices.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -2007,7 +2009,7 @@ questions we must consider:</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> What is the infection/disease of interest? </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <p>A model may already exist for your study disease, or there may be a
 model for an infection that has similar transmission pathways and
@@ -2024,7 +2026,7 @@ infectious period) may use similar model structures.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Do we need a deterministic or stochastic model? </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <p>Model structures differ depending on the scale and nature of the
 outbreak. When simulated numbers of infection are small, stochastic
@@ -2047,7 +2049,7 @@ with outbreaks sometimes being considered as localized epidemics.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
   <h4 class="accordion-header" id="headingSolution3"> What is the outcome of interest? </h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
 <div class="accordion-body">
 <p>The outcome of interest is typically a measurable quantity derived
 from the mathematical model. This could include:</p>
@@ -2067,7 +2069,7 @@ from the mathematical model. This could include:</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution4" aria-expanded="false" aria-controls="collapseSolution4">
   <h4 class="accordion-header" id="headingSolution4"> How is transmission modelled? </h4>
 </button>
-<div id="collapseSolution4" class="accordion-collapse collapse" aria-labelledby="headingSolution4" data-bs-parent="#accordionSolution4">
+<div id="collapseSolution4" class="accordion-collapse collapse" data-bs-parent="#accordionSolution4" aria-labelledby="headingSolution4">
 <div class="accordion-body">
 <p>For example, <a href="reference.html#direct">direct</a> or <a href="reference.html#indirect">indirect</a>, <a href="reference.html#airborne">airborne</a> or <a href="reference.html#vectorborne">vector-borne</a>.</p>
 </div>
@@ -2079,7 +2081,7 @@ from the mathematical model. This could include:</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution5" aria-expanded="false" aria-controls="collapseSolution5">
   <h4 class="accordion-header" id="headingSolution5"> How are the different processes (e.g. transmission) formulated in the equations? </h4>
 </button>
-<div id="collapseSolution5" class="accordion-collapse collapse" aria-labelledby="headingSolution5" data-bs-parent="#accordionSolution5">
+<div id="collapseSolution5" class="accordion-collapse collapse" data-bs-parent="#accordionSolution5" aria-labelledby="headingSolution5">
 <div class="accordion-body">
 <p>There can be subtle differences in model structures for the same
 infection or outbreak type which can be missed without studying the
@@ -2096,7 +2098,7 @@ same way.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution6" aria-expanded="false" aria-controls="collapseSolution6">
   <h4 class="accordion-header" id="headingSolution6"> Will any interventions be modelled? </h4>
 </button>
-<div id="collapseSolution6" class="accordion-collapse collapse" aria-labelledby="headingSolution6" data-bs-parent="#accordionSolution6">
+<div id="collapseSolution6" class="accordion-collapse collapse" data-bs-parent="#accordionSolution6" aria-labelledby="headingSolution6">
 <div class="accordion-body">
 <p>Finally, interventions such as vaccination, social distancing, or
 treatment programs may be of interest. Different models have varying
@@ -2147,7 +2149,7 @@ task:</p>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint1" aria-expanded="false" aria-controls="collapseHint1">
   <h4 class="accordion-header" id="headingHint1"> Give me a hint </h4>
 </button>
-<div id="collapseHint1" class="accordion-collapse collapse" aria-labelledby="headingHint1" data-bs-parent="#accordionHint1">
+<div id="collapseHint1" class="accordion-collapse collapse" data-bs-parent="#accordionHint1" aria-labelledby="headingHint1">
 <div class="accordion-body">
 <p>Consider the following questions:</p>
 <div id="checklist1" class="callout checklist">
@@ -2175,7 +2177,7 @@ task:</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution7" aria-expanded="false" aria-controls="collapseSolution7">
   <h4 class="accordion-header" id="headingSolution7"> Show me the solution </h4>
 </button>
-<div id="collapseSolution7" class="accordion-collapse collapse" aria-labelledby="headingSolution7" data-bs-parent="#accordionSolution7">
+<div id="collapseSolution7" class="accordion-collapse collapse" data-bs-parent="#accordionSolution7" aria-labelledby="headingSolution7">
 <div class="accordion-body">
 <ul>
 <li>What is the infection/disease of interest?
@@ -2352,7 +2354,7 @@ of the number of infectious individuals through time</li>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint2" aria-expanded="false" aria-controls="collapseHint2">
   <h4 class="accordion-header" id="headingHint2"> Code for initial conditions </h4>
 </button>
-<div id="collapseHint2" class="accordion-collapse collapse" aria-labelledby="headingHint2" data-bs-parent="#accordionHint2">
+<div id="collapseHint2" class="accordion-collapse collapse" data-bs-parent="#accordionHint2" aria-labelledby="headingHint2">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -2387,7 +2389,7 @@ of the number of infectious individuals through time</li>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint3" aria-expanded="false" aria-controls="collapseHint3">
   <h4 class="accordion-header" id="headingHint3"> HINT: Multiple model simulations </h4>
 </button>
-<div id="collapseHint3" class="accordion-collapse collapse" aria-labelledby="headingHint3" data-bs-parent="#accordionHint3">
+<div id="collapseHint3" class="accordion-collapse collapse" data-bs-parent="#accordionHint3" aria-labelledby="headingHint3">
 <div class="accordion-body">
 <p>Adapt the code from the <a href="simulating-transmission.html#accounting-for-uncertainty">accounting
 for uncertainty</a> section</p>
@@ -2400,7 +2402,7 @@ for uncertainty</a> section</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution8" aria-expanded="false" aria-controls="collapseSolution8">
   <h4 class="accordion-header" id="headingSolution8"> Show me the solution </h4>
 </button>
-<div id="collapseSolution8" class="accordion-collapse collapse" aria-labelledby="headingSolution8" data-bs-parent="#accordionSolution8">
+<div id="collapseSolution8" class="accordion-collapse collapse" data-bs-parent="#accordionSolution8" aria-labelledby="headingSolution8">
 <div class="accordion-body">
 <ol style="list-style-type: decimal">
 <li>Run the model once and plot the number of infectious individuals
@@ -2513,7 +2515,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-modelling-interventions"><p>Content from <a href="modelling-interventions.html">Modelling interventions</a></p>
 <hr>
-<p>Last updated on 2026-07-14 |
+<p>Last updated on 2026-07-18 |
 
         <a href="https://github.com/epiverse-trace/tutorials-late/edit/main/episodes/modelling-interventions.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -2556,8 +2558,8 @@ trajectories?</li>
 <ul>
 <li>Complete tutorial on <a href="simulating-transmission.html">Simulating transmission</a>.</li>
 </ul>
-<p>Learners should also familiarise themselves with following concept
-dependencies before working through this tutorial:</p>
+<p>Learners should also familiarise themselves with the following
+concept dependencies before working through this tutorial:</p>
 <p><strong>Outbreak response</strong>: <a href="https://www.cdc.gov/nonpharmaceutical-interventions/" class="external-link">Intervention
 types</a>.</p>
 <p><strong>R packages installed</strong>: <code>{epidemics}</code>,
@@ -2998,13 +3000,13 @@ on modelling overlapping interventions</a> for more detail.</p>
 <hr class="half-width">
 <p>Pharmaceutical interventions (PIs) are measures such as vaccination
 and mass treatment programs. In the previous section, we integrated the
-interventions into the model by reducing parameter values during
-specific period of time window in which these intervention set to take
-place. In the case of vaccination, we assume that after the
-intervention, individuals are no longer susceptible and should be
-classified into a different disease state. Therefore, we specify the
-rate at which individuals are vaccinated and track the number of
-vaccinated individuals over time.</p>
+interventions into the model by reducing parameter values during a
+specific time period in which these intervention are set to take place.
+In the case of vaccination, we assume that after the intervention, some
+or all individuals are no longer susceptible and should be classified
+into a different disease state. Therefore, we specify the rate at which
+individuals are vaccinated and track the number of vaccinated
+individuals over time.</p>
 <p>The diagram below shows the SEIRV model implemented using
 <code>model_default()</code> where susceptible individuals are
 vaccinated and then move to the <span class="math inline">\(V\)</span>
@@ -3035,8 +3037,8 @@ other SEIR components of these equations are described in the tutorial
 transmission</a>.</p>
 <p>To explore the effect of vaccination we need to create a vaccination
 object to pass as an input into <code>model_default()</code> that
-includes age groups specific vaccination rate <code>nu</code> and age
-groups specific start and end times of the vaccination program
+includes age-group-specific vaccination rate <code>nu</code> and
+age-group-specific start and end times of the vaccination program
 (<code>time_begin</code> and <code>time_end</code>).</p>
 <p>Here we will assume all age groups are vaccinated at the same rate
 0.01 and that the vaccination program starts on day 40 and continue to
@@ -3200,6 +3202,27 @@ infections in the population.</p>
 </div>
 </div>
 
+<div id="testimonial1" class="callout testimonial">
+<div class="callout-square">
+<i class="callout-icon" data-feather="heart"></i>
+</div>
+<span class="callout-header">Testimonial</span>
+<div class="callout-inner">
+<div class="callout-content">
+<p><strong>Want to build an interactive dashboard so others can explore
+epidemic scenarios?</strong></p>
+<p>We can use Shiny to overlay plots with a drag-and-drop approach. Now,
+with <a href="https://github.com/nicholasdavies/overshiny" class="external-link">overshiny</a>, you can do this with much more
+flexibility. You can combine <code>{epidemics}</code> and
+<a href="https://github.com/nicholasdavies/overshiny" class="external-link">overshiny</a> to explore the effect of different
+interventions like vaccines and social distancing with a common set of
+parameters.</p>
+<p>Read this tutorial on <a href="https://nicholasdavies.github.io/overshiny/articles/epidemics.html" class="external-link">how
+to overlay multiple interventions in epidemic modelling with a
+drag-and-drop approach</a>.</p>
+</div>
+</div>
+</div>
 </section><section><h2 class="section-heading" id="summary">Summary<a class="anchor" aria-label="anchor" href="#summary"></a>
 </h2>
 <hr class="half-width">
@@ -3249,7 +3272,7 @@ Place links that you need to refer to multiple times across pages here. Delete
 any links that you are not going to use.
  --></section></section><section id="aio-compare-interventions"><p>Content from <a href="compare-interventions.html">Comparing public health outcomes of interventions</a></p>
 <hr>
-<p>Last updated on 2026-07-14 |
+<p>Last updated on 2026-07-18 |
 
         <a href="https://github.com/epiverse-trace/tutorials-late/edit/main/episodes/compare-interventions.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -3293,7 +3316,7 @@ transmission</a> and <a href="modelling-interventions.html">Modelling
 interventions</a>
 </li>
 </ul>
-<p>Learners should familiarise themselves with following concept
+<p>Learners should familiarise themselves with the following concept
 dependencies before working through this tutorial:</p>
 <p><strong>Outbreak response</strong>: <a href="https://www.cdc.gov/nonpharmaceutical-interventions/" class="external-link">Intervention
 types</a>.</p>
@@ -4125,7 +4148,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-vaccine-comparisons"><p>Content from <a href="vaccine-comparisons.html">Comparing vaccination strategies</a></p>
 <hr>
-<p>Last updated on 2026-07-14 |
+<p>Last updated on 2026-07-18 |
 
         <a href="https://github.com/epiverse-trace/tutorials-late/edit/main/episodes/vaccine-comparisons.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -4174,7 +4197,7 @@ transmission</a>, <a href="modelling-interventions.html">Modelling
 interventions</a> and <a href="compare-interventions.html">Comparing
 public health outcomes of interventions</a>.</li>
 </ul>
-<p>Learners should familiarise themselves with following concept
+<p>Learners should familiarise themselves with the following concept
 dependencies before working through this tutorial:</p>
 <p><strong>Outbreak response</strong>: <a href="https://www.cdc.gov/nonpharmaceutical-interventions/" class="external-link">Intervention
 types</a>.</p>
@@ -4941,7 +4964,7 @@ Adapt the code below to lift the NPI after 20, 50 and 100 days</p>
   Output
   </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb17">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -5080,7 +5103,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-disease-burden"><p>Content from <a href="disease-burden.html">Modelling disease burden</a></p>
 <hr>
-<p>Last updated on 2026-07-14 |
+<p>Last updated on 2026-07-18 |
 
         <a href="https://github.com/epiverse-trace/tutorials-late/edit/main/episodes/disease-burden.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -5293,7 +5316,7 @@ shape = 10 and scale = 2 and plot the density of this distribution.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb7">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -5574,9 +5597,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://epiverse-trace.github.io/tutorials-late/aio.html",
   "identifier": "https://epiverse-trace.github.io/tutorials-late/aio.html",
-  "dateCreated": "2026-07-02",
-  "dateModified": "2026-07-14",
-  "datePublished": "2026-07-14"
+  "dateCreated": "2026-07-18",
+  "dateModified": "2026-07-18",
+  "datePublished": "2026-07-18"
 }
 
   </script><script>
