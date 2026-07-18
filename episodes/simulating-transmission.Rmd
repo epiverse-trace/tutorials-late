@@ -214,11 +214,11 @@ contacts_byage$matrix * contacts_byage$demography$population
 
 The result is a square matrix with rows and columns for each age group. Contact matrices can be loaded from other sources, but they must be formatted as a matrix to be used in `epidemics`.
 
-::::::::::::::::::::::::::::::::::::: callout
+::::::::::::::::::::::::::::::::::::: spoiler
 
 ### Normalisation
 
-In `{epidemics}` the contact matrix normalisation happens within the function call, so we don't need to normalise the contact matrix before we pass it to `epidemics::population()` (see section 3. Population Structure). For details on normalisation, see the optional episode on [Contact matrices](../learners/contact-normalization.md).
+In `{epidemics}` the contact matrix normalisation happens within the function call, so we don't need to normalise the contact matrix before we pass it to `epidemics::population()` (see section 3. Population Structure). For details on normalisation, see the optional episode on [Contact matrix normalization](../learners/contact-normalization.md).
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
