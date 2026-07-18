@@ -16,7 +16,7 @@ survey_load <- socialmixr::load_survey(files = survey_files)
 data(popAge1dt, package = "wpp2024")
 
 uk_pop <- popAge1dt %>%
-  dplyr::filter(name == "United Kingdom", year == max(year)) %>%
+  dplyr::filter(name == "United Kingdom", year == 2020) %>%
   dplyr::select(lower.age.limit = age, population = pop) %>%
   dplyr::mutate(population = population * 1000)
 
