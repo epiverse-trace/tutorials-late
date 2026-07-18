@@ -1,0 +1,232 @@
+---
+title: "Introduction simple à la modélisation mathématique des maladies infectieuses"
+author: "Andree Valle Campos et Abdoelnaser M Degoot  \nÉquipe Epiverse-TRACE @ LSHTM"
+license: "CC-BY"
+date: last-modified
+date-format: long
+format:
+  pdf:
+    toc: false
+    number-sections: true
+    include-in-header:
+      text: |
+        \usepackage{fancyhdr}
+        \pagestyle{fancy}
+        \fancyfoot[R]{\thepage}
+        \fancyfoot[C]{\textbf{License:} CC-BY. \textbf{Copyright:} Andree \& Degoot, 2024}
+        \usepackage{tikz}
+        \usetikzlibrary{arrows.meta, positioning}
+        \usepackage{amsmath}
+        \usepackage{booktabs}
+---
+
+
+# Introduction
+
+Cet exercice vise à évaluer votre compréhension des principes fondamentaux de la modélisation mathématique, tout en vous guidant dans la construction de modèles de type SEIR simple pour les épidémies de maladies infectieuses.  
+
+**Remarque :** Veuillez remplir les champs vides.
+
+# Modèle SEIR
+
+Il y a quatre compartiments dans un modèle SEIR:  ($S$, $E$, $I$, $R$) :
+
+- $S$ signifie ________, ce qui veut dire ________.
+  
+  Le paramètre qui décrit la transition du compartiment ($S$) vers ($E$) est ____.
+- $E$ signifie ________, ce qui veut dire qu’il peut ____.
+  
+  Le taux qui décrit la transition de ($E$) vers ($I$) est le taux de ____.
+- $I$ signifie ________, ce qui veut dire qu’il peut ____.
+  
+  Le taux qui décrit la transition de ($I$) vers ($R$) est le taux de ____.
+- $R$ signifie ________. Ce compartiment inclut les individus qui ont cessé d’être infectieux et ont acquis une immunité contre l’infection, quel que soit le cours clinique.
+
+# $R_0$
+
+$R_0$ aide à projeter la taille potentielle d’une épidémie et à calculer le seuil d’immunité collective.  
+Il est défini comme le nombre moyen de ________ secondaires générés par un infection primaire dans une population complètement ________.
+
+# $R_t$
+
+$R_t$ aide à suivre la progression de l’épidémie.  
+Lorsque la population n’est plus ________, on utilise le nombre de reproduction instantané $R_t$. Il est défini comme le nombre moyen de ____________ dans une population composée d’individus ________ et non ________ au temps $t$.
+
+# Un diagramme du modèle SEIR
+
+
+Le schéma ci-dessous montre un modèle SEIR typique avec démographie (naissances et décès).
+Il s’agit d’un modèle simple, applicable aux infections de personne à personne dans une population à mélange homogène.
+
+Veuillez observer attentivement le modèle et examiner ses interactions avec les équations de la section [Equations](#equations).  Utilisez des codes de couleur ou des flèches pour relier le diagramme aux équations.
+
+```{=latex}
+\begin{center}
+\begin{tikzpicture}[
+  node distance=2cm,
+  every node/.style={fill=blue!10, draw, minimum size=1cm, text centered},
+  arrow/.style={-Stealth, thick}
+]
+\node [circle, fill=green!75](S) {$S$};
+\node [circle, fill=orange!75](E) [right=of S] { $E$};
+\node [circle, fill=red!75](I) [right=of E] {$I$};
+\node [circle, fill=blue!75](R) [right=of I] {$R$};
+
+\draw[arrow] (S) -- node[above, draw=none] {$\beta S  \frac{I}{N}$} (E);
+\draw[arrow] (E) -- node[above, draw=none] {$\alpha  E$} (I);
+\draw[arrow] (I) -- node[above, draw=none] {$\gamma  I$} (R);
+
+\draw[arrow] (-2,0.0) -- node[above, draw=none] {$\Lambda N$} (S);
+\draw[arrow] (S) -- +(0,-1.2) node[below, draw=none] {$\mu$};
+\draw[arrow] (E) -- +(0,-1.2) node[below, draw=none] {$\mu$ };
+\draw[arrow] (I) -- +(0,-1.2) node[below, draw=none] {$\mu$ };
+\draw[arrow] (R) -- +(0,-1.2) node[below, draw=none] {$\mu$};
+\end{tikzpicture}
+\end{center}
+
+**Où**:
+
+- $\beta$ : Taux de transmission
+- $\alpha$ : Taux d’infectiosité, ou taux de progression de l’état exposé à l’état infectieux
+- $\gamma$ : Taux de guérison
+- $\mu$ : Taux de mortalité naturelle
+- $N$ : Taille totale de la population, $N = S + E + I + R$
+
+
+Le paramètre $\beta$, défini comme le taux moyen auquel les individus infectieux peuvent infecter les individus susceptibles, est dérivé de:
+
+$$
+\beta = p \times c
+$$
+
+où $p$ est la probabilité de transmission lors d’un contact, et $c$ est le taux de contact, défini comme le nombre moyen de contacts par unité de temps.
+
+Si le taux de transmission $\beta = 3$, cela signifie que chaque individu infectieux provoque trois nouvelles infections par unité de temps dans une population entièrement susceptible.
+
+Les paramètres du modèle sont souvent (mais pas toujours) exprimés sous forme de taux.
+Le taux auquel un événement se produit est l’inverse du temps moyen avant que cet événement ne se produise.
+
+Par exemple, dans le modèle SEIR, le taux de guérison $\gamma$ est l’inverse de la durée moyenne de la période infectieuse:
+
+$$
+\gamma = \frac{1}{\text{Période infectieuse}}
+$$
+
+Si les personnes sont en moyenne contagieuses pendant 8 jours, alors dans le modèle, un huitième des individus actuellement infectieux se rétabliraient chaque jour — c’est-à-dire,
+
+$$
+\gamma = \frac{1}{8} = 0.125
+$$
+
+
+## Équations {#eqs}
+
+Notez que dans le diagramme, les flèches entrant dans les compartiments sont exprimées comme des termes positifs dans les équations, tandis que les flèches sortant des compartiments sont représentées par des termes négatifs. En vous basant sur le diagramme ci-dessus, déduisez les équations suivantes qui décrivent ce système:
+
+### Équations des compartiments
+
+**Compartiment S:**
+
+$$
+\frac{dS}{dt} =
+$$
+
+**Compartiment E:**
+
+$$
+\frac{dE}{dt} =
+$$
+
+**Compartiment I:**
+
+$$
+\frac{dI}{dt} =
+$$
+
+**Compartiment R:**
+
+$$
+\frac{dR}{dt} =
+$$
+
+
+
+## Paramètres d'une epidémie de rougeole
+
+Un paramètre dans un modèle de transmission correspond à une propriété biologique ou sociale d’un système dynamique dans un contexte spécifique. Dans cette section, nous fournirons les éléments nécessaires pour alimenter les paramètres d’un modèle SEIR  dans le cadre d’une épidémie de rougeole au Burkina Faso.
+
+- La période de latence moyenne (ou pré-infectieuse) pour la rougeole est d’environ 8 jours (Masters et al., 2023).
+- La période infectieuse moyenne dure 5 jours (Masters et al., 2023).
+- Pour la rougeole, le nombre de reproduction de base ($R_0$) varie généralement entre 12 et 18, voire plus (Fiona et al., 2017).
+- Un seul cas infectieux est introduit dans la population.
+- Toute la population, à l’exception de ce cas, est initialement susceptible. Cette hypothèse simplifie le modèle et permet d’explorer la propagation de l’infection en l’absence d’immunité. Bien que dans la réalité, certains individus de la population ont généralement une certaine immunité due à la vaccination ou à une infection antérieure. De plus, aucun individu n’est exposé ou rétabli à ce moment-là.
+- La population du Burkina Faso est d’environ 22,67 millions d’habitants.
+- La structure par âge du Burkina Faso est caractéristique d’une population jeune, avec une majorité de personnes âgées de moins de 25 ans. Selon des estimations récentes (United Nations, 2023; Central Intelligence Agency, 2023; World Bank, 2023), la structure par âge se décompose comme suit:
+
+  - $[0\to15)$ years: $\sim 44 \, (43\text{–}45)\%$ de la population 
+  - $[15\to 25)$ years: $\sim 19.5 \, (19\text{–}20)\%$  
+  - $[25\to 55)$ years: $\sim 29 \, (28\text{–}30)\%$  
+  - $[55\to 65)$ years: $\sim 5 \, (3\text{–}5)\%$  
+  - $65+$ years : $\sim 2.5 \, (2\text{–}3)\%$
+
+
+
+## Tableau des paramètres
+Veuillez remplir le tableau ci-dessous avec les paramètres décrits ci-dessus. De plus, notez que nous exécuterons la simulation pendant 120 jours.
+
+
+\begin{table}[htb]
+	\centering
+  \renewcommand{\arraystretch}{1.3}
+	\addtolength{\leftskip} {-2cm}
+	\addtolength{\rightskip}{-2cm}
+	\begin{tabular}{@{}lll@{}}
+		\toprule
+		Paramètre            & Valeur             & Définition                                                                            \\ \midrule
+		bf\_pop              & \underline{\hspace{1cm}} & Taille de la population                                                               \\
+		S/N                  & \underline{\hspace{1cm}} & Proportion de personnes susceptibles                                                   \\
+		E/N                  & \underline{\hspace{1cm}} & Proportion de personnes exposées                                                     \\
+		I/N                  & \underline{\hspace{1cm}} & Proportion de personnes infectieuses                                                 \\
+		R/N                  & \underline{\hspace{1cm}} & Proportion de personnes rétablies                                                    \\
+		V/N                  & \underline{\hspace{1cm}} & Proportion de personnes vaccinées                                                    \\
+		r0                   & \underline{\hspace{1cm}} & Nombre de reproduction de base                                                       \\
+		latent\_period       & \underline{\hspace{1cm}} & Temps entre l'infection et le début de la contagiosité (jours)                      \\
+		infectious\_period   & \underline{\hspace{1cm}} & Durée de la période de contagion (jours)                                            \\
+		transmission\_rate   & \underline{\hspace{1cm}} & Taux auquel les individus infectieux infectent les susceptibles (r0/infectious\_period) \\
+		infectiousness\_rate & \underline{\hspace{1cm}} & Taux de progression des exposés vers les infectieux (1 / latent\_period)            \\
+		recovery\_rate       & \underline{\hspace{1cm}} & Taux de progression des infectieux vers les rétablis (1 / infectious\_period)       \\
+		time\_end            & \underline{\hspace{1cm}} & Nombre maximal d'unités de temps pour la simulation (jours)                         \\
+		increment            & \underline{\hspace{1cm}} & Taille de l'incrément de temps (jours)                                             \\ \bottomrule
+	\end{tabular}
+\end{table}
+
+
+
+
+
+
+## Calcul de  $R_0$
+
+L'expression du nombre de reproduction de base (\(R_0\)) dans le système ci-dessus est:
+
+$$
+R_0 = \frac{\mu}{(\mu + \alpha)} \cdot \frac{\beta}{(\mu + \gamma)}.
+$$
+
+Écrivez une fonction  `Measles_R0` qui implémente cette formule en utilisant les valeurs par défaut suivantes:
+
+- $\mu = \frac{1}{75}$ (taux de mortalité naturelle)  
+- $\alpha = \frac{1}{10}$ (taux de passage de exposé → infectieux))  
+- $\gamma = 1/8$ (taux de guérison)  
+- $\beta = 1.8$ (taux de transmission)
+
+
+
+## À propos de ce document
+Ce document a été adapté à partir de ["Practical: Building a Simple Compartmental Model for Zika"](https://epiverse-trace.github.io/epimodelac/ZIKAB.html),  par Zulma Cucunubá, Pierre Nouvellet et José M. Velasco-España
+(Version 1.0.3, 10 janvier 2024).
+Publié sous licence CC-BY 4.0 par les auteurs originaux.
+
+
+Pour plus d'informations, visitez:
+[https://epiverse-trace.github.io/tutorials-late/LICENSE.html](https://epiverse-trace.github.io/tutorials-late/LICENSE.html)
