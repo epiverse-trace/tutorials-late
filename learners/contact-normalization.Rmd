@@ -26,13 +26,22 @@ exercises: 10
 
 ## Introduction
 
-Let's obtain the contact matrix for the United Kingdom — passing `countries = "United Kingdom"` to select data from the intended country, `age_limits` to define age categories, and `survey_pop` to supply the population structure from `{wpp2024}` required by `{socialmixr}`.
+Let's download and load the POLYMOD survey data directly from Zenodo using `{contactsurveys}` and `{socialmixr}`. Then, obtain the contact matrix for the United Kingdom — passing `countries = "United Kingdom"` to select data from the intended country, `age_limits` to define age categories, and `survey_pop` to supply the population structure from `{wpp2024}` required by `{socialmixr}`.
 
 ```{r,message=FALSE,warning=FALSE}
 library(contactsurveys)
 library(socialmixr)
 library(wpp2024)
 library(tidyverse)
+```
+
+```{r polymod_, echo = TRUE, message = FALSE, warning = FALSE}
+survey_files <- contactsurveys::download_survey(
+  survey = "https://doi.org/10.5281/zenodo.3874557",
+  verbose = FALSE
+)
+
+survey_load <- socialmixr::load_survey(files = survey_files)
 ```
 
 ```{r polymod_uk, echo = TRUE}
