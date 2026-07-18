@@ -27,7 +27,7 @@ exercises: 30 # exercise time in minutes
 
 Learners should familiarise themselves with the following concept dependencies before working through this tutorial: 
 
-**Mathematical Modelling**: [Introduction to infectious disease models](https://doi.org/10.1038/s41592-020-0856-2), [state variables](../learners/reference.md#state), [model parameters](../learners/reference.md#parsode), [initial conditions](../learners/reference.md#initial), [differential equations](../learners/reference.md#ordinary).
+**Mathematical Modelling**: [Introduction to infectious disease models](https://doi.org/10.1038/s41592-020-0822-z), [state variables](../learners/reference.md#state), [model parameters](../learners/reference.md#parsode), [initial conditions](../learners/reference.md#initial), [differential equations](../learners/reference.md#ordinary).
 
 **Epidemic theory**: [Transmission](https://doi.org/10.1155/2011/267049), [Reproduction number](https://doi.org/10.3201/eid2501.171901).
 
