@@ -22,7 +22,7 @@ exercises: 30 # exercise time in minutes
 
 + Complete tutorial on [Simulating transmission](../episodes/simulating-transmission.md).
 
-Learners should also familiarise themselves with following concept dependencies before working through this tutorial: 
+Learners should also familiarise themselves with the following concept dependencies before working through this tutorial: 
 
 **Outbreak response**: [Intervention types](https://www.cdc.gov/nonpharmaceutical-interventions/).
 
@@ -394,7 +394,7 @@ Then continue with the livecoding.
 
 ## Pharmaceutical interventions
 
-Pharmaceutical interventions (PIs) are measures such as vaccination and mass treatment programs. In the previous section, we integrated the interventions into the model by reducing parameter values during specific period of time window in which these intervention set to take place. In the case of vaccination, we assume that after the intervention, individuals are no longer susceptible and should be classified into a different disease state. Therefore, we specify the rate at which individuals are vaccinated and track the number of vaccinated individuals over time. 
+Pharmaceutical interventions (PIs) are measures such as vaccination and mass treatment programs. In the previous section, we integrated the interventions into the model by reducing parameter values during a specific time period in which these intervention are set to take place. In the case of vaccination, we assume that after the intervention, some or all individuals are no longer susceptible and should be classified into a different disease state. Therefore, we specify the rate at which individuals are vaccinated and track the number of vaccinated individuals over time. 
 
 The diagram below shows the SEIRV model implemented using `model_default()` where susceptible individuals are vaccinated and then move to the $V$ class.
 
@@ -422,9 +422,9 @@ $$
 \end{aligned}
 $$
 
-Individuals in age group ($i$)  at specific time dependent ($t$)  are vaccinated at rate ($\nu_{i,t}$). The other SEIR components of these equations are described in the tutorial [simulating transmission](../episodes/simulating-transmission.md#simulating-disease-spread). 
+Individuals in age group ($i$) at specific time dependent ($t$)  are vaccinated at rate ($\nu_{i,t}$). The other SEIR components of these equations are described in the tutorial [simulating transmission](../episodes/simulating-transmission.md#simulating-disease-spread). 
 
-To explore the effect of vaccination we need to create a vaccination object to pass as an input into `model_default()` that includes  age groups specific vaccination rate `nu` and age groups specific start and end times of the vaccination program (`time_begin` and `time_end`). 
+To explore the effect of vaccination we need to create a vaccination object to pass as an input into `model_default()` that includes  age-group-specific vaccination rate `nu` and age-group-specific start and end times of the vaccination program (`time_begin` and `time_end`). 
 
 Here we will assume all age groups are vaccinated at the same rate 0.01 and that the vaccination program starts on day 40 and continue to be in place for 150 days.
 
@@ -567,6 +567,17 @@ Suggest learners to read the next episode.
 Return to slides.
 
 ::::::::::::::::::::::
+
+::::::::::::::::::: testimonial
+
+__Want to build an interactive dashboard so others can explore epidemic scenarios?__
+
+We can use Shiny to overlay plots with a drag-and-drop approach. Now, with `{overshiny}`, you can do this with much more flexibility.
+You can combine `{epidemics}` and `{overshiny}` to explore the effect of different interventions like vaccines and social distancing with a common set of parameters.
+
+Read this tutorial on [how to overlay multiple interventions in epidemic modelling with a drag-and-drop approach](https://nicholasdavies.github.io/overshiny/articles/epidemics.html).
+
+:::::::::::::::::::
 
 ## Summary
 

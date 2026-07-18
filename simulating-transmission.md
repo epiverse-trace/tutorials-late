@@ -25,7 +25,7 @@ exercises: 30 # exercise time in minutes
 
 + Complete tutorial on [contact matrices](../episodes/contact-matrices.md).
 
-Learners should familiarise themselves with following concept dependencies before working through this tutorial: 
+Learners should familiarise themselves with the following concept dependencies before working through this tutorial: 
 
 **Mathematical Modelling**: [Introduction to infectious disease models](https://doi.org/10.1038/s41592-020-0856-2), [state variables](../learners/reference.md#state), [model parameters](../learners/reference.md#parsode), [initial conditions](../learners/reference.md#initial), [differential equations](../learners/reference.md#ordinary).
 
@@ -51,7 +51,7 @@ go to the [main setup page](../learners/setup.md#software-setup).
 
 ## Introduction
 
-Mathematical models are useful tools for generating future trajectories of disease spread. In this tutorial, we will use the R package `{epidemics}` to generate disease trajectories of an influenza strain with pandemic potential. By the end of this tutorial, you will be able to generate the trajectory below showing the number of infectious individuals in different age categories over time.
+Mathematical models are useful tools for generating trajectories of disease spread. In this tutorial, we will use the R package `{epidemics}` to generate disease trajectories of an influenza strain with pandemic potential. By the end of this tutorial, you will be able to generate the trajectory below showing the number of infectious individuals in different age categories over time.
 
 In this tutorial we are going to learn how to use the `{epidemics}` package to simulate disease trajectories and access to social contact data with `{socialmixr}`. We'll use `{dplyr}`, `{ggplot2}` and the pipe `%>%` to connect some of their functions, so let's also call to the `{tidyverse}` package:
 
@@ -116,7 +116,7 @@ $$
 \end{aligned}
 $$
 
-Individuals in age group ($i$) move from the susceptible state ($S_i$) to the exposed state ($E_i$) via age-specific contacts with infectious individuals in all groups $\beta S_i \sum_j C_{i,j} I_j/N_j$. The contact matrix $C$ allows for heterogeneity in contacts between age groups. They then move to the infectious state at a rate $\alpha$ and recover at a rate $\gamma$. Note that this model assumes no loss of immunity (there are no flows out of the recovered state), which may not be applicable for all diseases as some allow for reinfection.
+Individuals in age group ($i$) move from the susceptible state ($S_i$) to the exposed state ($E_i$) via age-specific contacts with infectious individuals in all groups $\beta S_i \sum_j C_{i,j} I_j/N_j$. The contact matrix $C$ allows for heterogeneity in contacts between age groups. They then move to the infectious state at a rate $\alpha$ and recover at a rate $\gamma$. Note that this model assumes no loss of immunity (meaning there are no flows out of the recovered state), which may not be applicable to all diseases. Immunity wanes more rapidly for certain infections, allowing for reinfection.
 
 The model parameters are:
 
@@ -279,9 +279,9 @@ We combine the three initial conditions vectors into one matrix,
 ``` r
 # combine the initial conditions into a matrix class object
 initial_conditions <- rbind(
-  initial_conditions_inf, # age group 1 (only group with infectious)
-  initial_conditions_free, # age group 2
-  initial_conditions_free # age group 3
+  initial_conditions_inf, # age group [0,20) (only group with infectious)
+  initial_conditions_free, # age group [20, 40)
+  initial_conditions_free # age group 40+
 )
 
 # use contact matrix to assign age group names
