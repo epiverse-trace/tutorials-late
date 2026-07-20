@@ -342,13 +342,15 @@ Recall from **A Note on Notation** above that entry $C[i,j]$ of the matrix from 
 
 To convert this into a contact *rate*, we read the matrix the other way round: "susceptibles in group $i$ ($S_i$), *contacted by* group $j$". That's the same contact seen from the susceptible side rather than the reporting side — group $j$ is doing the contacting, group $i$ is being exposed. In other words, the entry we need at position $(i,j)$ is the reported contact at `socialmixr`'s position $(j,i)$: the two conventions are transposes of each other.
 
-To go from one convention to the other, we transpose the matrix:
+Going from one convention to the other means transposing the matrix. Some packages expect you to do this yourself; `{epidemics}` does it for you.
+
+From version 0.5.0, the `{epidemics}` model functions transpose the contact matrix internally, so a matrix from `socialmixr::contact_matrix()` should be passed to `epidemics::population()` exactly as it is returned, with no call to `t()`:
 
 ```r
-contacts_byage_matrix <- t(contacts_byage$matrix)
+contacts_byage_matrix <- contacts_byage$matrix
 ```
 
-This is the matrix used as $C_{i,j}$ in $\beta S_i \sum_j C_{i,j} I_j/N_j$ below.
+Internally, it is the transposed matrix that is used as $C_{i,j}$ in $\beta S_i \sum_j C_{i,j} I_j/N_j$ below.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
