@@ -31,7 +31,7 @@ Learners should familiarise themselves with the following concept dependencies b
 
 **Epidemic theory**: [Transmission](https://doi.org/10.1155/2011/267049), [Reproduction number](https://doi.org/10.3201/eid2501.171901).
 
-**R packages installed**: `{epidemics}`, `{contactsurveys}`, `{socialmixr}`, `{scales}`, `{tidyverse}`.
+**R packages installed**: `{epidemics}`, `{contactsurveys}`, `{socialmixr}`, `{wpp2024}`, `{scales}`, `{tidyverse}`.
 
 :::::::::::::::::::::::::::::::::
 
@@ -41,7 +41,7 @@ Install these packages if they are not already installed
 
 ```r
 if (!base::require("pak")) install.packages("pak")
-pak::pak(c("epiverse-trace/epidemics", "contactsurveys", "socialmixr", "scales", "tidyverse"))
+pak::pak(c("epiverse-trace/epidemics", "PPgp/wpp2024", "contactsurveys", "socialmixr", "scales", "tidyverse"))
 ```
 
 If you have any error message,
@@ -195,7 +195,7 @@ contacts_byage <- socialmixr::contact_matrix(
 )
 
 # prepare contact matrix
-contacts_byage_matrix <- t(contacts_byage$matrix)
+contacts_byage_matrix <- contacts_byage$matrix
 
 # print
 contacts_byage_matrix
