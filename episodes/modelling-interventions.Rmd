@@ -29,7 +29,7 @@ Learners should also familiarise themselves with the following concept dependenc
 
 **Outbreak response**: [Intervention types](https://www.cdc.gov/nonpharmaceutical-interventions/).
 
-**R packages installed**: `{epidemics}`, `{contactsurveys}`, `{socialmixr}`, `{scales}`, `{tidyverse}`.
+**R packages installed**: `{epidemics}`, `{contactsurveys}`, `{socialmixr}`, `{wpp2024}`, `{scales}`, `{tidyverse}`.
 
 :::::::::::::::::::::::::::::::::
 
@@ -39,7 +39,7 @@ Install packages if they are not already installed
 
 ```r
 if (!base::require("pak")) install.packages("pak")
-pak::pak(c("epiverse-trace/epidemics", "contactsurveys", "socialmixr", "scales", "tidyverse"))
+pak::pak(c("epiverse-trace/epidemics", "PPgp/wpp2024", "contactsurveys", "socialmixr", "scales", "tidyverse"))
 ```
 
 If you have any error message,
@@ -110,8 +110,8 @@ contacts_byage <- socialmixr::contact_matrix(
   survey_pop = uk_pop
 )
 
-# transpose contact matrix
-contacts_byage_matrix <- t(contacts_byage$matrix)
+# prepare contact matrix
+contacts_byage_matrix <- contacts_byage$matrix
 
 # prepare the demography vector
 demography_vector <- contacts_byage$demography$population
