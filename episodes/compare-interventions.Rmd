@@ -36,7 +36,7 @@ contacts_byage <- socialmixr::contact_matrix(
 )
 
 # prepare contact matrix
-contacts_byage_matrix <- t(contacts_byage$matrix)
+contacts_byage_matrix <- contacts_byage$matrix
 
 # prepare the demography vector
 demography_vector <- contacts_byage$demography$population
@@ -368,7 +368,7 @@ contacts_byage_uk <- socialmixr::contact_matrix(
   survey_pop = uk_pop
 )
 # prepare contact matrix
-contacts_byage_matrix_uk <- t(contacts_byage_uk$matrix)
+contacts_byage_matrix_uk <- contacts_byage_uk$matrix
 
 # extract demography vector
 demography_vector <- contacts_byage_uk$demography$population
