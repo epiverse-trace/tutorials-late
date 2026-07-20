@@ -108,7 +108,7 @@ contacts_byage <- socialmixr::contact_matrix(
 )
 
 # prepare contact matrix
-contacts_byage_matrix <- t(contacts_byage$matrix)
+contacts_byage_matrix <- contacts_byage$matrix
 
 # prepare the demography vector
 demography_vector <- contacts_byage$demography$population
