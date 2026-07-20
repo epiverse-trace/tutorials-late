@@ -29,8 +29,8 @@ cm_results <- socialmixr::contact_matrix(
   survey_pop = uk_pop
 )
 
-# transpose contact matrix
-cm_matrix <- t(cm_results$matrix)
+# prepare contact matrix
+cm_matrix <- cm_results$matrix
 
 # prepare the demography vector
 demography_vector <- cm_results$demography$population
