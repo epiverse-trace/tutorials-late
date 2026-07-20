@@ -70,7 +70,7 @@ To install R and RStudio, follow these instructions <https://posit.co/download/r
 
 Hold on: This is a great time to make sure your R installation is current.
 
-This tutorial requires **R version 4.0.0 or later**. 
+This tutorial requires **R version 4.1.0 or later**. 
 
 :::::::::::::::::::::::::::::
 
