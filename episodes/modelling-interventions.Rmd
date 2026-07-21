@@ -297,7 +297,7 @@ We can also model the effect of other NPIs by reducing the value of the relevant
 
 We expect that mask wearing will reduce an individual's infectiousness, based on multiple studies showing the effectiveness of masks in reducing transmission. As we are using a population-based model, we cannot make changes to individual behavior and so assume that the transmission rate $\beta$ is reduced by a proportion due to mask wearing in the population. We specify this proportion, $\theta$ as product of the proportion wearing masks multiplied by the proportion reduction in transmission rate (adapted from [Li et al. 2020](https://doi.org/10.1371/journal.pone.0237691)).
 
-We create an intervention object with `type = "rate"` and `reduction = 0.161`. Using parameters adapted from [Li et al. 2020](https://doi.org/10.1371/journal.pone.0237691) we have proportion wearing masks = coverage $\times$ availability = $0.54 \times 0.525 = 0.2835$ and proportion reduction in transmission rate = $0.575$. Therefore, $\theta = 0.2835 \times 0.575 = 0.163$. We assume that the mask wearing mandate starts at day 40 and continue to be in place for 200 days.
+We create an intervention object with `type = "rate"` and `reduction = 0.163`. Using parameters adapted from [Li et al. 2020](https://doi.org/10.1371/journal.pone.0237691) we have proportion wearing masks = coverage $\times$ availability = $0.54 \times 0.525 = 0.2835$ and proportion reduction in transmission rate = $0.575$. Therefore, $\theta = 0.2835 \times 0.575 = 0.163$. We assume that the mask wearing mandate starts at day 40 and continue to be in place for 200 days.
 
 ```{r masks}
 mask_mandate <- epidemics::intervention(
@@ -308,6 +308,21 @@ mask_mandate <- epidemics::intervention(
   reduction = 0.163
 )
 ```
+
+::::::::::::::::::::::::::::::::::::: callout
+### Effect of the mask mandate on the transmission rate
+
+The `reduction` value scales down the transmission rate $\beta$ for the period the intervention is in place:
+
+$$\beta \times (1 - \text{reduction})$$
+$$\beta \times (1 - 0.163)$$
+$$\beta \times 0.837$$
+
+If $\beta = 0.49$, then:
+
+$$\beta_{\text{with intervention}} = 0.41$$
+
+::::::::::::::::::::::::::::::::::::::::::::::::
 
 To implement this intervention on the transmission rate $\beta$, we specify `intervention = list(transmission_rate = mask_mandate)`.
 
