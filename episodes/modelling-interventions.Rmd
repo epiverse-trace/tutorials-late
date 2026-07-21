@@ -431,6 +431,23 @@ vaccinate <- epidemics::vaccination(
 )
 ```
 
+::::::::::::::::::::::::::::::::::::: callout
+### Vaccination rate
+
+The vaccination rate $\nu_{g_i}$ is the number of doses given daily to age group $g_i$ among the total population in that age group:
+
+$$
+\nu_{g_i} = \frac{\text{daily doses in group } g_i}{\text{population in group } g_i}
+$$
+
+For example, in February 2021, 425,000 daily doses were administered to the population aged 65+, with a population size of 12,730,000:
+
+$$
+\nu_{65+} = \frac{425{,}000}{12{,}730{,}000} = 0.0334
+$$
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
 We pass our vaccination object into the model using the argument `vaccination = vaccinate`:
 
 ```{r output_vaccinate}
