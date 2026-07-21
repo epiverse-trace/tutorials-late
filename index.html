@@ -108,7 +108,7 @@
           <button class="nav-link dropdown-toggle" id="navbarDropdown" data-bs-toggle="dropdown" aria-expanded="false">
             More <i data-feather="chevron-down"></i>
           </button>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdown"><li><a class="dropdown-item" href="BF_measles.html">Introduction to Mathematical Modelling of Infectious Diseases</a></li><li><a class="dropdown-item" href="reference.html">Glossary of Terms: Epiverse-TRACE</a></li>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown"><li><a class="dropdown-item" href="BF_measles.html">Introduction to Mathematical Modelling of Infectious Diseases</a></li><li><a class="dropdown-item" href="contact-normalization.html">Contact matriz normalization</a></li><li><a class="dropdown-item" href="reference.html">Glossary of Terms: Epiverse-TRACE</a></li>
           </ul></li>
       </ul></div>
     <!--
@@ -298,7 +298,7 @@
                       <li>
                         <a href="profiles.html">Learner Profiles</a>
                       </li>
-                      <li><a href="BF_measles.html">Introduction to Mathematical Modelling of Infectious Diseases</a></li><li><a href="reference.html">Glossary of Terms: Epiverse-TRACE</a></li>
+                      <li><a href="BF_measles.html">Introduction to Mathematical Modelling of Infectious Diseases</a></li><li><a href="contact-normalization.html">Contact matriz normalization</a></li><li><a href="reference.html">Glossary of Terms: Epiverse-TRACE</a></li>
                     </ul></div>
                 </div>
               </div>
@@ -450,7 +450,7 @@ with R.</li>
 <div class="callout-content">
 <p>Hold on: This is a great time to make sure your R installation is
 current.</p>
-<p>This tutorial requires <strong>R version 4.0.0 or later</strong>.</p>
+<p>This tutorial requires <strong>R version 4.1.0 or later</strong>.</p>
 </div>
 </div>
 </div>
@@ -533,7 +533,7 @@ manually install them according to your operating system.</p>
 </button>
 </div>
 </nav><div id="nav-tabContent-1" class="tab-content">
-<div id="nav-tabpanel-1-1" class="tab-pane show active" role="tabpanel" aria-labelledby="nav-tab-1-1">
+<div id="nav-tabpanel-1-1" class="tab-pane show active" aria-labelledby="nav-tab-1-1" role="tabpanel">
 <p>Windows users will need a working installation of <code>Rtools</code>
 in order to build the package from source.<br><code>Rtools</code> is not an R package, but a software you need to
 download and install. We suggest you to follow:</p>
@@ -544,14 +544,14 @@ with default selections.</li>
 <li>Close and reopen RStudio so it can recognize the new
 installation.</li>
 </ul></div>
-<div id="nav-tabpanel-1-2" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-1-2">
+<div id="nav-tabpanel-1-2" class="tab-pane" aria-labelledby="nav-tab-1-2" role="tabpanel">
 <p>Mac users require two additional steps as detailed in this <a href="https://github.com/stan-dev/rstan/wiki/Configuring-C---Toolchain-for-Mac" class="external-link">guide
 to Configuring C Toolchain for Mac</a>:</p>
 <ul><li>Install and use <a href="https://mac.thecoatlessprofessor.com/macrtools/" class="external-link"><code>macrtools</code></a>
 to setup the C++ toolchain</li>
 <li>Enable some compiler optimizations.</li>
 </ul></div>
-<div id="nav-tabpanel-1-3" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-1-3">
+<div id="nav-tabpanel-1-3" class="tab-pane" aria-labelledby="nav-tab-1-3" role="tabpanel">
 <p>Linux users require specific details per distribution. Find them in
 this <a href="https://github.com/stan-dev/rstan/wiki/Configuring-C-Toolchain-for-Linux" class="external-link">guide
 to Configuring C Toolchain for Linux</a>.</p>
@@ -595,6 +595,8 @@ window</a>, then press the <kbd>Enter</kbd> (Windows and Linux) or
 <span></span>
 <span><span class="va">new_packages</span> <span class="op">&lt;-</span> <span class="fu">c</span><span class="op">(</span></span>
 <span>  <span class="st">"socialmixr"</span>,</span>
+<span>  <span class="st">"contactsurveys"</span>,</span>
+<span>  <span class="st">"PPgp/wpp2024"</span>,</span>
 <span>  <span class="st">"finalsize"</span>,</span>
 <span>  <span class="st">"epiverse-trace/epidemics"</span>,</span>
 <span>  <span class="st">"epiparameter"</span>,</span>
@@ -696,6 +698,8 @@ by pasting the following code into the console:</p>
 </h3>
 <pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">library</span><span class="op">(</span><span class="va">socialmixr</span><span class="op">)</span></span>
+<span><span class="kw">library</span><span class="op">(</span><span class="va">contactsurveys</span><span class="op">)</span></span>
+<span><span class="kw">library</span><span class="op">(</span><span class="va">wpp2024</span><span class="op">)</span></span>
 <span><span class="kw">library</span><span class="op">(</span><span class="va">finalsize</span><span class="op">)</span></span>
 <span><span class="kw">library</span><span class="op">(</span><span class="va">epidemics</span><span class="op">)</span></span>
 <span><span class="kw">library</span><span class="op">(</span><span class="va">epiparameter</span><span class="op">)</span></span>
@@ -773,9 +777,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://epiverse-trace.github.io/tutorials-late/index.html",
   "identifier": "https://epiverse-trace.github.io/tutorials-late/index.html",
-  "dateCreated": "2026-07-18",
-  "dateModified": "2026-07-18",
-  "datePublished": "2026-07-18"
+  "dateCreated": "2026-07-21",
+  "dateModified": "2026-07-21",
+  "datePublished": "2026-07-21"
 }
 
   </script><script>
