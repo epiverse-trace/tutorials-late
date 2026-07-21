@@ -1677,7 +1677,6 @@
         "tidyr",
         "wpp2024"
       ],
-      "Remotes": "PPgp/wpp2024",
       "LinkingTo": [
         "BH",
         "Rcpp",
@@ -1690,16 +1689,16 @@
       "Language": "en-GB",
       "Roxygen": "list(markdown = TRUE)",
       "Config/roxygen2/version": "8.0.0",
+      "Author": "Pratik Gupte [aut, cph] (ORCID: <https://orcid.org/0000-0001-5294-7819>), Rosalind Eggo [aut, cph, cre] (ORCID: <https://orcid.org/0000-0002-0362-6717>), Edwin Van Leeuwen [aut, cph] (ORCID: <https://orcid.org/0000-0002-2383-5305>), Bankole Ahadzie [aut], Adam Kucharski [ctb, rev] (ORCID: <https://orcid.org/0000-0001-8814-9421>), Tim Taylor [ctb, rev] (ORCID: <https://orcid.org/0000-0002-8587-7113>), Alexis Robert [ctb, rev] (ORCID: <https://orcid.org/0000-0002-4516-2965>), Hugo Gruson [rev] (ORCID: <https://orcid.org/0000-0002-4094-1476>), Joshua W. Lambert [ctb, rev] (ORCID: <https://orcid.org/0000-0001-5218-3046>), James M. Azam [rev] (ORCID: <https://orcid.org/0000-0001-5782-7330>)",
+      "Maintainer": "Rosalind Eggo <rosalind.eggo@lshtm.ac.uk>",
       "RemoteType": "github",
+      "Remotes": "PPgp/wpp2024",
       "RemoteHost": "api.github.com",
       "RemoteRepo": "epidemics",
       "RemoteUsername": "epiverse-trace",
       "RemotePkgRef": "epiverse-trace/epidemics",
       "RemoteRef": "HEAD",
-      "RemoteSha": "ac11c6fd15483f5a9fa2f053b714d04dd3c407b7",
-      "NeedsCompilation": "yes",
-      "Author": "Pratik Gupte [aut, cph] (ORCID: <https://orcid.org/0000-0001-5294-7819>), Rosalind Eggo [aut, cph, cre] (ORCID: <https://orcid.org/0000-0002-0362-6717>), Edwin Van Leeuwen [aut, cph] (ORCID: <https://orcid.org/0000-0002-2383-5305>), Bankole Ahadzie [aut], Adam Kucharski [ctb, rev] (ORCID: <https://orcid.org/0000-0001-8814-9421>), Tim Taylor [ctb, rev] (ORCID: <https://orcid.org/0000-0002-8587-7113>), Alexis Robert [ctb, rev] (ORCID: <https://orcid.org/0000-0002-4516-2965>), Hugo Gruson [rev] (ORCID: <https://orcid.org/0000-0002-4094-1476>), Joshua W. Lambert [ctb, rev] (ORCID: <https://orcid.org/0000-0001-5218-3046>), James M. Azam [rev] (ORCID: <https://orcid.org/0000-0001-5782-7330>)",
-      "Maintainer": "Rosalind Eggo <rosalind.eggo@lshtm.ac.uk>"
+      "RemoteSha": "ac11c6fd15483f5a9fa2f053b714d04dd3c407b7"
     },
     "epiparameter": {
       "Package": "epiparameter",
