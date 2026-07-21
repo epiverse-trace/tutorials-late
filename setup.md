@@ -70,7 +70,7 @@ To install R and RStudio, follow these instructions <https://posit.co/download/r
 
 Hold on: This is a great time to make sure your R installation is current.
 
-This tutorial requires **R version 4.0.0 or later**. 
+This tutorial requires **R version 4.1.0 or later**. 
 
 :::::::::::::::::::::::::::::
 
@@ -173,6 +173,8 @@ if(!require("pak")) install.packages("pak")
 
 new_packages <- c(
   "socialmixr",
+  "contactsurveys",
+  "PPgp/wpp2024",
   "finalsize",
   "epiverse-trace/epidemics",
   "epiparameter",
@@ -247,6 +249,8 @@ When the installation has finished, you can try to load the packages by pasting 
 
 ```r
 library(socialmixr)
+library(contactsurveys)
+library(wpp2024)
 library(finalsize)
 library(epidemics)
 library(epiparameter)

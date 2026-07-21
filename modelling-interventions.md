@@ -26,7 +26,7 @@ Learners should also familiarise themselves with the following concept dependenc
 
 **Outbreak response**: [Intervention types](https://www.cdc.gov/nonpharmaceutical-interventions/).
 
-**R packages installed**: `{epidemics}`, `{contactsurveys}`, `{socialmixr}`, `{scales}`, `{tidyverse}`.
+**R packages installed**: `{epidemics}`, `{contactsurveys}`, `{socialmixr}`, `{wpp2024}`, `{scales}`, `{tidyverse}`.
 
 :::::::::::::::::::::::::::::::::
 
@@ -36,7 +36,7 @@ Install packages if they are not already installed
 
 ```r
 if (!base::require("pak")) install.packages("pak")
-pak::pak(c("epiverse-trace/epidemics", "contactsurveys", "socialmixr", "scales", "tidyverse"))
+pak::pak(c("epiverse-trace/epidemics", "PPgp/wpp2024", "contactsurveys", "socialmixr", "scales", "tidyverse"))
 ```
 
 If you have any error message,
@@ -57,6 +57,7 @@ In this tutorial, we will learn how to use `{epidemics}` to model interventions 
 library(epidemics)
 library(contactsurveys)
 library(socialmixr)
+library(wpp2024)
 library(tidyverse)
 ```
 
@@ -81,7 +82,7 @@ Then start with the livecoding directly with interventions.
 
 We will investigate the effect of interventions on a COVID-19 outbreak using an SEIR model (`model_default()` in the R package `{epidemics}`). To be able to see the effect of our intervention, we will run a baseline variant of the model, i.e,  without intervention.
 
-The SEIR model divides the population into four compartments: Susceptible (S), Exposed (E), Infectious (I), and Recovered (R). We will set the following parameters for our model: $R_0 = 2.7$ (basic reproduction number), latent period or pre-infectious period $= 4$ days, and the infectious period $= 5.5$ days (parameters adapted from [Davies et al. (2020)](https://doi.org/10.1016/S2468-2667(20)30133-X)). We adopt a contact matrix with age bins 0-18, 18-65, 65 years and older using `{socialmixr}`, and assume that one in every 1 million individuals in each age group is infectious at the start of the epidemic.
+The SEIR model divides the population into four compartments: Susceptible (S), Exposed (E), Infectious (I), and Recovered (R). We will set the following parameters for our model: $R_0 = 2.7$ (basic reproduction number), latent period or pre-infectious period $= 4$ days, and the infectious period $= 5.5$ days (parameters adapted from [Davies et al. (2020)](https://doi.org/10.1016/S2468-2667(20)30133-X)). We adopt a contact matrix with age bins 0-15, 15-65, 65 years and older using `{socialmixr}`, and assume that one in every 1 million individuals in each age group is infectious at the start of the epidemic.
 
 
 ``` r
@@ -92,17 +93,24 @@ survey_files <- contactsurveys::download_survey(
 )
 survey_load <- socialmixr::load_survey(files = survey_files)
 
+data(popAge1dt, package = "wpp2024")
+
+uk_pop <- popAge1dt %>%
+  dplyr::filter(name == "United Kingdom", year == 2020) %>%
+  dplyr::select(lower.age.limit = age, population = pop) %>%
+  dplyr::mutate(population = population * 1000)
+
 # generate contact matrix
 contacts_byage <- socialmixr::contact_matrix(
   survey = survey_load,
   countries = "United Kingdom",
   age_limits = c(0, 15, 65),
   symmetric = TRUE,
-  return_demography = TRUE
+  survey_pop = uk_pop
 )
 
-# transpose contact matrix
-contacts_byage_matrix <- t(contacts_byage$matrix)
+# prepare contact matrix
+contacts_byage_matrix <- contacts_byage$matrix
 
 # prepare the demography vector
 demography_vector <- contacts_byage$demography$population
