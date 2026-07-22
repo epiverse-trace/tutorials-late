@@ -310,7 +310,7 @@ mask_mandate <- epidemics::intervention(
 ```
 
 ::::::::::::::::::::::::::::::::::::: callout
-### Effect of intervention on transmission
+### Effect of intervention on transmission rate
 
 The `reduction` value scales down the transmission rate $\beta$ for the period the intervention is in place:
 
