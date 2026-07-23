@@ -1,6 +1,8 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
+<!-- Render with: rmarkdown::render("README.Rmd") -->
+
 # Epiverse-TRACE Tutorials Late
 
 <!-- badges: start -->
@@ -83,7 +85,8 @@ use it](https://citation-file-format.github.io/).)
 
 To cite these tutorials in publications use:
 
-    Minter A, Degoot A, Valle-Campos A, Gruson H, Bah B, Funk S, Eggo R, Kucharski A (2026). "Epiverse-TRACE Tutorials Late: Scenario modelling for outbreak analytics with R."
+    Minter A, Degoot A, Valle-Campos A, Gruson H, Bah B, Funk S, Eggo R, Kucharski A (2026). "Epiverse-TRACE Tutorials Late: Scenario
+    modelling for outbreak analytics with R." doi:10.5281/zenodo.21512057 <https://doi.org/10.5281/zenodo.21512057>.
     <https://epiverse-trace.github.io/tutorials-late/>.
 
 A BibTeX entry for LaTeX users is:
@@ -92,6 +95,7 @@ A BibTeX entry for LaTeX users is:
       title = {Epiverse-TRACE Tutorials Late: Scenario modelling for outbreak analytics with R},
       author = {Amanda Minter and Abdoelnaser Degoot and Andree Valle-Campos and Hugo Gruson and Bubacarr Bah and Sebastian Funk and Rosalind Eggo and Adam Kucharski},
       year = {2026},
+      doi = {10.5281/zenodo.21512057},
       url = {https://epiverse-trace.github.io/tutorials-late/},
       abstract = {The Epiverse-TRACE initiative aims to provide a software ecosystem for outbreak analytics with integrated, generalisable and scalable community-driven software. We support the development of R packages, make the existing ones interoperable for the user experience, and stimulate a community of practice. In the outbreak analytics curriculum, we built three tutorials around an outbreak analysis pipeline split into three stages: Early, Middle, and Late tasks. Early tasks include reading, cleaning and validating case data, and converting line list data to incidence for visualizing epidemic curves. Middle tasks host real-time analysis that includes accessing epidemiological delays, estimating transmission metrics, forecasting, and severity from incidence data, superspreading from line list and contact data, and simulating transmission chains. Late tasks include accessing and analyzing social contact matrices, scenario modelling to simulate disease spread and investigate interventions, and modelling disease burden.},
       keywords = {outbreak-analytics,scenario-modelling,contact-matrix,non-pharmaceutical-interventions,vaccination,disease-burden,carpentries-workbench,rstats,english-language},
