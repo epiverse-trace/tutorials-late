@@ -339,7 +339,7 @@
       </div>
     </nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Modelling interventions</h1>
-        <p>Last updated on 2026-07-21 |
+        <p>Last updated on 2026-07-23 |
 
         <a href="https://github.com/epiverse-trace/tutorials-late/edit/main/episodes/modelling-interventions.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -878,6 +878,35 @@ be in place for 150 days.</p>
 <span>  nu <span class="op">=</span> <span class="fu">matrix</span><span class="op">(</span><span class="fu">c</span><span class="op">(</span><span class="fl">0.01</span>, <span class="fl">0.01</span>, <span class="fl">0.01</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre>
 </div>
+<div id="vaccination-rate" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="vaccination-rate" class="callout-inner">
+<h3 class="callout-title">Vaccination rate</h3>
+<div class="callout-content">
+<p>The vaccination rate <span class="math inline">\(\nu_{g_i}\)</span>
+is the number of doses given daily to age group <span class="math inline">\(g_i\)</span> among the total population in that
+age group:</p>
+<p><span class="math display">\[
+\nu_{g_i} = \frac{\text{daily doses in group } g_i}{\text{population in
+group } g_i}
+\]</span></p>
+<p>For example, during the NHS England autumn 2023 COVID-19 booster
+campaign, an average of 98,000 daily doses were administered to the
+population aged 65+, with a population size of 12,730,000:</p>
+<p><span class="math display">\[
+\nu_{65+} = \frac{98{,}000}{12{,}730{,}000} = 0.0077
+\]</span></p>
+<p>61.5% of people aged 65+ had received an autumn COVID-19 booster by
+30 November 2023, since the campaign began on 11 September 2023 (80
+days). 61.5% × 12,730,000 ≈ 7,829,000 doses ÷ 80 days ≈ 98,000
+doses/day. (<a href="https://www.england.nhs.uk/statistics/statistical-work-areas/covid-19-vaccinations/" class="external-link">NHS
+England, Vaccinations: COVID-19</a>)</p>
+</div>
+</div>
+</div>
 <p>We pass our vaccination object into the model using the argument
 <code>vaccination = vaccinate</code>:</p>
 <div class="codewrapper sourceCode" id="cb17">
@@ -1144,9 +1173,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://epiverse-trace.github.io/tutorials-late/modelling-interventions.html",
   "identifier": "https://epiverse-trace.github.io/tutorials-late/modelling-interventions.html",
-  "dateCreated": "2026-07-21",
-  "dateModified": "2026-07-21",
-  "datePublished": "2026-07-21"
+  "dateCreated": "2026-07-23",
+  "dateModified": "2026-07-23",
+  "datePublished": "2026-07-23"
 }
 
   </script><script>
