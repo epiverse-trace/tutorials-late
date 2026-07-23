@@ -764,7 +764,7 @@ product of the proportion wearing masks multiplied by the proportion
 reduction in transmission rate (adapted from <a href="https://doi.org/10.1371/journal.pone.0237691" class="external-link">Li et
 al. 2020</a>).</p>
 <p>We create an intervention object with <code>type = "rate"</code> and
-<code>reduction = 0.161</code>. Using parameters adapted from <a href="https://doi.org/10.1371/journal.pone.0237691" class="external-link">Li et al. 2020</a>
+<code>reduction = 0.163</code>. Using parameters adapted from <a href="https://doi.org/10.1371/journal.pone.0237691" class="external-link">Li et al. 2020</a>
 we have proportion wearing masks = coverage <span class="math inline">\(\times\)</span> availability = <span class="math inline">\(0.54 \times 0.525 = 0.2835\)</span> and proportion
 reduction in transmission rate = <span class="math inline">\(0.575\)</span>. Therefore, <span class="math inline">\(\theta = 0.2835 \times 0.575 = 0.163\)</span>. We
 assume that the mask wearing mandate starts at day 40 and continue to be
@@ -780,6 +780,28 @@ in place for 200 days.</p>
 <span>  time_end <span class="op">=</span> <span class="fl">40</span> <span class="op">+</span> <span class="fl">200</span>,</span>
 <span>  reduction <span class="op">=</span> <span class="fl">0.163</span></span>
 <span><span class="op">)</span></span></code></pre>
+</div>
+<div id="effect-of-intervention-on-transmission-rate" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="effect-of-intervention-on-transmission-rate" class="callout-inner">
+<h3 class="callout-title">Effect of intervention on transmission
+rate</h3>
+<div class="callout-content">
+<p>The <code>reduction</code> value scales down the transmission rate
+<span class="math inline">\(\beta\)</span> for the period the
+intervention is in place:</p>
+<p><span class="math display">\[\beta \times (1 -
+\text{reduction})\]</span> <span class="math display">\[\beta \times (1
+- 0.163)\]</span> <span class="math display">\[\beta \times
+0.837\]</span></p>
+<p>If <span class="math inline">\(\beta = 0.49\)</span>, then:</p>
+<p><span class="math display">\[\beta_{\text{with intervention}} =
+0.41\]</span></p>
+</div>
+</div>
 </div>
 <p>To implement this intervention on the transmission rate <span class="math inline">\(\beta\)</span>, we specify
 <code>intervention = list(transmission_rate = mask_mandate)</code>.</p>
