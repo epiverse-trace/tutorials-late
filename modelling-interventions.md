@@ -447,6 +447,25 @@ vaccinate <- epidemics::vaccination(
 )
 ```
 
+::::::::::::::::::::::::::::::::::::: callout
+### Vaccination rate
+
+The vaccination rate $\nu_{g_i}$ is the number of doses given daily to age group $g_i$ among the total population in that age group:
+
+$$
+\nu_{g_i} = \frac{\text{daily doses in group } g_i}{\text{population in group } g_i}
+$$
+
+For example, during the NHS England autumn 2023 COVID-19 booster campaign, an average of 98,000 daily doses were administered to the population aged 65+, with a population size of 12,730,000:
+
+$$
+\nu_{65+} = \frac{98{,}000}{12{,}730{,}000} = 0.0077
+$$
+
+61.5% of people aged 65+ had received an autumn COVID-19 booster by 30 November 2023, since the campaign began on 11 September 2023 (80 days). 61.5% × 12,730,000 ≈ 7,829,000 doses ÷ 80 days ≈ 98,000 doses/day. ([NHS England, Vaccinations: COVID-19](https://www.england.nhs.uk/statistics/statistical-work-areas/covid-19-vaccinations/))
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
 We pass our vaccination object into the model using the argument `vaccination = vaccinate`:
 
 
