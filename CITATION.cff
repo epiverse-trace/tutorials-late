@@ -20,6 +20,33 @@ authors:
     family-names: Degoot
     email: abdoelnaser-mahmood.degoot@lshtm.ac.uk
     orcid: 'https://orcid.org/0000-0001-8788-2496'
+  - orcid: 'https://orcid.org/0000-0002-7779-481X'
+    email: andree.valle-campos@lshtm.ac.uk
+    family-names: Valle-Campos
+    given-names: Andree
+  - given-names: Hugo
+    family-names: Gruson
+    email: hugo@data.org
+    orcid: 'https://orcid.org/0000-0002-4094-1476'
+  - given-names: Bubacarr
+    family-names: Bah
+    email: Bubacarr.Bah1@lshtm.ac.uk
+    orcid: 'https://orcid.org/0000-0003-3318-6668'
+  - given-names: Sebastian
+    family-names: Funk
+    email: sebastian.funk@lshtm.ac.uk
+    orcid: 'https://orcid.org/0000-0002-2842-3406'
+  - given-names: Rosalind
+    family-names: Eggo
+    email: rosalind.eggo@lshtm.ac.uk
+    orcid: 'https://orcid.org/0000-0002-0362-6717'
+  - orcid: 'https://orcid.org/0000-0002-4094-1476'
+    email: adam.kucharski@lshtm.ac.uk
+    family-names: Kucharski
+    given-names: Adam
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.21512057
 repository-code: 'https://github.com/epiverse-trace/tutorials-late'
 url: 'https://epiverse-trace.github.io/tutorials-late/'
 abstract: >-
@@ -53,5 +80,5 @@ keywords:
   - rstats
   - english-language
 license: CC-BY-4.0
-version: v2025-03-11
-date-released: '2025-03-11'
+version: v2026-07-23
+date-released: '2026-07-23'
