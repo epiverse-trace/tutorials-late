@@ -399,7 +399,9 @@ transmission_rate <- basic_reproduction / infectious_period
 ```
 
 ::::::::::::::::::::::::::::::::::::: callout
+
 ### The basic reproduction number $R_0$
+
 The basic reproduction number, $R_0$, for the SEIR model is: 
 
 $$ R_0 = \frac{\beta}{\gamma}.$$ 
@@ -408,6 +410,7 @@ Therefore, we can rewrite transmission rate $\beta$ as:
 
 $$ \beta = R_0 \gamma.$$
 
+If you need a recap, read about the ratio $\beta/\gamma$ in this two-page paper by [Bjørnstad et al., 2020](https://www.nature.com/articles/s41592-020-0822-z).
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 

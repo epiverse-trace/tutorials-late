@@ -600,6 +600,22 @@ To get an age-stratified plot, keep the default `by_group = TRUE` and then add `
 
 :::::::::::::::::::::
 
+:::: checklist
+
+### How to write each intervention type
+
+In `{epidemics}` different interventions require different functions, arguments, and R class objects: integers, matrices, or lists.
+
+| Intervention | Function | `type` | `reduction` or `nu` | Argument in `model_default()` |
+|---|---|---|---|---|
+| Reduce rate | intervention() | "rate" | reduction = 0.163 | intervention = **list**(transmission_rate = `<intervention>`) |
+| Reduce contacts | intervention() | "contacts" | reduction = **matrix**(c(0.5, 0.01, 0.01)) | intervention = **list**(contacts = `<intervention>`) |
+| Vaccination | **vaccination()** | --- | nu = **matrix**(c(0.01, 0.01, 0.01)) | vaccination = `<intervention>` |
+
+The `list()` class object helps accepting multiple consecutive or overlapping interventions in the same simulation.
+
+::::
+
 :::::::::::::::::::::: instructor
 
 Stop the livecoding.
