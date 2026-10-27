@@ -538,15 +538,15 @@ intervention_effect
 ``` output
    scenario demography_group averted_median averted_lower averted_upper
       <int>           <char>          <num>         <num>         <num>
-1:        1           [0,15)      3256059.1     2906086.4     3470543.9
+1:        1           [0,15)      3256059.0     2906086.3     3470543.6
 2:        1          [15,65)      1375225.1     1343075.7     1377908.2
-3:        1         [65,Inf)       536246.3      505597.3      548324.3
+3:        1         [65,Inf)       536246.2      505597.3      548324.3
 4:        2           [0,15)       585880.5      541809.8      631634.1
 5:        2          [15,65)      2567671.4     2402035.7     2732428.0
 6:        2         [65,Inf)      1179972.5     1158510.6     1192527.1
 7:        3           [0,15)      2232937.8     1695740.7     2724009.9
-8:        3          [15,65)      3106825.7     2726770.7     3337422.9
-9:        3         [65,Inf)      1318152.4     1135368.7     1444854.6
+8:        3          [15,65)      3106825.6     2726770.8     3337422.9
+9:        3         [65,Inf)      1318152.3     1135368.8     1444854.6
 ```
 
 The output gives us the infections averted in each scenario compared to the baseline. To obtain the infections averted overall we specify `by_group = FALSE`:
